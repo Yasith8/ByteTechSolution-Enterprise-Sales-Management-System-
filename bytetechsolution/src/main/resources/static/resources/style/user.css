@@ -1,0 +1,57 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.addBtn {
+    background-color: #6669b0;
+    color: white;
+}
+
+.btnDel:hover {
+    color: red;
+}
+
+.btnEdit:hover {
+    color: rgb(0, 255, 0);
+}
+
+.btnView:hover {
+    color: #6669b0;
+}
+
+.modal-content {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70rem;
+}
+
+.radioAlign {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.radioBtnAlign {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+}
+
+#imageContainer {
+    display: flex;
+}
+
+#uploadedImage {
+    width: 70px;
+    height: 70px;
+    max-width: 70px;
+    max-height: 70px;
+    border-radius: 1500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: 2px solid black;
+}

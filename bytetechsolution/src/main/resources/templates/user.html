@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{component::headerFragment}"></head>
+
+<head>
+    <link rel="stylesheet" href="/resources/style/user.css">
+    <script src="resources/controller/user.js"></script>
+</head>
+
+<body>
+
+    <div class="container-fluid mt-2">
+
+        <!-- title area start -->
+        <div class="row m-2">
+            <div class="col-12 text-center 
+            title-header-div">
+                <h2> User Management </h2>
+            </div>
+        </div>
+        <!-- title area End -->
+
+        <!-- Card area start  -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-6">
+
+            </div>
+            <div class="col-4 text-end">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#userAddModal" class="btn addBtn">
+                    Add New User </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- Card area end  -->
+
+        <!-- table Area Start-->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="card employee-card">
+                    <div class="card-body employee-cardbody">
+
+                        <table class="table table-hover" id="tableUser">
+                            <thead class="table-header">
+                                <tr>
+                                    <th> # </th>
+                                    <th> Fullname </th>
+                                    <th> Username </th>
+                                    <th> Email </th>
+                                    <th> Password </th>
+                                    <th> Status </th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody class="table-body">
+
+                                <!-- create static values for table -->
+                                <!-- used for initial designs -->
+                                <!-- probebly this appear when data not loading to table from db -->
+                                <tr>
+                                    <td> 1 </td>
+                                    <td> Initial User </td>
+                                    <td> initialas </td>
+                                    <td> inituser@gmail.com </td>
+                                    <td> qw32323 </td>
+                                    <td> Active </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+
+        </div>
+        <!-- table Area End-->
+
+    </div>
+
+    <!-- employee Add Modal -->
+    <div class="modal fade" id="userAddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Full Name Input Start -->
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="selectFullname" aria-label="Floating label select example"></select>
+                                <label for="selectFullname">Employee Name <span class="requiredIcon">*</span></label>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div id="imageContainer">
+                                <input type="file" id="fileInput" accept="image/*">
+                                <img id="uploadedImage" src="" alt="Uploaded Image">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Full Name Input end -->
+
+                    <!-- nic Input Start -->
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="textUsername" placeholder="" required>
+                                <label for="textUsername">Username <span class="requiredIcon">*</span></label>
+                            </div>
+                        </div>
+                        <!-- callingname Input end -->
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="textPassword" placeholder="" required>
+                                <label for="textPassword">Password<span class="requiredIcon">*</span></label>
+                            </div>
+                        </div>
+                        <!-- callingname Input end -->
+                    </div>
+
+                    <div class="row">
+                        <!-- email start -->
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="textEmail" placeholder="" required>
+                                <label for="textEmail">Email<span class="requiredIcon">*</span></label>
+                            </div>
+                        </div>
+                        <!-- email end -->
+                        <!-- radio status start -->
+                        <div class="col-6">
+                            <div class="p-4 d-flex gap-3">
+                                <input type="checkbox" name="status" id="checkStatus">
+                                <label for="checkStatus">User is InActive</label>
+                            </div>
+                        </div>
+                        <!-- radio status end -->
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">User Roles:</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="p-4 d-flex gap-2">
+                                <input type="checkbox" name="role" id="checkRoleAdmin">
+                                <label for="checkRoleAdmin">Admin</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="p-4 d-flex gap-2">
+                                <input type="checkbox" name="status" id="checkRoleManager">
+                                <label for="checkRoleManager">Manager</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="p-4 d-flex gap-2">
+                                <input type="checkbox" name="status" id="checkStoreManager">
+                                <label for="checkStoreManager">Store Manager</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="p-4 d-flex gap-2">
+                                <input type="checkbox" name="status" id="checkCashier">
+                                <label for="checkCashier">Cashier</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="px-4 d-flex gap-2">
+                                <input type="checkbox" name="status" id="checkTechnician">
+                                <label for="checkTechnician">Technician</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="px-4 d-flex gap-2">
+                                <input type="checkbox" name="status" id="checkStoreAssistant">
+                                <label for="checkStoreAssistant">Store Assistant</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row mt-3 mb-3">
+                    <div class="col-6">
+                        <div id="divModifyButton">
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal">Print</button></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal">Delete</button></div>
+                                <div class="col-7"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-5"></div>
+                            <div class="col-2"><button type="button" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
+                            <div class="col-2"><button type="button" class="modal-button modal-btn-update" data-bs-dismiss="modal">Update</button></div>
+                            <div class="col-2"><button type="button" class="modal-button modal-btn-submit">Submit</button></div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
