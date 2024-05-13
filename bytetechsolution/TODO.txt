@@ -1,3 +1,39 @@
 Employee Management Module
+  - Employee HTML/CSS✅
+  - Employee Entitiy,Controller,Entitiy✅
+  - Employee submit and update validation✅
+  - Put Request✅
+  - Get Request✅
+  - Delete Request✅
+  - Post Request✅
+  - print All Employee✅  //todo ask about printing table with same design
+  - Authentication and Auterization
   - Land phone Number Regex
+  - Fullname Regex fix bug
+  - print single Employee
+  - dynaically diable button when submite update
+  - clear button
+
+  User Management System
+  - User HTML/CSS✅
+  - User submit and update validation✅
+  - User Entitiy,Controller,Entitiy✅
   - Put Request
+  - Get Request✅
+  - Delete Request
+  - Post Request
+
+
+
+  404 Page
+  403 Page
+  Login Page
+
+
+  ------------------------------------------------------MUST WATCH--------------------------------------------------------------
+   - extValidator in validationFuntion
+
+
+  -------------------------------------------------------MUST ASK--------------------------------------------------------------
+   - printing the data table with design
+   - this key used in email validator

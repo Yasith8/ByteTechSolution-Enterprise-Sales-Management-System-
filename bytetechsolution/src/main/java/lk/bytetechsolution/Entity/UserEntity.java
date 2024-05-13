@@ -18,17 +18,23 @@ import lombok.NoArgsConstructor;
 import java.util.*;
 import java.time.LocalDateTime;
 
-
+/* 
+ * ------------Entity-----------
+ * convert into entity class
+ * Entity from JPA-Java Persistence API(also known as jakarta persistence api)
+ * Entity used to mark class as a entity
+ * java tell system to instance of this class will represent rows in db's table
+ */
 @Entity
-@Table(name = "user")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "user")       //spesify name of database to this entity(mapping with user table)
+@Data                      //genarate getters and setters and toString to class
+@NoArgsConstructor        //default constructor       ----usefull when create object that not have any initial values
+@AllArgsConstructor      //all argument constructor  ----usefull when create object that have any initial values
 public class UserEntity {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",unique = true)
+    @Id   //integrate primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)   //set Auto Increment
+    @Column(name = "id",unique = true)       //map with id column and set as unique
     @NotNull
     private Integer id;
 
@@ -55,6 +61,14 @@ public class UserEntity {
     @NotNull
     private Boolean status;
 
+
+     /* 
+     * Map with Forign Keys
+     * Relationship type : OneToOne, ManyToMany, OneToMany , ManyToOne
+     * In this 2 forign keys are map with designationentity and employeestatusentity
+     * one designation can have many employees .but one employee can have one designation(doctor or pharmesist)
+     * one employeestatus can have many employees but one employee can  only have one employeestatus (active or resign)
+     */
     @ManyToOne
     @JoinColumn(name = "employee_id",referencedColumnName = "id")
     private EmployeeEntity employee_id;

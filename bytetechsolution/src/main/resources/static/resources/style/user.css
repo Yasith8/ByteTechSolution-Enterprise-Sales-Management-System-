@@ -3,6 +3,12 @@
     padding: 0;
 }
 
+body {
+    background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+    width: 100%;
+    min-height: 100vh;
+}
+
 .addBtn {
     background-color: #6669b0;
     color: white;
@@ -54,4 +60,22 @@
     background-repeat: no-repeat;
     background-size: cover;
     border: 2px solid black;
+}
+
+.user-active {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: green;
+    color: white;
+    text-align: center;
+}
+
+.user-inactive {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: red;
+    color: white;
+    text-align: center;
 }

@@ -185,7 +185,10 @@ public class EmployeeController {
     }
 
   
-   
+   @GetMapping(value = "/employee/listwithoutuseraccount",produces = "application/json")
+   public List<EmployeeEntity> getEmployeewithoutUserAccount(){
+    return dao.getListWithoutUserAccount();
+   }
 
 
 

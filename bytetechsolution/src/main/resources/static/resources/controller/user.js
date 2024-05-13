@@ -50,10 +50,12 @@ const refreshUserForm = () => {
 
     user.roles = new Array();
 
+    //to get employee without user accounts
     employeeWithoutUserAccount = getServiceAjaxRequest("/employee/listwithoutuseraccount");
-    fillDataIntoSelect(employee, "Select Employee", employeeWithoutUserAccount, "fullname");
+    //fill that employee data without user account to the dropdown menu
+    fillDataIntoSelect(selectFullname, "Select Employee", employeeWithoutUserAccount, "fullname");
 
-    //get role list
+    //get role list without admin
     roles = getServiceAjaxRequest("/role/listwithoutadmin");
     divRoles.innerHTML = "";
 
@@ -130,22 +132,27 @@ const refillUserForm = (rowOb, rowIndex) => {
     user = JSON.parse(JSON.stringify(rowOb));
     olduser = rowOb
 
-    email.value = user.email;
-    username.value = user.username;
+    //asign email
+    textEmail.value = user.email;
 
+    //asign username
+    textUsername.value = user.username;
+
+    //asign password
     textPassword.value = user.password;
 
+    //asign dynamic changing checkbox for user status
     if (user.status) {
-        activeBtn.checked = "checked";
+        checkStatus.checked = "checked";
         labelUserStatus.innerText = "user account is active"
     } else {
-        activeBtn.checked = "";
+        checkStatus.checked = "";
         labelUserStatus.innerText = "user account is not active"
     }
 
     employeeListWithoutUserAccount = getServiceAjaxRequest("/employee/listwithoutuseraccount");
     employeeListWithoutUserAccount.push(user.employee_id);
-    fillDataIntoSelect(employee, "Select Employee", employeeListWithoutUserAccount, "fullname", user.employee_id.fullname);
+    fillDataIntoSelect(selectFullname, "Select Employee", employeeListWithoutUserAccount, "fullname", user.employee_id.fullname);
 
     //
     divRoles.innerHTML = "";
@@ -190,4 +197,20 @@ const refillUserForm = (rowOb, rowIndex) => {
         divRoles.appendChild(div);
     })
 
+}
+
+
+//password retype validator
+const passwordRetypeValidator = () => {
+
+    //check password and retyped password values matched or not
+    if (textPassword.value == textPasswordRetype.value) {
+
+        user.password = textPassword.value;
+        textPasswordRetype.classlist.add('is-valid');
+    } else {
+
+        user.password = null;
+        textPasswordRetype.classlist.add('is-invalid');
+    }
 }

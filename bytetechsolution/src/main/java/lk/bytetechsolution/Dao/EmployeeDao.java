@@ -36,5 +36,8 @@ public interface EmployeeDao extends JpaRepository<EmployeeEntity, Integer> {
      @Query(value = "select concat('E',lpad(substring(max(e.empid),2)+1,4,'0')) as EmpId from bytetechsolution.employee as e",nativeQuery = true)
      public String getNextEmployeeNumber();
 
+     @Query(value = "select e from EmployeeEntity e where e.id not in (select u.employee_id.id from UserEntity u)")
+     public List<EmployeeEntity> getListWithoutUserAccount();
+
 
 }
