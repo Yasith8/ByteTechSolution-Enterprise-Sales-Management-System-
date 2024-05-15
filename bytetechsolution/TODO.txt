@@ -15,13 +15,14 @@ Employee Management Module
   - clear button
 
   User Management System
+  - Password retype validator not dynamically work //todo
   - User HTML/CSS✅
   - User submit and update validation✅
   - User Entitiy,Controller,Entitiy✅
   - Put Request
   - Get Request✅
   - Delete Request
-  - Post Request
+  - Post Request✅
 
 
 

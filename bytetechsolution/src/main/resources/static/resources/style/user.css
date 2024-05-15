@@ -79,3 +79,7 @@ body {
     color: white;
     text-align: center;
 }
+
+tr {
+    cursor: pointer;
+}

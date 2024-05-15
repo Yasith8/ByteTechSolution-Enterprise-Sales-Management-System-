@@ -46,7 +46,7 @@ const refreshUserTable = () => {
 
 const refreshUserForm = () => {
     user = new Object();
-    oldUser = null;
+    olduser = null;
 
     user.roles = new Array();
 
@@ -54,6 +54,7 @@ const refreshUserForm = () => {
     employeeWithoutUserAccount = getServiceAjaxRequest("/employee/listwithoutuseraccount");
     //fill that employee data without user account to the dropdown menu
     fillDataIntoSelect(selectFullname, "Select Employee", employeeWithoutUserAccount, "fullname");
+    console.log(employeeWithoutUserAccount)
 
     //get role list without admin
     roles = getServiceAjaxRequest("/role/listwithoutadmin");
@@ -88,6 +89,9 @@ const refreshUserForm = () => {
 
     user.status = false;
     labelUserStatus.innerText = "User Account Not Active";
+
+
+    removeValidationColor([selectFullname, textUsername, textPassword, textRePassword, textEmail])
 }
 
 //get employee fullname using object of employee_id
@@ -124,13 +128,29 @@ const getStatus = (ob) => {
 
 }
 
+//todo ask about this
+const setUserStatus = () => {
+    if (checkStatus.checked) {
+        user.status = true;
+        labelUserStatus.innerText = "User is active";
+    } else {
+        // If checkbox is unchecked, set user status to false
+        user.status = false;
+        labelUserStatus.innerText = "User is not active";
+    }
+}
 
 const refillUserForm = (rowOb, rowIndex) => {
+
+    //when click the row
+    $('#userAddModal').modal('show');
     //same object cant add in same where
     //rowob is object, value eja save wenne heap,ram eke neme
     //olduser=rowOb-->user and olduser variable has same refference
     user = JSON.parse(JSON.stringify(rowOb));
-    olduser = rowOb
+    olduser = rowOb;
+
+
 
     //asign email
     textEmail.value = user.email;
@@ -141,6 +161,8 @@ const refillUserForm = (rowOb, rowIndex) => {
     //asign password
     textPassword.value = user.password;
 
+    //bug to chaging
+    //checkStatus.checked = user.status;
     //asign dynamic changing checkbox for user status
     if (user.status) {
         checkStatus.checked = "checked";
@@ -154,27 +176,47 @@ const refillUserForm = (rowOb, rowIndex) => {
     employeeListWithoutUserAccount.push(user.employee_id);
     fillDataIntoSelect(selectFullname, "Select Employee", employeeListWithoutUserAccount, "fullname", user.employee_id.fullname);
 
-    //
+    //adding roles for form from db
+
+    //clear the divRole div
     divRoles.innerHTML = "";
+    //use forEach for looping array of containing roles objects
     roles.forEach(role => {
+        //create div element called div
         div = document.createElement('div');
+        //add classes for bootstrap
         div.className = "form-check form-check-inline";
+        //create new input field
         inputCHK = document.createElement('input');
+        //add type checkbox to newly created element
         inputCHK.type = "checkbox";
+        //add classes for input
         inputCHK.className = "form-check-input";
+        //add id fot checkbox
+        inputCHK.id = "checkbox" + role.id;
+        //create label for identifying the checkbox
         label = document.createElement('label');
+        //set classes for label
         label.className = "form-check-label fw-bold ms-2";
+        //set attribute for label when clicked the label automatically check/unchecked checkbox
+        label.setAttribute('for', 'checkbox' + role.id);
+
+        //add value to label
         label.innerText = role.name;
 
+        //any changes happen in checkboxes this function work
         inputCHK.onchange = function() {
-
+            //if checked a item
             if (this.checked) {
+                //push to the role array
                 user.roles.push(role);
             } else {
                 //user.roles.pop(role);
+                //todo ask about this
+                //check existance of checkbox in db
                 let extIndex = user.roles.map(element => element.name).indexOf(role.name);
 
-
+                //if it not esixt
                 if (extIndex != -1) {
                     user.roles.splice(extIndex, 1)
                 }
@@ -199,18 +241,131 @@ const refillUserForm = (rowOb, rowIndex) => {
 
 }
 
+//check User Input Errors
+const checkInputFormErrors = () => {
+    //create empty string
+    let errors = "";
+
+    //if ot select the employee from dropdown
+    if (user.employee_id == null) {
+        errors = errors + "Select Employee from Dropdown !\n";
+    }
+
+    //if username not added
+    if (textUsername == null) {
+        errors = errors + "Enter your username !\n";
+    }
+
+    //if old object is empty
+    if (olduser == null) {
+        if (textPassword == null) {
+            errors = errors + "Should Provide a Password !\n";
+        }
+
+        if (textRePassword.value == "") {
+            errors = errors + "Should Provide the Password again  !\n";
+        }
+    }
+
+    if (textEmail == null) {
+        errors = errors + "Enter Email  !\n";
+    }
+    if (user.roles.length == 0) {
+        errors = errors + " Please select roles !"
+    }
+
+
+    return errors;
+}
+
+//submit button function
+
+const buttonUserFormSubmit = () => {
+    console.log("Submitted User Object: " + JSON.stringify(user))
+        //check user form errors
+    const errors = checkInputFormErrors();
+
+    if (errors == "") {
+
+        //get user conformation
+        const userSubmitResponse = confirm("Are you sure to submit?");
+
+        if (userSubmitResponse) {
+            //call post service
+            //let postResponse = getHTTPBodyAxajRequst("/user", "POST", user);
+
+            $.ajax("/user", {
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(user),
+                async: false,
+
+                success: function(data) {
+                    console.log("success", data);
+                    postResponse = data;
+                },
+
+                error: function(resData) {
+                    console.log("Fail", resData);
+                    postResponse = resData;
+                }
+
+            });
+
+
+            //if post request done correctly
+            if (postResponse == "OK") {
+                alert("User Saved Successfully!");
+                //hide the model
+                $('#userAddModal').modal('hide');
+                //reset the employee form
+                formUser.reset();
+                //refreash employee form
+                refreshUserForm();
+                //refreash employee table
+                refreshUserTable();
+            } else {
+                alert("Save is not Completed! \n Following Errors Occured...\n" + postResponse)
+            }
+        }
+    } else {
+        alert("Form has following errors \n" + errors)
+    }
+}
+
 
 //password retype validator
 const passwordRetypeValidator = () => {
+    //console.log("textPassword : " + textPassword.value + "---- textRePassword : " + textRePassword.value)
 
     //check password and retyped password values matched or not
-    if (textPassword.value == textPasswordRetype.value) {
-
+    if (textPassword.value == textRePassword.value) {
+        //console.log("Matched");
         user.password = textPassword.value;
-        textPasswordRetype.classlist.add('is-valid');
+        textRePassword.classList.remove('is-invalid');
+        textRePassword.classList.add('is-valid');
     } else {
 
         user.password = null;
-        textPasswordRetype.classlist.add('is-invalid');
+        textRePassword.classList.remove('is-valid');
+        textRePassword.classList.add('is-invalid');
+    }
+}
+
+//function for close the modal and refresh the table
+const buttonModalClose = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
+
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#userAddModel').modal('hide');
+
+
+        //formEmployee is id of form
+        //this will reset all data(refreash)
+        formUser.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshUserForm();
     }
 }

@@ -26,6 +26,30 @@ const getServiceAjaxRequest = (url) => {
     return getServiceResponse;
 }
 
+//Create function for POST,PUT,DELETE Mapping
+const getHTTPBodyAjaxRequest = (url, method, ob) => {
+
+    let serviceResponse;
+
+    $.ajax(url, {
+        type: method,
+        contentType: 'application/json',
+        data: JSON.stringify(ob),
+        async: false,
+        success: function(data) {
+            console.log("success" + data);
+            serviceResponse = data;
+
+        },
+
+        error: function(resData) {
+            console.log("Fail" + resData);
+            serviceResponse = resData;
+        }
+    });
+
+    return serviceResponse;
+}
 
 //this function used to fill dynamic data come from db to dropdown
 //todo ask about selectedValue

@@ -89,83 +89,84 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New User</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Employee name select Start -->
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="selectFullname" aria-label="Floating label select example"></select>
-                                <label for="selectFullname">Employee Name <span class="requiredIcon">*</span></label>
+                    <form id="formUser" onsubmit="return false">
+                        <!-- Employee name select Start -->
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="selectFullname" aria-label="Floating label select example" onchange="selectDynamicValidator(this,'','user','employee_id')"></select>
+                                    <label for="selectFullname">Employee Name <span class="requiredIcon">*</span></label>
+                                </div>
                             </div>
+
+                            <div class="col-4">
+                                <div id="imageContainer">
+                                    <input type="file" id="fileInput" accept="image/*">
+                                    <img id="uploadedImage" src="" alt="Uploaded Image">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- employee name select end -->
+
+                        <!-- username Input Start -->
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="textUsername" placeholder="" required onkeyup="textValidator(textUsername,'^[A-Za-z0-9]{5,10}$','user','username')">
+                                    <label for="textUsername">Username <span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- username Input end -->
+                            <!-- email Input start -->
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="textEmail" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9_-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$','user','email')">
+                                    <label for="textEmail">Email<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- email Input end -->
                         </div>
 
-                        <div class="col-4">
-                            <div id="imageContainer">
-                                <input type="file" id="fileInput" accept="image/*">
-                                <img id="uploadedImage" src="" alt="Uploaded Image">
+                        <div class="row">
+                            <!-- pasword start -->
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="textPassword" placeholder="" required onkeyup="textValidator(textPassword,'^[A-Za-z0-9]{8,20}$','user','password')">
+                                    <label for="textPassword">Password<span class="requiredIcon">*</span></label>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- employee name select end -->
+                            <!-- pasword end -->
+                            <!-- repasword start -->
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="textRePassword" placeholder="" required onkeyup="passwordRetypeValidator()">
+                                    <label for="textRePassword">Re-Password<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- repasword end -->
 
-                    <!-- username Input Start -->
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="textUsername" placeholder="" required onkeyup="textValidator(textUsername,'^[A-Za-z0-9]{5,10}$','user','username')">
-                                <label for="textUsername">Username <span class="requiredIcon">*</span></label>
+                        </div>
+                        <!-- checkbox user active start -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="p-4 d-flex gap-3">
+                                    <input type="checkbox" name="status" id="checkStatus" onchange="setUserStatus()">
+                                    <label for="checkStatus" id="labelUserStatus">User is InActive</label>
+                                </div>
                             </div>
                         </div>
-                        <!-- username Input end -->
-                        <!-- email Input start -->
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="textEmail" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3-10}[.][a-z]{2,3}$'),'user','email'">
-                                <label for="textEmail">Email<span class="requiredIcon">*</span></label>
-                            </div>
-                        </div>
-                        <!-- email Input end -->
-                    </div>
+                        <!-- checkbox user active end -->
 
-                    <div class="row">
-                        <!-- pasword start -->
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="textPassword" placeholder="" required onkeyup="textValidator(textPassword,'^[A-Za-z0-9]{8-20}$','user','password')">
-                                <label for="textPassword">Password<span class="requiredIcon">*</span></label>
-                            </div>
+                        <!-- checkbox user role start -->
+                        <div class="row">
+                            <div class="col-12">User Roles:</div>
                         </div>
-                        <!-- pasword end -->
-                        <!-- repasword start -->
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="textRePassword" placeholder="" required onkeyup="passwordRetypeValidator()">
-                                <label for="textRePassword">Re-Password<span class="requiredIcon">*</span></label>
-                            </div>
-                        </div>
-                        <!-- repasword end -->
-
-                    </div>
-                    <!-- checkbox user active start -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="p-4 d-flex gap-3">
-                                <input type="checkbox" name="status" id="checkStatus">
-                                <label for="checkStatus" id="labelUserStatus">User is InActive</label>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- checkbox user active end -->
-
-                    <!-- checkbox user role start -->
-                    <div class="row">
-                        <div class="col-12">User Roles:</div>
-                    </div>
-                    <div class="row">
-                        <div id="divRoles"></div>
-                        <!-- <div class="col-3">
+                        <div class="row">
+                            <div id="divRoles"></div>
+                            <!-- <div class="col-3">
                             <div class="p-4 d-flex gap-2">
                                 <input type="checkbox" name="role" id="checkRoleAdmin">
                                 <label for="checkRoleAdmin">Admin</label>
@@ -205,9 +206,10 @@
                             </div>
                         </div>
  -->
-                    </div>
-                    <!-- checkbox user role end -->
+                        </div>
+                        <!-- checkbox user role end -->
 
+                    </form>
                 </div>
                 <!-- model body ends -->
 
@@ -227,7 +229,7 @@
                             <div class="col-5"></div>
                             <div class="col-2"><button type="button" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
                             <div class="col-2"><button type="button" class="modal-button modal-btn-update" data-bs-dismiss="modal">Update</button></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-submit">Submit</button></div>
+                            <div class="col-2"><button type="button" class="modal-button modal-btn-submit" onclick="buttonUserFormSubmit()">Submit</button></div>
                             <div class="col-1"></div>
                         </div>
                     </div>

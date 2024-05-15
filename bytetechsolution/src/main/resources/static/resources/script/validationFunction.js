@@ -63,3 +63,7 @@ const radioValidator = (radioElement, pattern, object, property, label1Id, label
         label2Id.style.color = 'black';
     }
 }
+
+/* const checkboxValidator = (filedId,) => {
+
+} */
