@@ -1,28 +1,36 @@
 Employee Management Module
-  - Employee HTML/CSS✅
-  - Employee Entitiy,Controller,Entitiy✅
-  - Employee submit and update validation✅
-  - Put Request✅
-  - Get Request✅
-  - Delete Request✅
-  - Post Request✅
+  - Employee HTML/CSS✅       May 6
+  - Employee Entitiy,Controller,Entitiy✅   April
+  - Employee submit and update validation✅ May 6
+  - Put Request✅ May 13
+  - Get Request✅ May 7
+  - Delete Request✅ May 7
+  - Post Request✅ May 7
   - print All Employee✅  //todo ask about printing table with same design
   - Authentication and Auterization
-  - Land phone Number Regex
-  - Fullname Regex fix bug
+  - Land phone Number Regex✅ May 15
+  - Fullname Regex fix bug✅ May 15
   - print single Employee
-  - dynaically diable button when submite update
+  - dynaically diable button when submit update✅ May 15
   - clear button
 
   User Management System
-  - Password retype validator not dynamically work //todo
-  - User HTML/CSS✅
-  - User submit and update validation✅
-  - User Entitiy,Controller,Entitiy✅
-  - Put Request
-  - Get Request✅
-  - Delete Request
-  - Post Request✅
+  - Password retype validator not dynamically work //todo ask about
+  - User HTML/CSS✅   May 7
+  - User submit and update validation✅ May 13
+  - User Entitiy,Controller,Entitiy✅ May 13
+  - Put Request✅ May 15
+  - Get Request✅ May 8
+  - Delete Request✅ May 14
+  - Post Request✅ May 14
+  - print single Employee
+  - dynaically diable button when submit update✅ May 15
+  - clear button
+  
+  
+  
+  - update error in user Management
+  - email already exist bug
 
 
 

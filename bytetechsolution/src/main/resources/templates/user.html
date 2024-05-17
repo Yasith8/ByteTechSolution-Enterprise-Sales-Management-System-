@@ -218,8 +218,8 @@
                         <div id="divModifyButton">
                             <div class="row">
                                 <div class="col-1"></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal">Print</button></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal">Delete</button></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-print">Print</button></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" onclick="deleteEmployee(window['editOb'], window['editRow'])">Delete</button></div>
                                 <div class="col-7"></div>
                             </div>
                         </div>
@@ -227,9 +227,9 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5"></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-update" data-bs-dismiss="modal">Update</button></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-submit" onclick="buttonUserFormSubmit()">Submit</button></div>
+                            <div class="col-2"><button type="reset" class="modal-button modal-btn-clear">Clear</button></div>
+                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" onclick="buttonUserUpdate()">Update</button></div>
+                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonUserFormSubmit()">Submit</button></div>
                             <div class="col-1"></div>
                         </div>
                     </div>

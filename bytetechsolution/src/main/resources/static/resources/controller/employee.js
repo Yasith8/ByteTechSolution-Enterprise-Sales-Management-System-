@@ -144,6 +144,12 @@ const refreshEmployeeForm = () => {
     //define new object
     employee = new Object();
 
+    buttonSubmit.disabled = false;
+    buttonSubmit.classList.add('modal-btn-submit')
+
+    buttonUpdate.disabled = true;
+    buttonUpdate.classList.remove('modal-btn-update');
+
     employeeStatus = getServiceAjaxRequest("/employeestatus/alldata")
 
 
@@ -191,7 +197,15 @@ const getEmployeeStatus = (ob) => {
 }
 
 //employee print function
-const printEmployee = (ob, rowIndex) => {}
+const printEmployee = (ob, rowIndex) => {
+
+    const newTab = window.open();
+    newTab.document.write(
+        printEmployeeContent.outerHTML
+    );
+}
+
+//print whole
 
 
 
@@ -239,6 +253,15 @@ const employeeFormRefill = (ob, rowIndex) => {
 
     //pass designation data to common function to create dynamic dropdown
     fillDataIntoSelect(selectDesignation, "Select Designation", designations, "name", ob.designation_id.name)
+
+
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit')
+
+    buttonUpdate.disabled = false;
+    buttonUpdate.classList.add('modal-btn-update');
+
+
 
 
 
@@ -293,8 +316,9 @@ const textFullNameValidator = (feildId) => {
     //1st name can be 2-20 that mean add morethan 1 and  less than or equal to 20 letters
     //[\\s] match any white space characters
     //+ mean it will match one or more pattern of inside 1st ()
+    //* mean it can happen multiple time
     // 2nd() is last part
-    const regPettern = new RegExp('^([A-Z][a-z]{2,20}[\\s])+([A-Z][a-z]{2,20})$');
+    const regPettern = new RegExp('^([A-Z][a-z]{2,20}[\\s])+([A-Z][a-z]{2,20}[\\s]*)$');
 
     //check full name is not empty
     if (fullNameValue != '') {
@@ -509,6 +533,7 @@ const checkEmployeeFormUpdates = () => {
 
 
 }
+
 
 //function for when click update
 const buttonEmployeeUpdate = () => {

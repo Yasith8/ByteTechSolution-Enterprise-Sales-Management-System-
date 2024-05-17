@@ -1,14 +1,18 @@
 package lk.bytetechsolution.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import lk.bytetechsolution.Dao.EmployeeStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.EmployeeStatusEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 import java.util.*;
@@ -32,6 +36,7 @@ public class UserController {
      */
     @Autowired
     private UserDao dao;
+
 
     //request employee ui
     @RequestMapping(value="/user")
@@ -62,13 +67,13 @@ public class UserController {
         //check if any user with this password
         UserEntity extUserEmail=dao.getByEmail(user.getEmail());
         //if anyone find with same email
-        if(extUserEmail!=null){
+        if(extUserEmail != null){
             return "Save not Completed : "+extUserEmail.getEmail()+" Email Already Existed.";
         }
         
         //check if any user with same username
         UserEntity extUsername=dao.getByUsername(user.getUsername());
-        if(extUsername!=null){
+        if(extUsername != null){
             return "Save not Completed : "+extUsername.getEmail()+" Username Already Existed.";
         }
 
@@ -89,6 +94,57 @@ public class UserController {
             
         } catch (Exception e) {
             return "Save not Completed : "+e.getMessage();
+        }
+
+
+    }
+
+
+    @DeleteMapping(value = "/user")
+    public String deleteUser(@RequestBody UserEntity user){
+
+        //check user exist
+        UserEntity extUser=dao.getReferenceById(user.getId());
+
+        if(extUser==null){
+            return "Delete not Completed. User is not Existed";
+        }
+
+        try {
+            //todo                  ask about this
+            extUser.setStatus(false);
+            dao.save(extUser);
+            return "OK";
+
+            //hard delete---(in case you need)
+            //dao.delete(dao.getReferenceById(user.getId()));
+            
+        } catch (Exception e) {
+            return "Delete not Completed"+e.getMessage();
+        }
+    }
+
+    @PutMapping(value = "/user")
+    public String updateUser(@RequestBody UserEntity user){
+
+        //user existance
+        UserEntity extUser=dao.getReferenceById(user.getId());
+
+        //if user not exist
+        if(extUser==null){
+            return "User is not Exist";
+        }
+
+        UserEntity extUserEmail=dao.getByEmail(user.getEmail());
+        if(extUserEmail !=null && extUserEmail.getId() != extUser.getId()){
+            return "Added User Email is already Exist";
+        }
+
+        try {
+            dao.save(user);
+            return "OK";
+        } catch (Exception e) {
+            return "Update not completed. System has following errors:"+e.getMessage();
         }
 
 

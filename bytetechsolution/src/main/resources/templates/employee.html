@@ -46,7 +46,7 @@
                 <div class="card employee-card">
                     <div class="card-body employee-cardbody">
 
-                        <table class="table table-hover" id="tableUser">
+                        <table class="table table-hover" id="tableEmployee">
                             <thead class="table-header">
                                 <tr>
                                     <th> # </th>
@@ -101,7 +101,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Employee</h1>
-                    <!-- bug when i was close the button it displayed colsing messeage. but even cancel it whole model close -->
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
                 </div>
                 <form id="formEmployee" onsubmit="return false">
@@ -188,7 +187,7 @@
                             <!-- land start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textLandNo" placeholder="Enter Land No" onkeyup="textValidator(this,'^[0][0-9]{8}$'),'employee','land'">
+                                    <input type="text" class="form-control" id="textLandNo" placeholder="Enter Land No" onkeyup="textValidator(this,'^[0][0-9]{8}$','employee','land')">
                                     <label for="land">Land No</label>
                                 </div>
                             </div>
@@ -234,13 +233,11 @@
 
                     <div class="row mt-3 mb-3">
                         <div class="col-6">
-                            <!-- bug - ask about this dummy divModifyButton  -->
                             <div id="divModifyButton">
 
-                                <!-- bug - it need to come to row  -->
                                 <div class="row" id="">
                                     <div class="col-1"></div>
-                                    <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal">Print</button></div>
+                                    <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printEmployee(window['editOb'], window['editRow'])">Print</button></div>
                                     <div class="col-2"><button type="button" class="modal-button modal-btn-delete" onclick="deleteEmployee(window['editOb'], window['editRow'])">Delete</button></div>
                                     <div class="col-7"></div>
                                 </div>
@@ -250,8 +247,8 @@
                             <div class="row">
                                 <div class="col-5"></div>
                                 <div class="col-2"><button type="reset" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                                <div class="col-2"><button type="submit" class="modal-button modal-btn-update" onclick="buttonEmployeeUpdate()">Update</button></div>
-                                <div class="col-2"><button type="submit" class="modal-button modal-btn-submit" onclick="buttonEmployeeSubmit()">Submit</button></div>
+                                <div class="col-2"><button type="submit" id="buttonUpdate" class="modal-button modal-btn-update" onclick="buttonEmployeeUpdate()">Update</button></div>
+                                <div class="col-2"><button type="submit" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonEmployeeSubmit()">Submit</button></div>
                                 <div class="col-1"></div>
                             </div>
                         </div>
@@ -264,44 +261,138 @@
     </div>
 
 
-    <!--  
-                               
-                               
-                               
-                               
-                                        
-                                   
-                                   
 
-                               
 
-                                   
-            
-                                   
-                               
-                                    
-                                    <button type="button" style="width: 25%;" onclick="deleteEmployee(window['editOb'], window['editRow'])" class="btn btn-danger fw-bold ms-2 me-2"> Delete </button>
-                                    <button type="button" style="width: 25%;" class="btn btn-info fw-bold"> Print </button>
-                                </div>
 
-                            </div>
-                            <div class="col-8 text-end">
-                                <button type="reset" class="btn fw-bold 
-                                btn-clear all-button">
-                                        <i class="fa-solid fa-recycle"></i>
-                                        Clear
-                                    </button>
-                                <button type="submit" class="btn fw-bold
-                            me-2 ms-2 btn-update all-button" onclick="buttonEmployeeUpdate()">
-                                    <i class="fa-solid fa-edit"></i>
-                                    Update
-                                </button>
-                                <button type="submit" class="btn fw-bold 
-                            btn-add all-button" onclick="buttonEmployeeSubmit()">
-                                    <i class="fa-solid fa-plus"></i>
-                                    Add
-                 -->
 
+
+    <!-- //todo print section
+    <div class="print-container d-none" id="printEmployeeContent">
+        <div class="d-flex gap-3 p-3">
+            <img src="/resources/images/logo.png" width="50px" height="50px">
+            <div>
+                <p class="label-logo">
+                    <b>ByteTech Solution</b>
+                    <br> No 32A, Galle Road, Panadura <br> 0382291010/ 0773881010
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+
+
+
+                <div class="bg-white print-window">
+                    <h2 class="text-center">Employee Details</h2>
+
+                    <div class="row mt-4">
+                        <div class="col-3"></div>
+                        <div class="col-3">Employee ID</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="textFullName"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">Employee Name</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="textFullName"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">National ID No</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="textNIC"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+
+                    <div class="row mt-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">Email</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="textEmail"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">Calling Name</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="textCallingName"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">National ID No</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="textNIC"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">Gender</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="radioGender"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">Mobile No</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="textMobile"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">Land No</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="textLand"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">Date of Birth</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="dateDob"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">Designation</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="selectDesignation"></div>
+                        <div class="col-2"></div>
+                    </div>
+
+                    <div class="row mt-2 mb-2">
+                        <div class="col-3"></div>
+                        <div class="col-3">Employee Status</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3" id="selectStatus"></div>
+                        <div class="col-2"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-2"></div>
+
+        </div>
+    </div>
+-->
 
 </body>
 

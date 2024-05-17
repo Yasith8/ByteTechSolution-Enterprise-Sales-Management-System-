@@ -35,7 +35,6 @@ public class UserEntity {
     @Id   //integrate primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)   //set Auto Increment
     @Column(name = "id",unique = true)       //map with id column and set as unique
-    @NotNull
     private Integer id;
 
     @Column(name="username")

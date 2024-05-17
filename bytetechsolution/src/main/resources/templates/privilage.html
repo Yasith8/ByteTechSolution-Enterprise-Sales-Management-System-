@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{component::headerFragment}">
+</head>
+
+<head>
+    <link rel="stylesheet" href="resources/style/privilage.css">
+    <script src="resources/controllerjs/privilage.js"></script>
+</head>
+
+<body>
+
+    <div class="container-fluid mt-3 mb-3">
+
+        <!-- title area start -->
+        <div class="row m-2">
+            <div class="col-12 text-center 
+            title-header-div">
+                <h2 class="fw-bold"> Privilage Management </h2>
+            </div>
+        </div>
+        <!-- title area End -->
+
+        <!-- Card area start  -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-6">
+            </div>
+
+            <div class="col-4 text-end gap-3">
+                <button type="button" class="Btn printTableBtn" onclick="printModuleTable('tablePrivilage')">
+                    Print
+                </button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#privilageAddModal" class="Btn addBtn">
+                    Add New Privilage
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- Card area end  -->
+
+        <!-- table Area Start-->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="card employee-card">
+                    <div class="card-body employee-cardbody">
+
+                        <table class="table table-hover" id="tablePrivilage">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Role</th>
+                                    <th>Module</th>
+                                    <th>Select</th>
+                                    <th>Insert</th>
+                                    <th>Update</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="table-body">
+
+                                <!-- create static values for table -->
+                                <!-- used for initial designs -->
+                                <!-- probebly this appear when data not loading to table from db -->
+                                <tr>
+                                    <td> 0</td>
+                                    <td> 0</td>
+                                    <td> 0</td>
+                                    <td> 0</td>
+                                    <td> 0 </td>
+                                    <td> 0</td>
+                                    <td> 0</td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+
+        </div>
+        <!-- table Area End-->
+
+    </div>
+
+
+    <!-- model area start -->
+    <!-- employee Add Modal -->
+    <div class="modal fade" id="privilageAddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Privilages</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="model-body">
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-10">
+
+                            <form id="formPrivilage" onsubmit="return false">
+                                <div class="row">
+                                    <!--full name input start  -->
+                                    <div class="row mt-2">
+                                        <label for="inputName" class="col-3 col-form-label fw-bold">Role : </label>
+                                        <div class="col-9">
+                                            <select name="" class="form-select" id="role">
+                                        <option selected disabled>Select Role</option>
+                                    </select>
+                                        </div>
+                                    </div>
+                                    <!--full name input  end -->
+
+                                    <!--full name input start  -->
+                                    <div class="row mt-2">
+                                        <label for="inputName" class="col-3 col-form-label fw-bold">Module : </label>
+                                        <div class="col-9">
+                                            <select name="" class="form-select" id="module">
+                                        <option selected disabled>Select Module</option>
+                                    </select>
+                                        </div>
+                                    </div>
+                                    <!--full name input  end -->
+
+                                    <!--select start  -->
+                                    <div class="row mt-2">
+                                        <label for="inputName" class="col-3 col-form-label fw-bold">Select : </label>
+                                        <div class="col-9">
+                                            <input type="checkbox" id="select" onclick="selectHandler()"> <span id="selectText">Select privilage not Granted</span>
+                                        </div>
+                                    </div>
+                                    <!--select  end -->
+
+                                    <!--insert start  -->
+                                    <div class="row mt-2">
+                                        <label for="inputName" class="col-3 col-form-label fw-bold">Insert : </label>
+                                        <div class="col-9">
+                                            <input type="checkbox" id="insert" onclick="insertHandler()"> <span id="insertText">Insert privilage not Granted</span>
+                                        </div>
+                                    </div>
+                                    <!--insert  end -->
+
+                                    <!--update start  -->
+                                    <div class="row mt-2">
+                                        <label for="inputName" class="col-3 col-form-label fw-bold">Update : </label>
+                                        <div class="col-9">
+                                            <input type="checkbox" id="update" onclick="updateHandler()"> <span id="updateText">Update privilage not Granted</span>
+                                        </div>
+                                    </div>
+                                    <!--update  end -->
+
+                                    <!--delete start  -->
+                                    <div class="row mt-2">
+                                        <label for="inputName" class="col-3 col-form-label fw-bold">Delete : </label>
+                                        <div class="col-9">
+                                            <input type="checkbox" id="delete" onclick="deleteHandler()"> <span id="deleteText">Delete privilage not Granted</span>
+                                        </div>
+                                    </div>
+                                    <!--delete  end -->
+                                </div>
+
+
+
+                                <!-- Button row start -->
+                                <div class="row mt-3 mb-3">
+                                    <div class="col-6">
+                                        <div id="divModifyButton">
+
+                                            <div class="row" id="">
+                                                <div class="col-3"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal">Print</button></div>
+                                                <div class="col-3"><button type="button" class="modal-button modal-btn-delete">Delete</button></div>
+                                                <div class="col-6"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-3"></div>
+                                            <div class="col-3"><button type="reset" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
+                                            <div class="col-3"><button type="submit" id="buttonUpdate" class="modal-button modal-btn-update">Update</button></div>
+                                            <div class="col-3"><button type="submit" id="buttonSubmit" class="modal-button modal-btn-submit">Submit</button></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Button row end -->
+                            </form>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- model area end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

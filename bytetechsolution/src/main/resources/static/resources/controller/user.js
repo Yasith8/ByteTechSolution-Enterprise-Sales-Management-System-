@@ -50,6 +50,16 @@ const refreshUserForm = () => {
 
     user.roles = new Array();
 
+    selectFullname.disabled = false;
+    textPassword.disabled = false;
+    textRePassword.disabled = false;
+
+    buttonSubmit.disabled = false;
+    buttonSubmit.classList.add('modal-btn-submit')
+
+    buttonUpdate.disabled = true;
+    buttonUpdate.classList.remove('modal-btn-update');
+
     //to get employee without user accounts
     employeeWithoutUserAccount = getServiceAjaxRequest("/employee/listwithoutuseraccount");
     //fill that employee data without user account to the dropdown menu
@@ -132,11 +142,11 @@ const getStatus = (ob) => {
 const setUserStatus = () => {
     if (checkStatus.checked) {
         user.status = true;
-        labelUserStatus.innerText = "User is active";
+        labelUserStatus.innerText = "User Account is active";
     } else {
         // If checkbox is unchecked, set user status to false
         user.status = false;
-        labelUserStatus.innerText = "User is not active";
+        labelUserStatus.innerText = "User Account is not active";
     }
 }
 
@@ -239,6 +249,18 @@ const refillUserForm = (rowOb, rowIndex) => {
         divRoles.appendChild(div);
     })
 
+
+    selectFullname.disabled = true;
+    textPassword.disabled = true;
+    textRePassword.disabled = true;
+
+    buttonUpdate.disabled = false;
+    buttonUpdate.classList.add('modal-btn-update');
+
+
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit')
+
 }
 
 //check User Input Errors
@@ -293,6 +315,8 @@ const buttonUserFormSubmit = () => {
         if (userSubmitResponse) {
             //call post service
             //let postResponse = getHTTPBodyAxajRequst("/user", "POST", user);
+
+            let postResponse;
 
             $.ajax("/user", {
                 type: "POST",
@@ -367,5 +391,135 @@ const buttonModalClose = () => {
         divModifyButton.className = 'd-none';
 
         refreshUserForm();
+    }
+}
+
+const deleteEmployee = (ob, rowIndex) => {
+
+    //user conformation
+    const userConfirm = confirm("Are you sure to delete User " + ob.username + " who Employee Name " + ob.employee_id.name + "?");
+
+    //if ok
+    if (userConfirm) {
+
+        let deleteResponse;
+        //delete request
+        $.ajax("/user", {
+            type: "DELETE",
+            contentType: "application/json",
+            data: JSON.stringify(user),
+            async: false,
+
+            success: function(data) {
+                console.log("success", data);
+                deleteResponse = data;
+            },
+
+            error: function(resData) {
+                console.log("Fail", resData);
+                deleteResponse = resData;
+            }
+
+        });
+
+        //response is ok
+        if (deleteResponse == "OK") {
+            //updation of form,table
+            alert("Delete User Successfullly");
+            $('#userAddModal').modal('hide');
+            refreshUserTable()
+        } else {
+            console.log("system has following errors:\n" + deleteResponse);
+        }
+
+    }
+
+
+
+}
+
+//check any updates
+const checkUserformUpdates = () => {
+    let updates = ""
+
+    if (user.username != olduser.username) {
+        updates = updates + " Username is changed \n";
+    }
+
+    if (user.password != olduser.password) {
+        updates = updates + " Password is changed \n";
+    }
+
+    if (user.status != olduser.status) {
+        updates = updates + " Status is changed \n";
+    }
+
+    if (user.email != olduser.email) {
+        updates = updates + " email is changed \n";
+
+    }
+
+    if (user.roles.length != olduser.roles.length) {
+        updates = updates + "Roles is changed. \n";
+    } else {
+        let extcount = 0;
+        for (let newrole of user.roles) {
+            for (let oldrole of olduser.roles) {
+                if (newrole.id == oldrole.id)
+                    extcount = extcount + 1;
+            }
+        }
+    }
+
+    return updates
+}
+
+const buttonUserUpdate = () => {
+    //need to check form error
+    let errors = checkInputFormErrors()
+
+    if (errors == "") {
+        //need to check updates
+        let updates = checkUserformUpdates()
+        if (updates == "") {
+            alert("Nothing Updated data")
+        } else {
+            let userConform = confirm("Are you sure to update following changes?\n" + updates);
+
+            if (userConform) {
+                let putResponse;
+
+                $.ajax("/user", {
+                    type: "PUT",
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(user),
+
+
+                    success: function(successResponseOb) {
+                        putResponse = successResponseOb;
+                    },
+
+                    error: function(failedResponseOb) {
+                        putResponse = failedResponseOb;
+                    }
+
+                });
+
+                if (putResponse == "OK") {
+                    alert("Update Successfully..!")
+                    $('#userAddModal').modal('hide');
+                    refreshUserTable()
+                    userform.reset();
+                    refreshUserForm()
+                } else {
+                    alert("Update not Successfully..! \n" + putResponse);
+                    $('#userAddModal').modal('hide');
+                    refreshUserForm()
+                }
+            }
+        }
+    } else {
+        alert("Form has following errors :\n" + errors)
     }
 }
