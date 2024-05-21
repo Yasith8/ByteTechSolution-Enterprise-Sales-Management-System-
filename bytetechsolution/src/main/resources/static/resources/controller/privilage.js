@@ -44,7 +44,7 @@ const refreshPrivilageTable = () => {
 const refreshPrivilageForm = () => {
     privilage = new Object();
 
-    roles = getServiceAjaxRequest("/role/alldata");
+    roles = getServiceAjaxRequest("/role/listwithoutadmin");
     //call filldataintoselect function on commonfunction js for  filling select option
     fillDataIntoSelect(selectRole, "Please Select Role", roles, 'name')
 
@@ -65,62 +65,64 @@ const refillPrivilageForm = (rowOb, rowIndex) => {
     oldPrivilage = rowOb;
 
 
-    roles = getServiceAjaxRequest("/role/alldata");
-    fillDataIntoSelect(selectRole, "Please Select Role", roles, 'name', rowOb.role_id.name)
+
+    roles = getServiceAjaxRequest("/role/listwithoutadmin");
+    fillDataIntoSelect(selectRole, "Please Select Role", roles, 'name', privilage.role_id.name)
 
 
     modules = getServiceAjaxRequest("/module/alldata")
-    fillDataIntoSelect(selectModule, "Please Select Module", modules, 'name', rowOb.module_id.name);
+    fillDataIntoSelect(selectModule, "Please Select Module", modules, 'name', privilage.module_id.name);
 
-    if (rowOb.insprv) {
+    if (privilage.insprv) {
         checkInsert.checked = "checked";
     } else {
         checkInsert.checked = "";
     }
 
-    if (rowOb.selprv) {
+    if (privilage.selprv) {
         checkSelect.checked = "checked";
     } else {
         checkSelect.checked = "";
     }
 
-    if (rowOb.updprv) {
+    if (privilage.updprv) {
         checkUpdate.checked = "checked";
     } else {
         checkUpdate.checked = "";
     }
 
-    if (rowOb.delprv) {
+    if (privilage.delprv) {
         checkDelete.checked = "checked";
     } else {
         checkDelete.checked = "";
     }
 
-    selectText.textContent = (checkSelect) ? 'Select privilage Granted' : 'Select privilage not Granted';
-    insertText.textContent = (checkInsert) ? 'Insert privilage Granted' : 'Insert privilage not Granted';
-    updateText.textContent = (checkUpdate) ? 'Update privilage Granted' : 'Update privilage not Granted';
-    deleteText.textContent = (checkDelete) ? 'Delete privilage Granted' : 'Delete privilage not Granted';
+    selectText.textContent = (checkSelect.checked) ? 'Select privilage Granted' : 'Select privilage not Granted';
+    insertText.textContent = (checkInsert.checked) ? 'Insert privilage Granted' : 'Insert privilage not Granted';
+    updateText.textContent = (checkUpdate.checked) ? 'Update privilage Granted' : 'Update privilage not Granted';
+    deleteText.textContent = (checkDelete.checked) ? 'Delete privilage Granted' : 'Delete privilage not Granted';
 
 
 }
 
 
 const selectHandler = () => {
-    selectText.textContent = (checkSelect === true) ? 'Select privilage Granted' : 'Select privilage not Granted';
+
+    selectText.textContent = (checkSelect.checked) ? 'Select privilage Granted' : 'Select privilage not Granted';
 
 }
 
 const insertHandler = () => {
-    insertText.textContent = (checkInsert === true) ? 'Insert privilage Granted' : 'Insert privilage not Granted';
+    insertText.textContent = (checkInsert.checked) ? 'Insert privilage Granted' : 'Insert privilage not Granted';
 
 }
 
 const updateHandler = () => {
-    updateText.textContent = (checkUpdate === true) ? 'Update privilage Granted' : 'Update privilage not Granted';
+    updateText.textContent = (checkUpdate.checked) ? 'Update privilage Granted' : 'Update privilage not Granted';
 }
 
 const deleteHandler = () => {
-    deleteText.textContent = (checkDelete === true) ? 'Delete privilage Granted' : 'Delete privilage not Granted';
+    deleteText.textContent = (checkDelete.checked) ? 'Delete privilage Granted' : 'Delete privilage not Granted';
 }
 
 
@@ -177,5 +179,5 @@ const checkPrivilageFormUpdates = () => {}
 
 
 const deletePrivilage = () => {}
-const submitPrivilage = () => {}
+const submitPrivilage = () => { console.log(JSON.stringify(privilage)) }
 const updatePrivilage = () => {}

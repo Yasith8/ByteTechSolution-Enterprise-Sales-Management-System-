@@ -40,4 +40,6 @@ public class PrivilageController {
     public List<PrivilageEntity> allPrivilageData(){
         return dao.findAll();
     }
+
+    
 }

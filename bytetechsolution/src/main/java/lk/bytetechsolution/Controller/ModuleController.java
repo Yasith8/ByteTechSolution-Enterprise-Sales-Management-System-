@@ -7,8 +7,7 @@ import lk.bytetechsolution.Entity.ModuleEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
@@ -29,10 +28,19 @@ public class ModuleController {
      @Autowired
      private ModuleDao dao;
 
-     @GetMapping(value = "module/alldata",produces = "application/json")
+     @GetMapping(value = "/module/alldata",produces = "application/json")
      public List<ModuleEntity> getModuleData(){
         return dao.findAll();
      }
-     
+
+    /*  //get module data according to he role
+     //ussing query  [/module/listbyrole?roleid=1]
+     @GetMapping(value="/module/listbyrole",params = {"roleid"})
+     public List<ModuleEntity> getModuleByRole(@RequestParam("roleid") Integer roleid){
+        return dao.getModuleByPrivilageId(roleid);
+     }
+      */
 
 }
+
+

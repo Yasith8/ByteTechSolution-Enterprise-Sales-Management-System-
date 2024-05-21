@@ -26,7 +26,7 @@ Employee Management Module
   - print single Employee
   - dynaically diable button when submit update✅ May 15
   - clear button
-  
+  -Password type
   
   
   - update error in user Management

@@ -19,9 +19,5 @@ public class RoleController {
         return dao.getListWithoutAdmin();
     }
 
-    @GetMapping(value = "/role/alldata",produces = "application/json")
-    public List<RoleEntity> getRoles() {
-        return dao.findAll();
-    }
 
 }

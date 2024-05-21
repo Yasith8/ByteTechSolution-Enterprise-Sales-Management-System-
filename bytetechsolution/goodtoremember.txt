@@ -1,0 +1,15 @@
+//data filtering
+
+way to pass parameter through url
+   1. query param
+        (?)-param symbol - query param seperated
+        work like name value pairs (name=value)
+        roleid=param name   1 value
+        /module/list?roleid=1
+
+        if multiple filtering
+        /module/list?roleid=1&roleid=2
+
+
+   2. path param
+       /module/list/roleid
