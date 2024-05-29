@@ -13,3 +13,13 @@ way to pass parameter through url
 
    2. path param
        /module/list/roleid
+
+
+// class level mapping
+you can use class level mapping for all request
+
+@requestmapping(value="/privilage")
+public class PrivilageController {
+     @postmapping
+     @deletemapping
+}

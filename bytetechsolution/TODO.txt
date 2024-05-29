@@ -46,3 +46,7 @@ Employee Management Module
   -------------------------------------------------------MUST ASK--------------------------------------------------------------
    - printing the data table with design
    - this key used in email validator
+
+   - cashier user delete error
+
+   - ask about login color

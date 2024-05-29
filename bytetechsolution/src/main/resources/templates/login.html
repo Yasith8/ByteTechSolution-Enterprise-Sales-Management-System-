@@ -1,24 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<head th:replace="~{component::headerFragment}"></head>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap min css file -->
-    <link rel="stylesheet" href="resources/bootstrap-5.3.1/css/bootstrap.min.css">
-    <!-- Bootstrap bundle min js file -->
-    <script src="resources/bootstrap-5.3.1/js/bootstrap.bundle.min.js"></script>
-    <!-- Font Awesome css File -->
-    <link rel="stylesheet" href="resources/fontawesome-free-6.4.2-web/css/all.css">
-
-    <link rel="stylesheet" href="/resources/style/login.css">
-
-    <title>LogIn || Thalpitiya Clinic</title>
+    <link rel="stylesheet" href="resources/style/login.css">
 </head>
 
 <body>
     <div class="login-card">
-        <div class="logo-div"><img src="/resources/images/transparent-color-1.png" class="logo"></div>
+        <div class="logo-div"><img src="resources/image/logo/removebackground-green-logo-black-text.png" class="logo"></div>
         <div class="row greating">
             <div class="col-2"></div>
             <div class="col-8">
@@ -27,7 +18,7 @@
             </div>
             <div class="col-2"></div>
         </div>
-        <form>
+        <form action="/login" method="post">
             <div class="row">
                 <div class="col-2"></div>
                 <div class="col-8"><label for="username" class="fw-bold">Username:</label></div>
@@ -50,6 +41,10 @@
                 <div class="col-2"></div>
                 <div class="col-8"><input type="text" class="form-control" id="password"></div>
                 <div class="col-2"></div>
+            </div>
+
+            <div class="text-danger fw-bolld" th:if="${param.error}">
+                Invalid username or password
             </div>
 
             <div class="row mt-4">

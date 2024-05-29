@@ -97,7 +97,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Privilages</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="btnCloseHandler()"></button>
                 </div>
                 <div class="model-body">
                     <div class="row">
@@ -110,7 +110,7 @@
                                     <div class="row mt-2">
                                         <label for="inputName" class="col-3 col-form-label fw-bold">Role : </label>
                                         <div class="col-9">
-                                            <select name="" class="form-select" id="selectRole">
+                                            <select name="" class="form-select" id="selectRole" onchange="genarateModuleList();selectDynamicValidator(this,'','privilage','role_id')">
                                         <option selected disabled>Select Role</option>
                                     </select>
                                         </div>
@@ -121,7 +121,7 @@
                                     <div class="row mt-2">
                                         <label for="inputName" class="col-3 col-form-label fw-bold">Module : </label>
                                         <div class="col-9">
-                                            <select name="" class="form-select" id="selectModule">
+                                            <select name="" class="form-select" id="selectModule" onchange="selectDynamicValidator(this,'','privilage','module_id')">
                                         <option selected disabled>Select Module</option>
                                     </select>
                                         </div>
@@ -129,37 +129,37 @@
                                     <!--full name input  end -->
 
                                     <!--select start  -->
-                                    <div class="row mt-2">
-                                        <label for="checkSelect" class="col-3 col-form-label fw-bold">Select : </label>
-                                        <div class="col-9">
-                                            <input type="checkbox" id="checkSelect" onclick="selectHandler()"> <span id="selectText">Select privilage not Granted</span>
+                                    <div class="row mt-2 ">
+                                        <label class="col-3 col-form-label fw-bold ">Select : </label>
+                                        <div class="col-9 ">
+                                            <input type="checkbox" id="checkSelect" onchange="checkboxValidator(this,'privilage','selprv','selectText','Select');selectHandler()"> <label for="checkSelect" id="selectText">Select privilage not Granted</label>
                                         </div>
                                     </div>
                                     <!--select  end -->
 
                                     <!--insert start  -->
-                                    <div class="row mt-2">
-                                        <label for="checkInsert" class="col-3 col-form-label fw-bold">Insert : </label>
-                                        <div class="col-9">
-                                            <input type="checkbox" id="checkInsert" onclick="insertHandler()"> <span id="insertText">Insert privilage not Granted</span>
+                                    <div class="row mt-2 ">
+                                        <label class="col-3 col-form-label fw-bold ">Insert : </label>
+                                        <div class="col-9 ">
+                                            <input type="checkbox" id="checkInsert" onchange="checkboxValidator(this,'privilage','insprv','insertText','Insert');insertHandler()"> <label for="checkInsert" id="insertText">Insert privilage not Granted</label>
                                         </div>
                                     </div>
                                     <!--insert  end -->
 
                                     <!--update start  -->
-                                    <div class="row mt-2">
-                                        <label for="checkUpdate" class="col-3 col-form-label fw-bold">Update : </label>
-                                        <div class="col-9">
-                                            <input type="checkbox" id="checkUpdate" onclick="updateHandler()"> <span id="updateText">Update privilage not Granted</span>
+                                    <div class="row mt-2 ">
+                                        <label class="col-3 col-form-label fw-bold ">Update : </label>
+                                        <div class="col-9 ">
+                                            <input type="checkbox" id="checkUpdate" onchange="checkboxValidator(this,'privilage','updprv','updateText','Update');updateHandler()"> <label for="checkUpdate" id="updateText">Update privilage not Granted</label>
                                         </div>
                                     </div>
                                     <!--update  end -->
 
                                     <!--delete start  -->
-                                    <div class="row mt-2">
-                                        <label for="checkDelete" class="col-3 col-form-label fw-bold">Delete : </label>
-                                        <div class="col-9">
-                                            <input type="checkbox" id="checkDelete" onclick="deleteHandler()"> <span id="deleteText">Delete privilage not Granted</span>
+                                    <div class="row mt-2 ">
+                                        <label class="col-3 col-form-label fw-bold ">Delete : </label>
+                                        <div class="col-9 ">
+                                            <input type="checkbox" id="checkDelete" onchange="checkboxValidator(this,'privilage','delprv','deleteText','Delete');deleteHandler()"> <label for="checkDelete" id="deleteText">Delete privilage not Granted</label>
                                         </div>
                                     </div>
                                     <!--delete  end -->
@@ -168,13 +168,13 @@
 
 
                                 <!-- Button row start -->
-                                <div class="row mt-3 mb-3">
-                                    <div class="col-6">
+                                <div class="row mt-3 mb-3 ">
+                                    <div class="col-6 ">
                                         <div id="divModifyButton">
 
-                                            <div class="row" id="">
-                                                <div class="col-3"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal">Print</button></div>
-                                                <div class="col-3"><button type="button" class="modal-button modal-btn-delete">Delete</button></div>
+                                            <div class="row">
+                                                <div class="col-3"><button type="button " class="modal-button modal-btn-print" data-bs-dismiss="modal">Print</button></div>
+                                                <div class="col-3"><button type="button " class="modal-button modal-btn-delete" onclick="deletePrivilage(window['editOb'], window['editRow'])">Delete</button></div>
                                                 <div class="col-6"></div>
                                             </div>
                                         </div>
@@ -183,8 +183,8 @@
                                         <div class="row">
                                             <div class="col-3"></div>
                                             <div class="col-3"><button type="reset" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                                            <div class="col-3"><button type="submit" id="buttonUpdate" class="modal-button modal-btn-update">Update</button></div>
-                                            <div class="col-3"><button type="submit" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="submitPrivilage()">Submit</button></div>
+                                            <div class="col-3"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" onclick="updatePrivilage()">Update</button></div>
+                                            <div class="col-3"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="submitPrivilage()">Submit</button></div>
                                         </div>
                                     </div>
 
@@ -192,7 +192,7 @@
                                 <!-- Button row end -->
                             </form>
                         </div>
-                        <div class="col-1"></div>
+                        <div class="col-1 "></div>
                     </div>
                 </div>
             </div>

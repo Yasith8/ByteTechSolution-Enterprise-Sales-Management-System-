@@ -23,7 +23,6 @@ public class PrivilageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",unique = true)
-    @NotNull
     private Integer id;
 
     @Column(name="insprv")

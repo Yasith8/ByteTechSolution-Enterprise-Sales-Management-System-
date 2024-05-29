@@ -64,6 +64,14 @@ const radioValidator = (radioElement, pattern, object, property, label1Id, label
     }
 }
 
-/* const checkboxValidator = (filedId,) => {
+const checkboxValidator = (checkboxId, object, property, labelId, labelContent) => {
+    //window[object][property] = checkboxId.checked;
+    //labelId.textContent = labelContent + (checkboxId.checked ? ' privilege Granted' : ' privilege Denied');
 
-} */
+
+    if (checkboxId.checked) {
+        window[object][property] = true;
+    } else {
+        window[object][property] = false;
+    }
+}

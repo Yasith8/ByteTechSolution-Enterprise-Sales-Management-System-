@@ -1,8 +1,7 @@
 body {
-    background-image: url('/resources/images/img1.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: initial;
+    /*     background: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+ */
+    background-color: #00ff99;
 }
 
 .login-card {
@@ -22,8 +21,8 @@ body {
 
 .logo {
     position: relative;
-    top: -30px;
-    width: 200px;
+    top: 40px;
+    width: 100px;
 }
 
 .logo-div {
@@ -37,8 +36,8 @@ body {
     height: 40px;
     border-radius: 5px;
     background-color: transparent;
-    border-color: #6669b0;
-    color: #6669b0;
+    border-color: #15301a;
+    color: #15301a;
     font-weight: bold;
 }
 
@@ -46,14 +45,14 @@ body {
     width: 100%;
     height: 40px;
     border-radius: 5px;
-    background-color: #6669b0;
+    background-color: #00ff99;
     color: white;
     font-weight: bold;
     border: none;
 }
 
 .greating {
-    margin-top: -65px;
+    margin-top: 60px;
 }
 
 .slogen {

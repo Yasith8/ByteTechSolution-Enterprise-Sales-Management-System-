@@ -537,7 +537,6 @@ const checkEmployeeFormUpdates = () => {
 
 //function for when click update
 const buttonEmployeeUpdate = () => {
-        console.log("clicked")
 
         //check form error
         let errors = checkEmployeeInputError();
@@ -629,7 +628,7 @@ const buttonModalClose = () => {
 
     //check closeResponse is true or false
     if (closeResponse) {
-        $('#employeeAddModel').modal('hide');
+        $('#employeeAddModal').modal('hide');
 
 
         //formEmployee is id of form

@@ -33,13 +33,13 @@ public class ModuleController {
         return dao.findAll();
      }
 
-    /*  //get module data according to he role
+     //get module data according to he role
      //ussing query  [/module/listbyrole?roleid=1]
      @GetMapping(value="/module/listbyrole",params = {"roleid"})
      public List<ModuleEntity> getModuleByRole(@RequestParam("roleid") Integer roleid){
         return dao.getModuleByPrivilageId(roleid);
      }
-      */
+     
 
 }
 

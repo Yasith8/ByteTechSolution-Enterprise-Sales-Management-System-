@@ -111,7 +111,6 @@ public class UserController {
         }
 
         try {
-            //todo                  ask about this
             extUser.setStatus(false);
             dao.save(extUser);
             return "OK";

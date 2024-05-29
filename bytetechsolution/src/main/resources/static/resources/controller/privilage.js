@@ -42,7 +42,8 @@ const refreshPrivilageTable = () => {
 }
 
 const refreshPrivilageForm = () => {
-    privilage = new Object();
+    //create new object
+    privilage = { insprv: false, delprv: false, selprv: false, updprv: false };
 
     roles = getServiceAjaxRequest("/role/listwithoutadmin");
     //call filldataintoselect function on commonfunction js for  filling select option
@@ -51,7 +52,23 @@ const refreshPrivilageForm = () => {
     modules = getServiceAjaxRequest("/module/alldata")
     fillDataIntoSelect(selectModule, "Please Select Module", modules, 'name')
 
+    selectRole.disabled = false;
+    selectModule.disabled = false;
 
+
+    buttonSubmit.disabled = false;
+    buttonSubmit.classList.add('modal-btn-submit')
+
+    buttonUpdate.disabled = true;
+    buttonUpdate.classList.remove('modal-btn-update');
+
+
+}
+
+const genarateModuleList = () => {
+    modulesByRole = getServiceAjaxRequest("/module/listbyrole?roleid=" + JSON.parse(selectRole.value).id)
+    fillDataIntoSelect(selectModule, "Please Select Module", modulesByRole, 'name');
+    selectModule.disabled = false;
 }
 
 
@@ -72,6 +89,17 @@ const refillPrivilageForm = (rowOb, rowIndex) => {
 
     modules = getServiceAjaxRequest("/module/alldata")
     fillDataIntoSelect(selectModule, "Please Select Module", modules, 'name', privilage.module_id.name);
+
+    selectRole.disabled = true;
+    selectModule.disabled = true;
+
+
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit')
+
+    buttonUpdate.disabled = false;
+    buttonUpdate.classList.add('modal-btn-update');
+
 
     if (privilage.insprv) {
         checkInsert.checked = "checked";
@@ -139,6 +167,10 @@ const getModule = (ob) => {
     return ob.module_id.name;
 }
 
+
+
+
+
 //get insert privilage
 const getInsertPrivilage = (ob) => {
         if (ob.selprv) {
@@ -173,11 +205,217 @@ const getUpdatePrivilage = (ob) => {
 }
 
 
-const checkInputErrors = () => {}
+const checkPrivilageInputErrors = () => {
+    let errors = "";
 
-const checkPrivilageFormUpdates = () => {}
+    if (privilage.role_id == null) {
+        errors = errors + "Role can't be null..! \n";
+        selectRole.classList.add("is-invalid")
+    }
+
+    if (privilage.module_id == null) {
+        errors = errors + "Module can't be null and if there are no options in dropdown menu, that mean you selected privilage already exist..! \n";
+        selectModule.classList.add("is-invalid")
+    }
+
+    return errors;
+}
+
+const checkPrivilageFormUpdates = () => {
+    let updates = "";
+
+    if (oldPrivilage.role_id.name != privilage.role_id.name) {
+        updates = updates + "Role is Changed \n";
+    }
+
+    if (oldPrivilage.module_id.name != privilage.module_id.name) {
+        updates = updates + "Module is Changed \n";
+    }
+    if (oldPrivilage.selprv != privilage.selprv) {
+        updates = updates + " Select Privilage is Changed \n";
+    }
+    if (oldPrivilage.insprv != privilage.insprv) {
+        updates = updates + " Insert Privilage is Changed \n";
+    }
+    if (oldPrivilage.delprv != privilage.delprv) {
+        updates = updates + " Delete Privilage is Changed \n";
+    }
+    if (oldPrivilage.updprv != privilage.updprv) {
+        updates = updates + " Update Privilage is Changed \n";
+    }
+
+    return updates;
+}
 
 
-const deletePrivilage = () => {}
-const submitPrivilage = () => { console.log(JSON.stringify(privilage)) }
-const updatePrivilage = () => {}
+const deletePrivilage = (rowOb, rowIdx) => {
+    //user conformation
+    let userConform = confirm("Are you sure  to delete following Privilage belong to " + rowOb.role_id.name + " Role and " + rowOb.module_id.name) + " Module?";
+
+    //ok
+    if (userConform) {
+        let deleteServiceResponse;
+
+        //ajax delete request
+        $.ajax("/privilage", {
+            type: "DELETE",
+            async: false,
+            contentType: "application/json",
+            data: JSON.stringify(rowOb),
+
+            success: function(data) {
+                deleteServiceResponse = data
+            },
+
+            error: function(errData) {
+                deleteServiceResponse = errData;
+            }
+        })
+
+        if (deleteServiceResponse == "OK") {
+            alert("Delete Successfullly");
+            $('#privilageAddModal').modal('hide');
+            refreshPrivilageTable()
+        } else {
+            console.log("system has following errors:\n" + deleteServiceResponse);
+        }
+    }
+}
+
+
+const submitPrivilage = () => {
+    console.log(JSON.stringify(privilage))
+    console.log(privilage);
+
+    //check errors
+    let errors = checkPrivilageInputErrors();
+
+    if (errors == "") {
+        let conformSubmit = confirm("Are your sure to submit this privilage?");
+
+        if (conformSubmit) {
+
+            let postServiceResponse;
+
+            $.ajax("/privilage", {
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(privilage),
+                async: false,
+
+                success: function(data) {
+                    console.log("success", data);
+                    postServiceResponse = data;
+                },
+
+                error: function(resData) {
+                    console.log("Fail", resData);
+                    postServiceResponse = resData;
+                }
+
+            });
+
+            //if ok
+            if (postServiceResponse == "OK") {
+                alert("Save new Privilage Successfully...!");
+                //hide the model
+                $('#privilageAddModal').modal('hide');
+                //reset the employee form
+                formPrivilage.reset();
+                //refreash employee form
+                refreshPrivilageForm();
+                //refreash employee table
+                refreshPrivilageTable();
+            } else {
+                alert("Fail to submit Privilage Form \n" + postServiceResponce);
+            }
+
+        }
+    } else {
+        alert("Privilage form has folowing errors\n" + errors)
+    }
+}
+const updatePrivilage = () => {
+    //check form error
+    let errors = checkPrivilageInputErrors();
+
+    //check code has error, if code doesn't have  any errors
+    if (errors == "") {
+
+        //check form update
+
+        let updates = checkPrivilageFormUpdates();
+
+        //check there is no updates or any updations
+        if (updates == "") {
+            alert("Nothing Updates")
+        } else {
+
+            //get conformation from user to made updation
+            let userConfirm = confirm("Are You Sure to Update this Changes? \n" + updates);
+
+            //if user conform
+            if (userConfirm) {
+                //call put service requestd  -this use for updations
+                let putServiceResponse;
+
+                $.ajax("/privilage", {
+                    type: "PUT",
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(privilage),
+
+
+                    success: function(successResponseOb) {
+                        putServiceResponse = successResponseOb;
+                    },
+
+                    error: function(failedResponseOb) {
+                        putServiceResponse = failedResponseOb;
+                    }
+
+                });
+                //check put service response
+                if (putServiceResponse == "OK") {
+                    alert("Updated Privilage Successfully");
+
+                    //hide the moadel
+                    $('#privilageAddModal').modal('hide');
+                    //refreash employee table for realtime updation
+                    refreshPrivilageTable();
+                    //reset the employee form
+                    formPrivilage.reset();
+                    //employee form refresh
+                    refreshPrivilageForm();
+                } else {
+                    //handling errors
+                    alert("Update not Completed :\n" + putServiceResponse);
+                    //refreash the employee form
+                    refreshPrivilageForm();
+                }
+            }
+        }
+    } else {
+        //show user to what errors happen
+        alert("Privilage Form  has Following Errors..\n" + errors)
+    }
+
+
+}
+
+const btnCloseHandler = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
+
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#privilageAddModal').modal('hide');
+
+
+        //formPrivilage is id of form
+        //this will reset all data(refreash)
+        formPrivilage.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshPrivilageForm();
+    }
+}
