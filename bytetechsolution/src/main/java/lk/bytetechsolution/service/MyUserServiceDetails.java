@@ -55,15 +55,24 @@ public class MyUserServiceDetails implements UserDetailsService {
      */
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 
+        //get data from database based on provided username
         UserEntity loggedUser=dao.getByUsername(username);
 
         System.out.println(loggedUser.getUsername());
 
+        /* 
+         * some user has multiple roles
+         * every role has own different access in diff modules
+         * this grantedauthority used for give authority based on role
+         */
         ArrayList<GrantedAuthority> authorities=new ArrayList<>();
+        //role represent role entity
         for(RoleEntity role:loggedUser.getRoles()){
+            //add specific authoities for each role that own by specific user
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
+        //return UserDetails object based on user information get from database
         return new User(loggedUser.getUsername(), loggedUser.getPassword(), loggedUser.getStatus(),true,true,true,authorities);
     }
 

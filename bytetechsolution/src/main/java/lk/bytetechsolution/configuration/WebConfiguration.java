@@ -7,8 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
-@EnableWebSecurity
+@Configuration  //allowing to define beans
+@EnableWebSecurity //enable spring web security support and provide spring mvc intergration
 public class WebConfiguration {
 
      /*  @Bean
@@ -21,7 +21,9 @@ public class WebConfiguration {
     }
  */
 
- @Bean
+ @Bean //used for indicate that method produce a bean to be managed by spring container
+ //securityfilterchain allow customization of the httpsecurity object
+ //filterchain defineSecurityFilterChain bean, which do security filters for http requests
  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
     http
     //request Filters

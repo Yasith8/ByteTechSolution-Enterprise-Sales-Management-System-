@@ -48,11 +48,17 @@ public class LoginController {
 
     @GetMapping(value = "/createadmin")
     public String genarateAdmin(){
+        //process of genarate new admin
+
+        //check if there is username called Admin
         UserEntity extUser=daoUser.getByUsername("Admin");
 
+        //if not
         if(extUser==null){
+            //create new user
             UserEntity adminUser=new UserEntity();
 
+            //set data for attibutes
             adminUser.setUsername("Admin");
             adminUser.setEmail("admin@gmail.com");
             adminUser.setPassword(BCryptPasswordEncoder.encode("1234"));
@@ -60,10 +66,14 @@ public class LoginController {
             adminUser.setStatus(true);
             adminUser.setEmployee_id(daoEmployee.getReferenceById(15));
             
+            //get user roles by hash set
             Set<RoleEntity> userRoles=new HashSet<>();
+            //add admin user roles id
             userRoles.add(daoRole.getReferenceById(1));
+            //set that admin user role for admin user object
             adminUser.setRoles(userRoles);
 
+            //save the admin(user)
             daoUser.save(adminUser);
 
         }

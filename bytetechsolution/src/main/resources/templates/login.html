@@ -27,7 +27,7 @@
 
             <div class="row mt-2">
                 <div class="col-2"></div>
-                <div class="col-8"><input type="text" class="form-control" id="username"></div>
+                <div class="col-8"><input type="text" class="form-control" name="username" id="username"></div>
                 <div class="col-2"></div>
             </div>
 
@@ -39,11 +39,11 @@
 
             <div class="row mt-2">
                 <div class="col-2"></div>
-                <div class="col-8"><input type="text" class="form-control" id="password"></div>
+                <div class="col-8"><input type="text" class="form-control" name="password" id="password"></div>
                 <div class="col-2"></div>
             </div>
 
-            <div class="text-danger fw-bolld" th:if="${param.error}">
+            <div class="text-danger fw-bolld" style="padding-left: 90px;" th:if="${param.error}">
                 Invalid username or password
             </div>
 
