@@ -7,7 +7,7 @@ import lk.bytetechsolution.Dao.BrandDao;
 import lk.bytetechsolution.Entity.BrandEntity;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController

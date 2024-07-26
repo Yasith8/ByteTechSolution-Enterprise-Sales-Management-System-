@@ -25,22 +25,25 @@ Employee Management Module
   - Post Request✅ May 14
   - print single Employee
   - dynaically diable button when submit update✅ May 15
-  - clear button
-  -Password type
+  - clear button✅
+  -Password type✅
   
   
   - update error in user Management
-  - email already exist bug
+  - email already exist bug✅
 
 
 
   404 Page
   403 Page
-  Login Page
+  Login Page✅
 
 
   ------------------------------------------------------MUST WATCH--------------------------------------------------------------
    - extValidator in validationFuntion
+
+   - why other user not login
+   - why when password is incorrect, it still use tha same screen
 
 
   -------------------------------------------------------MUST ASK--------------------------------------------------------------

@@ -75,3 +75,24 @@ const checkboxValidator = (checkboxId, object, property, labelId, labelContent) 
         window[object][property] = false;
     }
 }
+
+
+const validateFileField = (fieldId, object, photo, photoname, oldObject, displayPhoto, displayPhotoName) => {
+    if (fieldId.value != "") {
+        let file = fieldId.files[0];
+        displayPhotoName.value = file['name'];
+        window[object][photoname] = file['name'];
+        console.log(file['name']);
+
+        let fileReader = new FileReader();
+
+        fileReader.onload = function(e) {
+            displayPhoto.src = e.target.result;
+            window[object][photo] = btoa(e.target.result); //encrypt 
+            console.log(e.target.result);
+
+        }
+        fileReader.readAsDataURL(file);
+        return;
+    }
+}

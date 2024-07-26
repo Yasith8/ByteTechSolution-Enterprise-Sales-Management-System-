@@ -103,10 +103,12 @@
                             </div>
 
                             <div class="col-4">
-                                <div id="imageContainer">
-                                    <input type="file" id="fileInput" accept="image/*">
-                                    <img id="uploadedImage" src="" alt="Uploaded Image">
-                                </div>
+                                <button id="btnSelectImage" type="button" class="btn btn-primary" onclick="FileUserPhoto.click()">Select Image</button>
+                                <button id="btnClearImage" type="button" class="btn btn-info">Clear Image</button>
+                                <img src="" alt="" style="height: 75px; width: 75px;" id="imgUserPhoto">
+                                <input type="text" disabled id="textUserPhoto">
+                                <input type="file" class="d-none" id="FileUserPhoto" onchange="validateFileField(this,'user','photo','photoname','oldUser',imgUserPhoto,textUserPhoto)">
+                                <!--  /todo add default image-->
                             </div>
                         </div>
                         <!-- employee name select end -->

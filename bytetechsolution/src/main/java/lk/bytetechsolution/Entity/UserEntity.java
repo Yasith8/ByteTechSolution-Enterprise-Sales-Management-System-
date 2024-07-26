@@ -49,8 +49,11 @@ public class UserEntity {
     @NotNull
     private String email;
 
-    @Column(name="photopath")
-    private String photopath;
+    @Column(name = "photo")
+    private byte[] photo;
+
+    @Column(name="photoname")
+    private String photoname;
 
     @Column(name="added_datetime")
     @NotNull
