@@ -100,8 +100,23 @@ const refreshUserForm = () => {
     user.status = false;
     labelUserStatus.innerText = "User Account Not Active";
 
-    imgUserPhoto.src = "/resources/image/initialprofile.jpg";
-    textUserPhoto.textContent = "No Image Selected";
+
+    //used for select employee image according to the employeeWithoutUserAccount
+    selectFullname.addEventListener('change', (event) => {
+        const selectedEmployee = JSON.parse(event.target.value);
+
+        if (selectedEmployee.photo != null) {
+            user.photo = selectedEmployee.photo;
+            user.photoname = selectedEmployee.photoname;
+            imgUserPhoto.src = atob(selectedEmployee.photo);
+            textUserPhoto.textContent = selectedEmployee.photoname;
+        } else {
+            imgUserPhoto.src = "/resources/image/initialprofile.jpg";
+            textUserPhoto.textContent = "No Image Selected";
+            FileUserPhoto.value = null;
+        }
+    })
+
 
 
     removeValidationColor([selectFullname, textUsername, textPassword, textRePassword, textEmail])
@@ -178,6 +193,7 @@ const refillUserForm = (rowOb, rowIndex) => {
     if (user.photo == null) {
         imgUserPhoto.src = "/resources/image/initialprofile.jpg";
         textUserPhoto.textContent = "No Profile Image";
+        FileUserPhoto.value = null;
     } else {
         imgUserPhoto.src = atob(user.photo);
         textUserPhoto.textContent = user.photoname;
@@ -536,4 +552,11 @@ const buttonUserUpdate = () => {
     } else {
         alert("Form has following errors :\n" + errors)
     }
+}
+
+const userPictureRemove = () => {
+    //profile image set to default
+    imgUserPhoto.src = "/resources/image/initialprofile.jpg";
+    textUserPhoto.textContent = "No Image Selected";
+    FileUserPhoto.value = null;
 }
