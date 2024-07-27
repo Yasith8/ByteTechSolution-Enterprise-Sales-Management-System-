@@ -100,6 +100,9 @@ const refreshUserForm = () => {
     user.status = false;
     labelUserStatus.innerText = "User Account Not Active";
 
+    imgUserPhoto.src = "/resources/image/initialprofile.jpg";
+    textUserPhoto.textContent = "No Image Selected";
+
 
     removeValidationColor([selectFullname, textUsername, textPassword, textRePassword, textEmail])
 }
@@ -170,6 +173,17 @@ const refillUserForm = (rowOb, rowIndex) => {
 
     //asign password
     textPassword.value = user.password;
+
+    //assign profile picture and name
+    if (user.photo == null) {
+        imgUserPhoto.src = "/resources/image/initialprofile.jpg";
+        textUserPhoto.textContent = "No Image Selected";
+    } else {
+        imgUserPhoto.src = atob(user.photo);
+        textUserPhoto.textContent = user.photoname;
+    }
+
+
 
     //bug to chaging
     //checkStatus.checked = user.status;

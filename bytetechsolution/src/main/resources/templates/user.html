@@ -95,21 +95,28 @@
                     <form id="formUser" onsubmit="return false">
                         <!-- Employee name select Start -->
                         <div class="row">
-                            <div class="col-8">
+
+                            <div class="col-5 d-flex">
+                                <img src="/resources/image/initialprofile.jpg" alt="" style="height: 75px; width: 75px;" id="imgUserPhoto">
+                                <div>
+                                    <div class="d-flex">
+                                        <button id="btnSelectImage" type="button" class="btn btn-user-selectImage" onclick="FileUserPhoto.click()">Select Image</button>
+                                        <button id="btnClearImage" type="button" class="btn btn-user-removeImage">Clear Image</button>
+                                    </div>
+                                    <p id="textUserPhoto">No Image Selected</p>
+                                </div>
+                                <input type="file" class="d-none" id="FileUserPhoto" onchange="validateFileField(this,'user','photo','photoname','oldUser',imgUserPhoto,textUserPhoto)">
+                                <!--  /todo add default image-->
+                            </div>
+
+                            <div class="col-7">
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="selectFullname" aria-label="Floating label select example" onchange="selectDynamicValidator(this,'','user','employee_id')"></select>
                                     <label for="selectFullname">Employee Name <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
 
-                            <div class="col-4">
-                                <button id="btnSelectImage" type="button" class="btn btn-primary" onclick="FileUserPhoto.click()">Select Image</button>
-                                <button id="btnClearImage" type="button" class="btn btn-info">Clear Image</button>
-                                <img src="" alt="" style="height: 75px; width: 75px;" id="imgUserPhoto">
-                                <input type="text" disabled id="textUserPhoto">
-                                <input type="file" class="d-none" id="FileUserPhoto" onchange="validateFileField(this,'user','photo','photoname','oldUser',imgUserPhoto,textUserPhoto)">
-                                <!--  /todo add default image-->
-                            </div>
+
                         </div>
                         <!-- employee name select end -->
 

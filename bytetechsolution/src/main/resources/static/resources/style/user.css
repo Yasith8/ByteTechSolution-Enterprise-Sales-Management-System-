@@ -83,3 +83,26 @@ body {
 tr {
     cursor: pointer;
 }
+
+.btn-user-selectImage {
+    background-color: #00bbff;
+    margin: 5px;
+}
+
+.btn-user-removeImage {
+    background-color: tomato;
+    color: white;
+    margin: 5px;
+}
+
+.btn-user-selectImage:hover {
+    background-color: #007ca9;
+}
+
+.btn-user-removeImage:hover {
+    background-color: rgb(255, 36, 36);
+}
+
+#textUserPhoto {
+    margin-left: 5px;
+}

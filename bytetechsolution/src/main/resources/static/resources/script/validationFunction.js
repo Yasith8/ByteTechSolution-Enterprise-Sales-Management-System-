@@ -80,7 +80,8 @@ const checkboxValidator = (checkboxId, object, property, labelId, labelContent) 
 const validateFileField = (fieldId, object, photo, photoname, oldObject, displayPhoto, displayPhotoName) => {
     if (fieldId.value != "") {
         let file = fieldId.files[0];
-        displayPhotoName.value = file['name'];
+        //displayPhotoName.value = file['name'];
+        displayPhotoName.textContent = file['name'];
         window[object][photoname] = file['name'];
         console.log(file['name']);
 
