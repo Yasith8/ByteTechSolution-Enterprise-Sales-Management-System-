@@ -75,6 +75,11 @@ public class EmployeeEntity {
     @Column(name="note")
     private String note;
 
+    @Column(name = "photo")
+    private byte[] photo;
+
+    @Column(name="photoname")
+    private String photoname;
 
     /* 
      * Map with Forign Keys

@@ -164,6 +164,12 @@ const refreshEmployeeForm = () => {
     fillDataIntoSelect(selectDesignation, "Select Designation", designations, "name")
 
 
+    //profile image set to default
+    imgEmployeePhoto.src = "/resources/image/initialprofile.jpg";
+    textEmployeePhoto.textContent = "No Image Selected";
+    FileEmployeePhoto.value = null;
+
+
     //remove all validation colors in user inputs
     removeValidationColor([textFullName, textNIC, textCallingName, textEmail, textMobileNo, textAddress, textNote, dateDateOfBirth, selectDesignation, selectEmployeeStatus])
 
@@ -241,6 +247,15 @@ const employeeFormRefill = (ob, rowIndex) => {
     textMobileNo.value = ob.mobile;
     textLandNo.value = ob.landno;
     dateDateOfBirth.value = ob.dob;
+
+    //assign profile picture and name
+    if (employee.photo == null) {
+        imgEmployeePhoto.src = "/resources/image/initialprofile.jpg";
+        textEmployeePhoto.textContent = "No Profile Image";
+    } else {
+        imgEmployeePhoto.src = atob(employee.photo);
+        textEmployeePhoto.textContent = employee.photoname;
+    }
 
     //define new object
     employeeStatus = getServiceAjaxRequest("/employeestatus/alldata")
@@ -638,4 +653,12 @@ const buttonModalClose = () => {
 
         refreshEmployeeForm();
     }
+}
+
+
+const employeePictureRemove = () => {
+    //profile image set to default
+    imgEmployeePhoto.src = "/resources/image/initialprofile.jpg";
+    textEmployeePhoto.textContent = "No Image Selected";
+    FileEmployeePhoto.value = null;
 }
