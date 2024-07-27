@@ -120,5 +120,13 @@ public class PrivilageController {
         }
     }
 
-    
+    public PrivilageEntity getPrivilageByUserModule(String username,String modulename){
+
+        if(username.equals("Admin")){
+            PrivilageEntity adminPriv=new PrivilageEntity(true,true,true,true);
+            return adminPriv;
+        }else{
+            String priv=dao.
+        }
+    }
 }

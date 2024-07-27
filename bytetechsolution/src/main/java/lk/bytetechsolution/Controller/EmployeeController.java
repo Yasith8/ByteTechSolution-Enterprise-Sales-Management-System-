@@ -7,8 +7,11 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.EmployeeStatusDao;
 import lk.bytetechsolution.Entity.EmployeeEntity;
 import lk.bytetechsolution.Entity.EmployeeStatusEntity;
+import lk.bytetechsolution.Entity.PrivilageEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,14 +43,26 @@ public class EmployeeController {
     @Autowired
     private EmployeeStatusDao daoStatus;
 
+
+    //get privilage controller to managing privilages
+    private PrivilageController privilageController;
+
    
 
 
     //request employee ui
     @RequestMapping(value="/employee")
     public ModelAndView employeeUI(){
+        //get logged user authentication object using security
+        // this help to retrieve the current authentication object which holds the user detail
+        Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
+        // Create a new ModelAndView object to hold the model data and view information
         ModelAndView empView=new ModelAndView();
+        //pass the ui
         empView.setViewName("employee.html");
+        //attributes set to show titles in web page using theamleaf
+        empView.addObject("title", "Employee Management || Bytetech Solution");
+        empView.addObject("user", authentication.getName());// passing logged user name
         return empView;
     }
 
@@ -71,11 +86,16 @@ public class EmployeeController {
     //used for add new employee to the db
     @PostMapping(value = "/employee")
     public String addEmployee(@RequestBody EmployeeEntity employee){
+
         //Authentication and Autherization
+            // get currunt logged user data
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+
+           //get user privilage for the Employee Module
+        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(auth.getName(),"EMPLOYEE");
 
         //Check Duplicate 
-
-        //Check Duplicate of NIC
+            //Check Duplicate of NIC
         EmployeeEntity extEmployeeByNic=dao.getByNic(employee.getNic());
 
         //if nic number already exist return error message
