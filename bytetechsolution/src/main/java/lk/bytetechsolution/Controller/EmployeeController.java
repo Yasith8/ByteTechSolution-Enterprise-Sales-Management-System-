@@ -78,6 +78,14 @@ public class EmployeeController {
      */
     @GetMapping(value = "/employee/alldata", produces ="application/json" ) 
     public List<EmployeeEntity> allEmployeeData() {
+
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "EMPLOYEE");
+
+        if(!userPrivilage.getSelprv()){
+            return new ArrayList<EmployeeEntity>();
+        }
         return dao.findAll();
     }
 
@@ -92,7 +100,11 @@ public class EmployeeController {
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
 
            //get user privilage for the Employee Module
-        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(auth.getName(),"EMPLOYEE");
+        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"EMPLOYEE");
+
+        if(!userPrivilage.getInsprv()){
+            return "Permission Denied! Save not Completed";
+        }
 
         //Check Duplicate 
             //Check Duplicate of NIC
@@ -135,6 +147,12 @@ public class EmployeeController {
     public String deleteEmployee(@RequestBody EmployeeEntity employee){
 
         //authentication and autherzation
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "EMPLOYEE");
+
+        if(!userPrivilage.getDelprv()){
+            return "Permission Denied. Delete not completed.";
+        }
 
         //check employee is existed
         EmployeeEntity extEmployee=dao.getReferenceById(employee.getId());
@@ -168,6 +186,12 @@ public class EmployeeController {
     public String updateEmployee(@RequestBody EmployeeEntity employee){
 
         //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "EMPLOYEE");
+
+        if(!userPrivilage.getUpdprv()){
+            return "Permission Denied. Update not completed.";
+        }
 
         //check employee existence
         EmployeeEntity extEmployee=dao.getReferenceById(employee.getId());

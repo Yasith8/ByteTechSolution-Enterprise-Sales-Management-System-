@@ -49,4 +49,12 @@ public class PrivilageEntity {
     @JoinColumn(name="module_id",referencedColumnName = "id")
     private ModuleEntity module_id;
 
+
+    public PrivilageEntity(Boolean selprv,Boolean insprv,Boolean delprv,Boolean updprv){
+        this.selprv=selprv;
+        this.insprv = insprv;
+        this.delprv=delprv;
+        this.updprv=updprv;
+    }
+
 }

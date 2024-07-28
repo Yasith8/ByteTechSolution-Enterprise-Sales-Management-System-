@@ -1,6 +1,8 @@
 package lk.bytetechsolution.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,13 +37,25 @@ public class PrivilageController {
     //request privilage ui
     @RequestMapping(value = "/privilage")
     public ModelAndView privilageUI(){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         ModelAndView privilageView=new ModelAndView();
+        privilageView.addObject("title", "Privilage Management || Bytetech Solution");
+        privilageView.addObject("user",authentication.getName());
         privilageView.setViewName("privilage.html");
         return privilageView;
     }
     
     @GetMapping(value="/privilage/alldata",produces = "application/json")
     public List<PrivilageEntity> allPrivilageData(){
+
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=getPrivilageByUserModule(authentication.getName(), "PRIVILAGE");
+
+        if(!userPrivilage.getSelprv()){
+            return new ArrayList<PrivilageEntity>();
+        }
+
         return dao.findAll();
     }
 
@@ -50,7 +64,12 @@ public class PrivilageController {
     public String addPrivilage(@RequestBody PrivilageEntity privilage){
 
         //authenitaation and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=getPrivilageByUserModule(authentication.getName(), "PRIVILAGE");
 
+        if(!userPrivilage.getInsprv()){
+            return "Access Denied. Save not Completed";
+        }
 
         //duplicate check
         PrivilageEntity extPrivilage=dao.getPrivilagebyRoleAndModule(privilage.getModule_id().getId(),privilage.getRole_id().getId());
@@ -73,6 +92,12 @@ public class PrivilageController {
     public String deletePrivilage(@RequestBody PrivilageEntity privilage){
 
         //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=getPrivilageByUserModule(authentication.getName(), "PRIVILAGE");
+
+        if(!userPrivilage.getDelprv()){
+            return "Access Denied. Delete not Completed";
+        }
 
         //check existed
         PrivilageEntity extPrivilage=dao.getPrivilagebyRoleAndModule(privilage.getModule_id().getId(),privilage.getRole_id().getId());
@@ -126,7 +151,17 @@ public class PrivilageController {
             PrivilageEntity adminPriv=new PrivilageEntity(true,true,true,true);
             return adminPriv;
         }else{
-            String priv=dao.
+            String priv=dao.getPrivilageByUserModule(username, modulename);
+            String[] privArray=priv.split(",");
+
+            Boolean select=privArray[0].equals("1");
+            Boolean insert=privArray[1].equals("1");
+            Boolean delete=privArray[2].equals("1");
+            Boolean update=privArray[3].equals("1");
+
+            PrivilageEntity userprv=new PrivilageEntity(select,insert,delete,update);
+
+            return userprv;
         }
     }
 }
