@@ -86,6 +86,8 @@ public class EmployeeController {
         if(!userPrivilage.getSelprv()){
             return new ArrayList<EmployeeEntity>();
         }
+
+
         return dao.findAll();
     }
 

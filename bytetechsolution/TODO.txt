@@ -39,13 +39,11 @@ Employee Management Module
   Login Page✅
 
 
-  ------------------------------------------------------MUST WATCH--------------------------------------------------------------
-   - extValidator in validationFuntion
+  ------------------------------------------------------MUST WANTED ERROR CORRECTIONS--------------------------------------------------------------
 
-   - why other user not login
    - why when password is incorrect, it still use tha same screen
 
-   - Employee Land no valid at 9
+   - EMPLOYEE Security Issue 
 
 
   -------------------------------------------------------MUST ASK--------------------------------------------------------------
