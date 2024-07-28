@@ -176,6 +176,9 @@ const refreshEmployeeForm = () => {
     /* textCallingName.style.border = '1px solid #ced4da'
     textEmail.style.border = '1px solid #ced4da' */
 
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/EMPLOYEE");
+    console.log(userPrivilage);
+
 }
 
 //get designation function to return designation name
