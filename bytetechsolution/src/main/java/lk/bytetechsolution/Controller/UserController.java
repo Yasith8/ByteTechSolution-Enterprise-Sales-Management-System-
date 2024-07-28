@@ -68,9 +68,9 @@ public class UserController {
     public List<UserEntity> allUserData(){
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
 
-        if(!userPrivilage.getSelprv()){
+        if(!userPrivilage.get("select")){
             return new ArrayList<UserEntity>();
         }
 
@@ -82,9 +82,9 @@ public class UserController {
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
 
-        if(!userPrivilage.getInsprv()){
+        if(!userPrivilage.get("insert")){
             return "Access Denied. Save not Completed.";
         }
 
@@ -130,9 +130,9 @@ public class UserController {
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
 
-        if(!userPrivilage.getDelprv()){
+        if(!userPrivilage.get("delete")){
             return "Access Denied. Delete not Completed.";
         }
 
@@ -161,9 +161,9 @@ public class UserController {
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
 
-        if(!userPrivilage.getUpdprv()){
+        if(!userPrivilage.get("update")){
             return "Access Denied. Update not Completed.";
         }
 
