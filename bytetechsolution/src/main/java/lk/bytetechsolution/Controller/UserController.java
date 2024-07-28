@@ -1,6 +1,8 @@
 package lk.bytetechsolution.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import lk.bytetechsolution.Dao.EmployeeStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.EmployeeStatusEntity;
+import lk.bytetechsolution.Entity.PrivilageEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 import java.util.*;
@@ -37,11 +40,17 @@ public class UserController {
     @Autowired
     private UserDao dao;
 
+    private PrivilageController privilageController=new PrivilageController();
+
 
     //request employee ui
     @RequestMapping(value="/user")
     public ModelAndView userUI(){
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         ModelAndView userView=new ModelAndView();
+        userView.addObject("title", "User Management || Bytetech Solution");
+        userView.addObject("user", authentication.getName());
         userView.setViewName("user.html");
         return userView;
     }
@@ -57,11 +66,27 @@ public class UserController {
      */
     @GetMapping(value="/user/alldata",produces = "application/json")
     public List<UserEntity> allUserData(){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
+
+        if(!userPrivilage.getSelprv()){
+            return new ArrayList<UserEntity>();
+        }
+
         return dao.findAll();
     }
 
     @PostMapping(value = "user")
     public String addUserData(@RequestBody UserEntity user){
+
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
+
+        if(!userPrivilage.getInsprv()){
+            return "Access Denied. Save not Completed.";
+        }
 
         //--------check duplication------------
         //check if any user with this password
@@ -103,6 +128,14 @@ public class UserController {
     @DeleteMapping(value = "/user")
     public String deleteUser(@RequestBody UserEntity user){
 
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
+
+        if(!userPrivilage.getDelprv()){
+            return "Access Denied. Delete not Completed.";
+        }
+
         //check user exist
         UserEntity extUser=dao.getReferenceById(user.getId());
 
@@ -125,6 +158,14 @@ public class UserController {
 
     @PutMapping(value = "/user")
     public String updateUser(@RequestBody UserEntity user){
+
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
+
+        if(!userPrivilage.getUpdprv()){
+            return "Access Denied. Update not Completed.";
+        }
 
         //user existance
         UserEntity extUser=dao.getReferenceById(user.getId());
