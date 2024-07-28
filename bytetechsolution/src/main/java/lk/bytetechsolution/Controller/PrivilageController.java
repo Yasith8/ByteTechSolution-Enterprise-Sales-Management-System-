@@ -125,6 +125,12 @@ public class PrivilageController {
     @PutMapping("/privilage")
     public String updatePrivilage(@RequestBody PrivilageEntity privilage){
         //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        PrivilageEntity userPrivilage=getPrivilageByUserModule(authentication.getName(), "PRIVILAGE");
+
+        if(!userPrivilage.getUpdprv()){
+            return "Access Denied. Update not Completed";
+        }
         
         //existance check
         PrivilageEntity extPrivilage=dao.getPrivilagebyRoleAndModule(privilage.getModule_id().getId(),privilage.getRole_id().getId());
