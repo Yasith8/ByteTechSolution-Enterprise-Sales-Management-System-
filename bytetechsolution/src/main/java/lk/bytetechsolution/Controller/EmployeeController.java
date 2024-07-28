@@ -45,7 +45,7 @@ public class EmployeeController {
 
 
     //get privilage controller to managing privilages
-    private PrivilageController privilageController;
+    private PrivilageController privilageController=new PrivilageController();
 
    
 
@@ -81,7 +81,7 @@ public class EmployeeController {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "EMPLOYEE");
+        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"EMPLOYEE");
 
         if(!userPrivilage.getSelprv()){
             return new ArrayList<EmployeeEntity>();

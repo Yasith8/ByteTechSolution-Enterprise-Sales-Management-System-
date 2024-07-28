@@ -77,7 +77,7 @@ public class UserController {
         return dao.findAll();
     }
 
-    @PostMapping(value = "user")
+    @PostMapping(value = "/user")
     public String addUserData(@RequestBody UserEntity user){
 
         //Authentication and Autherization
