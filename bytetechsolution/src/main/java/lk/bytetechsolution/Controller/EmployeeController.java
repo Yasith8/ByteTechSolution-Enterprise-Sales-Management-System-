@@ -81,9 +81,9 @@ public class EmployeeController {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"EMPLOYEE");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"EMPLOYEE");
 
-        if(!userPrivilage.getSelprv()){
+        if(!userPrivilage.get("select")){
             return new ArrayList<EmployeeEntity>();
         }
 
@@ -102,9 +102,9 @@ public class EmployeeController {
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
 
            //get user privilage for the Employee Module
-        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"EMPLOYEE");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"EMPLOYEE");
 
-        if(!userPrivilage.getInsprv()){
+        if(!userPrivilage.get("insert")){
             return "Permission Denied! Save not Completed";
         }
 
@@ -150,9 +150,9 @@ public class EmployeeController {
 
         //authentication and autherzation
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "EMPLOYEE");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "EMPLOYEE");
 
-        if(!userPrivilage.getDelprv()){
+        if(!userPrivilage.get("delete")){
             return "Permission Denied. Delete not completed.";
         }
 
@@ -189,9 +189,9 @@ public class EmployeeController {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        PrivilageEntity userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "EMPLOYEE");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "EMPLOYEE");
 
-        if(!userPrivilage.getUpdprv()){
+        if(!userPrivilage.get("update")){
             return "Permission Denied. Update not completed.";
         }
 
