@@ -3,6 +3,7 @@ package lk.bytetechsolution.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,8 @@ public class UserController {
     private UserDao dao;
 
     private PrivilageController privilageController=new PrivilageController();
+
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     //request employee ui
@@ -110,6 +113,9 @@ public class UserController {
 
             //set submitted date and time
             user.setAdded_datetime(LocalDateTime.now());
+
+            //password bycrypt
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             //save in db
             dao.save(user);
 

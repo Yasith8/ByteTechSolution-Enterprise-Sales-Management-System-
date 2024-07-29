@@ -153,10 +153,10 @@ public class PrivilageController {
     }
 
     //get mapping for get privilage by log user module
-    @GetMapping(value = "/byloggeduser/{modulename}",produces = "application/json")
+    @GetMapping(value = "/privilage/byloggeduser/{modulename}",produces = "application/json")
     public HashMap<String,Boolean> getPrivilageByLoggedUserModule(@PathVariable("modulename") String modulename){
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-         return getPrivilageByUserModule(authentication.getName(), modulename);
+        return getPrivilageByUserModule(authentication.getName(), modulename);
     }
 
 
@@ -168,8 +168,8 @@ public class PrivilageController {
         if(username.equals("Admin")){
             userPrivilage.put("select",true);
             userPrivilage.put("insert",true);
-            userPrivilage.put("delete",true);
             userPrivilage.put("update",true);
+            userPrivilage.put("delete",true);
         }else{
             String userprv=dao.getPrivilageByUserModule(username, modulename);
 
@@ -177,11 +177,10 @@ public class PrivilageController {
 
             userPrivilage.put("select", userprivList[0].equals("1"));
             userPrivilage.put("insert",userprivList[1].equals("1"));
-            userPrivilage.put("delete", userprivList[2].equals("1"));
-            userPrivilage.put("updae", userprivList[3].equals("1"));
+            userPrivilage.put("update", userprivList[2].equals("1"));
+            userPrivilage.put("delete", userprivList[3].equals("1"));
 
         }
-
         return userPrivilage;
     }
 
