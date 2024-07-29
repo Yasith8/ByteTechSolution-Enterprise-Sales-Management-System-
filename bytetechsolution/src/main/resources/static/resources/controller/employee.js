@@ -145,7 +145,7 @@ const refreshEmployeeForm = () => {
     employee = new Object();
 
     buttonSubmit.disabled = false;
-    buttonSubmit.classList.add('modal-btn-submit')
+    buttonSubmit.classList.add('modal-btn-submit');
 
     buttonUpdate.disabled = true;
     buttonUpdate.classList.remove('modal-btn-update');
@@ -177,7 +177,18 @@ const refreshEmployeeForm = () => {
     textEmail.style.border = '1px solid #ced4da' */
 
     let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/EMPLOYEE");
-    console.log(userPrivilage);
+    //console.log(userPrivilage);
+
+    if (!userPrivilage.insert) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.add('modal-btn-submit');
+    }
+    if (!userPrivilage.update) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+    }
+
+
 
 }
 
@@ -278,6 +289,23 @@ const employeeFormRefill = (ob, rowIndex) => {
 
     buttonUpdate.disabled = false;
     buttonUpdate.classList.add('modal-btn-update');
+
+
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/EMPLOYEE");
+    //console.log(userPrivilage);
+
+    if (!userPrivilage.insert) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.add('modal-btn-submit');
+    }
+    if (!userPrivilage.update) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+    }
+    if (!userPrivilage.delete) {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-update');
+    }
 
 
 
@@ -535,6 +563,11 @@ const checkEmployeeFormUpdates = () => {
     if (employee.landno != oldemployee.landno) {
         updates = updates + " Employee Land No is Changed \n";
     }
+
+    if ((employee.photo != employee.photo) || (employee.photoname != employeeFormRefill.photoname)) {
+        updates = updates + " Employee Profile Photo is Changed \n";
+    }
+
     if (employee.designation_id.name != oldemployee.designation_id.name) {
         updates = updates + " Employee Designation is Changed \n";
     }

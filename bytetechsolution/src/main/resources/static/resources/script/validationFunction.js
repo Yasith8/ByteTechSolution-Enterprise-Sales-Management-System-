@@ -83,14 +83,14 @@ const validateFileField = (fieldId, object, photo, photoname, oldObject, display
         //displayPhotoName.value = file['name'];
         displayPhotoName.textContent = file['name'];
         window[object][photoname] = file['name'];
-        console.log(file['name']);
+        //console.log(file['name']);
 
         let fileReader = new FileReader();
 
         fileReader.onload = function(e) {
             displayPhoto.src = e.target.result;
             window[object][photo] = btoa(e.target.result); //encrypt 
-            console.log(e.target.result);
+            //console.log(e.target.result);
 
         }
         fileReader.readAsDataURL(file);

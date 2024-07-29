@@ -43,7 +43,7 @@ public class UserController {
 
     private PrivilageController privilageController=new PrivilageController();
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
 
 
     //request employee ui

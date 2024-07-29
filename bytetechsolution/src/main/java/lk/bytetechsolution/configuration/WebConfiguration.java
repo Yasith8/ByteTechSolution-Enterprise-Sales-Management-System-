@@ -35,9 +35,9 @@ public class WebConfiguration {
         //allow all request to access
         .requestMatchers("/resources/**").permitAll()
         //allow only for admin Manager and user to dash  board
-        .requestMatchers("/dashboard/**").hasAnyAuthority("Admin","Manager","User")
+        .requestMatchers("/dashboard/**").hasAnyAuthority("Admin","Manager","Technician")
         //allow only for admin Manager
-        .requestMatchers("/employee/**").hasAnyAuthority("Admin","Manager")
+        .requestMatchers("/employee/**").hasAnyAuthority("Admin","Manager","Technician")
         //allow only for admin Manager
         .requestMatchers("/user/**").hasAnyAuthority("Admin","Manager")
         //allow only for admin Manager
