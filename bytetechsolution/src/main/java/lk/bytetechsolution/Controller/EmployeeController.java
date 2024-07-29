@@ -45,7 +45,8 @@ public class EmployeeController {
 
 
     //get privilage controller to managing privilages
-    private PrivilageController privilageController=new PrivilageController();
+    @Autowired
+    private PrivilageController privilageController;
 
    
 
