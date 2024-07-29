@@ -315,7 +315,7 @@ const employeeFormRefill = (ob, rowIndex) => {
     }
     if (!userPrivilage.delete) {
         buttonDelete.disabled = true;
-        buttonDelete.classList.remove('modal-btn-update');
+        buttonDelete.classList.remove('modal-btn-delete');
     }
 
 

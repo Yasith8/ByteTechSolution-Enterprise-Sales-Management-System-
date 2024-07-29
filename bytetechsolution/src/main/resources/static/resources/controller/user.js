@@ -120,6 +120,20 @@ const refreshUserForm = () => {
 
 
     removeValidationColor([selectFullname, textUsername, textPassword, textRePassword, textEmail])
+
+
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/USER");
+
+    if (!userPrivilages.insert) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([selectFullname, textUsername, textPassword, textRePassword, textEmail, checkStatus, buttonClear], true);
+        btnClearImage.classList.remove('btn-user-removeImage');
+        btnSelectImage.classList.remove('btn-user-selectImage');
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+
 }
 
 //get employee fullname using object of employee_id
@@ -290,6 +304,34 @@ const refillUserForm = (rowOb, rowIndex) => {
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit')
+
+
+    inputFieldsHandler([selectFullname, textUsername, textPassword, textRePassword, textEmail, checkStatus, checkboxRole, buttonClear], false);
+    btnClearImage.classList.add('btn-user-removeImage');
+    btnSelectImage.classList.add('btn-user-selectImage');
+    buttonClear.classList.add('modal-btn-clear');
+
+
+
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/USER");
+
+    if (!userPrivilages.update) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([selectFullname, textUsername, textPassword, textRePassword, textEmail, checkStatus, buttonClear], true);
+        btnClearImage.classList.remove('btn-user-removeImage');
+        btnSelectImage.classList.remove('btn-user-selectImage');
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+
+    if (!userPrivilages.delete) {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
+
+
+
 
 }
 
