@@ -104,6 +104,13 @@ const removeValidationColor = (fieldIds) => {
     })
 }
 
+const inputFieldsHandler = (fieldIds, isDisabled) => {
+    fieldIds.forEach((fieldId) => {
+        fieldId.disabled = isDisabled;
+    })
+}
+
+
 const printModuleTable = (id) => {
     let printWindow = window.open('', '_blank');
     let tableContent = document.getElementById(id).outerHTML;

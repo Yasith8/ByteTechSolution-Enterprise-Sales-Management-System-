@@ -112,8 +112,8 @@
                                 <img src="/resources/image/initialprofile.jpg" alt="" style="height: 75px; width: 75px;" id="imgEmployeePhoto">
                                 <div class="profileImgBtn">
                                     <div class="d-flex">
-                                        <button id="btnSelectImage" type="button" class="btn btn-user-selectImage" onclick="FileEmployeePhoto.click()">Select Image</button>
-                                        <button id="btnClearImage" type="button" class="btn btn-user-removeImage" onclick="employeePictureRemove()">Clear Image</button>
+                                        <button id="btnSelectImage" type="button" class="btn btn-common-image btn-user-selectImage" onclick="FileEmployeePhoto.click()">Select Image</button>
+                                        <button id="btnClearImage" type="button" class="btn  btn-common-image btn-user-removeImage" onclick="employeePictureRemove()">Clear Image</button>
                                     </div>
                                     <p id="textEmployeePhoto">No Image Selected</p>
                                 </div>
@@ -264,7 +264,7 @@
                         <div class="col-6">
                             <div class="row">
                                 <div class="col-5"></div>
-                                <div class="col-2"><button type="reset" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
+                                <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear">Clear</button></div>
                                 <div class="col-2"><button type="submit" id="buttonUpdate" class="modal-button modal-btn-update" onclick="buttonEmployeeUpdate()">Update</button></div>
                                 <div class="col-2"><button type="submit" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonEmployeeSubmit()">Submit</button></div>
                                 <div class="col-1"></div>

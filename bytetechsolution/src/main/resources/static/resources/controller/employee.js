@@ -181,13 +181,15 @@ const refreshEmployeeForm = () => {
 
     if (!userPrivilage.insert) {
         buttonSubmit.disabled = true;
-        buttonSubmit.classList.add('modal-btn-submit');
-    }
-    if (!userPrivilage.update) {
-        buttonUpdate.disabled = true;
-        buttonUpdate.classList.remove('modal-btn-update');
+        buttonSubmit.classList.remove('modal-btn-submit');
+
+        inputFieldsHandler([textFullName, textNIC, textCallingName, textEmail, textMobileNo, textAddress, textNote, dateDateOfBirth, selectDesignation, selectEmployeeStatus, btnSelectImage, btnClearImage, radioMale, radioFemale, buttonClear, textLandNo], true);
+        btnClearImage.classList.remove('btn-user-removeImage');
+        btnSelectImage.classList.remove('btn-user-selectImage');
+        buttonClear.classList.remove('modal-btn-clear');
     }
 
+    buttonClear.disabled = false;
 
 
 }
@@ -291,21 +293,33 @@ const employeeFormRefill = (ob, rowIndex) => {
     buttonUpdate.classList.add('modal-btn-update');
 
 
+    inputFieldsHandler([textFullName, textNIC, textCallingName, textEmail, textMobileNo, textAddress, textNote, dateDateOfBirth, selectDesignation, selectEmployeeStatus, btnSelectImage, btnClearImage, radioMale, radioFemale, buttonClear, textLandNo], false);
+    btnClearImage.classList.add('btn-user-removeImage');
+    btnSelectImage.classList.add('btn-user-selectImage');
+    buttonClear.classList.add('modal-btn-clear');
+
+
+
     let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/EMPLOYEE");
     //console.log(userPrivilage);
 
-    if (!userPrivilage.insert) {
-        buttonSubmit.disabled = true;
-        buttonSubmit.classList.add('modal-btn-submit');
-    }
+
     if (!userPrivilage.update) {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([textFullName, textNIC, textCallingName, textEmail, textMobileNo, textAddress, textNote, dateDateOfBirth, selectDesignation, selectEmployeeStatus, btnSelectImage, btnClearImage, radioMale, radioFemale, buttonClear, textLandNo], true);
+        btnClearImage.classList.remove('btn-user-removeImage');
+        btnSelectImage.classList.remove('btn-user-selectImage');
+        buttonClear.classList.remove('modal-btn-clear');
     }
     if (!userPrivilage.delete) {
         buttonDelete.disabled = true;
         buttonDelete.classList.remove('modal-btn-update');
     }
+
+
+    buttonClear.disabled = true;
 
 
 

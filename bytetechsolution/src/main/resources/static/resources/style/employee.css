@@ -116,12 +116,14 @@ body {
 
 .btn-user-selectImage {
     background-color: #00bbff;
-    margin: 5px;
 }
 
 .btn-user-removeImage {
     background-color: tomato;
     color: white;
+}
+
+.btn-common-image {
     margin: 5px;
 }
 
