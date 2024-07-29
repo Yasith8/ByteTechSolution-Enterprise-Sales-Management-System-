@@ -126,7 +126,7 @@ const refreshUserForm = () => {
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
-        buttonSubmit.classList.remove('modal-btn-update');
+        buttonSubmit.classList.remove('modal-btn-submit');
 
         inputFieldsHandler([selectFullname, textUsername, textPassword, textRePassword, textEmail, checkStatus, buttonClear], true);
         btnClearImage.classList.remove('btn-user-removeImage');

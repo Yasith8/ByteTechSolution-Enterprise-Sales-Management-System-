@@ -63,6 +63,17 @@ const refreshPrivilageForm = () => {
     buttonUpdate.classList.remove('modal-btn-update');
 
 
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/PRIVILAGE");
+
+    if (!userPrivilages.insert) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.remove('modal-btn-submit');
+
+        inputFieldsHandler([selectRole, selectModule, checkSelect, checkInsert, checkDelete, checkUpdate, buttonClear], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+
+
 }
 
 const genarateModuleList = () => {
@@ -130,6 +141,25 @@ const refillPrivilageForm = (rowOb, rowIndex) => {
     updateText.textContent = (checkUpdate.checked) ? 'Update privilage Granted' : 'Update privilage not Granted';
     deleteText.textContent = (checkDelete.checked) ? 'Delete privilage Granted' : 'Delete privilage not Granted';
 
+
+    //todo  need to ask if this needed or not
+    inputFieldsHandler([selectRole, selectModule, checkSelect, checkInsert, checkDelete, checkUpdate, buttonClear], false);
+    buttonClear.classList.add('modal-btn-clear');
+
+
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/PRIVILAGE");
+
+    if (!userPrivilages.insert) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([selectRole, selectModule, checkSelect, checkInsert, checkDelete, checkUpdate, buttonClear], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+    if (!userPrivilages.delete) {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
 
 }
 
