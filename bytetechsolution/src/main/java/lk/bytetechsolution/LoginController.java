@@ -46,6 +46,13 @@ public class LoginController {
         return dashView;
     }
 
+    @RequestMapping(value = "/errorpage")
+    public ModelAndView errorPageUI(){
+        ModelAndView errorView=new ModelAndView();
+        errorView.setViewName("errorpage.html");
+        return errorView;
+    }
+
     @GetMapping(value = "/createadmin")
     public String genarateAdmin(){
         //process of genarate new admin

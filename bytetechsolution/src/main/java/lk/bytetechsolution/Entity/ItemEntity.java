@@ -58,16 +58,12 @@ public class ItemEntity {
    private String quentity; 
 
 
-   //todo add to database photo
-   @Column(name = "photo")
-   private String photo;
-   /*
    @Column(name = "photo")
    private byte[] photo; 
    
    @Column(name = "photoname")
    private String photoname; 
-   */ 
+   
 
    @ManyToOne
    @JoinColumn(name = "category_id",referencedColumnName = "id")
