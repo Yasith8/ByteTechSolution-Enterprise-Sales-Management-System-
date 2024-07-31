@@ -1,12 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head></head>
+<head th:replace="~{component::headerFragment}"></head>
 
 <head>
+    <link rel="stylesheet" href="resources/style/item.css">
+    <script src="resources/controller/item.js"></script>
 </head>
 
 <body>
+    <div class="container-fluid mt-3 mb-3">
+
+        <!-- title area start -->
+        <div class="row m-2">
+            <div class="col-12 text-center 
+            title-header-div">
+                <h2 class="fw-bold"> Item Management </h2>
+            </div>
+        </div>
+        <!-- title area End -->
+
+        <!-- Card area start  -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-6">
+            </div>
+
+            <div class="col-4 text-end gap-3">
+                <button type="button" class="Btn printTableBtn" onclick="printModuleTable('tableItem')">
+                    Print
+                </button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#itemAddModal" class="Btn addBtn">
+                    Add New Item
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- Card area end  -->
+
+        <!-- table Area Start-->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="card employee-card">
+                    <div class="card-body employee-cardbody">
+
+                        <table class="table table-hover" id="tableItem">
+                            <thead class="table-header">
+                                <tr>
+                                    <th> # </th>
+                                    <th> Item Code </th>
+                                    <th> Item Name </th>
+                                    <th> Purchase Price </th>
+                                    <th> Sales Price </th>
+                                    <th> Quentity </th>
+                                    <th> ROP </th>
+                                    <th> Brand </th>
+                                    <!-- <th> Land No </th>
+                                    <th> DOB </th> -->
+                                    <th> Category </th>
+                                    <th> Status </th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="table-body">
+
+                                <!-- create static values for table -->
+                                <!-- used for initial designs -->
+                                <!-- probebly this appear when data not loading to table from db -->
+                                <tr>
+                                    <td> 0</td>
+                                    <td> 0000 </td>
+                                    <td> Initial User </td>
+                                    <td> 00000000000V </td>
+                                    <td> 0000000000 </td>
+                                    <td> inituser@gmail.com </td>
+                                    <td> Doctor </td>
+                                    <td> Doctor </td>
+                                    <td>
+                                        <p>Unavailble</p>
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+
+        </div>
+        <!-- table Area End-->
+
+    </div>
+
+    <!-- item Add Modal -->
+    <div class="modal fade" id="itemAddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Item</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
+                </div>
+                <form id="formItem" onsubmit="return false">
+                    <div class="modal-body">
+
+                        <!-- Item Image Upload Start -->
+                        <div class="row mb-1">
+                            <div class="col-5 d-flex">
+                                <img src="/resources/image/initialprofile.jpg" alt="" style="height: 75px; width: 75px;" id="imgItemPhoto">
+                                <div class="itemImgBtn">
+                                    <div class="d-flex">
+                                        <button id="btnSelectImage" type="button" class="btn btn-common-image btn-user-selectImage" onclick="FileItemPhoto.click()">Select Image</button>
+                                        <button id="btnClearImage" type="button" class="btn  btn-common-image btn-user-removeImage" onclick="itemPictureRemove()">Clear Image</button>
+                                    </div>
+                                    <p id="textItemPhoto">No Image Selected</p>
+                                </div>
+                                <input type="file" class="d-none" id="FileItemPhoto" onchange="validateFileField(this,'item','photo','photoname','oldItem',imgItemPhoto,textItemPhoto)">
+                                <!--  /todo add default image-->
+                            </div>
+                        </div>
+                        <!-- Item Image Upload End -->
+
+                        <!-- item Name Input Start -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" placeholder="item name" name="itemname" id="textItemName" required data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Ex - ASUS LAPTOP F12" onkeyup="textFullNameValidator(this)">
+                                    <label for="fullname">Item Name <span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- item Name Input end -->
+
+                        <!-- purchase price Input Start -->
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" placeholder="" required id="decimalPurchasePrice">
+                                    <label for="decimalPurchasePrice">Purchase Price <span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- purchaseprice Input end -->
+                            <!-- salesprice Input end -->
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" placeholder="" required onkeyup="" id="decimalSalesprice">
+                                    <label for="decimalSalesprice">Sales Price<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- salesprice Input end -->
+                        </div>
+
+                        <div class="row">
+                            <!-- rop start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="numberROP" placeholder="Enter ROP" onkeyup="" required>
+                                    <label for="numberROP">ROP<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- rop end -->
+                            <!-- quentity start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="numberQuentity" placeholder="Enter ROP" onkeyup="" required>
+                                    <label for="numberQuentity">Quentity<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- quentity end -->
+                            <!-- added date start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <input type="date" class="form-control" id="dateAddedDate" onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','item','dob')" placeholder="" required>
+                                    <label for="dateAddedDate">Added Date<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- added date end -->
+                        </div>
+                        <div class="row">
+                            <!-- item status start -->
+                            <div class="col-4">
+                                <div class="p-4 d-flex gap-3">
+                                    <input type="checkbox" name="status" id="checkItemStatus" onchange="setItemStatus()">
+                                    <label for="checkItemStatus" id="labelItemrStatus">Item is InActive</label>
+                                </div>
+                            </div>
+                            <!-- item status end -->
+                            <!--category start-->
+                            <div class="col-4">
+                                <div class="mb-3 form-floating">
+                                    <select name="categoty" class="form-select" id="selectCategory" onchange="selectDynamicValidator(this,'','item','category_id')">
+                                    
+                                </select>
+                                </div>
+                            </div>
+                            <!--cateogry end-->
+                            <!--brand start-->
+                            <div class="col-4">
+                                <div class="mb-3 form-floating">
+                                    <select name="brand" class="form-select" id="selectBrand" required onchange="selectDynamicValidator(this,'','brand','brand_id')">
+                                </select>
+                                </div>
+                            </div>
+                            <!--brand end-->
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mb-3">
+                        <div class="col-6">
+                            <div id="divModifyButton">
+
+                                <div class="row" id="">
+                                    <div class="col-1"></div>
+                                    <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printItem(window['editOb'], window['editRow'])">Print</button></div>
+                                    <div class="col-2"><button type="button" class="modal-button modal-btn-delete" id="buttonDelete" onclick="deleteItem(window['editOb'], window['editRow'])">Delete</button></div>
+                                    <div class="col-7"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear">Clear</button></div>
+                                <div class="col-2"><button type="submit" id="buttonUpdate" class="modal-button modal-btn-update" onclick="buttonItemUpdate()">Update</button></div>
+                                <div class="col-2"><button type="submit" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonItemSubmit()">Submit</button></div>
+                                <div class="col-1"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
 </body>
 

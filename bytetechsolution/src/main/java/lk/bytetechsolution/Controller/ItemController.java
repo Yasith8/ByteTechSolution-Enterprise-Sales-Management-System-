@@ -23,7 +23,8 @@ public class ItemController {
     private PrivilageController privilageController;
 
 
-    @RequestMapping ModelAndView ItemUI(){
+    @RequestMapping(value = "/item") 
+    public ModelAndView ItemUI(){
         ModelAndView itemView=new ModelAndView();
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         itemView.addObject("title", "Item Management || ByteTech Solution");

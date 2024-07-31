@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import java.math.*;;
 
 @Entity
 @Table(name = "item")
@@ -21,58 +21,55 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",unique = true)
+    @Column(name = "id", unique = true)
     private int id;
 
-    @Column(name = "itemcode",unique = true)
+    @Column(name = "itemcode", unique = true)
     @NotNull
     private String itemcode;
 
-    @Column(name = "itemname") 
+    @Column(name = "itemname")
     @NotNull
     private String itemname;
-   
-    //todo  decimal
+
     @Column(name = "salesprice")
     @NotNull
-    private String salesprice;
-    
-    //todo  decimal
-   @Column(name = "purchaseprice")
-   @NotNull
-   private String purchaseprice; 
-   
-   @Column(name = "rop")
-   @NotNull
-   private String rop; 
-   
-   @Column(name = "addeddate")
-   @NotNull
-   private String addeddate;
+    private BigDecimal salesprice;
 
-   @Column(name = "quentity")
-   @NotNull
-   private String quentity; 
+    @Column(name = "purchaseprice")
+    @NotNull
+    private BigDecimal purchaseprice;
 
+    @Column(name = "rop")
+    @NotNull
+    private String rop;
 
-   @Column(name = "photo")
-   private byte[] photo; 
-   
-   @Column(name = "photoname")
-   private String photoname; 
+    @Column(name = "addeddate")
+    @NotNull
+    private String addeddate;
 
-   @Column(name = "itemstatus")
-   @NotNull
-   private String itemstatus;    
+    @Column(name = "quentity")
+    @NotNull
+    private String quentity;
 
-   @ManyToOne
-   @JoinColumn(name = "category_id",referencedColumnName = "id")
-   private CategoryEntity category_id;
-   
-   @ManyToOne
-   @JoinColumn(name = "brand_id",referencedColumnName = "id")
-   private BrandEntity brand_id;
+    @Column(name = "photo")
+    private byte[] photo;
+
+    @Column(name = "photoname")
+    private String photoname;
+
+    @Column(name = "itemstatus")
+    @NotNull
+    private String itemstatus;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private CategoryEntity category_id;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id", referencedColumnName = "id")
+    private BrandEntity brand_id;
 }

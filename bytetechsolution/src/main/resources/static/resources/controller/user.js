@@ -466,7 +466,7 @@ const buttonModalClose = () => {
     }
 }
 
-const deleteEmployee = (ob, rowIndex) => {
+const deleteUser = (ob, rowIndex) => {
 
     //user conformation
     const userConfirm = confirm("Are you sure to delete User " + ob.username + " who Employee Name " + ob.employee_id.name + "?");
