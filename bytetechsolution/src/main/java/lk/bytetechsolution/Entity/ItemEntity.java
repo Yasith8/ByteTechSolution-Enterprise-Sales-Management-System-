@@ -63,7 +63,7 @@ public class ItemEntity {
 
     @ManyToOne
     @JoinColumn(name = "itemstatus_id", referencedColumnName = "id")
-    private CategoryEntity itemstatus_id;
+    private ItemStatusEntity itemstatus_id;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")

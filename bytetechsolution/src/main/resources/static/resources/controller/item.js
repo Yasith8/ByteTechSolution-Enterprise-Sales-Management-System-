@@ -44,7 +44,8 @@ const getCateogryName = (ob) => {
     return ob.category_id.name;
 }
 
-const getitemStatus = (ob) => {
+const getItemStatus = (ob) => {
+    console.log(ob.itemstatus_id.name)
     if (ob.itemstatus_id.name == 'Available') {
         return '<p  class="status-active">' + ob.itemstatus_id.name + '</p>';
     }
