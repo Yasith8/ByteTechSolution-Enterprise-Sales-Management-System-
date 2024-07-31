@@ -21,7 +21,7 @@ const refreshItemTable = () => {
         { dataType: 'text', propertyName: 'quentity' },
         { dataType: 'function', propertyName: getBrandName },
         { dataType: 'function', propertyName: getCateogryName },
-        { dataType: 'function', propertyName: getStatus },
+        { dataType: 'function', propertyName: getItemStatus },
     ]
 
     fillDataIntoTable(tableItem, items, displayPropertyList, refillItemForm, divModifyButton)
@@ -37,15 +37,28 @@ const refreshItemForm = () => {
 }
 
 const getBrandName = (ob) => {
-
+    return ob.brand_id.name;
 }
 
 const getCateogryName = (ob) => {
-
+    return ob.category_id.name;
 }
 
-const getStatus = (ob) => {
+const getitemStatus = (ob) => {
+    if (ob.itemstatus_id.name == 'Available') {
+        return '<p  class="status-active">' + ob.itemstatus_id.name + '</p>';
+    }
 
+    if (ob.itemstatus_id.name == 'Low-Stock') {
+        return '<p  class="status-resign">' + ob.itemstatus_id.name + '</p>'
+    }
+
+
+    if (ob.itemstatus_id.name == 'Unavailable') {
+        return '<p  class="status-delete">' + ob.itemstatus_id.name + '</p>'
+    } else {
+        return '<p  class="status-other">' + ob.itemstatus_id.name + '</p>'
+    }
 }
 
 const refillItemForm = () => {

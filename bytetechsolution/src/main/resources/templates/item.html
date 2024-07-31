@@ -183,9 +183,9 @@
                         <div class="row">
                             <!-- item status start -->
                             <div class="col-4">
-                                <div class="p-4 d-flex gap-3">
-                                    <input type="checkbox" name="status" id="checkItemStatus" onchange="setItemStatus()">
-                                    <label for="checkItemStatus" id="labelItemrStatus">Item is InActive</label>
+                                <div class="mb-3 form-floating">
+                                    <select name="itemstatus" class="form-select" id="selectItemStatus" onchange="selectDynamicValidator(this,'','item','itemstatus_id')">        
+                                </select>
                                 </div>
                             </div>
                             <!-- item status end -->

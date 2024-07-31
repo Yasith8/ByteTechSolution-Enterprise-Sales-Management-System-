@@ -61,9 +61,9 @@ public class ItemEntity {
     @Column(name = "photoname")
     private String photoname;
 
-    @Column(name = "itemstatus")
-    @NotNull
-    private String itemstatus;
+    @ManyToOne
+    @JoinColumn(name = "itemstatus_id", referencedColumnName = "id")
+    private CategoryEntity itemstatus_id;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
