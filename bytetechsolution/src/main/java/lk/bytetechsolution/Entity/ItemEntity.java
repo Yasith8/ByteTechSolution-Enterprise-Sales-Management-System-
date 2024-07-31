@@ -63,7 +63,10 @@ public class ItemEntity {
    
    @Column(name = "photoname")
    private String photoname; 
-   
+
+   @Column(name = "itemstatus")
+   @NotNull
+   private String itemstatus;    
 
    @ManyToOne
    @JoinColumn(name = "category_id",referencedColumnName = "id")
