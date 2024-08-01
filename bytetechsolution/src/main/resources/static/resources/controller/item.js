@@ -42,6 +42,8 @@ const refreshItemForm = () => {
     buttonUpdate.disabled = true;
     buttonUpdate.classList.remove('modal-btn-update');
 
+    staticBackdropLabel.textContent = "Add New Item";
+
     brands = getServiceAjaxRequest("/brand/alldata");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", "");
 
@@ -50,6 +52,20 @@ const refreshItemForm = () => {
 
     itemStatuses = getServiceAjaxRequest("/itemstatus/alldata");
     fillDataIntoSelect(selectItemStatus, "Select Item Status", itemStatuses, "name");
+
+    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, dateAddedDate, selectBrand, selectCategory, selectItemStatus])
+
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
+
+    if (!userPrivilages.insert) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.remove('modal-btn-submit');
+
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, dateAddedDate, selectBrand, selectCategory, selectItemStatus], true);
+        btnClearImage.classList.remove('btn-user-removeImage');
+        btnSelectImage.classList.remove('btn-user-selectImage');
+        buttonClear.classList.remove('modal-btn-clear');
+    }
 
 }
 
@@ -81,6 +97,7 @@ const getItemStatus = (ob) => {
 
 const refillItemForm = (ob, rowIndex) => {
 
+    $('#itemAddModal').modal('show');
 
 
     buttonSubmit.disabled = true;
@@ -88,6 +105,49 @@ const refillItemForm = (ob, rowIndex) => {
 
     buttonUpdate.disabled = false;
     buttonUpdate.classList.add('modal-btn-update');
+
+    item = JSON.parse(JSON.stringify(ob));
+    oldItem = ob;
+
+    //asign itemcode
+    staticBackdropLabel.textContent = item.itemcode;
+
+    //assign item name
+    textItemName.value = item.itemname;
+    //assign purchase price
+    decimalPurchasePrice.value = item.purchaseprice;
+    //assign sales price
+    decimalSalesPrice.value = item.salesprice;
+    //assign quentity 
+    numberQuentity.value = item.quentity;
+    //assign rop 
+    numberROP.value = item.rop;
+    //assign added date 
+    dateAddedDate.value = item.addeddate;
+
+
+    //assign item picture and name
+    if (item.photo == null) {
+        imgItemPhoto.src = "/resources/image/initialproduct.png";
+        textItemPhoto.textContent = "No Product Image";
+    } else {
+        imgItemPhoto.src = atob(item.photo);
+        textItemPhoto.textContent = item.photoname;
+    }
+
+
+    brands = getServiceAjaxRequest("/brand/alldata")
+    fillDataIntoSelect(selectBrand, "Please Select", brands, "name", ob.brand_id.name);
+
+    categories = getServiceAjaxRequest("/category/alldata")
+    fillDataIntoSelect(selectCategory, "Please Select", categories, "name", ob.category_id.name);
+
+    itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
+    fillDataIntoSelect(selectItemStatus, "Please Select", itemstatuses, "name", ob.itemstatus_id.name);
+
+
+
+
 }
 
 const checkItemInputErrors = () => {
