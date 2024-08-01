@@ -3,13 +3,16 @@ package lk.bytetechsolution.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.ItemDao;
+import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Entity.ItemEntity;
+import lk.bytetechsolution.Entity.ItemStatusEntity;
 
 import java.util.*;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +24,9 @@ public class ItemController {
     
     @Autowired
     private ItemDao dao;
+
+    @Autowired
+    private ItemStatusDao daoStatus;
 
     @Autowired
     private PrivilageController privilageController;
@@ -88,6 +94,38 @@ public class ItemController {
             return "Save not Completed. "+e.getMessage();
         }
     
+    }
+
+
+    @DeleteMapping(value = "/item")
+    public String DeleteItem(@RequestBody ItemEntity item){
+
+        //Authentication & Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        //get user privilages according to logged user
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "ITEM");
+        if(!userPrivilage.get("delete")){
+            return "Access Denied. Delete not Completed";
+        }
+
+        //check existnce of item
+        ItemEntity extItem=dao.getReferenceById(item.getId());
+
+        if(extItem==null){
+            return "Delete not Completed. Item Not Found...!";
+        }
+
+        try {
+            //soft delete
+            ItemStatusEntity unavailableStatusEntity=daoStatus.getReferenceById(3);
+            extItem.setItemstatus_id(unavailableStatusEntity);
+            dao.save(extItem);
+
+            return "OK";
+            
+        } catch (Exception e) {
+            return "Delete not Completed. "+e.getMessage();
+        }
     }
     
 }
