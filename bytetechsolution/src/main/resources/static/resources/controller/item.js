@@ -134,7 +134,7 @@ const checkItemInputErrors = () => {
 }
 
 const buttonItemSubmit = () => {
-    console.log(item);
+
 }
 
 const buttonItemUpdate = () => {
@@ -143,4 +143,30 @@ const buttonItemUpdate = () => {
 
 const deleteItem = (ob, rowIndex) => {
 
+}
+
+
+const buttonModalClose = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
+
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#itemAddModal').modal('hide');
+
+
+        //formItem is id of form
+        //this will reset all data(refreash)
+        formItem.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshItemForm();
+    }
+}
+
+
+const itemPictureRemove = () => {
+    //profile image set to default
+    imgItemPhoto.src = "/resources/image/initialproduct.png";
+    textItemPhoto.textContent = "No Image Selected";
+    FileItemPhoto.value = null;
 }
