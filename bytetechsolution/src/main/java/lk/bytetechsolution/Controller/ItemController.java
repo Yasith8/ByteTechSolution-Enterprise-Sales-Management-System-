@@ -11,12 +11,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.ItemDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
+import lk.bytetechsolution.Entity.EmployeeEntity;
 import lk.bytetechsolution.Entity.ItemEntity;
 import lk.bytetechsolution.Entity.ItemStatusEntity;
 
 import java.util.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -122,9 +126,42 @@ public class ItemController {
             dao.save(extItem);
 
             return "OK";
-            
+
         } catch (Exception e) {
             return "Delete not Completed. "+e.getMessage();
+        }
+    }
+
+    @PutMapping(value = "/item")
+    public String UpdateItem(@RequestBody ItemEntity item) {
+        //Authentication & Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        //get user privilages according to logged user
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "ITEM");
+        if(!userPrivilage.get("update")){
+            return "Access Denied. Update not Completed";
+        }
+
+        //check existnce of item
+        ItemEntity extItem=dao.getReferenceById(item.getId());
+
+        if(extItem==null){
+            return "Update not Completed. Item Not Found...!";
+        }
+
+        //check duplication
+        ItemEntity extItemName=dao.getByItemName(item.getItemname());
+
+        if(extItemName==null && extItemName.getId()!=item.getId()){
+            return "Update is not Completed : this "+item.getItemcode()+" Item Name already existed. \n Use Different Name for Item";
+        }
+        
+        
+        try {
+            dao.save(item);
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed. "+e.getMessage();
         }
     }
     
