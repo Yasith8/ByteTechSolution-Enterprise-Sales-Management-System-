@@ -90,7 +90,57 @@ const refillItemForm = (ob, rowIndex) => {
     buttonUpdate.classList.add('modal-btn-update');
 }
 
+const checkItemInputErrors = () => {
+    let errors = "";
+
+    if (item.itemname == null) {
+        errors = errors + "Item Name can't be Null...!\n";
+        textItemName.classList.add("is-invalid");
+    }
+    if (item.purchaseprice == null) {
+        errors = errors + "Purchase Price can't be Null...!\n";
+        decimalPurchasePrice.classList.add("is-invalid");
+    }
+    if (item.salesprice == null) {
+        errors = errors + "Sales Price Price can't be Null...!\n";
+        decimalSalesPrice.classList.add("is-invalid");
+    }
+    if (item.rop == null) {
+        errors = errors + "ROP can't be Null...!\n";
+        numberROP.classList.add("is-invalid");
+    }
+    if (item.quentity == null) {
+        errors = errors + "Quentity can't be Null...!\n";
+        numberQuentity.classList.add("is-invalid");
+    }
+    if (item.addeddate == null) {
+        errors = errors + "Added Date can't be Null...!\n";
+        dateAddedDate.classList.add("is-invalid");
+    }
+    if (item.itemstatus_id == null) {
+        errors = errors + "Item Status can't be Null...!\n";
+        selectItemStatus.classList.add("is-invalid");
+    }
+    if (item.brand_id == null) {
+        errors = errors + "Brand can't be Null...!\n";
+        selectBrand.classList.add("is-invalid");
+    }
+    if (item.category_id == null) {
+        errors = errors + "Category can't be Null...!\n";
+        selectCategory.classList.add("is-invalid");
+    }
+
+    return errors;
+}
 
 const buttonItemSubmit = () => {
-    console.log(item)
+    console.log(item);
+}
+
+const buttonItemUpdate = () => {
+
+}
+
+const deleteItem = (ob, rowIndex) => {
+
 }

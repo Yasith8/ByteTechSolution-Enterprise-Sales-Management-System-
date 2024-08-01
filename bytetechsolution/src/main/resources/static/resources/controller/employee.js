@@ -470,7 +470,7 @@ const checkEmployeeInputError = () => {
     }
     if (employee.dob == null) {
         dateDateOfBirth.classList.add('is-invalid')
-        errors = errors + 'please enter your Date of Bikrth..! \n';
+        errors = errors + 'please enter your Date of Birth..! \n';
     }
 
 
