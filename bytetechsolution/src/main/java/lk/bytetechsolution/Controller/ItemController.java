@@ -70,11 +70,11 @@ public class ItemController {
         }
 
         //check duplicates
-        ItemEntity extItemName=dao.getByItemName(item.getItemname());
+        /* ItemEntity extItemName=dao.getByItemName(item.getItemname());
 
         if(extItemName!=null){
             return "Save not Completed. Item Name Already Exist...!";
-        }
+        } */
 
         //operation
         try {
@@ -149,13 +149,13 @@ public class ItemController {
             return "Update not Completed. Item Not Found...!";
         }
 
-        //check duplication
+        /* //check duplication
         ItemEntity extItemName=dao.getByItemName(item.getItemname());
 
         if(extItemName==null && extItemName.getId()!=item.getId()){
             return "Update is not Completed : this "+item.getItemcode()+" Item Name already existed. \n Use Different Name for Item";
         }
-        
+         */
         
         try {
             dao.save(item);

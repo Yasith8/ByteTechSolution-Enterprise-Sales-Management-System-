@@ -57,3 +57,4 @@ Employee Management Module
    - ask about item updated date 
    - decimal poit in item UI
    - rop/quentity 0 seen
+   - ItemName in dao

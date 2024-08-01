@@ -27,7 +27,7 @@ public class ItemEntity {
     @Column(name = "id", unique = true)
     private int id;
 
-    @Column(name = "itemcode", unique = true)
+    @Column(name = "itemcode")
     @NotNull
     private String itemcode;
 

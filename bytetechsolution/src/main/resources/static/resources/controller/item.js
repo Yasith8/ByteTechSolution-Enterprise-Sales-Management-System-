@@ -172,7 +172,7 @@ const buttonItemSubmit = () => {
                 $('#itemAddModal').modal('hide');
                 //reset the Item form
                 formItem.reset();
-                //refreash employee form
+                //refreash Item form
                 refreshItemForm();
                 //refreash Item table
                 refreshItemTable();
