@@ -110,7 +110,7 @@
                         <!-- Item Image Upload Start -->
                         <div class="row mb-1">
                             <div class="col-5 d-flex">
-                                <img src="/resources/image/initialprofile.jpg" alt="" style="height: 75px; width: 75px;" id="imgItemPhoto">
+                                <img src="/resources/image/initialproduct.png" alt="" style="height: 75px; width: 75px;" id="imgItemPhoto">
                                 <div class="itemImgBtn">
                                     <div class="d-flex">
                                         <button id="btnSelectImage" type="button" class="btn btn-common-image btn-user-selectImage" onclick="FileItemPhoto.click()">Select Image</button>
@@ -128,7 +128,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" placeholder="item name" name="itemname" id="textItemName" required data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Ex - ASUS LAPTOP F12" onkeyup="textFullNameValidator(this)">
+                                    <input type="text" class="form-control" placeholder="item name" name="itemname" id="textItemName" required data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Ex - ASUS LAPTOP F12" onkeyup="textValidator(this,'^([A-Z][a-z0-9]*)( [A-Z][a-z0-9]*)*$','item','itemname')">
                                     <label for="fullname">Item Name <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -139,7 +139,15 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" placeholder="" required id="decimalPurchasePrice">
+                                    <!-- 
+                                    regex --- 
+                                        [0-9] - anything can add like numbers
+                                        (\\.[0-9]{1,2})? --
+                                          --\\.  define the decimal point
+                                          --{1,2} -- 1 or 2 digits after decimal point
+                                          --?  -- reguler eather 2 decimal points or one decimal points not 3 decimal points
+                                    -->
+                                    <input type="text" class="form-control" placeholder="" required id="decimalPurchasePrice" onkeyup="textValidator(this,'^[0-9]+(\\.[0-9]{1,2})?$','item','purchasprice')">
                                     <label for="decimalPurchasePrice">Purchase Price <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -147,8 +155,16 @@
                             <!-- salesprice Input end -->
                             <div class="col-6">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" placeholder="" required onkeyup="" id="decimalSalesprice">
-                                    <label for="decimalSalesprice">Sales Price<span class="requiredIcon">*</span></label>
+                                    <!-- 
+                                    regex --- 
+                                        [0-9] - anything can add like numbers
+                                        (\\.[0-9]{1,2})? --
+                                          --\\.  define the decimal point
+                                          --{1,2} -- 1 or 2 digits after decimal point
+                                          --?  -- reguler eather 2 decimal points or one decimal points not 3 decimal points
+                                    -->
+                                    <input type="text" class="form-control" placeholder="" required onkeyup="textValidator(this,'^[0-9]+(\\.[0-9]{1,2})?$','item','salesprice')" id="decimalSalesPrice">
+                                    <label for="decimalSalesPrice">Sales Price<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <!-- salesprice Input end -->
@@ -158,7 +174,13 @@
                             <!-- rop start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberROP" placeholder="Enter ROP" onkeyup="" required>
+                                    <!-- 
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
+                                    -->
+                                    <input type="number" class="form-control" id="numberROP" placeholder="Enter ROP" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','item','rop')" required>
                                     <label for="numberROP">ROP<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -166,7 +188,7 @@
                             <!-- quentity start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberQuentity" placeholder="Enter ROP" onkeyup="" required>
+                                    <input type="number" class="form-control" id="numberQuentity" placeholder="Enter quentity" onkeyup="textValidator(this,'^[0-9]+$','item','quentity')" required>
                                     <label for="numberQuentity">Quentity<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>

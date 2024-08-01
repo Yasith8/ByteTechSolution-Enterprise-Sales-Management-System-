@@ -89,3 +89,8 @@ const refillItemForm = (ob, rowIndex) => {
     buttonUpdate.disabled = false;
     buttonUpdate.classList.add('modal-btn-update');
 }
+
+
+const buttonItemSubmit = () => {
+    console.log(item)
+}
