@@ -5,6 +5,7 @@ window.addEventListener("load", () => {
     refreshItemTable()
 
     refreshItemForm();
+
 })
 
 //dynamic table according to db
@@ -33,6 +34,22 @@ const refreshItemTable = () => {
 }
 
 const refreshItemForm = () => {
+    item = new Object();
+
+    buttonSubmit.disabled = false;
+    buttonSubmit.classList.add('modal-btn-submit');
+
+    buttonUpdate.disabled = true;
+    buttonUpdate.classList.remove('modal-btn-update');
+
+    brands = getServiceAjaxRequest("/brand/alldata");
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", "");
+
+    categories = getServiceAjaxRequest("/category/alldata");
+    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name");
+
+    itemStatuses = getServiceAjaxRequest("/itemstatus/alldata");
+    fillDataIntoSelect(selectItemStatus, "Select Item Status", itemStatuses, "name");
 
 }
 
@@ -45,7 +62,7 @@ const getCateogryName = (ob) => {
 }
 
 const getItemStatus = (ob) => {
-    console.log(ob.itemstatus_id.name)
+
     if (ob.itemstatus_id.name == 'Available') {
         return '<p  class="status-active">' + ob.itemstatus_id.name + '</p>';
     }
@@ -62,6 +79,13 @@ const getItemStatus = (ob) => {
     }
 }
 
-const refillItemForm = () => {
+const refillItemForm = (ob, rowIndex) => {
 
+
+
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit');
+
+    buttonUpdate.disabled = false;
+    buttonUpdate.classList.add('modal-btn-update');
 }
