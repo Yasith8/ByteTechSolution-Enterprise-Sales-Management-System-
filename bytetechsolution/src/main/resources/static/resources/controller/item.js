@@ -247,7 +247,106 @@ const buttonItemSubmit = () => {
 
 }
 
+const checkItemFormUpdates = () => {
+    updates = "";
+
+    if (item.itemname != oldItem.itemname) {
+        updates = updates + "Item Name is Changed \n";
+    }
+    if (item.purchaseprice != oldItem.purchaseprice) {
+        updates = updates + "Purchase Price is Changed \n";
+    }
+    if (item.salesprice != oldItem.salesprice) {
+        updates = updates + "Sales Price is Changed \n";
+    }
+    if (item.quentity != oldItem.quentity) {
+        updates = updates + "Quentity is Changed \n";
+    }
+    if (item.rop != oldItem.rop) {
+        updates = updates + "ROP is Changed \n";
+    }
+    if (item.addeddate != oldItem.addeddate) {
+        updates = updates + "Added Date is Changed \n";
+    }
+    if (item.brand_id.name != oldItem.brand_id.name) {
+        updates = updates + "Brand is Changed \n";
+    }
+    if (item.category_id.name != oldItem.category_id.name) {
+        updates = updates + "Category is Changed \n";
+    }
+    if (item.itemstatus_id.name != oldItem.itemstatus_id.name) {
+        updates = updates + "Item Status is Changed \n";
+    }
+
+    return updates;
+}
+
+
 const buttonItemUpdate = () => {
+    //check form error
+    let errors = checkItemInputErrors();
+
+    //check code has error, if code doesn't have  any errors
+    if (errors == "") {
+
+        //check form update
+
+        let updates = checkItemFormUpdates();
+
+        //check there is no updates or any updations
+        if (updates == "") {
+            alert("Nothing Updates")
+        } else {
+
+            //get conformation from user to made updation
+            let userConfirm = confirm("Are You Sure to Update this Changes? \n" + updates);
+
+            //if user conform
+            if (userConfirm) {
+                //call put service requestd  -this use for updations
+                let putServiceResponse;
+
+                $.ajax("/item", {
+                    type: "PUT",
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(item),
+
+
+                    success: function(successResponseOb) {
+                        putServiceResponse = successResponseOb;
+                    },
+
+                    error: function(failedResponseOb) {
+                        putServiceResponse = failedResponseOb;
+                    }
+
+                });
+                //check put service response
+                if (putServiceResponse == "OK") {
+                    alert("Updated Successfully");
+
+                    //hide the moadel
+                    $('#itemAddModal').modal('hide');
+                    //refreash Item table for realtime updation
+                    refreshItemTable();
+                    //reset the Item form
+                    formItem.reset();
+                    //Item form refresh
+                    refreshItemForm();
+                } else {
+                    //handling errors
+                    alert("Update not Completed :\n" + putServiceResponse);
+                    //refreash the employee form
+                    refreshItemForm();
+                }
+            }
+        }
+    } else {
+        //show user to what errors happen
+        alert("Employee Form  has Following Errors..\n" + errors)
+    }
+
 
 }
 
