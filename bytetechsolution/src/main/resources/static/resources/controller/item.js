@@ -146,6 +146,33 @@ const refillItemForm = (ob, rowIndex) => {
     fillDataIntoSelect(selectItemStatus, "Please Select", itemstatuses, "name", ob.itemstatus_id.name);
 
 
+    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, dateAddedDate, selectBrand, selectCategory, selectItemStatus], false);
+    btnClearImage.classList.add('btn-user-removeImage');
+    btnSelectImage.classList.add('btn-user-selectImage');
+    buttonClear.classList.add('modal-btn-clear');
+
+
+
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
+    //console.log(userPrivilage);
+
+
+    if (!userPrivilage.update) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, dateAddedDate, selectBrand, selectCategory, selectItemStatus], true);
+        btnClearImage.classList.remove('btn-user-removeImage');
+        btnSelectImage.classList.remove('btn-user-selectImage');
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+    if (!userPrivilage.delete) {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
+
+
+    buttonClear.disabled = true;
 
 
 }
