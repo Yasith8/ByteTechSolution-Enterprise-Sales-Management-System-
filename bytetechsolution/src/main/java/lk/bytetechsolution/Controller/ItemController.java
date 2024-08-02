@@ -11,9 +11,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.ItemDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
+import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.EmployeeEntity;
 import lk.bytetechsolution.Entity.ItemEntity;
 import lk.bytetechsolution.Entity.ItemStatusEntity;
+import lk.bytetechsolution.Entity.UserEntity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,6 +35,9 @@ public class ItemController {
 
     @Autowired
     private ItemStatusDao daoStatus;
+
+    @Autowired
+    private UserDao daoUser;
 
     @Autowired
     private PrivilageController privilageController;
@@ -89,8 +94,13 @@ public class ItemController {
             }
             item.setItemcode(nextItemNumber);
 
-            //set date
+            //set added date
             item.setAddeddate(LocalDateTime.now());
+            //set added user
+            UserEntity loggedUser=daoUser.getByUsername(authentication.getName());
+            item.setAddeduser(loggedUser);
+            //set deleted user
+            item.setDeleteuser(loggedUser.getId());
 
             //save the object in db
             dao.save(item);

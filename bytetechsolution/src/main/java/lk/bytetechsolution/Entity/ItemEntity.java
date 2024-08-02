@@ -60,13 +60,13 @@ public class ItemEntity {
 
     @Column(name = "addeduser")
     @NotNull
-    private String addeduser;
+    private UserEntity addeduser;
 
     @Column(name = "modifyuser")
-    private String modifyuser;
+    private UserEntity modifyuser;
 
     @Column(name = "deleteuser")
-    private String deleteuser;
+    private UserEntity deleteuser;
 
     @Column(name = "quentity")
     @NotNull

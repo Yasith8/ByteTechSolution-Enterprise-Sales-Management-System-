@@ -10,6 +10,11 @@ public interface ItemDao extends JpaRepository<ItemEntity,Integer>{
     /* @Query(value = "SELECT i.itemname FROM ItemEntity i WHERE i.itemname=?")
     public ItemEntity getByItemName(String itemname); */
 
+    /* 
+     * LPAD-Left padding values adding
+     */
     @Query(value = "SELECT CONCAT('ITM', LPAD(SUBSTRING(MAX(i.itemcode), 4) + 1, 4, '0')) AS ItemCode FROM bytetechsolution.item AS i",nativeQuery = true)
     public String getNextItemNumber();
+
+    
 }
