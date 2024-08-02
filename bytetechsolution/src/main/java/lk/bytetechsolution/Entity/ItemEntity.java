@@ -26,7 +26,7 @@ public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
-    private int id;
+    private Integer id;
 
     @Column(name = "itemcode")
     @NotNull
@@ -45,8 +45,10 @@ public class ItemEntity {
     private BigDecimal purchaseprice;
 
     @Column(name = "rop")
-    @NotNull
-    private String rop;
+    private Integer rop;
+
+    @Column(name = "roq")
+    private Integer roq;
 
     @Column(name = "addeddate")
     @NotNull
@@ -58,25 +60,27 @@ public class ItemEntity {
     @Column(name = "deletedate")
     private LocalDateTime deletedate;
 
-    @Column(name = "addeduser")
-    @NotNull
-    private UserEntity addeduser;
-
-    @Column(name = "modifyuser")
-    private UserEntity modifyuser;
-
-    @Column(name = "deleteuser")
-    private UserEntity deleteuser;
-
     @Column(name = "quentity")
     @NotNull
-    private String quentity;
+    private Integer quentity;
 
     @Column(name = "photo")
     private byte[] photo;
 
     @Column(name = "photoname")
     private String photoname;
+
+    @ManyToOne
+    @JoinColumn(name = "addeduser_id", referencedColumnName = "id")
+    private UserEntity addeduser_id;
+
+    @ManyToOne
+    @JoinColumn(name = "deleteuser_id", referencedColumnName = "id")
+    private UserEntity deleteuser_id;
+
+    @ManyToOne
+    @JoinColumn(name = "modifyuser_id", referencedColumnName = "id")
+    private UserEntity modifyuser_id;
 
     @ManyToOne
     @JoinColumn(name = "itemstatus_id", referencedColumnName = "id")
