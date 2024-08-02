@@ -28,11 +28,11 @@ public class ItemEntity {
     @Column(name = "id", unique = true)
     private Integer id;
 
-    @Column(name = "itemcode")
+    @Column(name = "itemcode",unique = true)
     @NotNull
     private String itemcode;
 
-    @Column(name = "itemname")
+    @Column(name = "itemname",unique = true)
     @NotNull
     private String itemname;
 

@@ -98,9 +98,8 @@ public class ItemController {
             item.setAddeddate(LocalDateTime.now());
             //set added user
             UserEntity loggedUser=daoUser.getByUsername(authentication.getName());
-            item.setAddeduser(loggedUser);
-            //set deleted user
-            item.setDeleteuser(loggedUser.getId());
+            item.setAddeduser_id(loggedUser);
+        
 
             //save the object in db
             dao.save(item);
@@ -135,6 +134,11 @@ public class ItemController {
         }
 
         try {
+            //set deleted user
+            extItem.setDeleteuser_id(daoUser.getByUsername(authentication.getName()));
+            //set delete date
+            extItem.setDeletedate(LocalDateTime.now());
+
             //soft delete
             ItemStatusEntity unavailableStatusEntity=daoStatus.getReferenceById(3);
             extItem.setItemstatus_id(unavailableStatusEntity);
@@ -173,6 +177,11 @@ public class ItemController {
          */
         
         try {
+            //set updated user
+            item.setModifyuser_id(daoUser.getByUsername(authentication.getName()));
+            //set last updated date
+            item.setModifydate(LocalDateTime.now());
+            
             dao.save(item);
             return "OK";
         } catch (Exception e) {
