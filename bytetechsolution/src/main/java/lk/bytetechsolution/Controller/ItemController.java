@@ -15,6 +15,8 @@ import lk.bytetechsolution.Entity.EmployeeEntity;
 import lk.bytetechsolution.Entity.ItemEntity;
 import lk.bytetechsolution.Entity.ItemStatusEntity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -86,6 +88,9 @@ public class ItemController {
                 item.setItemcode("ITM0009");
             }
             item.setItemcode(nextItemNumber);
+
+            //set date
+            item.setAddeddate(LocalDateTime.now());
 
             //save the object in db
             dao.save(item);

@@ -13,7 +13,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.math.*;;
+import java.math.*;
+import java.time.LocalDateTime;;
 
 @Entity
 @Table(name = "item")
@@ -49,7 +50,23 @@ public class ItemEntity {
 
     @Column(name = "addeddate")
     @NotNull
-    private String addeddate;
+    private LocalDateTime addeddate;
+
+    @Column(name = "modifydate")
+    private LocalDateTime modifydate;
+
+    @Column(name = "deletedate")
+    private LocalDateTime deletedate;
+
+    @Column(name = "addeduser")
+    @NotNull
+    private String addeduser;
+
+    @Column(name = "modifyuser")
+    private String modifyuser;
+
+    @Column(name = "deleteuser")
+    private String deleteuser;
 
     @Column(name = "quentity")
     @NotNull

@@ -89,7 +89,7 @@ const getItemStatus = (ob) => {
 
 
     if (ob.itemstatus_id.name == 'Unavailable') {
-        return '<p  class="status-delete">' + ob.itemstatus_id.name + '</p>'
+        return '<p  class="itemstatus-delete">' + ob.itemstatus_id.name + '</p>'
     } else {
         return '<p  class="status-other">' + ob.itemstatus_id.name + '</p>'
     }
