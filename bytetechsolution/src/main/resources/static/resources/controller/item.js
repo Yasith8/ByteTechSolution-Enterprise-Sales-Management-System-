@@ -19,6 +19,7 @@ const refreshItemTable = () => {
         { dataType: 'text', propertyName: 'salesprice' },
         { dataType: 'text', propertyName: 'purchaseprice' },
         { dataType: 'text', propertyName: 'rop' },
+        { dataType: 'text', propertyName: 'roq' },
         { dataType: 'text', propertyName: 'quentity' },
         { dataType: 'function', propertyName: getBrandName },
         { dataType: 'function', propertyName: getCateogryName },
@@ -53,7 +54,7 @@ const refreshItemForm = () => {
     itemStatuses = getServiceAjaxRequest("/itemstatus/alldata");
     fillDataIntoSelect(selectItemStatus, "Select Item Status", itemStatuses, "name");
 
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, dateAddedDate, selectBrand, selectCategory, selectItemStatus])
+    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, numberROQ, selectBrand, selectCategory, selectItemStatus])
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
@@ -61,7 +62,7 @@ const refreshItemForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, dateAddedDate, selectBrand, selectCategory, selectItemStatus], true);
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, numberROQ, selectBrand, selectCategory, selectItemStatus], true);
         btnClearImage.classList.remove('btn-user-removeImage');
         btnSelectImage.classList.remove('btn-user-selectImage');
         buttonClear.classList.remove('modal-btn-clear');
@@ -122,8 +123,8 @@ const refillItemForm = (ob, rowIndex) => {
     numberQuentity.value = item.quentity;
     //assign rop 
     numberROP.value = item.rop;
-    //assign added date 
-    dateAddedDate.value = item.addeddate;
+    //assign roq 
+    numberROQ.value = item.roq;
 
 
     //assign item picture and name
@@ -146,7 +147,7 @@ const refillItemForm = (ob, rowIndex) => {
     fillDataIntoSelect(selectItemStatus, "Please Select", itemstatuses, "name", ob.itemstatus_id.name);
 
 
-    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, dateAddedDate, selectBrand, selectCategory, selectItemStatus], false);
+    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, numberROQ, selectBrand, selectCategory, selectItemStatus], false);
     btnClearImage.classList.add('btn-user-removeImage');
     btnSelectImage.classList.add('btn-user-selectImage');
     buttonClear.classList.add('modal-btn-clear');
@@ -161,7 +162,7 @@ const refillItemForm = (ob, rowIndex) => {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROP, dateAddedDate, selectBrand, selectCategory, selectItemStatus], true);
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberQuentity, numberROQ, numberROP, selectBrand, selectCategory, selectItemStatus], true);
         btnClearImage.classList.remove('btn-user-removeImage');
         btnSelectImage.classList.remove('btn-user-selectImage');
         buttonClear.classList.remove('modal-btn-clear');
@@ -192,17 +193,9 @@ const checkItemInputErrors = () => {
         errors = errors + "Sales Price Price can't be Null...!\n";
         decimalSalesPrice.classList.add("is-invalid");
     }
-    if (item.rop == null) {
-        errors = errors + "ROP can't be Null...!\n";
-        numberROP.classList.add("is-invalid");
-    }
     if (item.quentity == null) {
         errors = errors + "Quentity can't be Null...!\n";
         numberQuentity.classList.add("is-invalid");
-    }
-    if (item.addeddate == null) {
-        errors = errors + "Added Date can't be Null...!\n";
-        dateAddedDate.classList.add("is-invalid");
     }
     if (item.itemstatus_id == null) {
         errors = errors + "Item Status can't be Null...!\n";
