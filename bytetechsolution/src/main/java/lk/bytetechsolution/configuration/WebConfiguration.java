@@ -42,6 +42,7 @@ public class WebConfiguration {
         .requestMatchers("/user/**").hasAnyAuthority("Admin","Manager")
         //allow only for admin Manager
         .requestMatchers("/privilage/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/item/**").hasAnyAuthority("Admin","Manager")
         .anyRequest().authenticated();// any other requst need authenticate
         
         

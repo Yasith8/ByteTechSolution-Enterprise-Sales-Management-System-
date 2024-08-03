@@ -7,6 +7,13 @@ import lk.bytetechsolution.Entity.ItemEntity;
 import java.util.*;
 
 public interface ItemDao extends JpaRepository<ItemEntity,Integer>{
+
+    /* 
+     * for adding selectect columns we use constructor
+     */
+    @Query(value = "select new ItemEntity(i.id,i.itemcode,i.itemname,i.salesprice,i.purchaseprice,i.rop,i.roq,i.quentity,i.photo,i.photoname,i.itemstatus_id,i.category_id,i.brand_id) from ItemEntity i order by i.id desc")
+    public List<ItemEntity> findAll();
+
     
     /* @Query(value = "SELECT i.itemname FROM ItemEntity i WHERE i.itemname=?")
     public ItemEntity getByItemName(String itemname); */
@@ -18,11 +25,6 @@ public interface ItemDao extends JpaRepository<ItemEntity,Integer>{
     public String getNextItemNumber();
 
 
-    /* 
-     * for adding selectect columns we use constructor
-     */
-    @Query("SELECT ItemEntity(i.id,i.itemcode,i.itemname,i.salesprice,i.purchaseprice,i.rop,i.roq,i.quentity,i.photo,i.photoname,i.itemstatus_id,i.category_id,i.brand_id) as itemcode FROM ItemEntity i")
-    public List<ItemEntity> findAll();
-
+    
     
 }

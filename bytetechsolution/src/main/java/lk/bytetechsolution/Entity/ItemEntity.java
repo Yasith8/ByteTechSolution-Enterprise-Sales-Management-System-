@@ -25,7 +25,7 @@ public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
-    private Integer id;
+    private int id;
 
     @Column(name = "itemcode",unique = true)
     @NotNull
@@ -44,10 +44,10 @@ public class ItemEntity {
     private BigDecimal purchaseprice;
 
     @Column(name = "rop")
-    private Integer rop;
+    private int rop;
 
     @Column(name = "roq")
-    private Integer roq;
+    private int roq;
 
     @Column(name = "addeddate")
     @NotNull
