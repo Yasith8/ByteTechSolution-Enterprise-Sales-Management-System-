@@ -12,18 +12,17 @@ import org.springframework.web.servlet.ModelAndView;
 import lk.bytetechsolution.Dao.ItemDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.EmployeeEntity;
 import lk.bytetechsolution.Entity.ItemEntity;
 import lk.bytetechsolution.Entity.ItemStatusEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 
@@ -62,6 +61,7 @@ public class ItemController {
             return new ArrayList<ItemEntity>();
         }
         return dao.findAll();
+        
     }
 
     @PostMapping(value = "item")

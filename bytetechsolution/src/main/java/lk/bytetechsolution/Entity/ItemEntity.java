@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -93,4 +92,20 @@ public class ItemEntity {
     @ManyToOne
     @JoinColumn(name = "brand_id", referencedColumnName = "id")
     private BrandEntity brand_id;
+
+    public ItemEntity(int id,String itemcode,String itemname,BigDecimal salesprice,BigDecimal purchaseprice,int rop,int roq,int quentity,byte[] photo,String photoname,ItemStatusEntity itemstatus_id,CategoryEntity category_id,BrandEntity brand_id){
+        this.id = id;
+        this.itemcode=itemcode;
+        this.itemname=itemname;
+        this.salesprice=salesprice;
+        this.purchaseprice=purchaseprice;
+        this.rop=rop;
+        this.roq=roq;
+        this.quentity=quentity;
+        this.photo=photo;
+        this.photoname=photoname;
+        this.itemstatus_id=itemstatus_id;
+        this.brand_id=brand_id;
+        this.category_id=category_id;
+    }
 }
