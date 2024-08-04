@@ -64,6 +64,7 @@ public class EmployeeController {
         //attributes set to show titles in web page using theamleaf
         empView.addObject("title", "Employee Management || Bytetech Solution");
         empView.addObject("user", authentication.getName());// passing logged user name
+
         return empView;
     }
 

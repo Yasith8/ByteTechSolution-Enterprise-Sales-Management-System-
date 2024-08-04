@@ -49,16 +49,16 @@
                 <form class="d-flex">
                     <div class="dropdown">
                         <button class="btn btn-profile user-drop dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <img src="/resources/images/initialprofile.jpg" class="profile-img" alt="" width="30px" height="30px"><p class="m-0">User 1</p>
+                      <img src="/resources/images/initialprofile.jpg" class="profile-img" alt="" width="30px" height="30px"><p class="m-0" th:text="${user}">User01</p>
                     </button>
                         <ul class="dropdown-menu">
                             <li class="this-disabled">
                                 <a class="dropdown-item">
                                     <div class="user-drop">
-                                        <img src="/resources/image/initialprofile.jpg" class="profile-img" alt="" width="50px" height="50px">
+                                        <img src="/resources/image/initialprofile.jpg" id="imgUserPhoto" class="profile-img" alt="" width="50px" height="50px">
                                         <div class="m-0">
-                                            <p class="m-0">Yasith Nawodya</p>
-                                            <p class="mb-1">Employee</p>
+                                            <p class="m-0" th:text="${EmpName}">Emp Name</p>
+                                            <p class="mb-1" th:text="${UserRole}">UserRole</p>
                                         </div>
                                     </div>
                                 </a>
