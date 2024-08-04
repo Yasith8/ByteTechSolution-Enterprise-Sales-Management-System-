@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import lk.bytetechsolution.Entity.EmployeeEntity;
+import lk.bytetechsolution.Entity.UserEntity;
+
 //import java.util.List;
 import java.util.List;
 
@@ -32,6 +34,10 @@ public interface EmployeeDao extends JpaRepository<EmployeeEntity, Integer> {
 
      @Query("select e from EmployeeEntity e where e.email=?1")
      public EmployeeEntity getByEmail(String email);
+
+     //@Query("select e.fullname from EmployeeEntity e where e.id=?1")
+     @Query(value = "SELECT e.fullname FROM bytetechsolution.employee e where e.id=(select u.employee_id from bytetechsolution.user u where u.id=?1)",nativeQuery = true)
+     public String getFullnameById(int user);
 
      @Query(value = "select concat('E',lpad(substring(max(e.empid),2)+1,4,'0')) as EmpId from bytetechsolution.employee as e",nativeQuery = true)
      public String getNextEmployeeNumber();

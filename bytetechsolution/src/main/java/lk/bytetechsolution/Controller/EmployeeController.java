@@ -5,9 +5,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.EmployeeStatusDao;
+import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.EmployeeEntity;
 import lk.bytetechsolution.Entity.EmployeeStatusEntity;
 import lk.bytetechsolution.Entity.PrivilageEntity;
+import lk.bytetechsolution.Entity.UserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -41,6 +43,9 @@ public class EmployeeController {
     private EmployeeDao dao;
 
     @Autowired
+    private UserDao daoUser;
+
+    @Autowired
     private EmployeeStatusDao daoStatus;
 
 
@@ -57,6 +62,13 @@ public class EmployeeController {
         //get logged user authentication object using security
         // this help to retrieve the current authentication object which holds the user detail
         Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
+
+        //get looged user object
+        UserEntity loggedUser=daoUser.getByUsername(authentication.getName());
+
+        //get Logged user Employee data
+        String loggedEmployee=dao.getFullnameById(loggedUser.getId());
+
         // Create a new ModelAndView object to hold the model data and view information
         ModelAndView empView=new ModelAndView();
         //pass the ui
@@ -64,6 +76,9 @@ public class EmployeeController {
         //attributes set to show titles in web page using theamleaf
         empView.addObject("title", "Employee Management || Bytetech Solution");
         empView.addObject("user", authentication.getName());// passing logged user name
+        empView.addObject("EmpName", loggedEmployee);
+        empView.addObject("UserRole", loggedUser.getRoles());
+        empView.addObject("imgUserPhoto", loggedUser.getPhoto());
 
         return empView;
     }
