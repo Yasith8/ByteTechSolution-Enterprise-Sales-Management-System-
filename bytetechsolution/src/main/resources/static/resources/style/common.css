@@ -144,7 +144,6 @@ Navbar and Sidebar
 
 .btn-logout {
     background-color: rgba(255, 0, 0, 0.152);
-    color: red;
     font-weight: 500;
     border: 2px solid red;
     padding: 10px;
@@ -154,10 +153,19 @@ Navbar and Sidebar
     margin-bottom: 10px;
 }
 
-.btn-logout:hover {
-    background-color: rgb(255, 0, 0);
+.btn-logout-a {
+    text-decoration: none;
+    color: red;
+}
+
+.btn-logout-a:hover {
+    text-decoration: none;
     color: rgb(255, 255, 255);
     font-weight: 500;
+}
+
+.btn-logout:hover {
+    background-color: rgb(255, 0, 0);
     border: 2px solid red;
 }
 
