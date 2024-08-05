@@ -70,7 +70,7 @@ public class EmployeeController {
         String loggedEmployee=dao.getFullnameById(loggedUser.getId());
 
         //get Logged user's designation
-        String loggedEmployeeDesignation=dao.getDesignationByUserId(loggedUser.getId());
+        //String loggedEmployeeDesignation=dao.getDesignationByUserId(loggedUser.getId());
 
         // Create a new ModelAndView object to hold the model data and view information
         ModelAndView empView=new ModelAndView();
@@ -80,7 +80,7 @@ public class EmployeeController {
         empView.addObject("title", "Employee Management || Bytetech Solution");
         empView.addObject("user", authentication.getName());// passing logged user name
         empView.addObject("EmpName", loggedEmployee);
-        empView.addObject("UserRole", loggedEmployeeDesignation);
+        empView.addObject("UserRole", loggedUser.getRoles().iterator().next());//get the first role
         empView.addObject("imgUserPhoto", loggedUser.getPhoto());
 
         return empView;
