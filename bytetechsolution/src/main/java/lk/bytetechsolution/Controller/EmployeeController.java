@@ -80,8 +80,9 @@ public class EmployeeController {
         empView.addObject("title", "Employee Management || Bytetech Solution");
         empView.addObject("user", authentication.getName());// passing logged user name
         empView.addObject("EmpName", loggedEmployee);
-        empView.addObject("UserRole", loggedUser.getRoles().iterator().next());//get the first role
+        empView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
         empView.addObject("imgUserPhoto", loggedUser.getPhoto());
+
 
         return empView;
     }
