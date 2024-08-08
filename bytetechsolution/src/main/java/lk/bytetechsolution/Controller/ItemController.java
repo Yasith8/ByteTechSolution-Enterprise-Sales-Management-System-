@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
@@ -39,15 +40,28 @@ public class ItemController {
     private UserDao daoUser;
 
     @Autowired
+    private EmployeeDao daoEmployee;
+
+    @Autowired
     private PrivilageController privilageController;
 
 
     @RequestMapping(value = "/item") 
     public ModelAndView ItemUI(){
-        ModelAndView itemView=new ModelAndView();
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+
+          //get looged user object
+          UserEntity loggedUser=daoUser.getByUsername(authentication.getName());
+
+          //get Logged user Employee data
+          String loggedEmployee=daoEmployee.getFullnameById(loggedUser.getId());
+
+        ModelAndView itemView=new ModelAndView();
         itemView.addObject("title", "Item Management || ByteTech Solution");
         itemView.addObject("user", authentication.getName());
+        itemView.addObject("EmpName", loggedEmployee);
+        itemView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
+        itemView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
         itemView.setViewName("item.html");
         return itemView;
     }

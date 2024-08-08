@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.EmployeeStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.EmployeeStatusEntity;
@@ -41,6 +42,9 @@ public class UserController {
     @Autowired
     private UserDao dao;
 
+    @Autowired
+    private EmployeeDao daoEmployee;
+
     private PrivilageController privilageController=new PrivilageController();
 
     private BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
@@ -51,6 +55,14 @@ public class UserController {
     public ModelAndView userUI(){
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+
+          //get looged user object
+          UserEntity loggedUser=dao.getByUsername(authentication.getName());
+
+          //get Logged user Employee data
+          String loggedEmployee=daoEmployee.getFullnameById(loggedUser.getId());
+
+
         ModelAndView userView=new ModelAndView();
         userView.addObject("title", "User Management || Bytetech Solution");
         userView.addObject("user", authentication.getName());

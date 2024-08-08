@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.PrivilageDao;
+import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.PrivilageEntity;
+import lk.bytetechsolution.Entity.UserEntity;
 
 import java.util.*;
 
@@ -35,13 +38,28 @@ public class PrivilageController {
     @Autowired
     private PrivilageDao dao;
 
+    @Autowired
+    private EmployeeDao daoEmployee;
+
+    @Autowired
+    private UserDao daoUser;
+
     //request privilage ui
     @RequestMapping(value = "/privilage")
     public ModelAndView privilageUI(){
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+         //get looged user object
+          UserEntity loggedUser=daoUser.getByUsername(authentication.getName());
+
+          //get Logged user Employee data
+          String loggedEmployee=daoEmployee.getFullnameById(loggedUser.getId());
+
         ModelAndView privilageView=new ModelAndView();
         privilageView.addObject("title", "Privilage Management || Bytetech Solution");
         privilageView.addObject("user",authentication.getName());
+        privilageView.addObject("EmpName", loggedEmployee);
+        privilageView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
+        privilageView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
         privilageView.setViewName("privilage.html");
         return privilageView;
     }

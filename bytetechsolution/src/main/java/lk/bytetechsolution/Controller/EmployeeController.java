@@ -81,7 +81,7 @@ public class EmployeeController {
         empView.addObject("user", authentication.getName());// passing logged user name
         empView.addObject("EmpName", loggedEmployee);
         empView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
-        empView.addObject("imgUserPhoto", loggedUser.getPhoto());
+        empView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
 
 
         return empView;

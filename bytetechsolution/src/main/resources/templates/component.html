@@ -39,9 +39,9 @@
 
     <script th:inline="javascript">
         window.addEventListener("load", () => {
-            let userPhoto = /*[[${imgUserPhoto}]]*/ "imgUserPhoto";
+            let userPhoto = /*[[${LoggedUserPhoto}]]*/ 'LoggedUserPhoto';
             if (userPhoto != null) {
-                imgUserImg.src = atob(userPhoto);
+                imgUserPhoto.src = atob(userPhoto);
             }
 
         })
@@ -59,7 +59,7 @@
                 <form class="d-flex">
                     <div class="dropdown">
                         <button class="btn btn-profile user-drop dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <img src="/resources/images/initialprofile.jpg" id="imgUserImg" class="profile-img" alt="" width="30px" height="30px"><p class="m-0" th:text="${user}">User01</p>
+                      <img src="/resources/image/initialprofile.jpg" id="imgUserPhoto" class="profile-img" alt="" width="30px" height="30px"><p class="m-0" th:text="${user}">User01</p>
                     </button>
                         <ul class="dropdown-menu">
                             <li class="this-disabled">
