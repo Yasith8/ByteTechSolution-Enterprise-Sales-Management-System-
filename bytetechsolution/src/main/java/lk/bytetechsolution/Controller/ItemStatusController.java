@@ -16,7 +16,7 @@ public class ItemStatusController {
     private ItemStatusDao dao;
 
 
-    @GetMapping(value = "/itemstatus/alldata")
+    @GetMapping(value = "/itemstatus/alldata",produces = "application/json")
     public List<ItemStatusEntity> allItemStatusData(){
         return dao.findAll();
     }
