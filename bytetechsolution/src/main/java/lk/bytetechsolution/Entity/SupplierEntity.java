@@ -6,11 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.*;
 
 @Entity
 @Table(name = "supplier")
@@ -43,20 +46,27 @@ public class SupplierEntity {
     private String email;
     
     @Column(name = "nic")
+    @NotNull
     private String nic;
-   
-    @Column(name = "companyname")
-    private String companyname;
-
-    @Column(name = "companyphone")
-    private String companyphone;
     
-    supplierstatus_id int 
-    @Column(name = "")
-    private
-    addedemployee_id int 
-    @Column(name = "")
-    private
-    addeddatetime datetime
-}@Column(name = "")
-private
+    @Column(name = "companyname")
+    @NotNull
+    private String companyname;
+    
+    @Column(name = "companyphone")
+    @NotNull
+    private String companyphone;
+
+    @Column(name = "datetime")
+    @NotNull
+    private LocalDateTime datetime;
+    
+    @ManyToOne
+    @JoinColumn(name="supplierstatus_id",referencedColumnName = "id")
+    private SupplierStatusEntity supplierstatus_id;
+
+    @ManyToOne
+    @JoinColumn(name="addedemployee_id",referencedColumnName = "id")
+    private EmployeeEntity addedemployee_id;
+
+}
