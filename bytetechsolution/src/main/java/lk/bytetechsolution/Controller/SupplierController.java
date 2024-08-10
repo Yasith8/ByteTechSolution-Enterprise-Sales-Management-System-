@@ -15,7 +15,7 @@ public class SupplierController {
     @Autowired
     private SupplierDao dao;
 
-    @GetMapping(value = "/supplier",produces = "application/json")
+    @GetMapping(value = "/supplier/alldata",produces = "application/json")
     public List<SupplierEntity> GetAllSupplierData(){
         return dao.findAll();
     }

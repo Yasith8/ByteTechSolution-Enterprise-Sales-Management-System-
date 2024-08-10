@@ -57,9 +57,9 @@ public class SupplierEntity {
     @NotNull
     private String companyphone;
 
-    @Column(name = "datetime")
+    @Column(name = "addeddatetime")
     @NotNull
-    private LocalDateTime datetime;
+    private LocalDateTime addeddatetime;
     
     @ManyToOne
     @JoinColumn(name="supplierstatus_id",referencedColumnName = "id")
