@@ -59,3 +59,5 @@ Employee Management Module
    - rop/quentity 0 seen
    - ItemName in dao
    - is delete privilage in delete function or update function
+
+   - Navbar issue z-index issue

@@ -66,6 +66,10 @@ public class UserController {
         ModelAndView userView=new ModelAndView();
         userView.addObject("title", "User Management || Bytetech Solution");
         userView.addObject("user", authentication.getName());
+        userView.addObject("EmpName",loggedEmployee);
+        userView.addObject("UserRole",loggedUser.getRoles().iterator().next().getName());//get the first role
+        userView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
+
         userView.setViewName("user.html");
         return userView;
     }

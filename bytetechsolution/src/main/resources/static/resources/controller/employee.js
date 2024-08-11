@@ -367,9 +367,15 @@ const printEmployeeDataTable = (ob) => {
     const newTab = window.open();
     newTab.document.write(
         '<link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">' +
-        printEmployeeContent.outerHTML +
-        '<script>printEmployeeContent.removeAttribute("style")</script>'
+        '<link rel="stylesheet" href="resources/style/employee.css">' +
+        tableEmployee.outerHTML
     );
+
+    setTimeout(
+        function() {
+            newTab.print();
+        }, 1000
+    )
 }
 
 
