@@ -18,6 +18,9 @@ public interface ModuleDao extends JpaRepository<ModuleEntity,Integer>{
 
 
     @Query("select m from ModuleEntity m where m.id not in (select p.module_id.id from PrivilageEntity p where p.role_id.id=?1)")
-    List<ModuleEntity> getModuleByPrivilageId(Integer roleId);
+    public List<ModuleEntity> getModuleByPrivilageId(Integer roleId);
+
+    @Query(value = "SELECT m.name FROM bytetechsolution.module m where m.id in (SELECT prv.module_id FROM bytetechsolution.privilage prv where prv.role_id in (SELECT uhr.role_id FROM bytetechsolution.user_has_role uhr where uhr.user_id in (SELECT u.id from bytetechsolution.user u where u.username=?1)) and prv.selprv=1)",nativeQuery = true)
+    public String[] getModuleByLoggedUser(String username);
     
 }

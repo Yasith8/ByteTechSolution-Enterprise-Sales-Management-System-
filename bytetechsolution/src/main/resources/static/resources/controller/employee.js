@@ -221,144 +221,161 @@ const getEmployeeStatus = (ob) => {
 //employee print function
 const printEmployee = (ob, rowIndex) => {
 
+    printTextId.textContent = ob.empid;
+    printTextFullName.textContent = ob.fullname;
+    printTextNIC.textContent = ob.nic;
+    printTextEmail.textContent = ob.email;
+    printTextCallingName.textContent = ob.callingname;
+    printRadioGender.textContent = ob.gender;
+    printTextMobile.textContent = ob.mobile;
+    printTextLand.textContent = ob.landno;
+    printTextAddress.textContent = ob.address;
+    printDateDob.textContent = ob.dob;
+    printSelectDesignation.textContent = ob.designation_id.name;
+    printSelectStatus.textContent = ob.employeestatus_id.name;
+
+    if (ob.photo != null) {
+        printPhotoEmployeeProfile.src = atob(ob.photo);
+    }
+
     const newTab = window.open();
     newTab.document.write(
         ///////////////////////////////////////////////////////////
         '<link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">' +
         '<link rel="stylesheet" href="resources/style/employee.css">' +
+        '<link rel="stylesheet" href="resources/style/common.css">' +
+        /* 
         '<div class="print-container" style="display: none;" id="printEmployeeContent">' +
-        '<div class="d-flex gap-3 p-3">' +
-        '<img src="/resources/image/logo/logo.png" width="50px" height="50px">' +
-        '<div>' +
-        '<p class="label-logo">' +
-        '<b>ByteTech Solution</b>' +
-        '<br> No 32A, Galle Road, Panadura <br> 0382291010/ 0773881010' +
-        '</p>' +
+         '<div class="d-flex gap-3 p-3">' +
+         '<img src="/resources/image/logo/logo.png" width="50px" height="50px">' +
+         '<div>' +
+         '<p class="label-logo">' +
+         '<b>ByteTech Solution</b>' +
+         '<br> No 32A, Galle Road, Panadura <br> 0382291010/ 0773881010' +
+         '</p>' +
 
-        '</div>' +
+         '</div>' +
 
-        '</div>' +
+         '</div>' +
 
-        '<div class="row">' +
-        '<div class="col-2"></div>' +
-        '<div class="col-8">' +
-
-
-
-        '<div class="bg-white print-window">' +
-        '<img src="/resources/images/initialprofile.jpg" style="margin-left: 20px;margin-top: 20px;border-radius: 50px;" width="100px" height="100px" id="photoEmployeeProfile">' +
-        '<h2 class="text-center" style="margin-top: -50px;">Employee Details</h2>' +
-
-        '<div class="row mt-4">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Employee ID</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="employeeID">${ob.empid}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
-
-        '<div class="row mt-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Employee Name</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="textFullName">${ob.fullname}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
-
-        '<div class="row mt-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">National ID No</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="textNIC">${ob.nic}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
+         '<div class="row">' +
+         '<div class="col-2"></div>' +
+         '<div class="col-8">' +
 
 
-        '<div class="row mt-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Email</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="textEmail">${ob.email}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
 
-        '<div class="row mt-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Calling Name</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="textCallingName">${ob.callingname}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
+         '<div class="bg-white print-window">' +
+         '<img src="/resources/images/initialprofile.jpg" style="margin-left: 20px;margin-top: 20px;border-radius: 50px;" width="100px" height="100px" id="photoEmployeeProfile">' +
+         '<h2 class="text-center" style="margin-top: -50px;">Employee Details</h2>' +
 
-        '<div class="row mt-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Gender</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="gender">${ob.gender}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
+         '<div class="row mt-4">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Employee ID</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="employeeID"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
 
-        '<div class="row mt-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Mobile No</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="textMobile">${ob.mobile}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
+         '<div class="row mt-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Employee Name</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="textFullName"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
 
-        '<div class="row mt-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Land No</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="textLand">${ob.landno}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
+         '<div class="row mt-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">National ID No</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="textNIC"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
 
-        '<div class="row mt-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Land No</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="textAddress">${ob.address}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
 
-        '<div class="row mt-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Date of Birth</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="dateDob">${ob.dob}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
+         '<div class="row mt-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Email</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="textEmail"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
 
-        '<div class="row mt-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Designation</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="selectDesignation">${ob.designation_id.name}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
+         '<div class="row mt-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Calling Name</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="textCallingName"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
 
-        '<div class="row mt-2 mb-2">' +
-        '<div class="col-3"></div>' +
-        '<div class="col-3">Employee Status</div>' +
-        '<div class="col-1">:</div>' +
-        `<div class="col-3" id="selectStatus">${ob.employeestatus_id.name}</div>` +
-        '<div class="col-2"></div>' +
-        '</div>' +
-        '</div>' +
+         '<div class="row mt-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Gender</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="gender"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
 
-        '</div>' +
-        '<div class="col-2"></div>' +
+         '<div class="row mt-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Mobile No</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="textMobile"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
 
-        '</div>' +
-        '</div>' +
-        '<script>' +
-        `if(${ob.photo!=null}){
-            photoEmployeeProfile.src=atob(${ob.photo});
-        }
-        }` +
-        '</script>'
-        ///////////////////////////////////////////////////////////
+         '<div class="row mt-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Land No</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="textLand"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
+
+         '<div class="row mt-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Land No</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="textAddress"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
+
+         '<div class="row mt-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Date of Birth</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="dateDob"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
+
+         '<div class="row mt-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Designation</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="selectDesignation"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
+
+         '<div class="row mt-2 mb-2">' +
+         '<div class="col-3"></div>' +
+         '<div class="col-3">Employee Status</div>' +
+         '<div class="col-1">:</div>' +
+         '<div class="col-3" id="selectStatus"></div>' +
+         '<div class="col-2"></div>' +
+         '</div>' +
+         '</div>' +
+
+         '</div>' +
+         '<div class="col-2"></div>' +
+
+         '</div>' +
+         '</div>'
+         ///////////////////////////////////////////////////////////
+         */
+
+        printEmployeeDetails.outerHTML +
+        '<script>printEmployeeDetails.removeAttribute("style")</script>'
     );
 }
 

@@ -42,6 +42,12 @@ public class ModuleController {
         return dao.getModuleByPrivilageId(roleid);
      }
 
+    //get module by logged user
+    @GetMapping("/module/listbyloggeduser")
+    public String[] getModulOfLoggedUser() {
+      Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        return dao.getModuleByLoggedUser(authentication.getName());
+    }
     
      
 
