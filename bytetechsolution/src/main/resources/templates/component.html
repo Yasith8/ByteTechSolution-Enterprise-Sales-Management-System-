@@ -45,6 +45,18 @@
             }
 
         })
+
+
+        let accessedModules = getServiceAjaxRequest("/module/listbyloggeduser");
+
+        let sidebarUL = document.getElementById("sidebarUL");
+        accessedModules.forEach(element => {
+            let module = element.toLowerCase();
+            let href = document.createElement('a');
+            href.innerText = element;
+            href.href = `/${module}`;
+            sidebarUL.appendChild(href)
+        });
     </script>
 </head>
 
