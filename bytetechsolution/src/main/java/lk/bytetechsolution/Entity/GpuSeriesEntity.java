@@ -11,7 +11,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 /* 
  * ------------Entity-----------
  * convert into entity class
@@ -20,11 +19,11 @@ import lombok.NoArgsConstructor;
  * java tell system to instance of this class will represent rows in db's table
  */
 @Entity
-@Table(name = "gpuchipset") // map the gpuchipset table
+@Table(name = "gpuseries") // map the gpuchipset table
 @Data//genarate getters and setters and toString to class
 @AllArgsConstructor//default constructor       ----usefull when create object that not have any initial values
 @NoArgsConstructor//all argument constructor  ----usefull when create object that have any initial values
-public class GpuChipsetEntity {
+public class GpuSeriesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //set Auto Increment
     @Column(name = "id",unique = true)
