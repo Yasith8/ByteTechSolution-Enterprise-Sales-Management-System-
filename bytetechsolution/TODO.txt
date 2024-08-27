@@ -61,3 +61,5 @@ Employee Management Module
    - is delete privilage in delete function or update function
 
    - Navbar issue z-index issue
+
+   - Processor Item can accurate by generation
