@@ -39,6 +39,9 @@ public class ProcessorController {
     @Autowired
     private EmployeeDao daoEmployee;
 
+    @Autowired
+    private PrivilageController privilageController;
+
     @RequestMapping(value = "/processor")
     public ModelAndView processorUI(){
          //get logged user authentication object using security
@@ -68,6 +71,17 @@ public class ProcessorController {
     
     @GetMapping(value = "/processor/alldata", produces ="application/json" ) 
     public List<ProcessorEntity> allEmployeeData() {
+
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PROCESSOR");
+
+
+        //if current logged user doesnt have privilages show empty list
+        if(!userPrivilage.get("select")){
+            return new ArrayList<ProcessorEntity>();
+        }
+
 
         return daoProcessor.findAll();
     }
