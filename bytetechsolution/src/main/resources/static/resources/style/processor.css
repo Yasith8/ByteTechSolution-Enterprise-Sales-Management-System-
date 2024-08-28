@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: rgb(0, 240, 132);
+}
+
+.addBtn {
+    background-color: #6669b0;
+    color: white;
+}
+
+.btnDel:hover {
+    color: red;
+}
+
+.btnEdit:hover {
+    color: rgb(0, 255, 0);
+}
+
+.btnView:hover {
+    color: #6669b0;
+}
+
+.modal-content {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70rem;
+}
+
+.radioAlign {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.radioBtnAlign {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+}
+
+.success-status-btn {
+    padding: 5px;
+    width: 100px;
+    border: 2px solid rgb(0, 255, 0);
+    border-radius: 10px;
+    color: rgb(0, 255, 0);
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 255, 0, 0.203);
+}
+
+.status-dot {
+    padding-left: 6px;
+    width: 7px;
+    height: 7px;
+    background-color: rgb(0, 255, 0);
+    border-radius: 50px;
+}
