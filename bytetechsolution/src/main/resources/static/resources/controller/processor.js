@@ -30,6 +30,45 @@ const refreshProcessorTable = () => {
 }
 
 const refreshProcessorForm = () => {
+    item = new Object();
+
+    buttonSubmit.disabled = false;
+    buttonSubmit.classList.add('modal-btn-submit');
+
+    buttonUpdate.disabled = true;
+    buttonUpdate.classList.remove('modal-btn-update');
+
+    staticBackdropLabel.textContent = "Add New Item";
+
+    brands = getServiceAjaxRequest("/brand/alldata");
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", "");
+
+    categories = getServiceAjaxRequest("/category/alldata");
+    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name");
+
+    itemStatuses = getServiceAjaxRequest("/itemstatus/alldata");
+    fillDataIntoSelect(selectItemStatus, "Select Item Status", itemStatuses, "name");
+
+    cpuGeneration = getServiceAjaxRequest("/cpugeneration/alldata");
+    fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
+
+    cpuSeries = getServiceAjaxRequest("/cpuseries/alldata");
+    fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
+
+    cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
+    fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
+
+    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectCategory, selectItemStatus])
+
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
+
+    if (!userPrivilages.insert) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.remove('modal-btn-submit');
+
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectCategory, selectItemStatus], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
 
 }
 
