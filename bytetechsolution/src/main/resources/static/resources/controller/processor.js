@@ -40,14 +40,10 @@ const refreshProcessorForm = () => {
 
     staticBackdropLabel.textContent = "Add New Item";
 
-    brands = getServiceAjaxRequest("/brand/alldata");
-    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", "");
 
-    categories = getServiceAjaxRequest("/category/alldata");
-    const processorCategory = categories.find(item => item.id === 1).name;
-    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", processorCategory);
-
-    selectCategory.disabled = true;
+    brands = getServiceAjaxRequest("/brand/brandbycategory/Processor");
+    console.log(brands)
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
 
     itemStatuses = getServiceAjaxRequest("/itemstatus/alldata");
     fillDataIntoSelect(selectItemStatus, "Select Item Status", itemStatuses, "name");
@@ -61,7 +57,7 @@ const refreshProcessorForm = () => {
     cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
     fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
 
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectCategory, selectItemStatus])
+    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
@@ -69,7 +65,7 @@ const refreshProcessorForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectCategory, selectItemStatus], true);
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 
