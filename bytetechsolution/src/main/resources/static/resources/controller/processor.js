@@ -42,7 +42,6 @@ const refreshProcessorForm = () => {
 
 
     brands = getServiceAjaxRequest("/brand/brandbycategory/Processor");
-    console.log(brands)
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
 
     itemStatuses = getServiceAjaxRequest("/itemstatus/alldata");
@@ -106,6 +105,87 @@ const getItemStatus = (ob) => {
     }
 }
 
-const refillItemForm = () => {
+const refillItemForm = (ob, rowIndex) => {
+    $('#processorAddModal').modal('show');
 
+
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit');
+
+    buttonUpdate.disabled = false;
+    buttonUpdate.classList.add('modal-btn-update');
+
+    processor = JSON.parse(JSON.stringify(ob));
+    oldProcessor = ob;
+
+    //asign itemcode
+    staticBackdropLabel.textContent = processor.itemcode;
+
+    //assign item name
+    textItemName.value = processor.itemname;
+    //assign purchase price
+    decimalPurchasePrice.value = processor.purchaseprice;
+    //assign profit rate
+    numberProfitRate.value = processor.profitrate;
+    //assign sales price
+    decimalSalesPrice.value = processor.salesprice;
+    //assign quentity 
+    numberQuentity.value = processor.quantity;
+    //assign rop 
+    numberROP.value = processor.rop;
+    //assign roq 
+    numberROQ.value = processor.roq;
+    //assign warranty
+    numberWarranty.value = processor.warranty;
+    //asign description
+    textDescription.value = processor.description;
+    //assign total core
+    numberTotalCore.value = processor.totalcore;
+
+
+
+    brands = getServiceAjaxRequest("/brand/brandbycategory/Processor");
+    fillDataIntoSelect(selectBrand, "Please Select", brands, "name", ob.brand_id.name);
+
+
+    itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
+    fillDataIntoSelect(selectItemStatus, "Please Select", itemstatuses, "name", ob.itemstatus_id.name);
+
+    cpuGeneration = getServiceAjaxRequest("/cpugeneration/alldata");
+    fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name", ob.cpugeneration_id.name);
+
+    cpuSeries = getServiceAjaxRequest("/cpuseries/alldata");
+    fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name", ob.cpuseries_id.name);
+
+    cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
+    fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name", ob.cpusocket_id.name);
+
+
+    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
+    btnClearImage.classList.add('btn-user-removeImage');
+    btnSelectImage.classList.add('btn-user-selectImage');
+    buttonClear.classList.add('modal-btn-clear');
+
+
+
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
+    //console.log(userPrivilage);
+
+
+    if (!userPrivilage.update) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
+        btnClearImage.classList.remove('btn-user-removeImage');
+        btnSelectImage.classList.remove('btn-user-selectImage');
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+    if (!userPrivilage.delete) {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
+
+
+    buttonClear.disabled = true;
 }
