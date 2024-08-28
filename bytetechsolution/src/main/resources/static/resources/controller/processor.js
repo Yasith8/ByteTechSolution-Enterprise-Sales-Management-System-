@@ -30,7 +30,7 @@ const refreshProcessorTable = () => {
 }
 
 const refreshProcessorForm = () => {
-    item = new Object();
+    processor = new Object();
 
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
