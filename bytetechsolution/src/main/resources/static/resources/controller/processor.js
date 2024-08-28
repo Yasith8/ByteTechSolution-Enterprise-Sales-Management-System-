@@ -51,19 +51,20 @@ const getCpuSocket = (ob) => {
 }
 
 const getItemStatus = (ob) => {
+    console.log(ob.itemstatus_id.name)
     if (ob.itemstatus_id.name == 'Available') {
-        return '<p  class="status-active">' + ob.itemstatus_id.name + '</p>';
+        return '<p class="items-tatus-available">' + ob.itemstatus_id.name + '</p>';
     }
 
     if (ob.itemstatus_id.name == 'Low-Stock') {
-        return '<p  class="status-resign">' + ob.itemstatus_id.name + '</p>'
+        return '<p class="item-status-resign">' + ob.itemstatus_id.name + '</p>'
     }
 
 
     if (ob.itemstatus_id.name == 'Unavailable') {
-        return '<p  class="itemstatus-delete">' + ob.itemstatus_id.name + '</p>'
+        return '<p class="item-status-delete">' + ob.itemstatus_id.name + '</p>'
     } else {
-        return '<p  class="status-other">' + ob.itemstatus_id.name + '</p>'
+        return '<p class="item-status-other">' + ob.itemstatus_id.name + '</p>'
     }
 }
 

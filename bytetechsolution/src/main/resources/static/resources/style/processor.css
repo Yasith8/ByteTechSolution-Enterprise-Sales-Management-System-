@@ -4,7 +4,7 @@
 }
 
 body {
-    background-color: rgb(0, 240, 132);
+    background-color: rgb(0, 255, 140);
 }
 
 .addBtn {
@@ -57,10 +57,38 @@ body {
     background-color: rgba(0, 255, 0, 0.203);
 }
 
-.status-dot {
-    padding-left: 6px;
-    width: 7px;
-    height: 7px;
-    background-color: rgb(0, 255, 0);
-    border-radius: 50px;
+.item-status-available {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: green;
+    color: white;
+    text-align: center;
+}
+
+.item-status-resign {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: orange;
+    color: white;
+    text-align: center;
+}
+
+.item-status-delete {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: red;
+    color: white;
+    text-align: center;
+}
+
+.item-status-other {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: grey;
+    color: white;
+    text-align: center;
 }
