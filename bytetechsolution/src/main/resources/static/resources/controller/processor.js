@@ -44,7 +44,10 @@ const refreshProcessorForm = () => {
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", "");
 
     categories = getServiceAjaxRequest("/category/alldata");
-    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name");
+    const processorCategory = categories.find(item => item.id === 1).name;
+    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", processorCategory);
+
+    selectCategory.disabled = true;
 
     itemStatuses = getServiceAjaxRequest("/itemstatus/alldata");
     fillDataIntoSelect(selectItemStatus, "Select Item Status", itemStatuses, "name");
