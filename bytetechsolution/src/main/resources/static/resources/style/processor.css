@@ -92,3 +92,11 @@ body {
     color: white;
     text-align: center;
 }
+
+.card {
+    position: static;
+}
+
+.dataTables_wrapper {
+    position: static;
+}

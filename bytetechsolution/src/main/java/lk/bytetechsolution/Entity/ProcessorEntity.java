@@ -62,10 +62,6 @@ public class ProcessorEntity {
     private Integer roq;
 
     @NotNull
-    @Column(name = "quantity")
-    private Integer quantity;
-
-    @NotNull
     @Column(name = "addeddate")
     private LocalDateTime addeddate;
 

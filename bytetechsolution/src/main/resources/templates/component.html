@@ -61,59 +61,61 @@
 </head>
 
 <body>
-    <div th:fragment="navFragment">
-        <nav class="navbar bg-green p-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <img src="/resources/image/logo/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                    <b class="ms-2">Bytetech Solution</b>
-                </a>
-                <form class="d-flex">
-                    <div class="dropdown">
-                        <button class="btn btn-profile user-drop dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+    <nav class="navbar bg-green p-3" th:fragment="navFragment">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="/resources/image/logo/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                <b class="ms-2">Bytetech Solution</b>
+            </a>
+            <form class="d-flex">
+                <div class="dropdown">
+                    <button class="btn btn-profile user-drop dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <img src="/resources/image/initialprofile.jpg" id="imgUserPhoto" class="profile-img" alt="" width="30px" height="30px"><p class="m-0" th:text="${user}">User01</p>
                     </button>
-                        <ul class="dropdown-menu">
-                            <li class="this-disabled">
-                                <a class="dropdown-item">
-                                    <div class="user-drop">
-                                        <img src="/resources/image/initialprofile.jpg" id="imgUserPhoto" class="profile-img" alt="" width="50px" height="50px">
-                                        <div class="m-0">
-                                            <p class="m-0" th:text="${EmpName}">Emp Name</p>
-                                            <p class="mb-1" th:text="${UserRole}">UserRole</p>
-                                        </div>
+                    <ul class="dropdown-menu">
+                        <li class="this-disabled">
+                            <a class="dropdown-item">
+                                <div class="user-drop">
+                                    <img src="/resources/image/initialprofile.jpg" id="imgUserPhoto" class="profile-img" alt="" width="50px" height="50px">
+                                    <div class="m-0">
+                                        <p class="m-0" th:text="${EmpName}">Emp Name</p>
+                                        <p class="mb-1" th:text="${UserRole}">UserRole</p>
                                     </div>
-                                </a>
-                            </li>
-                            <li><a class="dropdown-item" href="#">Profile View</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><button class="btn-logout"><a href="/logout" class="btn-logout-a">Logout</a></button></li>
-                        </ul>
-                    </div>
-                    <button class="btn btn-burger ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="fa-solid fa-bars"></i></button>
-                </form>
-            </div>
-        </nav>
+                                </div>
+                            </a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Profile View</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><button class="btn-logout"><a href="/logout" class="btn-logout-a">Logout</a></button></li>
+                    </ul>
+                </div>
+                <button class="btn btn-burger ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="fa-solid fa-bars"></i></button>
+            </form>
+        </div>
 
 
-        <div class="offcanvas offcanvas-end canves-size" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-                <div class="offcanvas-title user-drop" id="offcanvasRightLabel"><img src="/resources/images/logo.png" height="30px" alt="">
-                    <h5>Bytetech Solution</h5>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </nav>
+
+
+    <div th:fragment="offcanvasFragment" class="offcanvas offcanvas-end canves-size" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <div class="offcanvas-title user-drop" id="offcanvasRightLabel"><img src="/resources/images/logo.png" height="30px" alt="">
+                <h5>Bytetech Solution</h5>
             </div>
-            <div class="offcanvas-body">
-                <div id="sidebarUL">
-                    <button class="sidebar-btn">User Management</button>
-                    <button class="sidebar-btn">User Management</button>
-                    <button class="sidebar-btn">User Management</button>
-                </div>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div id="sidebarUL">
+                <button class="sidebar-btn">User Management</button>
+                <button class="sidebar-btn">User Management</button>
+                <button class="sidebar-btn">User Management</button>
             </div>
         </div>
     </div>
+
 </body>
 
 </html>

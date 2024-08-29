@@ -130,7 +130,7 @@ const refillItemForm = (ob, rowIndex) => {
     //assign sales price
     decimalSalesPrice.value = processor.salesprice;
     //assign quentity 
-    numberQuentity.value = processor.quantity;
+    numberQuantity.value = processor.quantity;
     //assign rop 
     numberROP.value = processor.rop;
     //assign roq 
