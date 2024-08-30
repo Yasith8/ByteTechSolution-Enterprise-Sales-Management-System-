@@ -51,10 +51,9 @@ const refreshProcessorForm = () => {
     itemStatuses = getServiceAjaxRequest("/itemstatus/alldata");
     fillDataIntoSelect(selectItemStatus, "Select Item Status", itemStatuses, "name");
 
-    cpuGeneration = getServiceAjaxRequest("/cpugeneration/alldata");
-    fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
 
-    // Attach the event listener to the select element
+
+
     selectBrand.addEventListener('change', () => {
         const cpuSeriesToBrand = selectValueHandler(selectBrand);
         cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuSeriesToBrand.name);
@@ -64,8 +63,21 @@ const refreshProcessorForm = () => {
     //cpuSeries = getServiceAjaxRequest("/cpuseries/alldata");
     //fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
 
+
     cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
     fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
+
+    selectCpuSocket.addEventListener('change', () => {
+        const cpuGentoSocket = selectValueHandler(selectCpuSocket);
+        console.log(cpuGentoSocket)
+        cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + cpuGentoSocket.name);
+        fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
+    });
+
+
+    //cpuGeneration = getServiceAjaxRequest("/cpugeneration/alldata");
+    //fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
+
 
     removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
 
