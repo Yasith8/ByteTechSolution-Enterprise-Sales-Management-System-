@@ -55,24 +55,35 @@ const refreshProcessorForm = () => {
 
 
     selectBrand.addEventListener('change', () => {
-        const cpuSeriesToBrand = selectValueHandler(selectBrand);
-        cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuSeriesToBrand.name);
+        const cpuBrand = selectValueHandler(selectBrand);
+        cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuBrand.name);
         fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
+
+        cpuSocket = getServiceAjaxRequest("/cpusocket/cpusocketbybrand/" + cpuBrand.name);
+        fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
+
+        selectCpuSocket.addEventListener('change', () => {
+            const cpuGentoSocket = selectValueHandler(selectCpuSocket);
+            console.log(cpuGentoSocket)
+            cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + cpuGentoSocket.name);
+            fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
+        });
+
     });
 
     //cpuSeries = getServiceAjaxRequest("/cpuseries/alldata");
     //fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
 
 
-    cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
-    fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
+    //cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
+    //fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
 
-    selectCpuSocket.addEventListener('change', () => {
+    /* selectCpuSocket.addEventListener('change', () => {
         const cpuGentoSocket = selectValueHandler(selectCpuSocket);
         console.log(cpuGentoSocket)
         cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + cpuGentoSocket.name);
         fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
-    });
+    }); */
 
 
     //cpuGeneration = getServiceAjaxRequest("/cpugeneration/alldata");
