@@ -189,3 +189,10 @@ const refillItemForm = (ob, rowIndex) => {
 
     buttonClear.disabled = true;
 }
+
+
+const salePriceCalculator = () => {
+    let salesPrice = Number(decimalPurchasePrice.value) + (Number(numberProfitRate.value / 100) * Number(decimalPurchasePrice.value));
+    decimalSalesPrice.value = salesPrice;
+    textValidator(decimalSalesPrice, '^[0-9]+(\\.[0-9]{1,2})?$', 'processor', 'salesprice')
+}
