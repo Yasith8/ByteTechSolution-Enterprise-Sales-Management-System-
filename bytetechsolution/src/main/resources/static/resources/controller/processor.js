@@ -29,6 +29,10 @@ const refreshProcessorTable = () => {
 
 }
 
+
+
+console.log(selectValueHandler)
+
 const refreshProcessorForm = () => {
     processor = new Object();
 
@@ -50,8 +54,15 @@ const refreshProcessorForm = () => {
     cpuGeneration = getServiceAjaxRequest("/cpugeneration/alldata");
     fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
 
-    cpuSeries = getServiceAjaxRequest("/cpuseries/alldata");
-    fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
+    // Attach the event listener to the select element
+    selectBrand.addEventListener('change', () => {
+        const cpuSeriesToBrand = selectValueHandler(selectBrand);
+        cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuSeriesToBrand.name);
+        fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
+    });
+
+    //cpuSeries = getServiceAjaxRequest("/cpuseries/alldata");
+    //fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
 
     cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
     fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
@@ -67,6 +78,8 @@ const refreshProcessorForm = () => {
         inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
+
+
 
 }
 

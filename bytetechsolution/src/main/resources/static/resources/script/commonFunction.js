@@ -118,3 +118,10 @@ const printModuleTable = (id) => {
     printWindow.document.close();
     printWindow.print();
 }
+
+
+const selectValueHandler = (filedId) => {
+    if (filedId != "") {
+        return JSON.parse(filedId.value);
+    }
+}

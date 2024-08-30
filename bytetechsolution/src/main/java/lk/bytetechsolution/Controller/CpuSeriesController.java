@@ -2,9 +2,11 @@ package lk.bytetechsolution.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import lk.bytetechsolution.Dao.CpuSeriesDao;
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.CpuSeriesEntity;
 
 import java.util.*;
@@ -41,5 +43,11 @@ public class CpuSeriesController {
     public List<CpuSeriesEntity> allEmployeeData() {
 
         return dao.findAll();
+    }
+
+    //get barnds accordind to categories
+    @GetMapping(value = "/cpuseries/cpuseriesbybrand/{brandname}",produces = "application/json")
+    public List<CpuSeriesEntity> getBrandByCategory(@PathVariable("brandname") String brandname){
+        return dao.getBrandByCategory(brandname);
     }
 }
