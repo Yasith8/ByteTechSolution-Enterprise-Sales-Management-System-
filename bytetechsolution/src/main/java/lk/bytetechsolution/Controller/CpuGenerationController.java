@@ -5,10 +5,13 @@ package lk.bytetechsolution.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import lk.bytetechsolution.Dao.CpuGenerationDao;
 import lk.bytetechsolution.Entity.CpuGenerationEntity;
+import lk.bytetechsolution.Entity.CpuSeriesEntity;
+
 import java.util.*;
 
 
@@ -42,6 +45,12 @@ public class CpuGenerationController {
     public List<CpuGenerationEntity> allEmployeeData() {
 
         return dao.findAll();
+    }
+
+    //get cpu generation according to cpu socket
+    @GetMapping(value = "/cpugeneration/cpugenerationbycpusocket/{socketname}",produces = "application/json")
+    public List<CpuSeriesEntity> getBrandByCategory(@PathVariable("socketname") String socketname){
+        return dao.getGenBySocket(socketname);
     }
 
 }

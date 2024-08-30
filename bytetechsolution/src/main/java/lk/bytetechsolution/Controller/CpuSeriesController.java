@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import lk.bytetechsolution.Dao.CpuSeriesDao;
-import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.CpuSeriesEntity;
 
 import java.util.*;
