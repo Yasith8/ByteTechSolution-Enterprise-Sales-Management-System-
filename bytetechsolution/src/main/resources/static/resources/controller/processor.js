@@ -201,8 +201,7 @@ const refillItemForm = (ob, rowIndex) => {
 
 
 
-
-
+    //when user change brand all the data need to change
     selectBrand.addEventListener('change', () => {
         const cpuBrand = selectValueHandler(selectBrand);
         cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuBrand.name);
@@ -256,4 +255,26 @@ const salePriceCalculator = () => {
     let salesPrice = Number(decimalPurchasePrice.value) + (Number(numberProfitRate.value / 100) * Number(decimalPurchasePrice.value));
     decimalSalesPrice.value = salesPrice;
     textValidator(decimalSalesPrice, '^[0-9]+(\\.[0-9]{1,2})?$', 'processor', 'salesprice')
+}
+
+//print table
+const printProcessorTable = () => {
+
+}
+
+//print processor data
+const buttonProcessorDetailPrint = () => {}
+
+const buttonProcessorSubmit = () => {
+    console.log(processor)
+}
+
+
+const buttonProcessorUpdate = () => {
+
+}
+
+
+const buttonProcessorDelete = () => {
+    console.log(processor)
 }
