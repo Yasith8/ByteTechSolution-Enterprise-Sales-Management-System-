@@ -64,7 +64,6 @@ const refreshProcessorForm = () => {
 
         selectCpuSocket.addEventListener('change', () => {
             const cpuGentoSocket = selectValueHandler(selectCpuSocket);
-            console.log(cpuGentoSocket)
             cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + cpuGentoSocket.name);
             fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
         });
@@ -90,7 +89,7 @@ const refreshProcessorForm = () => {
     //fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
 
 
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
+    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
@@ -98,7 +97,7 @@ const refreshProcessorForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 
@@ -221,7 +220,7 @@ const refillItemForm = (ob, rowIndex) => {
 
 
 
-    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
+    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
     btnClearImage.classList.add('btn-user-removeImage');
     btnSelectImage.classList.add('btn-user-selectImage');
     buttonClear.classList.add('modal-btn-clear');
@@ -236,7 +235,7 @@ const refillItemForm = (ob, rowIndex) => {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
         btnClearImage.classList.remove('btn-user-removeImage');
         btnSelectImage.classList.remove('btn-user-selectImage');
         buttonClear.classList.remove('modal-btn-clear');
@@ -265,8 +264,113 @@ const printProcessorTable = () => {
 //print processor data
 const buttonProcessorDetailPrint = () => {}
 
+const checkProcessorInputErrors = () => {
+    let errors = "";
+
+    if (processor.itemname == null) {
+        errors = errors + "Processor Name can't be Null...!\n";
+        textItemName.classList.add("is-invalid");
+    }
+    if (processor.purchaseprice == null) {
+        errors = errors + "Purchase Price can't be Null...!\n";
+        decimalPurchasePrice.classList.add("is-invalid");
+    }
+    if (processor.salesprice == null) {
+        errors = errors + "Sales Price can't be Null...!\n";
+        decimalSalesPrice.classList.add("is-invalid");
+    }
+
+    if (processor.profitrate == null) {
+        errors = errors + "Profit Rate can't be Null...!\n";
+        numberProfitRate.classList.add("is-invalid");
+    }
+
+    if (processor.warranty == null) {
+        errors = errors + "Warranty can't be Null...!\n";
+        numberWarranty.classList.add("is-invalid");
+    }
+
+    if (processor.totalcore == null) {
+        errors = errors + "Total Cores can't be Null...!\n";
+        numberTotalCore.classList.add("is-invalid");
+    }
+    if (processor.itemstatus_id == null) {
+        errors = errors + "Item Status can't be Null...!\n";
+        selectItemStatus.classList.add("is-invalid");
+    }
+    if (processor.brand_id == null) {
+        errors = errors + "Brand can't be Null...!\n";
+        selectBrand.classList.add("is-invalid");
+    }
+    if (processor.cpusocket_id == null) {
+        errors = errors + "Processor Socket can't be Null...!\n";
+        selectCpuSocket.classList.add("is-invalid");
+    }
+    if (processor.cpuseries_id == null) {
+        errors = errors + "Processor Series can't be Null...!\n";
+        selectCpuSeries.classList.add("is-invalid");
+    }
+    if (processor.cpugeneration_id == null) {
+        errors = errors + "Processor Generation can't be Null...!\n";
+        selectCpuGeneration.classList.add("is-invalid");
+    }
+
+    return errors;
+}
+
+
 const buttonProcessorSubmit = () => {
-    console.log(processor)
+    let errors = checkProcessorInputErrors();
+
+    if (errors == "") {
+
+        //check user response error
+        const userSubmitResponse = confirm('Are you sure to submit...?\n');
+
+
+        if (userSubmitResponse) {
+            //call post service
+
+            let postServiceResponce;
+
+            $.ajax("/processor", {
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(processor),
+                async: false,
+
+                success: function(data) {
+                    console.log("success", data);
+                    postServiceResponce = data;
+                },
+
+                error: function(resData) {
+                    console.log("Fail", resData);
+                    postServiceResponce = resData;
+                }
+
+            });
+
+            //if response is success
+            if (postServiceResponce == "OK") {
+                alert("Save successfully...!");
+                //hide the model
+                $('#processorAddModal').modal('hide');
+                //reset the Item form
+                formProcessor.reset();
+                //refreash Item form
+                refreshProcessorForm();
+                //refreash Item table
+                refreshProcessorTable();
+            } else {
+                alert("Fail to submit Processor form \n" + postServiceResponce);
+            }
+        }
+    } else {
+        //if error ext then set alert
+        alert('form has following error...\n' + errors);
+    }
+
 }
 
 
@@ -276,5 +380,22 @@ const buttonProcessorUpdate = () => {
 
 
 const buttonProcessorDelete = () => {
-    console.log(processor)
+
+}
+
+const buttonModalClose = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
+
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#processorAddModal').modal('hide');
+
+
+        //formItem is id of form
+        //this will reset all data(refreash)
+        formProcessor.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshProcessorForm();
+    }
 }

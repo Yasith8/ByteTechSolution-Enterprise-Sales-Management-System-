@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ProcessorDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.EmployeeEntity;
 import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 @RestController
