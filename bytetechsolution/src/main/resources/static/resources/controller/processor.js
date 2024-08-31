@@ -373,8 +373,117 @@ const buttonProcessorSubmit = () => {
 
 }
 
+const checkProcessorFormUpdates = () => {
+    updates = "";
+
+    if (processor.itemname != oldProcessor.itemname) {
+        updates = updates + "Processor Name is Changed \n";
+    }
+    if (processor.purchaseprice != oldProcessor.purchaseprice) {
+        updates = updates + "Purchase Price is Changed \n";
+    }
+    if (processor.profitrate != oldProcessor.profitrate) {
+        updates = updates + "Profit Rate is Changed \n";
+    }
+    if (processor.warranty != oldProcessor.warranty) {
+        updates = updates + "Warranty is Changed \n";
+    }
+    if (processor.rop != oldProcessor.rop) {
+        updates = updates + "ROP is Changed \n";
+    }
+    if (processor.roq != oldProcessor.roq) {
+        updates = updates + "ROQ is Changed \n";
+    }
+    if (processor.totalcore != oldProcessor.totalcore) {
+        updates = updates + "Total Core is Changed \n";
+    }
+    if (processor.description != oldProcessor.description) {
+        updates = updates + "Description is Changed \n";
+    }
+    if (processor.brand_id.name != oldProcessor.brand_id.name) {
+        updates = updates + "Brand is Changed \n";
+    }
+    if (processor.cpusocket_id.name != oldProcessor.cpusocket_id.name) {
+        updates = updates + "Processor Socket is Changed \n";
+    }
+    if (processor.cpugeneration_id.name != oldProcessor.cpugeneration_id.name) {
+        updates = updates + "Processor Generation is Changed \n";
+    }
+    if (processor.cpuseries_id.name != oldProcessor.cpuseries_id.name) {
+        updates = updates + "Processor Socket is Changed \n";
+    }
+    if (processor.itemstatus_id.name != oldProcessor.itemstatus_id.name) {
+        updates = updates + "Item Status is Changed \n";
+    }
+
+    return updates;
+}
 
 const buttonProcessorUpdate = () => {
+    //check form error
+    let errors = checkProcessorInputErrors();
+
+    //check code has error, if code doesn't have  any errors
+    if (errors == "") {
+
+        //check form update
+
+        let updates = checkProcessorFormUpdates();
+
+        //check there is no updates or any updations
+        if (updates == "") {
+            alert("Nothing Updates")
+        } else {
+
+            //get conformation from user to made updation
+            let userConfirm = confirm("Are You Sure to Update this Changes? \n" + updates);
+
+            //if user conform
+            if (userConfirm) {
+                //call put service requestd  -this use for updations
+                let putServiceResponse;
+
+                $.ajax("/processor", {
+                    type: "PUT",
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(processor),
+
+
+                    success: function(successResponseOb) {
+                        putServiceResponse = successResponseOb;
+                    },
+
+                    error: function(failedResponseOb) {
+                        putServiceResponse = failedResponseOb;
+                    }
+
+                });
+                //check put service response
+                if (putServiceResponse == "OK") {
+                    alert("Updated Successfully");
+
+                    //hide the moadel
+                    $('#processorAddModal').modal('hide');
+                    //refreash Item table for realtime updation
+                    refreshProcessorTable();
+                    //reset the Item form
+                    formProcessor.reset();
+                    //Item form refresh
+                    refreshProcessorForm();
+                } else {
+                    //handling errors
+                    alert("Update not Completed :\n" + putServiceResponse);
+                    //refreash the employee form
+                    refreshProcessorForm();
+                }
+            }
+        }
+    } else {
+        //show user to what errors happen
+        alert("Employee Form  has Following Errors..\n" + errors)
+    }
+
 
 }
 

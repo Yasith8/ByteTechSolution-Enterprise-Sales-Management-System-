@@ -120,7 +120,7 @@ public class ProcessorController {
 
             //if next employee number is not come then set manualy last number+1
             if(nextNumber==null){
-                processor.setItemcode("CPU0002");
+                processor.setItemcode("CPU0004");
             }
             processor.setItemcode(nextNumber);
 
