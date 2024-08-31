@@ -7,6 +7,7 @@ import java.time.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
+import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.ProcessorDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.ProcessorEntity;
@@ -45,6 +47,9 @@ public class ProcessorController {
 
     @Autowired
     private CategoryDao daoCategory;
+
+    @Autowired
+    private ItemStatusDao daoItemStatus;
 
     @Autowired
     private PrivilageController privilageController;
@@ -144,6 +149,49 @@ public class ProcessorController {
             return "Save not Completed : "+e.getMessage();
         }
     }
+
+
+    @DeleteMapping(value = "/processor")
+    public String deleteProcessorData(@RequestBody ProcessorEntity processor){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PROCESSOR");
+
+        if(!userPrivilage.get("delete")){
+            return "Permission Denied! Delete not Completed";
+        }
+
+        //existance check
+        ProcessorEntity extProcessor=daoProcessor.getReferenceById(processor.getId());
+
+        if(extProcessor==null){
+            return "Delete not Completed. Processor not existed";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+            processor.setDeleteuser(deleteUser.getId());
+
+            //asign modify time
+            processor.setDeletedate(LocalDateTime.now());
+
+            //processor status change as soft delete
+            processor.setItemstatus_id(daoItemStatus.getReferenceById(3));
+
+            //save operation
+            daoProcessor.save(processor);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+
+
+    }
+
+
     
     @PutMapping(value = "/processor")
     public String updateProcessorData(@RequestBody ProcessorEntity processor){
