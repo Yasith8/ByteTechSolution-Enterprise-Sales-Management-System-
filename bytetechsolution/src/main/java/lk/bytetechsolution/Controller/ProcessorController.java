@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -141,6 +142,48 @@ public class ProcessorController {
             return "OK";
         } catch (Exception e) {
             return "Save not Completed : "+e.getMessage();
+        }
+    }
+    
+    @PutMapping(value = "/processor")
+    public String updateProcessorData(@RequestBody ProcessorEntity processor){
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "EMPLOYEE");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied. Update not completed.";
+        }
+
+        //existance check
+        ProcessorEntity extProcessor=daoProcessor.getReferenceById(processor.getId());
+
+        if(extProcessor==null){
+            return "Update not Completed. Processor not existed";
+        }
+        
+        //check duplicate
+        ProcessorEntity extProcessorName=daoProcessor.getByProcessorName(processor.getItemname());
+
+        if(extProcessorName==null && extProcessorName.getId()!=processor.getId()){
+            return "Update is not Completed : this "+processor.getItemname()+" NIC Number already existed.";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            processor.setModifyuser(modifyUser.getId());
+
+            //asign modify time
+            processor.setModifydate(LocalDateTime.now());
+
+            //save operation
+            daoProcessor.save(processor);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
         }
     }
 }
