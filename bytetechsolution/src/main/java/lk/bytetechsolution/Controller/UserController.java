@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.EmployeeDao;
-import lk.bytetechsolution.Dao.EmployeeStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.EmployeeStatusEntity;
-import lk.bytetechsolution.Entity.PrivilageEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 import java.util.*;

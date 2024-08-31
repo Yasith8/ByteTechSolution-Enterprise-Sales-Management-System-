@@ -2,11 +2,14 @@ package lk.bytetechsolution.Controller;
 
 
 import java.util.*;
+import java.time.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 /*
@@ -69,7 +72,7 @@ public class ProcessorController {
     }
     
     @GetMapping(value = "/processor/alldata", produces ="application/json" ) 
-    public List<ProcessorEntity> allEmployeeData() {
+    public List<ProcessorEntity> allProcessorData() {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
@@ -83,5 +86,54 @@ public class ProcessorController {
 
 
         return daoProcessor.findAll();
+    }
+
+
+    @PostMapping(value = "/processor")
+    public String addProcessorData(@RequestBody ProcessorEntity processor){
+
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PROCESSOR");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        //Check any Duplications
+        ProcessorEntity extProcessorName=daoProcessor.getByProcessorName(processor.getItemname());
+
+        if(extProcessorName!=null){
+            return "Save not Completed : given Name - "+processor.getItemname()+" Already Exist...!";
+        }
+
+
+
+
+        try {
+            //set AutoGenarated Value
+            String nextNumber=daoProcessor.getNextEmployeeNumber();
+
+            //if next employee number is not come then set manualy last number+1
+            if(nextNumber==null){
+                processor.setItemcode("CPU0002");
+            }
+            processor.setItemcode(nextNumber);
+
+            //assign added user id
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            //because of security reason only add user id
+            processor.setAddeduser(addedUserData.getId());
+
+            //assign added date
+            processor.setAddeddate(LocalDateTime.now());
+            
+            //saving operation
+            daoProcessor.save(processor);
+            //return the message about success
+            return "OK";
+        } catch (Exception e) {
+            return "Save not Completed : "+e.getMessage();
+        }
     }
 }
