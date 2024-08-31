@@ -12,9 +12,9 @@ const refreshProcessorTable = () => {
         { dataType: 'text', propertyName: 'itemcode' },
         { dataType: 'text', propertyName: 'itemname' },
         { dataType: 'function', propertyName: getBrandName },
-        { dataType: 'text', propertyName: 'quantity' },
-        { dataType: 'text', propertyName: 'salesprice' },
+        { dataType: 'text', propertyName: 'profitrate' },
         { dataType: 'text', propertyName: 'purchaseprice' },
+        { dataType: 'text', propertyName: 'salesprice' },
         { dataType: 'function', propertyName: getCpuSeries },
         { dataType: 'function', propertyName: getCpuGeneration },
         { dataType: 'function', propertyName: getCpuSocket },
@@ -30,8 +30,6 @@ const refreshProcessorTable = () => {
 }
 
 
-
-console.log(selectValueHandler)
 
 const refreshProcessorForm = () => {
     processor = new Object();
@@ -142,6 +140,7 @@ const getItemStatus = (ob) => {
 
 const refillItemForm = (ob, rowIndex) => {
     $('#processorAddModal').modal('show');
+    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
 
 
     buttonSubmit.disabled = true;
