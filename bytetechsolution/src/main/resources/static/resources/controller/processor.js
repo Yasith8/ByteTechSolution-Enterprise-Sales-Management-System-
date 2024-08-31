@@ -165,8 +165,6 @@ const refillItemForm = (ob, rowIndex) => {
     numberProfitRate.value = processor.profitrate;
     //assign sales price
     decimalSalesPrice.value = processor.salesprice;
-    //assign quentity 
-    numberQuantity.value = processor.quantity;
     //assign rop 
     numberROP.value = processor.rop;
     //assign roq 
@@ -180,6 +178,7 @@ const refillItemForm = (ob, rowIndex) => {
 
 
 
+    //get the brand that made processors
     brands = getServiceAjaxRequest("/brand/brandbycategory/Processor");
     fillDataIntoSelect(selectBrand, "Please Select", brands, "name", ob.brand_id.name);
 
@@ -187,14 +186,40 @@ const refillItemForm = (ob, rowIndex) => {
     itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
     fillDataIntoSelect(selectItemStatus, "Please Select", itemstatuses, "name", ob.itemstatus_id.name);
 
-    cpuGeneration = getServiceAjaxRequest("/cpugeneration/alldata");
-    fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name", ob.cpugeneration_id.name);
-
-    cpuSeries = getServiceAjaxRequest("/cpuseries/alldata");
+    //cpuSeries = getServiceAjaxRequest("/cpuseries/alldata");
+    cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + ob.brand_id.name);
     fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name", ob.cpuseries_id.name);
 
-    cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
+    //cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
+    cpuSocket = getServiceAjaxRequest("/cpusocket/cpusocketbybrand/" + ob.brand_id.name);
     fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name", ob.cpusocket_id.name);
+
+    //cpuGeneration = getServiceAjaxRequest("/cpugeneration/alldata");
+    cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + ob.cpusocket_id.name);
+    fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name", ob.cpugeneration_id.name);
+
+
+
+
+
+
+    selectBrand.addEventListener('change', () => {
+        const cpuBrand = selectValueHandler(selectBrand);
+        cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuBrand.name);
+        fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
+
+        cpuSocket = getServiceAjaxRequest("/cpusocket/cpusocketbybrand/" + cpuBrand.name);
+        fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
+
+        selectCpuSocket.addEventListener('change', () => {
+            const cpuGentoSocket = selectValueHandler(selectCpuSocket);
+            console.log(cpuGentoSocket)
+            cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + cpuGentoSocket.name);
+            fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
+        });
+
+    });
+
 
 
     inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberQuantity, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
