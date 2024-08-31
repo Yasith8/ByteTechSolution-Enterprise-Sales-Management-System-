@@ -3,6 +3,36 @@
     font-weight: 900;
 }
 
+.Btn {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #6669b0;
+}
+
+.Btn:hover {
+    background-color: #43456e;
+    border: 1px solid #43456e;
+}
+
+.addBtn {
+    background-color: #6669b0;
+    color: white;
+}
+
+.printTableBtn {
+    background-color: #c471f5;
+    margin-right: 10px;
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 1px solid #c471f5;
+}
+
+.printTableBtn:hover {
+    border: 1px solid #b83dff;
+    background-color: #b83dff;
+}
+
 .modal-button {
     width: 5rem;
     padding: 5px;

@@ -41,6 +41,7 @@ const refreshProcessorForm = () => {
     buttonUpdate.classList.remove('modal-btn-update');
 
     staticBackdropLabel.textContent = "Add New Item";
+    decimalSalesPrice.disabled = true;
 
 
     brands = getServiceAjaxRequest("/brand/brandbycategory/Processor");
@@ -162,6 +163,7 @@ const refillItemForm = (ob, rowIndex) => {
     //assign profit rate
     numberProfitRate.value = processor.profitrate;
     //assign sales price
+    decimalSalesPrice.disabled = true;
     decimalSalesPrice.value = processor.salesprice;
     //assign rop 
     numberROP.value = processor.rop;
@@ -487,8 +489,40 @@ const buttonProcessorUpdate = () => {
 }
 
 
-const buttonProcessorDelete = () => {
+const buttonProcessorDelete = (ob, rowIndex) => {
+    //user conformation
+    let userConform = confirm("Are you sure  to delete following Prcessor? " + ob.itemname);
 
+    //if ok
+    if (userConform) {
+        let deleteServiceResponse;
+
+        //ajax request fot delete data
+        $.ajax("/processor", {
+            type: "DELETE",
+            contentType: "application/json",
+            data: JSON.stringify(ob),
+            async: false,
+
+            success: function(data) {
+                deleteServiceResponse = data
+            },
+
+            error: function(errData) {
+                deleteServiceResponse = errData;
+            }
+        })
+
+        //if delete response ok alert the success message and close the modal and refreash item table
+        //so because of that we can see realtime update
+        if (deleteServiceResponse == "OK") {
+            alert("Delete Successfullly");
+            $('#processorAddModal').modal('hide');
+            refreshProcessorTable()
+        } else {
+            console.log("system has following errors:\n" + deleteServiceResponse);
+        }
+    }
 }
 
 const buttonModalClose = () => {
