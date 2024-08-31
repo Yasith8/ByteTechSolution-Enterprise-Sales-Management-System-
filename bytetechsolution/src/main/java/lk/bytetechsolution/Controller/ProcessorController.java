@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 */
 import org.springframework.web.servlet.ModelAndView;
 
+import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ProcessorDao;
 import lk.bytetechsolution.Dao.UserDao;
@@ -40,6 +41,9 @@ public class ProcessorController {
 
     @Autowired
     private EmployeeDao daoEmployee;
+
+    @Autowired
+    private CategoryDao daoCategory;
 
     @Autowired
     private PrivilageController privilageController;
@@ -112,7 +116,7 @@ public class ProcessorController {
 
         try {
             //set AutoGenarated Value
-            String nextNumber=daoProcessor.getNextEmployeeNumber();
+            String nextNumber=daoProcessor.getNextProcessorNumber();
 
             //if next employee number is not come then set manualy last number+1
             if(nextNumber==null){
@@ -127,6 +131,9 @@ public class ProcessorController {
 
             //assign added date
             processor.setAddeddate(LocalDateTime.now());
+
+            //assign category
+            processor.setCategory_id(daoCategory.getReferenceById(1));
             
             //saving operation
             daoProcessor.save(processor);

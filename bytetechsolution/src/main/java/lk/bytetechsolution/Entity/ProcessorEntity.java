@@ -40,7 +40,7 @@ public class ProcessorEntity {
     private String itemcode;
 
     @NotNull
-    @Column(name = "itemname")
+    @Column(name = "itemname",unique = true)
     private String itemname;
 
     @NotNull
