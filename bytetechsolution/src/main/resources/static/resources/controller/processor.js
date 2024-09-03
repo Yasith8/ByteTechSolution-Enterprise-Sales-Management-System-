@@ -41,7 +41,7 @@ const refreshProcessorForm = () => {
     buttonUpdate.classList.remove('modal-btn-update');
 
     staticBackdropLabel.textContent = "Add New Item";
-    decimalSalesPrice.disabled = true;
+    //decimalSalesPrice.disabled = true;
 
 
     brands = getServiceAjaxRequest("/brand/brandbycategory/Processor");
@@ -49,6 +49,11 @@ const refreshProcessorForm = () => {
 
     itemStatuses = getServiceAjaxRequest("/itemstatus/alldata");
     fillDataIntoSelect(selectItemStatus, "Select Item Status", itemStatuses, "name");
+
+
+    fillDataIntoSelect(selectCpuSeries, "Select Processor Brand First", [], "name")
+    fillDataIntoSelect(selectCpuSocket, "Select Processor Brand First", [], "name")
+    fillDataIntoSelect(selectCpuGeneration, "Select Processor Socket First", [], "name");
 
 
 
@@ -124,7 +129,7 @@ const getCpuSocket = (ob) => {
 const getItemStatus = (ob) => {
     console.log(ob.itemstatus_id.name)
     if (ob.itemstatus_id.name == 'Available') {
-        return '<p class="items-tatus-available">' + ob.itemstatus_id.name + '</p>';
+        return '<p class="item-status-available">' + ob.itemstatus_id.name + '</p>';
     }
 
     if (ob.itemstatus_id.name == 'Low-Stock') {
@@ -163,7 +168,6 @@ const refillItemForm = (ob, rowIndex) => {
     //assign profit rate
     numberProfitRate.value = processor.profitrate;
     //assign sales price
-    decimalSalesPrice.disabled = true;
     decimalSalesPrice.value = processor.salesprice;
     //assign rop 
     numberROP.value = processor.rop;
@@ -222,8 +226,6 @@ const refillItemForm = (ob, rowIndex) => {
 
 
     inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
-    btnClearImage.classList.add('btn-user-removeImage');
-    btnSelectImage.classList.add('btn-user-selectImage');
     buttonClear.classList.add('modal-btn-clear');
 
 
@@ -237,8 +239,6 @@ const refillItemForm = (ob, rowIndex) => {
         buttonUpdate.classList.remove('modal-btn-update');
 
         inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
-        btnClearImage.classList.remove('btn-user-removeImage');
-        btnSelectImage.classList.remove('btn-user-selectImage');
         buttonClear.classList.remove('modal-btn-clear');
     }
     if (!userPrivilage.delete) {
@@ -252,6 +252,7 @@ const refillItemForm = (ob, rowIndex) => {
 
 
 const salePriceCalculator = () => {
+    decimalSalesPrice.disabled = true;
     let salesPrice = Number(decimalPurchasePrice.value) + (Number(numberProfitRate.value / 100) * Number(decimalPurchasePrice.value));
     decimalSalesPrice.value = salesPrice;
     textValidator(decimalSalesPrice, '^[0-9]+(\\.[0-9]{1,2})?$', 'processor', 'salesprice')
@@ -259,11 +260,24 @@ const salePriceCalculator = () => {
 
 //print table
 const printProcessorTable = () => {
+    const newTab = window.open();
+    newTab.document.write(
+        '<link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">' +
+        '<link rel="stylesheet" href="resources/style/processor.css">' +
+        '<style>#tableProcessor{background-color:white;}.table-hover{display:none}</style>' +
+        '<script>document.getElementById("tableEmployee").classList.remove("table-hover")</script>' +
+        tableProcessor.outerHTML
+    );
 
+    setTimeout(
+        function() {
+            newTab.print();
+        }, 1000
+    )
 }
 
 //print processor data
-const buttonProcessorDetailPrint = () => {}
+const printProcessorDetails = (ob, rowIndex) => {}
 
 const checkProcessorInputErrors = () => {
     let errors = "";
@@ -489,7 +503,7 @@ const buttonProcessorUpdate = () => {
 }
 
 
-const buttonProcessorDelete = (ob, rowIndex) => {
+const deletePocessor = (ob, rowIndex) => {
     //user conformation
     let userConform = confirm("Are you sure  to delete following Prcessor? " + ob.itemname);
 

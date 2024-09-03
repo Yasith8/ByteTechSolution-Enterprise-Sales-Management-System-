@@ -385,6 +385,8 @@ const printEmployeeDataTable = (ob) => {
     newTab.document.write(
         '<link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">' +
         '<link rel="stylesheet" href="resources/style/employee.css">' +
+        '<style>#tableEmployee{background-color:white;}.table-hover{display:none}</style>' +
+        '<script>document.getElementById("tableEmployee").classList.remove("table-hover")</script>' +
         tableEmployee.outerHTML
     );
 
