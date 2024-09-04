@@ -124,4 +124,17 @@ public class MotherboardEntity {
      @ManyToOne  
      @JoinColumn(name="motherboardformfactor_id",referencedColumnName = "id")
      private MotherBoardFormFactorEntity motherboardformfactor_id;
+
+     @ManyToOne  
+     @JoinColumn(name="motherboardseries_id",referencedColumnName = "id")
+     private MotherboardSeriesEntity motherboardseries_id;
+
+     @ManyToOne  
+     @JoinColumn(name="motherboardtype_id",referencedColumnName = "id")
+     private MotherboardTypeEntity motherboardtype_id;
+
+     @ManyToOne  
+     @JoinColumn(name="memorytype_id",referencedColumnName = "id")
+     private MemoryTypeEntity memorytype_id;
+
 }
