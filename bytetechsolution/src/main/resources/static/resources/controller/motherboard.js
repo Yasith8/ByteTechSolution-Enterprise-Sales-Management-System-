@@ -42,8 +42,12 @@ const refreshMotherboardForm = () => {
 
     staticBackdropLabel.textContent = "Add New Item";
 
+    //get brands of motherboard
     brands = getServiceAjaxRequest("/brand/brandbycategory/Motherboard");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
+
+    itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
+    fillDataIntoSelect(selectItemStatus, "Please Select", itemstatuses, "name");
 
     motherboardformfactors = getServiceAjaxRequest("/motherboardformfactor/alldata")
     fillDataIntoSelect(selectMotherboardFormFactor, "Please Select Motherboard Form Factor", motherboardformfactors, "name");
@@ -51,28 +55,27 @@ const refreshMotherboardForm = () => {
     memorytypes = getServiceAjaxRequest("/memorytype/alldata")
     fillDataIntoSelect(selectMemoryType, "Please Supported Memory Type", memorytypes, "name");
 
-    fillDataIntoSelect(selectCpuSocket, "Select Processor Brand First", [], "name")
+    cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
+    fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
+
     fillDataIntoSelect(selectMotherboardSeries, "Select Processor Socket First", [], "name")
     fillDataIntoSelect(selectMotherboardType, "Select Motherboard Series First", [], "name")
 
-    selectBrand.addEventListener('change', () => {
-        const cpuBrand = selectValueHandler(selectBrand);
-        cpuSocket = getServiceAjaxRequest("/cpusocket/cpusocketbybrand/" + cpuBrand.name);
-        fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
 
-        selectCpuSocket.addEventListener('change', () => {
-            const cpusocket = selectValueHandler(selectCpuSocket);
-            motherboardSeries = getServiceAjaxRequest("/motherboardseries/motherboardseriesbycpusocket/" + cpusocket.name);
-            fillDataIntoSelect(selectMotherboardSeries, "Select Motherboard Series", motherboardSeries, "name");
 
-            selectMotherboardSeries.addEventListener('change', () => {
-                const motherboardseries = selectValueHandler(selectMotherboardSeries);
-                motherboardTypes = getServiceAjaxRequest("/motherboardtype/motherboardtypebymotherboardseries/" + motherboardseries.name);
-                fillDataIntoSelect(selectMotherboardType, "Select Motherboard Type", motherboardTypes, "name");
-            })
+    selectCpuSocket.addEventListener('change', () => {
+        const cpusocket = selectValueHandler(selectCpuSocket);
+        motherboardSeries = getServiceAjaxRequest("/motherboardseries/motherboardseriesbycpusocket/" + cpusocket.name);
+        fillDataIntoSelect(selectMotherboardSeries, "Select Motherboard Series", motherboardSeries, "name");
 
+        selectMotherboardSeries.addEventListener('change', () => {
+            const motherboardseries = selectValueHandler(selectMotherboardSeries);
+            motherboardTypes = getServiceAjaxRequest("/motherboardtype/motherboardtypebymotherboardseries/" + motherboardseries.name);
+            fillDataIntoSelect(selectMotherboardType, "Select Motherboard Type", motherboardTypes, "name");
         })
+
     })
+
 
     removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType])
 
