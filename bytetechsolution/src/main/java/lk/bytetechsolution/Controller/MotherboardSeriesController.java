@@ -37,14 +37,14 @@ public class MotherboardSeriesController {
      * @requestMapping(value="/gpuchipset/alldata",produces='application.json',method=RequestMethod.GET)
      */
     @GetMapping(value = "/motherboardseries/alldata", produces ="application/json" ) 
-    public List<MotherboardSeriesEntity> allEmployeeData() {
+    public List<MotherboardSeriesEntity> allMBoardeData() {
 
         return dao.findAll();
     }
 
     //get cpu generation according to cpu socket
     @GetMapping(value = "/motherboardseries/motherboardseriesbycpusocket/{socketname}",produces = "application/json")
-    public List<MotherboardSeriesEntity> getBrandByCategory(@PathVariable("socketname") String socketname){
+    public List<MotherboardSeriesEntity> getMBoardSeriesBySocket(@PathVariable("socketname") String socketname){
         return dao.getMotherboardSeriesBySocket(socketname);
     }
 }
