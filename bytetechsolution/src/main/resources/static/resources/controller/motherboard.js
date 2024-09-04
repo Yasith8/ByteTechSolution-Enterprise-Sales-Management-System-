@@ -22,8 +22,58 @@ const refreshMotherboardTable = () => {
         { dataType: 'function', propertyName: getItemStatus },
     ]
 
+    fillDataIntoTable(tableMotherboard, motherboards, displayPropertyList, refillItemForm, divModifyButton)
+        //table show with dataTable
+    $('#tableMotherboard').dataTable();
+    //hide button section
+    divModifyButton.className = 'd-none';
 
 }
 const refreshMotherboardForm = () => {
+
+}
+
+const getBrandName = (ob) => {
+    return ob.brand_id.name;
+}
+
+const getMotherboardSeries = (ob) => {
+    return ob.motherboardseries_id.name;
+}
+
+const getMotherboardType = (ob) => {
+    return ob.motherboardtype_id.name;
+}
+
+const getMotherboardFormFactor = (ob) => {
+    return ob.motherboardformfactor_id.name;
+}
+
+const getMemoryType = (ob) => {
+    return ob.memorytype_id.name;
+}
+
+const getCpuSocket = (ob) => {
+    return ob.cpusocket_id.name;
+}
+
+const getItemStatus = (ob) => {
+    if (ob.itemstatus_id.name == 'Available') {
+        return '<p class="item-status-available">' + ob.itemstatus_id.name + '</p>';
+    }
+
+    if (ob.itemstatus_id.name == 'Low-Stock') {
+        return '<p class="item-status-resign">' + ob.itemstatus_id.name + '</p>'
+    }
+
+
+    if (ob.itemstatus_id.name == 'Unavailable') {
+        return '<p class="item-status-delete">' + ob.itemstatus_id.name + '</p>'
+    } else {
+        return '<p class="item-status-other">' + ob.itemstatus_id.name + '</p>'
+    }
+}
+
+const refillItemForm = () => {
 
 }

@@ -127,7 +127,6 @@ const getCpuSocket = (ob) => {
 }
 
 const getItemStatus = (ob) => {
-    console.log(ob.itemstatus_id.name)
     if (ob.itemstatus_id.name == 'Available') {
         return '<p class="item-status-available">' + ob.itemstatus_id.name + '</p>';
     }
