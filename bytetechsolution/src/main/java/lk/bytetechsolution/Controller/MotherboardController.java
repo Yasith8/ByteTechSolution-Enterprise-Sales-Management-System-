@@ -28,6 +28,7 @@ import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.MotherboardDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.MotherboardEntity;
+import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -99,5 +100,58 @@ public class MotherboardController {
 
         return daoMotherboard.findAll();
     }
+
+    
+    @PostMapping(value = "/motherboard")
+    public String addProcessorData(@RequestBody MotherboardEntity motherboard){
+
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PROCESSOR");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        //Check any Duplications
+        MotherboardEntity extProcessorName=daoMotherboard.getByMotherboardName(motherboard.getItemname());
+
+        if(extProcessorName!=null){
+            return "Save not Completed : given Name - "+motherboard.getItemname()+" Already Exist...!";
+        }
+
+
+
+
+        try {
+            //set AutoGenarated Value
+            String nextNumber=daoMotherboard.getNextProcessorNumber();
+
+            //if next employee number is not come then set manualy last number+1
+            if(nextNumber==null){
+                motherboard.setItemcode("MBR0001");
+            }
+            motherboard.setItemcode(nextNumber);
+
+            //assign added user id
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            //because of security reason only add user id
+            motherboard.setAddeduser(addedUserData.getId());
+
+            //assign added date
+            motherboard.setAddeddate(LocalDateTime.now());
+
+            //assign category
+            motherboard.setCategory_id(daoCategory.getReferenceById(1));
+            
+            //saving operation
+            daoMotherboard.save(motherboard);
+            //return the message about success
+            return "OK";
+        } catch (Exception e) {
+            return "Save not Completed : "+e.getMessage();
+        }
+    }
+
 
 }
