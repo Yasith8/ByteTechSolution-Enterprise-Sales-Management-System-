@@ -264,7 +264,7 @@ const printProcessorTable = () => {
     newTab.document.write(
         '<link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">' +
         '<link rel="stylesheet" href="resources/style/processor.css">' +
-        '<style>#tableProcessor{background-color:white;}.table-hover{display:none}</style>' +
+        '<style>#tableProcessor{background-color:white;}</style>' +
         '<script>document.getElementById("tableEmployee").classList.remove("table-hover")</script>' +
         tableProcessor.outerHTML
     );
