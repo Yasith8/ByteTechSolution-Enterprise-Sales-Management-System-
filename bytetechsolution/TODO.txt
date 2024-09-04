@@ -63,3 +63,6 @@ Employee Management Module
    - Navbar issue z-index issue
 
    - Processor Item can accurate by generation
+
+
+   //bug change functions names in Controller files

@@ -38,7 +38,7 @@ public class MotherboardTypeController {
      * @requestMapping(value="/gpuchipset/alldata",produces='application.json',method=RequestMethod.GET)
      */
     @GetMapping(value = "/motherboardtype/alldata", produces ="application/json" ) 
-    public List<MotherboardTypeEntity> allEmployeeData() {
+    public List<MotherboardTypeEntity> allMboardTypeData() {
 
         return dao.findAll();
     }

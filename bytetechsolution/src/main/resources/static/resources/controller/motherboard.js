@@ -50,6 +50,42 @@ const refreshMotherboardForm = () => {
 
     memorytypes = getServiceAjaxRequest("/memorytype/alldata")
     fillDataIntoSelect(selectMemoryType, "Please Supported Memory Type", memorytypes, "name");
+
+    fillDataIntoSelect(selectCpuSocket, "Select Processor Brand First", [], "name")
+    fillDataIntoSelect(selectMotherboardSeries, "Select Processor Socket First", [], "name")
+    fillDataIntoSelect(selectMotherboardType, "Select Motherboard Series First", [], "name")
+
+    selectBrand.addEventListener('change', () => {
+        const cpuBrand = selectValueHandler(selectBrand);
+        cpuSocket = getServiceAjaxRequest("/cpusocket/cpusocketbybrand/" + cpuBrand.name);
+        fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
+
+        selectCpuSocket.addEventListener('change', () => {
+            const cpusocket = selectValueHandler(selectCpuSocket);
+            motherboardSeries = getServiceAjaxRequest("/motherboardseries/motherboardseriesbycpusocket/" + cpusocket.name);
+            fillDataIntoSelect(selectMotherboardSeries, "Select Motherboard Series", motherboardSeries, "name");
+
+            selectMotherboardSeries.addEventListener('change', () => {
+                const motherboardseries = selectValueHandler(selectMotherboardSeries);
+                motherboardTypes = getServiceAjaxRequest("/motherboardtype/motherboardtypebymotherboardseries/" + motherboardseries.name);
+                fillDataIntoSelect(selectMotherboardType, "Select Motherboard Type", motherboardTypes, "name");
+            })
+
+        })
+    })
+
+    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType])
+
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/MOTHERBOARD");
+
+    if (!userPrivilages.insert) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.remove('modal-btn-submit');
+
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+
 }
 
 const getBrandName = (ob) => {
