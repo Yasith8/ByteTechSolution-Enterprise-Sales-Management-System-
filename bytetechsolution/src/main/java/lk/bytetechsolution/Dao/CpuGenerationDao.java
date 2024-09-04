@@ -16,7 +16,7 @@ import lk.bytetechsolution.Entity.CpuGenerationEntity;
  */
 public interface CpuGenerationDao extends JpaRepository<CpuGenerationEntity,Integer> {
 
-     @Query(value = "SELECT cg.* FROM bytetechsolution.cpugeneration cg where cg.id in (select shg.cpugeneration_id from bytetechsolution.cpusocket_has_cpugeneration shg where shg.cpusocket_id in (select cs.id from bytetechsolution.cpusocket cs where cs.name=?1))",nativeQuery = true)
+    @Query(value = "SELECT cg.* FROM bytetechsolution.cpugeneration cg where cg.id in (select shg.cpugeneration_id from bytetechsolution.cpusocket_has_cpugeneration shg where shg.cpusocket_id in (select cs.id from bytetechsolution.cpusocket cs where cs.name=?1))",nativeQuery = true)
     public List<CpuGenerationEntity> getGenBySocket(String socketname);
     
 }

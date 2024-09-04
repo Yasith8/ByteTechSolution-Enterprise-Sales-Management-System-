@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import lk.bytetechsolution.Dao.MotherboardSeriesDao;
@@ -39,5 +40,11 @@ public class MotherboardSeriesController {
     public List<MotherboardSeriesEntity> allEmployeeData() {
 
         return dao.findAll();
+    }
+
+    //get cpu generation according to cpu socket
+    @GetMapping(value = "/motherboardseries/motherboardseriesbycpusocket/{socketname}",produces = "application/json")
+    public List<MotherboardSeriesEntity> getBrandByCategory(@PathVariable("socketname") String socketname){
+        return dao.getMotherboardSeriesBySocket(socketname);
     }
 }

@@ -30,7 +30,26 @@ const refreshMotherboardTable = () => {
 
 }
 const refreshMotherboardForm = () => {
+    processor = new Object();
 
+    processor = new Object();
+
+    buttonSubmit.disabled = false;
+    buttonSubmit.classList.add('modal-btn-submit');
+
+    buttonUpdate.disabled = true;
+    buttonUpdate.classList.remove('modal-btn-update');
+
+    staticBackdropLabel.textContent = "Add New Item";
+
+    brands = getServiceAjaxRequest("/brand/brandbycategory/Motherboard");
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
+
+    motherboardformfactors = getServiceAjaxRequest("/motherboardformfactor/alldata")
+    fillDataIntoSelect(selectMotherboardFormFactor, "Please Select Motherboard Form Factor", motherboardformfactors, "name");
+
+    memorytypes = getServiceAjaxRequest("/memorytype/alldata")
+    fillDataIntoSelect(selectMemoryType, "Please Supported Memory Type", memorytypes, "name");
 }
 
 const getBrandName = (ob) => {
