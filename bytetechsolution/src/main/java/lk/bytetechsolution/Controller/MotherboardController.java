@@ -107,16 +107,16 @@ public class MotherboardController {
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PROCESSOR");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MOTHERBOARD");
 
         if(!userPrivilage.get("insert")){
             return "Permission Denied! Save not Completed";
         }
 
         //Check any Duplications
-        MotherboardEntity extProcessorName=daoMotherboard.getByMotherboardName(motherboard.getItemname());
+        MotherboardEntity extMotherboard=daoMotherboard.getByMotherboardName(motherboard.getItemname());
 
-        if(extProcessorName!=null){
+        if(extMotherboard!=null){
             return "Save not Completed : given Name - "+motherboard.getItemname()+" Already Exist...!";
         }
 
@@ -142,7 +142,7 @@ public class MotherboardController {
             motherboard.setAddeddate(LocalDateTime.now());
 
             //assign category
-            motherboard.setCategory_id(daoCategory.getReferenceById(1));
+            motherboard.setCategory_id(daoCategory.getReferenceById(2));
             
             //saving operation
             daoMotherboard.save(motherboard);
@@ -151,6 +151,46 @@ public class MotherboardController {
         } catch (Exception e) {
             return "Save not Completed : "+e.getMessage();
         }
+    }
+
+    @DeleteMapping(value = "/motherboard")
+    public String deleteProcessorData(@RequestBody MotherboardEntity motherboard){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MOTHERBOARD");
+
+        if(!userPrivilage.get("delete")){
+            return "Permission Denied! Delete not Completed";
+        }
+
+        //existance check
+        MotherboardEntity extMotherboard=daoMotherboard.getReferenceById(motherboard.getId());
+
+        if(extMotherboard==null){
+            return "Delete not Completed. Processor not existed";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+            motherboard.setDeleteuser(deleteUser.getId());
+
+            //asign modify time
+            motherboard.setDeletedate(LocalDateTime.now());
+
+            //processor status change as soft delete
+            motherboard.setItemstatus_id(daoItemStatus.getReferenceById(3));
+
+            //save operation
+            daoMotherboard.save(motherboard);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+
+
     }
 
 
