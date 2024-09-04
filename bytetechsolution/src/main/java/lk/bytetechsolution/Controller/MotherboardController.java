@@ -193,5 +193,46 @@ public class MotherboardController {
 
     }
 
+    @PutMapping(value = "/motherboard")
+    public String updateProcessorData(@RequestBody MotherboardEntity motherboard){
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "MOTHERBOARD");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied. Update not completed.";
+        }
+
+        //existance check
+        MotherboardEntity extMotherboard=daoMotherboard.getReferenceById(motherboard.getId());
+
+        if(extMotherboard==null){
+            return "Update not Completed. Processor not existed";
+        }
+        
+        //check duplicate
+        MotherboardEntity extMotherboardName=daoMotherboard.getByMotherboardName(motherboard.getItemname());
+
+        if(extMotherboardName==null && extMotherboard.getId()!=motherboard.getId()){
+            return "Update is not Completed : this "+motherboard.getItemname()+" Item Name is already existed.";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            motherboard.setModifyuser(modifyUser.getId());
+
+            //asign modify time
+            motherboard.setModifydate(LocalDateTime.now());
+
+            //save operation
+            daoMotherboard.save(motherboard);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+    }
 
 }

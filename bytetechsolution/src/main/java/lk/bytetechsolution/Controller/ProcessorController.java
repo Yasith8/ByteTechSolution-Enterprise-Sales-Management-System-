@@ -197,7 +197,7 @@ public class ProcessorController {
     public String updateProcessorData(@RequestBody ProcessorEntity processor){
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "EMPLOYEE");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "PROCESSOR");
 
         if(!userPrivilage.get("update")){
             return "Permission Denied. Update not completed.";
@@ -214,7 +214,7 @@ public class ProcessorController {
         ProcessorEntity extProcessorName=daoProcessor.getByProcessorName(processor.getItemname());
 
         if(extProcessorName==null && extProcessorName.getId()!=processor.getId()){
-            return "Update is not Completed : this "+processor.getItemname()+" NIC Number already existed.";
+            return "Update is not Completed : this "+processor.getItemname()+" Item Name is already existed.";
         }
         
         try {
