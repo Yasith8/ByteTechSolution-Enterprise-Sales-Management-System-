@@ -299,6 +299,60 @@ const checkMotherboardInputErrors = () => {
     return errors;
 }
 
+const buttonProcessorSubmit = () => {
+    let errors = checkMotherboardInputErrors();
+
+    if (errors == "") {
+
+        //check user response error
+        const userSubmitResponse = confirm('Are you sure to submit...?\n');
+
+
+        if (userSubmitResponse) {
+            //call post service
+
+            let postServiceResponce;
+
+            $.ajax("/motherboard", {
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(motherboard),
+                async: false,
+
+                success: function(data) {
+                    console.log("success", data);
+                    postServiceResponce = data;
+                },
+
+                error: function(resData) {
+                    console.log("Fail", resData);
+                    postServiceResponce = resData;
+                }
+
+            });
+
+            //if response is success
+            if (postServiceResponce == "OK") {
+                alert("Save successfully...!");
+                //hide the model
+                $('#motherboardAddModal').modal('hide');
+                //reset the Item form
+                formMotherboard.reset();
+                //refreash Item form
+                refreshMotherboardForm();
+                //refreash Item table
+                refreshMotherboardTable();
+            } else {
+                alert("Fail to submit Motherboard form \n" + postServiceResponce);
+            }
+        }
+    } else {
+        //if error ext then set alert
+        alert('form has following error...\n' + errors);
+    }
+
+}
+
 
 
 const deleteMotherboard = (ob, rowIndex) => {
