@@ -405,6 +405,75 @@ const checkMotherboardFormUpdates = () => {
     return updates;
 }
 
+const buttonMotherboardUpdate = () => {
+    //check form error
+    let errors = checkMotherboardInputErrors();
+
+    //check code has error, if code doesn't have  any errors
+    if (errors == "") {
+
+        //check form update
+
+        let updates = checkMotherboardFormUpdates();
+
+        //check there is no updates or any updations
+        if (updates == "") {
+            alert("Nothing Updates")
+        } else {
+
+            //get conformation from user to made updation
+            let userConfirm = confirm("Are You Sure to Update this Changes? \n" + updates);
+
+            //if user conform
+            if (userConfirm) {
+                //call put service requestd  -this use for updations
+                let putServiceResponse;
+
+                $.ajax("/motherboard", {
+                    type: "PUT",
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(motherboard),
+
+
+                    success: function(successResponseOb) {
+                        putServiceResponse = successResponseOb;
+                    },
+
+                    error: function(failedResponseOb) {
+                        putServiceResponse = failedResponseOb;
+                    }
+
+                });
+                //check put service response
+                if (putServiceResponse == "OK") {
+                    alert("Updated Successfully");
+
+                    //hide the moadel
+                    $('#motherboardAddModal').modal('hide');
+                    //refreash Item table for realtime updation
+                    refreshMotherboardTable();
+                    //reset the Item form
+                    formMotherboard.reset();
+                    //Item form refresh
+                    refreshMotherboardForm();
+                } else {
+                    //handling errors
+                    alert("Update not Completed :\n" + putServiceResponse);
+                    //refreash the employee form
+                    refreshMotherboardForm();
+                }
+            }
+        }
+    } else {
+        //show user to what errors happen
+        alert("Motherboard Form  has Following Errors..\n" + errors)
+    }
+
+
+}
+
+
 const deleteMotherboard = (ob, rowIndex) => {
     //user conformation
     let userConform = confirm("Are you sure  to delete following Motherboard? " + ob.itemname);

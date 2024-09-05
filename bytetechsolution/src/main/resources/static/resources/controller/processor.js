@@ -495,7 +495,7 @@ const buttonProcessorUpdate = () => {
         }
     } else {
         //show user to what errors happen
-        alert("Employee Form  has Following Errors..\n" + errors)
+        alert("Processor Form  has Following Errors..\n" + errors)
     }
 
 
