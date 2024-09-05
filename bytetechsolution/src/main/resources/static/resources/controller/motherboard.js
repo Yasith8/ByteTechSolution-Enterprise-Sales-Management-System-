@@ -353,7 +353,57 @@ const buttonProcessorSubmit = () => {
 
 }
 
+const checkMotherboardFormUpdates = () => {
+    updates = "";
 
+    if (motherboard.itemname != oldMotherboard.itemname) {
+        updates = updates + "Processor Name is Changed \n";
+    }
+    if (motherboard.purchaseprice != oldMotherboard.purchaseprice) {
+        updates = updates + "Purchase Price is Changed \n";
+    }
+    if (motherboard.profitrate != oldMotherboard.profitrate) {
+        updates = updates + "Profit Rate is Changed \n";
+    }
+    if (motherboard.warranty != oldMotherboard.warranty) {
+        updates = updates + "Warranty is Changed \n";
+    }
+    if (motherboard.rop != oldMotherboard.rop) {
+        updates = updates + "ROP is Changed \n";
+    }
+    if (motherboard.roq != oldMotherboard.roq) {
+        updates = updates + "ROQ is Changed \n";
+    }
+    if (motherboard.maxcapacity != oldMotherboard.maxcapacity) {
+        updates = updates + "Max Capacity is Changed \n";
+    }
+    if (motherboard.description != oldMotherboard.description) {
+        updates = updates + "Description is Changed \n";
+    }
+    if (motherboard.brand_id.name != oldMotherboard.brand_id.name) {
+        updates = updates + "Brand is Changed \n";
+    }
+    if (motherboard.cpusocket_id.name != oldMotherboard.cpusocket_id.name) {
+        updates = updates + "Processor Socket is Changed \n";
+    }
+    if (motherboard.motherboardtype_id.name != oldMotherboard.motherboardtype_id.name) {
+        updates = updates + "Motherboard Type is Changed \n";
+    }
+    if (motherboard.motherboardseries_id.name != oldMotherboard.motherboardseries_id.name) {
+        updates = updates + "Motherboard Series is Changed \n";
+    }
+    if (motherboard.motherboardformfactor_id.name != oldMotherboard.motherboardformfactor_id.name) {
+        updates = updates + "Motherboard Form Factor is Changed \n";
+    }
+    if (motherboard.memorytype_id.name != oldMotherboard.memorytype_id.name) {
+        updates = updates + "Memory Type is Changed \n";
+    }
+    if (motherboard.itemstatus_id.name != oldMotherboard.itemstatus_id.name) {
+        updates = updates + "Item Status is Changed \n";
+    }
+
+    return updates;
+}
 
 const deleteMotherboard = (ob, rowIndex) => {
     //user conformation

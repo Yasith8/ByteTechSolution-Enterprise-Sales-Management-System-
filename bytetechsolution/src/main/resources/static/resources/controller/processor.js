@@ -424,7 +424,7 @@ const checkProcessorFormUpdates = () => {
         updates = updates + "Processor Generation is Changed \n";
     }
     if (processor.cpuseries_id.name != oldProcessor.cpuseries_id.name) {
-        updates = updates + "Processor Socket is Changed \n";
+        updates = updates + "Processor Series is Changed \n";
     }
     if (processor.itemstatus_id.name != oldProcessor.itemstatus_id.name) {
         updates = updates + "Item Status is Changed \n";
