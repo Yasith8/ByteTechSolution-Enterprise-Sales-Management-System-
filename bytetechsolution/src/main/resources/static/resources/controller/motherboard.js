@@ -237,6 +237,70 @@ const refillItemForm = (ob, rowIndex) => {
 
 }
 
+const checkMotherboardInputErrors = () => {
+    let errors = "";
+
+    if (motherboard.itemname == null) {
+        errors = errors + "Motherboard Name can't be Null...!\n";
+        textItemName.classList.add("is-invalid");
+    }
+    if (motherboard.purchaseprice == null) {
+        errors = errors + "Purchase Price can't be Null...!\n";
+        decimalPurchasePrice.classList.add("is-invalid");
+    }
+    if (motherboard.salesprice == null) {
+        errors = errors + "Sales Price can't be Null...!\n";
+        decimalSalesPrice.classList.add("is-invalid");
+    }
+
+    if (motherboard.profitrate == null) {
+        errors = errors + "Profit Rate can't be Null...!\n";
+        numberProfitRate.classList.add("is-invalid");
+    }
+
+    if (motherboard.warranty == null) {
+        errors = errors + "Warranty can't be Null...!\n";
+        numberWarranty.classList.add("is-invalid");
+    }
+
+    if (motherboard.maxcapacity == null) {
+        errors = errors + "Total Cores can't be Null...!\n";
+        numberMaxCapacity.classList.add("is-invalid");
+    }
+    if (motherboard.itemstatus_id == null) {
+        errors = errors + "Item Status can't be Null...!\n";
+        selectItemStatus.classList.add("is-invalid");
+    }
+    if (motherboard.brand_id == null) {
+        errors = errors + "Brand can't be Null...!\n";
+        selectBrand.classList.add("is-invalid");
+    }
+    if (motherboard.cpusocket_id == null) {
+        errors = errors + "Processor Socket can't be Null...!\n";
+        selectCpuSocket.classList.add("is-invalid");
+    }
+    if (motherboard.motherboardseries_id == null) {
+        errors = errors + "Motherboard Series can't be Null...!\n";
+        selectMotherboardSeries.classList.add("is-invalid");
+    }
+    if (motherboard.motherboardtype_id == null) {
+        errors = errors + "Motherboard Type can't be Null...!\n";
+        selectMotherboardType.classList.add("is-invalid");
+    }
+    if (motherboard.motherboardformfactor_id == null) {
+        errors = errors + "Motherboard Form Factor can't be Null...!\n";
+        selectMotherboardFormFactor.classList.add("is-invalid");
+    }
+    if (motherboard.memorytype_id == null) {
+        errors = errors + "Memory Type can't be Null...!\n";
+        selectMemoryType.classList.add("is-invalid");
+    }
+
+    return errors;
+}
+
+
+
 const deleteMotherboard = (ob, rowIndex) => {
     //user conformation
     let userConform = confirm("Are you sure  to delete following Motherboard? " + ob.itemname);
