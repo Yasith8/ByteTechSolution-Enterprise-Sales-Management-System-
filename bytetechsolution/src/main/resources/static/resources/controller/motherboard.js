@@ -236,3 +236,57 @@ const refillItemForm = (ob, rowIndex) => {
     buttonClear.disabled = true;
 
 }
+
+const deleteMotherboard = (ob, rowIndex) => {
+    //user conformation
+    let userConform = confirm("Are you sure  to delete following Motherboard? " + ob.itemname);
+
+    //if ok
+    if (userConform) {
+        let deleteServiceResponse;
+
+        //ajax request fot delete data
+        $.ajax("/mmotherboard", {
+            type: "DELETE",
+            contentType: "application/json",
+            data: JSON.stringify(ob),
+            async: false,
+
+            success: function(data) {
+                deleteServiceResponse = data
+            },
+
+            error: function(errData) {
+                deleteServiceResponse = errData;
+            }
+        })
+
+        //if delete response ok alert the success message and close the modal and refreash item table
+        //so because of that we can see realtime update
+        if (deleteServiceResponse == "OK") {
+            alert("Delete Successfullly");
+            $('#motherboardAddModal').modal('hide');
+            refreshMotherboardTable()
+        } else {
+            console.log("system has following errors:\n" + deleteServiceResponse);
+        }
+    }
+}
+
+
+const buttonModalClose = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
+
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#motherboardAddModal').modal('hide');
+
+
+        //formItem is id of form
+        //this will reset all data(refreash)
+        formMotherboard.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshMotherboardForm();
+    }
+}
