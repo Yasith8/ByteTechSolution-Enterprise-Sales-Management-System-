@@ -308,7 +308,7 @@ const checkProcessorInputErrors = () => {
         errors = errors + "Total Cores can't be Null...!\n";
         numberTotalCore.classList.add("is-invalid");
     }
-    if (processor.itemstatus_id == null) {
+    if (processor.itemstatus_id == null) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
         errors = errors + "Item Status can't be Null...!\n";
         selectItemStatus.classList.add("is-invalid");
     }

@@ -110,7 +110,7 @@ const refreshEmployeeTable = () => {
 
     })
 
-    console.log(employees)
+
 
     //create propertiy list
     //text: string,int

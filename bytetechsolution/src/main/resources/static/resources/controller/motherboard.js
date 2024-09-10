@@ -299,7 +299,7 @@ const checkMotherboardInputErrors = () => {
     return errors;
 }
 
-const buttonProcessorSubmit = () => {
+const buttonMotherboardSubmit = () => {
     let errors = checkMotherboardInputErrors();
 
     if (errors == "") {

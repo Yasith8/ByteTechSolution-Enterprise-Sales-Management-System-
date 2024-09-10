@@ -11,6 +11,6 @@ public interface MotherboardDao extends JpaRepository<MotherboardEntity,Integer>
     MotherboardEntity getByMotherboardName(String itemname);
 
     @Query(value = "select concat('MBR',lpad(substring(max(mbr.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.motherboard as mbr",nativeQuery = true)
-    String getNextProcessorNumber();
+    String getNextMotherboardNumber();
     
 }

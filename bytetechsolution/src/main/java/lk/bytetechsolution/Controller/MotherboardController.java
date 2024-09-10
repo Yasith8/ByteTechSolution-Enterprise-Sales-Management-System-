@@ -28,7 +28,6 @@ import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.MotherboardDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.MotherboardEntity;
-import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -125,13 +124,14 @@ public class MotherboardController {
 
         try {
             //set AutoGenarated Value
-            String nextNumber=daoMotherboard.getNextProcessorNumber();
+            String nextNumber=daoMotherboard.getNextMotherboardNumber();
 
             //if next employee number is not come then set manualy last number+1
             if(nextNumber==null){
                 motherboard.setItemcode("MBR0001");
+            }else{
+                motherboard.setItemcode(nextNumber);
             }
-            motherboard.setItemcode(nextNumber);
 
             //assign added user id
             UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
