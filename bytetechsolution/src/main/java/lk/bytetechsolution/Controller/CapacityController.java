@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lk.bytetechsolution.Dao.CapacityDao;
-import lk.bytetechsolution.Dao.CaseColorDao;
 import lk.bytetechsolution.Entity.CapacityEntity;
-import lk.bytetechsolution.Entity.CaseColorEntity;
+
 
 
 

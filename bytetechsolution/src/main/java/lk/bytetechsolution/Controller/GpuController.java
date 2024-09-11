@@ -24,21 +24,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
+import lk.bytetechsolution.Dao.GpuDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
-import lk.bytetechsolution.Dao.MotherboardDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.MotherboardEntity;
+import lk.bytetechsolution.Entity.GpuEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
-public class MotherboardController {
+public class GpuController {
      /* 
      * AutoWired used for automatic dependency injection
      * inject memorytype Instance into dao variable
      * the method can use dao for save,retrive,maipulate motherboardformfactor data
      */
     @Autowired
-    private MotherboardDao daoMotherboard;
+    private GpuDao daoGpu;
 
     @Autowired
     private UserDao daoUser;
@@ -52,12 +52,11 @@ public class MotherboardController {
     @Autowired
     private ItemStatusDao daoItemStatus;
 
-
-     @Autowired
+    @Autowired
     private PrivilageController privilageController;
 
-    @RequestMapping(value = "/motherboard")
-    public ModelAndView motherboardUI(){
+    @RequestMapping(value = "/gpu")
+    public ModelAndView gpuUI(){
          //get logged user authentication object using security
         // this help to retrieve the current authentication object which holds the user detail
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
@@ -69,54 +68,54 @@ public class MotherboardController {
         String loggedEmployee=daoEmployee.getFullnameById(loggedUser.getId());
 
         // Create a new ModelAndView object to hold the model data and view information
-        ModelAndView motherboardView=new ModelAndView();
+        ModelAndView gpuView=new ModelAndView();
         //pass the ui
-        motherboardView.setViewName("motherboard.html");
+        gpuView.setViewName("gpu.html");
         //attributes set to show titles in web page using theamleaf
-        motherboardView.addObject("title", "Motherboard Management || Bytetech Solution");
-        motherboardView.addObject("user", authentication.getName());// passing logged user name
-        motherboardView.addObject("EmpName", loggedEmployee);
-        motherboardView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
-        motherboardView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
+        gpuView.addObject("title", "GPU Management || Bytetech Solution");
+        gpuView.addObject("user", authentication.getName());// passing logged user name
+        gpuView.addObject("EmpName", loggedEmployee);
+        gpuView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
+        gpuView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
 
-        return motherboardView;
+        return gpuView;
 
     }
 
-    @GetMapping(value = "/motherboard/alldata", produces ="application/json" ) 
-    public List<MotherboardEntity> allMotherboardData() {
+
+    @GetMapping(value = "/gpu/alldata", produces ="application/json" ) 
+    public List<GpuEntity> allGpuData() {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MOTHERBOARD");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GPU");
 
 
         //if current logged user doesnt have privilages show empty list
         if(!userPrivilage.get("select")){
-            return new ArrayList<MotherboardEntity>();
+            return new ArrayList<GpuEntity>();
         }
 
 
-        return daoMotherboard.findAll();
+        return daoGpu.findAll();
     }
 
-    
-    @PostMapping(value = "/motherboard")
-    public String addMotherboardData(@RequestBody MotherboardEntity motherboard){
+    @PostMapping(value = "/gpu")
+    public String addGpuData(@RequestBody GpuEntity gpu){
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MOTHERBOARD");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GPU");
 
         if(!userPrivilage.get("insert")){
             return "Permission Denied! Save not Completed";
         }
 
         //Check any Duplications
-        MotherboardEntity extMotherboard=daoMotherboard.getByMotherboardName(motherboard.getItemname());
+        GpuEntity extGpu=daoGpu.getByGPUName(gpu.getItemname());
 
-        if(extMotherboard!=null){
-            return "Save not Completed : given Name - "+motherboard.getItemname()+" Already Exist...!";
+        if(extGpu!=null){
+            return "Save not Completed : given Name - "+gpu.getItemname()+" Already Exist...!";
         }
 
 
@@ -124,28 +123,28 @@ public class MotherboardController {
 
         try {
             //set AutoGenarated Value
-            String nextNumber=daoMotherboard.getNextMotherboardNumber();
+            String nextNumber=daoGpu.getNextGPUNumber();
 
             //if next employee number is not come then set manualy last number+1
             if(nextNumber==null){
-                motherboard.setItemcode("MBR0001");
+                gpu.setItemcode("GPU0001");
             }else{
-                motherboard.setItemcode(nextNumber);
+                gpu.setItemcode(nextNumber);
             }
 
             //assign added user id
             UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
             //because of security reason only add user id
-            motherboard.setAddeduser(addedUserData.getId());
+            gpu.setAddeduser(addedUserData.getId());
 
             //assign added date
-            motherboard.setAddeddate(LocalDateTime.now());
+            gpu.setAddeddate(LocalDateTime.now());
 
             //assign category
-            motherboard.setCategory_id(daoCategory.getReferenceById(2));
+            gpu.setCategory_id(daoCategory.getReferenceById(2));
             
             //saving operation
-            daoMotherboard.save(motherboard);
+            daoGpu.save(gpu);
             //return the message about success
             return "OK";
         } catch (Exception e) {
@@ -153,20 +152,20 @@ public class MotherboardController {
         }
     }
 
-    @DeleteMapping(value = "/motherboard")
-    public String deleteMotherboardData(@RequestBody MotherboardEntity motherboard){
+    @DeleteMapping(value = "/gpu")
+    public String deleteGpuData(@RequestBody GpuEntity gpu){
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MOTHERBOARD");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GPU");
 
         if(!userPrivilage.get("delete")){
             return "Permission Denied! Delete not Completed";
         }
 
         //existance check
-        MotherboardEntity extMotherboard=daoMotherboard.getReferenceById(motherboard.getId());
+        GpuEntity extGpu=daoGpu.getReferenceById(gpu.getId());
 
-        if(extMotherboard==null){
+        if(extGpu==null){
             return "Delete not Completed. Processor not existed";
         }
         
@@ -174,16 +173,16 @@ public class MotherboardController {
 
             //assign modify user
             UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
-            motherboard.setDeleteuser(deleteUser.getId());
+            gpu.setDeleteuser(deleteUser.getId());
 
             //asign modify time
-            motherboard.setDeletedate(LocalDateTime.now());
+            gpu.setDeletedate(LocalDateTime.now());
 
             //processor status change as soft delete
-            motherboard.setItemstatus_id(daoItemStatus.getReferenceById(3));
+            gpu.setItemstatus_id(daoItemStatus.getReferenceById(3));
 
             //save operation
-            daoMotherboard.save(motherboard);
+            daoGpu.save(gpu);
             
             return "OK";
         } catch (Exception e) {
@@ -193,41 +192,41 @@ public class MotherboardController {
 
     }
 
-    @PutMapping(value = "/motherboard")
-    public String updateMotherboardData(@RequestBody MotherboardEntity motherboard){
+    @PutMapping(value = "/gpu")
+    public String updateGpuData(@RequestBody GpuEntity gpu){
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "MOTHERBOARD");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "GPU");
 
         if(!userPrivilage.get("update")){
             return "Permission Denied. Update not completed.";
         }
 
         //existance check
-        MotherboardEntity extMotherboard=daoMotherboard.getReferenceById(motherboard.getId());
+        GpuEntity extGPU=daoGpu.getReferenceById(gpu.getId());
 
-        if(extMotherboard==null){
+        if(extGPU==null){
             return "Update not Completed. Processor not existed";
         }
         
-        //check duplicate
-        MotherboardEntity extMotherboardName=daoMotherboard.getByMotherboardName(motherboard.getItemname());
+        //check duplicategpu
+        GpuEntity extGpuName=daoGpu.getByGPUName(gpu.getItemname());
 
-        if(extMotherboardName==null && extMotherboard.getId()!=motherboard.getId()){
-            return "Update is not Completed : this "+motherboard.getItemname()+" Item Name is already existed.";
+        if(extGPU==null && extGpuName.getId()!=gpu.getId()){
+            return "Update is not Completed : this "+gpu.getItemname()+" Item Name is already existed.";
         }
         
         try {
 
             //assign modify user
             UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
-            motherboard.setModifyuser(modifyUser.getId());
+            gpu.setModifyuser(modifyUser.getId());
 
             //asign modify time
-            motherboard.setModifydate(LocalDateTime.now());
+            gpu.setModifydate(LocalDateTime.now());
 
             //save operation
-            daoMotherboard.save(motherboard);
+            daoGpu.save(gpu);
             
             return "OK";
         } catch (Exception e) {
