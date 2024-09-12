@@ -22,7 +22,7 @@ const refreshMotherboardTable = () => {
         { dataType: 'function', propertyName: getItemStatus },
     ]
 
-    fillDataIntoTable(tableMotherboard, motherboards, displayPropertyList, refillItemForm, divModifyButton)
+    fillDataIntoTable(tableMotherboard, motherboards, displayPropertyList, refillMotherboardForm, divModifyButton)
         //table show with dataTable
     $('#tableMotherboard').dataTable();
     //hide button section
@@ -137,7 +137,7 @@ const salePriceCalculator = () => {
     textValidator(decimalSalesPrice, '^[0-9]+(\\.[0-9]{1,2})?$', 'motherboard', 'salesprice')
 }
 
-const refillItemForm = (ob, rowIndex) => {
+const refillMotherboardForm = (ob, rowIndex) => {
     $('#motherboardAddModal').modal('show');
     removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType])
 

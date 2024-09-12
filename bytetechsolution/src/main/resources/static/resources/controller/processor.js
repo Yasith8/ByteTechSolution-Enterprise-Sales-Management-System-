@@ -21,7 +21,7 @@ const refreshProcessorTable = () => {
         { dataType: 'function', propertyName: getItemStatus },
     ]
 
-    fillDataIntoTable(tableProcessor, processors, displayPropertyList, refillItemForm, divModifyButton)
+    fillDataIntoTable(tableProcessor, processors, displayPropertyList, refillProcessorForm, divModifyButton)
         //table show with dataTable
     $('#tableProcessor').dataTable();
     //hide button section
@@ -143,7 +143,7 @@ const getItemStatus = (ob) => {
     }
 }
 
-const refillItemForm = (ob, rowIndex) => {
+const refillProcessorForm = (ob, rowIndex) => {
     $('#processorAddModal').modal('show');
     removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
 
@@ -308,7 +308,7 @@ const checkProcessorInputErrors = () => {
         errors = errors + "Total Cores can't be Null...!\n";
         numberTotalCore.classList.add("is-invalid");
     }
-    if (processor.itemstatus_id == null) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    if (processor.itemstatus_id == null) {
         errors = errors + "Item Status can't be Null...!\n";
         selectItemStatus.classList.add("is-invalid");
     }
