@@ -37,3 +37,48 @@ const refreshGpuTable = () => {
 const refreshGpuForm = () => {
 
 }
+
+const getBrandName = (ob) => {
+    return ob.brand_id.name;
+}
+
+const getGpuSeries = (ob) => {
+    return ob.gpuseries_id.name;
+}
+
+const getGpuType = (ob) => {
+    return ob.gputype_id.name;
+}
+
+const getMotherboardFormFactor = (ob) => {
+    return ob.motherboardformfactor_id.name;
+}
+
+const getInterface = (ob) => {
+    return ob.interface_id.name;
+}
+
+const getGpuChipset = (ob) => {
+    return ob.gpuchipset_id.name;
+}
+
+const getGpuCapacity = (ob) => {
+    return ob.gpucapacity_id.name;
+}
+
+const getItemStatus = (ob) => {
+    if (ob.itemstatus_id.name == 'Available') {
+        return '<p class="item-status-available">' + ob.itemstatus_id.name + '</p>';
+    }
+
+    if (ob.itemstatus_id.name == 'Low-Stock') {
+        return '<p class="item-status-resign">' + ob.itemstatus_id.name + '</p>'
+    }
+
+
+    if (ob.itemstatus_id.name == 'Unavailable') {
+        return '<p class="item-status-delete">' + ob.itemstatus_id.name + '</p>'
+    } else {
+        return '<p class="item-status-other">' + ob.itemstatus_id.name + '</p>'
+    }
+}
