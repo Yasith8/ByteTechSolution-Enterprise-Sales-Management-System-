@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import lk.bytetechsolution.Dao.GpuSeriesDao;
@@ -38,8 +39,13 @@ public class GpuSeriesController {
      * @requestMapping(value="/gpuseries/alldata",produces='application.json',method=RequestMethod.GET)
      */
     @GetMapping(value = "/gpuseries/alldata", produces ="application/json" ) 
-    public List<GpuSeriesEntity> allEmployeeData() {
+    public List<GpuSeriesEntity> allGpuSerieseData() {
 
         return dao.findAll();
+    }
+
+    @GetMapping(value = "/gpuseries/gpuseriesbygpuchipset/{chipset}",produces = "application/json")
+    public List<GpuSeriesEntity> getGPUSeriesByGPUChipset(@PathVariable("chipset") String chipset){
+        return dao.getGPUSeriesByGPUChipset(chipset);
     }
 }

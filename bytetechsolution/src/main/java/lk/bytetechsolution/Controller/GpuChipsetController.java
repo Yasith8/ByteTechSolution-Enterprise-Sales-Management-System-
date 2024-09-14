@@ -35,8 +35,10 @@ public class GpuChipsetController {
      * @requestMapping(value="/gpuchipset/alldata",produces='application.json',method=RequestMethod.GET)
      */
     @GetMapping(value = "/gpuchipset/alldata", produces ="application/json" ) 
-    public List<GpuChipsetEntity> allEmployeeData() {
+    public List<GpuChipsetEntity> allGPUChipsetData() {
 
         return dao.findAll();
     }
+
+   
 }

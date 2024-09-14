@@ -35,6 +35,44 @@ const refreshGpuTable = () => {
 
 
 const refreshGpuForm = () => {
+    gpu = new Object();
+
+    buttonSubmit.disabled = false;
+    buttonSubmit.classList.add('modal-btn-submit');
+
+    buttonUpdate.disabled = true;
+    buttonUpdate.classList.remove('modal-btn-update');
+
+    staticBackdropLabel.textContent = "Add New Item";
+
+    brands = getServiceAjaxRequest("/brand/brandbycategory/Motherboard");
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
+
+    itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
+    fillDataIntoSelect(selectItemStatus, "Please Select Item Status", itemstatuses, "name");
+
+    motherboardformfactors = getServiceAjaxRequest("/motherboardformfactor/alldata")
+    fillDataIntoSelect(selectMotherboardFormFactor, "Please Select Motherboard Form Factor", motherboardformfactors, "name");
+
+    gputypes = getServiceAjaxRequest("/gputype/alldata")
+    fillDataIntoSelect(selectGpuType, "Please Select GPU Type", gputypes, "name");
+
+    interfaces = getServiceAjaxRequest("/interface/alldata")
+    fillDataIntoSelect(selectInterface, "Please Select Interface", interfaces, "name");
+
+    capacities = getServiceAjaxRequest("/capacity/alldata")
+    fillDataIntoSelect(selectCapacity, "Please Select Capacity", capacities, "name");
+
+    gpuchipsets = getServiceAjaxRequest("/gpuchipset/alldata")
+    fillDataIntoSelect(selectGpuChipset, "Please Select GPU Chipset", gpuchipsets, "name");
+
+    fillDataIntoSelect(selectGpuSeries, "Select GPU Chipset First", [], "name")
+
+    selectGpuChipset.addEventListener('change', () => {
+        const cpuchipset = selectValueHandler(selectGpuChipset);
+        gpuseries = getServiceAjaxRequest("/motherboardseries/motherboardseriesbycpusocket/" + cpuchipset.name);
+        fillDataIntoSelect(selectGpuSeries, "Select GPU Series", gpuseries, "name");
+    })
 
 }
 
