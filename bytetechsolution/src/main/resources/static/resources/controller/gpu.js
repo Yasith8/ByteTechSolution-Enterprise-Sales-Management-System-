@@ -496,3 +496,21 @@ const deleteGpu = (ob, rowIndex) => {
         }
     }
 }
+
+
+const buttonModalClose = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
+
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#gpuAddModal').modal('hide');
+
+
+        //formItem is id of form
+        //this will reset all data(refreash)
+        formGpu.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshGpuForm();
+    }
+}
