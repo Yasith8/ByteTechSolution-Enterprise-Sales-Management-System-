@@ -74,6 +74,18 @@ const refreshGpuForm = () => {
         fillDataIntoSelect(selectGpuSeries, "Select GPU Series", gpuseries, "name");
     })
 
+    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries])
+
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/GPU");
+
+    if (!userPrivilages.insert) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.remove('modal-btn-submit');
+
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+
 }
 
 const getBrandName = (ob) => {
