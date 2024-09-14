@@ -31,7 +31,7 @@
 
             </div>
             <div class="col-4 text-end">
-                <button type="button" class="Btn printTableBtn" onclick="printProcessorTable('tableGpu')">
+                <button type="button" class="Btn printTableBtn" onclick="printGpuTable('tableGpu')">
                     Print
                 </button>
                 <button type="button" data-bs-toggle="modal" data-bs-target="#gpuAddModal" class="btn addBtn">
@@ -315,8 +315,8 @@
                         <div id="divModifyButton">
                             <div class="row" id="">
                                 <div class="col-1"></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printMotherboardDetails(window['editOb'], window['editRow'])">Print</button></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteMotherboard(window['editOb'], window['editRow'])">Delete</button></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printGpuDetails(window['editOb'], window['editRow'])">Print</button></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteGpu(window['editOb'], window['editRow'])">Delete</button></div>
                                 <div class="col-7"></div>
                             </div>
                         </div>
@@ -325,8 +325,8 @@
                         <div class="row">
                             <div class="col-5"></div>
                             <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonMotherboardUpdate()">Update</button></div>
-                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonMotherboardSubmit()">Submit</button></div>
+                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonGpuUpdate()">Update</button></div>
+                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonGpuSubmit()">Submit</button></div>
                             <div class="col-1"></div>
                         </div>
                     </div>

@@ -286,3 +286,57 @@ const checkGpuInputErrors = () => {
 
     return errors;
 }
+
+const buttonGpuSubmit = () => {
+    let errors = checkGpuInputErrors();
+
+    if (errors == "") {
+
+        //check user response error
+        const userSubmitResponse = confirm('Are you sure to submit...?\n');
+
+
+        if (userSubmitResponse) {
+            //call post service
+
+            let postServiceResponce;
+
+            $.ajax("/gpu", {
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(gpu),
+                async: false,
+
+                success: function(data) {
+                    console.log("success", data);
+                    postServiceResponce = data;
+                },
+
+                error: function(resData) {
+                    console.log("Fail", resData);
+                    postServiceResponce = resData;
+                }
+
+            });
+
+            //if response is success
+            if (postServiceResponce == "OK") {
+                alert("Save successfully...!");
+                //hide the model
+                $('#gpuAddModal').modal('hide');
+                //reset the Item form
+                formGpu.reset();
+                //refreash Item form
+                refreshGpuForm();
+                //refreash Item table
+                refreshGpuTable();
+            } else {
+                alert("Fail to submit GPU form \n" + postServiceResponce);
+            }
+        }
+    } else {
+        //if error ext then set alert
+        alert('form has following error...\n' + errors);
+    }
+
+}
