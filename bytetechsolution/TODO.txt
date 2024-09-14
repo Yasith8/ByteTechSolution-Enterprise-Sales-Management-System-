@@ -66,3 +66,5 @@ Employee Management Module
 
 
    //bug change functions names in Controller files
+
+   //bug need to check saleprice calculator
