@@ -69,8 +69,8 @@ const refreshGpuForm = () => {
     fillDataIntoSelect(selectGpuSeries, "Select GPU Chipset First", [], "name")
 
     selectGpuChipset.addEventListener('change', () => {
-        const cpuchipset = selectValueHandler(selectGpuChipset);
-        gpuseries = getServiceAjaxRequest("/motherboardseries/motherboardseriesbycpusocket/" + cpuchipset.name);
+        const gpuchipset = selectValueHandler(selectGpuChipset);
+        gpuseries = getServiceAjaxRequest("/gpuseries/gpuseriesbygpuchipset/" + gpuchipset.name);
         fillDataIntoSelect(selectGpuSeries, "Select GPU Series", gpuseries, "name");
     })
 
@@ -131,4 +131,8 @@ const getItemStatus = (ob) => {
     } else {
         return '<p class="item-status-other">' + ob.itemstatus_id.name + '</p>'
     }
+}
+
+const refillGpuForm = (ob, rowIndex) => {
+
 }

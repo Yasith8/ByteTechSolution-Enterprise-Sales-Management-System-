@@ -13,12 +13,12 @@ const getServiceAjaxRequest = (url) => {
             type: "GET",
             async: false,
             success: function(data) {
-                console.log("Success " + data);
+                console.log("Success : " + data);
                 getServiceResponse = data;
             },
 
             error: function(resData) {
-                console.log("Error " + resData);
+                console.log("Error : " + resData);
                 getServiceResponse = [];
             }
         })
