@@ -264,7 +264,7 @@ const checkMotherboardInputErrors = () => {
     }
 
     if (motherboard.maxcapacity == null) {
-        errors = errors + "Total Cores can't be Null...!\n";
+        errors = errors + "Max Capacity can't be Null...!\n";
         numberMaxCapacity.classList.add("is-invalid");
     }
     if (motherboard.itemstatus_id == null) {
