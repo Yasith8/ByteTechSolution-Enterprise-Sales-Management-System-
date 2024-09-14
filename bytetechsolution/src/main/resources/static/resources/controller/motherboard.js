@@ -130,13 +130,13 @@ const getItemStatus = (ob) => {
     }
 }
 
-const salePriceCalculator = () => {
+/* const salePriceCalculator = () => {
     decimalSalesPrice.disabled = true;
     let salesPrice = Number(decimalPurchasePrice.value) + (Number(numberProfitRate.value / 100) * Number(decimalPurchasePrice.value));
     decimalSalesPrice.value = salesPrice;
     textValidator(decimalSalesPrice, '^[0-9]+(\\.[0-9]{1,2})?$', 'motherboard', 'salesprice')
 }
-
+ */
 const refillMotherboardForm = (ob, rowIndex) => {
     $('#motherboardAddModal').modal('show');
     removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType])

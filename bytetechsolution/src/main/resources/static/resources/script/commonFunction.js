@@ -125,3 +125,11 @@ const selectValueHandler = (filedId) => {
         return JSON.parse(filedId.value);
     }
 }
+
+
+const salePriceCalculator = (object) => {
+    decimalSalesPrice.disabled = true;
+    let salesPrice = Number(decimalPurchasePrice.value) + (Number(numberProfitRate.value / 100) * Number(decimalPurchasePrice.value));
+    decimalSalesPrice.value = salesPrice;
+    textValidator(decimalSalesPrice, '^[0-9]+(\\.[0-9]{1,2})?$', object, 'salesprice')
+}

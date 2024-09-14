@@ -250,12 +250,12 @@ const refillProcessorForm = (ob, rowIndex) => {
 }
 
 
-const salePriceCalculator = () => {
+/* const salePriceCalculator = () => {
     decimalSalesPrice.disabled = true;
     let salesPrice = Number(decimalPurchasePrice.value) + (Number(numberProfitRate.value / 100) * Number(decimalPurchasePrice.value));
     decimalSalesPrice.value = salesPrice;
     textValidator(decimalSalesPrice, '^[0-9]+(\\.[0-9]{1,2})?$', 'processor', 'salesprice')
-}
+} */
 
 //print table
 const printProcessorTable = () => {
