@@ -28,6 +28,8 @@ import lk.bytetechsolution.Dao.GpuDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.MemoryDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.GpuEntity;
+import lk.bytetechsolution.Entity.MemoryEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -81,4 +83,22 @@ public class MemoryController {
         return memoryView;
 
     }
+
+    @GetMapping(value = "/memory/alldata", produces ="application/json" ) 
+    public List<MemoryEntity> allMemoryData() {
+
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MEMORY");
+
+
+        //if current logged user doesnt have privilages show empty list
+        if(!userPrivilage.get("select")){
+            return new ArrayList<MemoryEntity>();
+        }
+
+
+        return daoMemory.findAll();
+    }
+
 }
