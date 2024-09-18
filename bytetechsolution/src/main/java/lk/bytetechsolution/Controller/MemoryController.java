@@ -101,4 +101,57 @@ public class MemoryController {
         return daoMemory.findAll();
     }
 
+    @PostMapping(value = "/memory")
+    public String addMemoryData(@RequestBody MemoryEntity memory){
+
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GPU");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        //Check any Duplications
+        MemoryEntity extMemory=daoMemory.getByMemoryName(memory.getItemname());
+
+        if(extMemory!=null){
+            return "Save not Completed : given Name - "+memory.getItemname()+" Already Exist...!";
+        }
+
+
+
+
+        try {
+            //set AutoGenarated Value
+            String nextNumber=daoMemory.getNextMemNumber();
+
+            //if next employee number is not come then set manualy last number+1
+            if(nextNumber==null){
+                memory.setItemcode("MEM0001");
+            }else{
+                memory.setItemcode(nextNumber);
+            }
+
+            //assign added user id
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            //because of security reason only add user id
+            memory.setAddeduser(addedUserData.getId());
+
+            //assign added date
+            memory.setAddeddate(LocalDateTime.now());
+
+            //assign category
+            memory.setCategory_id(daoCategory.getReferenceById(4));
+            
+            //saving operation
+            daoMemory.save(memory);
+            //return the message about success
+            return "OK";
+        } catch (Exception e) {
+            return "Save not Completed : "+e.getMessage();
+        }
+    }
+
+
 }
