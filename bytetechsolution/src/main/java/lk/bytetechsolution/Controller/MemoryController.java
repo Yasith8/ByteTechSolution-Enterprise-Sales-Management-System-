@@ -106,7 +106,7 @@ public class MemoryController {
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GPU");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MEMORY");
 
         if(!userPrivilage.get("insert")){
             return "Permission Denied! Save not Completed";
@@ -151,6 +151,47 @@ public class MemoryController {
         } catch (Exception e) {
             return "Save not Completed : "+e.getMessage();
         }
+    }
+
+
+    @DeleteMapping(value = "/memory")
+    public String deleteMemoryData(@RequestBody MemoryEntity memory){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MEMORY");
+
+        if(!userPrivilage.get("delete")){
+            return "Permission Denied! Delete not Completed";
+        }
+
+        //existance check
+        MemoryEntity extMemory=daoMemory.getReferenceById(memory.getId());
+
+        if(extMemory==null){
+            return "Delete not Completed. Processor not existed";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+            memory.setDeleteuser(deleteUser.getId());
+
+            //asign modify time
+            memory.setDeletedate(LocalDateTime.now());
+
+            //processor status change as soft delete
+            memory.setItemstatus_id(daoItemStatus.getReferenceById(3));
+
+            //save operation
+            daoMemory.save(memory);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+
+
     }
 
 
