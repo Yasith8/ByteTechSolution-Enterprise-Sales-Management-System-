@@ -4,8 +4,8 @@
 <head th:replace="~{component::headerFragment}"></head>
 
 <head>
-    <link rel="stylesheet" href="resources/style/gpu.css">
-    <script src="resources/controller/gpu.js"></script>
+    <link rel="stylesheet" href="resources/style/memory.css">
+    <script src="resources/controller/memory.js"></script>
 </head>
 
 
@@ -19,7 +19,7 @@
         <div class="row m-2">
             <div class="col-12 text-center 
             title-header-div">
-                <h2> GPU Management </h2>
+                <h2> Memory Management </h2>
             </div>
         </div>
         <!-- title area End -->
@@ -31,11 +31,11 @@
 
             </div>
             <div class="col-4 text-end">
-                <button type="button" class="Btn printTableBtn" onclick="printGpuTable('tableGpu')">
+                <button type="button" class="Btn printTableBtn" onclick="printMemoryTable('tableMemory')">
                     Print
                 </button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#gpuAddModal" class="btn addBtn">
-                    Add New GPU </button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#memoryAddModal" class="btn addBtn">
+                    Add New Memory </button>
             </div>
             <div class="col-1"></div>
         </div>
@@ -48,7 +48,7 @@
                 <div class="card employee-card">
                     <div class="card-body employee-cardbody">
 
-                        <table class="table table-hover" id="tableGpu">
+                        <table class="table table-hover" id="tableMemory">
                             <thead class="table-header">
                                 <tr>
                                     <th> # </th>
@@ -109,21 +109,21 @@
     </div>
 
     <!-- employee Add Modal -->
-    <div class="modal fade" id="gpuAddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="memoryAddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New GPU</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Memory</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formGpu">
+                    <form id="formMemory">
                         <!-- itemname Input Start -->
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textItemName" placeholder="procesor name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','gpu','itemname')">
-                                    <label for="textItemName">GPU Name <span class="requiredIcon">*</span></label>
+                                    <input type="text" class="form-control" id="textItemName" placeholder="procesor name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','memory','itemname')">
+                                    <label for="textItemName">Memory Name <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                                           --{1,2} -- 1 or 2 digits after decimal point
                                           --?  -- reguler eather 2 decimal points or one decimal points not 3 decimal points
                                     -->
-                                    <input type="number" class="form-control" id="decimalPurchasePrice" placeholder="" required onkeyup="textValidator(this,'^[0-9]+(\\.[0-9]{1,2})?$','gpu','purchaseprice')">
+                                    <input type="number" class="form-control" id="decimalPurchasePrice" placeholder="" required onkeyup="textValidator(this,'^[0-9]+(\\.[0-9]{1,2})?$','memory','purchaseprice')">
                                     <label for="decimalPurchasePrice">Purchase Price<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -155,7 +155,7 @@
                                        eather maximum can add 100 or can add 
                                          [1-9]?(requler expression)[0-9] mean 
                                     -->
-                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','gpu','profitrate');salePriceCalculator('gpu')">
+                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','memory','profitrate');salePriceCalculator('gpu')">
                                     <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -182,7 +182,7 @@
                             <!-- warranty start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="numberWarranty" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','gpu','warranty')">
+                                    <input type="text" class="form-control" id="numberWarranty" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','memory','warranty')">
                                     <label for="numberWarranty">Warranty (Months)<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -196,7 +196,7 @@
                                        eather maximum can add 100 or can add 
                                          [1-9]?(requler expression)[0-9] mean 
                                     -->
-                                    <input type="number" class="form-control" id="numberROP" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','gpu','rop')">
+                                    <input type="number" class="form-control" id="numberROP" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','memory','rop')">
                                     <label for="numberROP">ROP</label>
                                 </div>
                             </div>
@@ -210,7 +210,7 @@
                                        eather maximum can add 100 or can add 
                                          [1-9]?(requler expression)[0-9] mean 
                                     -->
-                                    <input type="number" class="form-control" id="numberROQ" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','gpu','roq')">
+                                    <input type="number" class="form-control" id="numberROQ" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','memory','roq')">
                                     <label for="numberROQ">ROQ</label>
                                 </div>
                             </div>
@@ -222,7 +222,7 @@
                             <!--item status start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="itemStatus" id="selectItemStatus" class="form-select" onchange="selectDynamicValidator(this,'','gpu','itemstatus_id')">
+                                    <select name="itemStatus" id="selectItemStatus" class="form-select" onchange="selectDynamicValidator(this,'','memory','itemstatus_id')">
                                     <option value=""  selected disabled>Select Item Status</option>
                                 </select>
                                 </div>
@@ -232,16 +232,16 @@
                             <!--interface start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="interface" id="selectInterface" class="form-select" onchange="selectDynamicValidator(this,'','gpu','interface_id')">
-                                    <option value=""  selected disabled>Select Interface</option>
-                                </select>
+                                    <input type="number" class="form-control" id="numberSpeed" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','memory','speed')">
+                                    <label for="numberSpeed">Speed</label>
+                                    </select>
                                 </div>
                             </div>
                             <!--interface  end-->
                             <!-- Description start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" id="textDescription" placeholder="" onkeyup="textValidator(this,'^(([0-9A-Za-z\\.\\-\\s]{1,300}))$','gpu','description')"></textarea>
+                                    <textarea class="form-control" id="textDescription" placeholder="" onkeyup="textValidator(this,'^(([0-9A-Za-z\\.\\-\\s]{1,300}))$','memory','description')"></textarea>
                                     <label for="textDescription">Description</label>
                                 </div>
                             </div>
@@ -251,7 +251,7 @@
                             <!-- selectBrand start -->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','gpu','brand_id')">
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','memory','brand_id')">
                                     <option value=""  selected disabled>Select Brand</option>
                                 </select>
                                 </div>
@@ -261,8 +261,8 @@
                             <!--selectCpuSocket start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="gpuchipset" id="selectGpuChipset" class="form-select" onchange="selectDynamicValidator(this,'','gpu','gpuchipset_id')">
-                                    <option value=""  selected disabled>Select GPU Chipset</option>
+                                    <select name="capacity" id="selectCapacity" class="form-select" onchange="selectDynamicValidator(this,'','gpu','capacity_id')">
+                                    <option value=""  selected disabled>Select Capacity</option>
                                 </select>
                                 </div>
                             </div>
@@ -270,8 +270,8 @@
                             <!-- selectMotherboardSeries start -->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="gpuseries" id="selectGpuSeries" class="form-select" onchange="selectDynamicValidator(this,'','gpu','gpuseries_id')">
-                                    <option value=""  selected disabled>Select GPU series</option>
+                                    <select name="memoryformfactor" id="selectMemoryFormFactor" class="form-select" onchange="selectDynamicValidator(this,'','memory','memoryformfactor_id')">
+                                    <option value=""  selected disabled>Select Memory Form Factor</option>
                                 </select>
                                 </div>
                             </div>
@@ -282,30 +282,12 @@
                             <!-- selectMotherboardSeries start -->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="capacity" id="selectCapacity" class="form-select" onchange="selectDynamicValidator(this,'','gpu','capacity_id')">
-                                    <option value=""  selected disabled>Select Capacity</option>
+                                    <select name="gputype" id="selectMemoryType" class="form-select" onchange="selectDynamicValidator(this,'','memory','gputype_id')">
+                                    <option value=""  selected disabled>Select Memory Type</option>
                                 </select>
                                 </div>
                             </div>
                             <!-- selectMotherboardType end -->
-                            <!--selectmotherboardformfactor start-->
-                            <div class="col-4">
-                                <div class="mb-3 form-floating">
-                                    <select name="mbordformfactor" id="selectMotherboardFormFactor" class="form-select" onchange="selectDynamicValidator(this,'','gpu','motherboardformfactor_id')">
-                                    <option value=""  selected disabled>Select Motherboard Form Factor</option>
-                                </select>
-                                </div>
-                            </div>
-                            <!--selectmotherboardformfactor end-->
-                            <!--selectMemoryType start-->
-                            <div class="col-4">
-                                <div class="mb-3 form-floating">
-                                    <select name="gputype" id="selectGpuType" class="form-select" onchange="selectDynamicValidator(this,'','gpu','gputype_id')">
-                                    <option value=""  selected disabled>Select GPU Type</option>
-                                </select>
-                                </div>
-                            </div>
-                            <!--selectMemoryType end-->
                         </div>
                     </form>
                 </div>
