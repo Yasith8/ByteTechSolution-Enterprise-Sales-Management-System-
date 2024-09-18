@@ -141,7 +141,7 @@ public class GpuController {
             gpu.setAddeddate(LocalDateTime.now());
 
             //assign category
-            gpu.setCategory_id(daoCategory.getReferenceById(2));
+            gpu.setCategory_id(daoCategory.getReferenceById(4));
             
             //saving operation
             daoGpu.save(gpu);
