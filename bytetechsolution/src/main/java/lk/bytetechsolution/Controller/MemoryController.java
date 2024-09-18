@@ -194,5 +194,47 @@ public class MemoryController {
 
     }
 
+    @PutMapping(value = "/memory")
+    public String updateGpuData(@RequestBody MemoryEntity memory){
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "MEMORY");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied. Update not completed.";
+        }
+
+        //existance check
+        MemoryEntity extMemory=daoMemory.getReferenceById(memory.getId());
+
+        if(extMemory==null){
+            return "Update not Completed. Processor not existed";
+        }
+        
+        //check duplicategpu
+        MemoryEntity extMemoryName=daoMemory.getByMemoryName(memory.getItemname());
+
+        if(extMemoryName==null && extMemory.getId()!=memory.getId()){
+            return "Update is not Completed : this "+memory.getItemname()+" Item Name is already existed.";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            memory.setModifyuser(modifyUser.getId());
+
+            //asign modify time
+            memory.setModifydate(LocalDateTime.now());
+
+            //save operation
+            daoMemory.save(memory);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+    }
+
 
 }
