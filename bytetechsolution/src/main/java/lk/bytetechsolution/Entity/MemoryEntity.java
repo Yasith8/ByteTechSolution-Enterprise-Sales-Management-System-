@@ -123,8 +123,8 @@ public class MemoryEntity {
      private CapacityEntity capacity_id;
 
      @ManyToOne  
-     @JoinColumn(name="memoryformdactor_id",referencedColumnName = "id")
-     private MemoryFormFactorEntity memoryformdactor_id;
+     @JoinColumn(name="memoryformfactor_id",referencedColumnName = "id")
+     private MemoryFormFactorEntity memoryformfactor_id;
 
      @ManyToOne  
      @JoinColumn(name="memorytype_id",referencedColumnName = "id")

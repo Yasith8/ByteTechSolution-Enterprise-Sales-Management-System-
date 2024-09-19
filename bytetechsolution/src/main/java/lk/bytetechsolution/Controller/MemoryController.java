@@ -24,11 +24,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
-import lk.bytetechsolution.Dao.GpuDao;
+
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.MemoryDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.GpuEntity;
+
 import lk.bytetechsolution.Entity.MemoryEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -72,7 +72,7 @@ public class MemoryController {
         // Create a new ModelAndView object to hold the model data and view information
         ModelAndView memoryView=new ModelAndView();
         //pass the ui
-        memoryView.setViewName("gpu.html");
+        memoryView.setViewName("memory.html");
         //attributes set to show titles in web page using theamleaf
         memoryView.addObject("title", "Memory Management || Bytetech Solution");
         memoryView.addObject("user", authentication.getName());// passing logged user name
