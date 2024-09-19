@@ -19,6 +19,11 @@ const refreshMemoryTable = () => {
         { dataType: 'function', propertyName: getMemoryCapacity },
         { dataType: 'function', propertyName: getItemStatus },
     ]
+    fillDataIntoTable(tableMemory, memories, displayPropertyList, refillMemoryForm, divModifyButton)
+        //table show with dataTable
+    $('#tableMemory').dataTable();
+    //hide button section
+    divModifyButton.className = 'd-none';
 }
 
 const refreshMemoryForm = () => {
