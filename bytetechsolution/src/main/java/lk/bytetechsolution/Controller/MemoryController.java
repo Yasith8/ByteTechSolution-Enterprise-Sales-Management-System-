@@ -142,7 +142,7 @@ public class MemoryController {
             memory.setAddeddate(LocalDateTime.now());
 
             //assign category
-            memory.setCategory_id(daoCategory.getReferenceById(4));
+            memory.setCategory_id(daoCategory.getReferenceById(3));
             
             //saving operation
             daoMemory.save(memory);

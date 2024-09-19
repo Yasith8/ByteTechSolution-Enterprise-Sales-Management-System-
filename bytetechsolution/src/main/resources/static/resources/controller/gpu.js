@@ -45,7 +45,7 @@ const refreshGpuForm = () => {
 
     staticBackdropLabel.textContent = "Add New Item";
 
-    brands = getServiceAjaxRequest("/brand/brandbycategory/Motherboard");
+    brands = getServiceAjaxRequest("/brand/brandbycategory/GPU");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
 
     itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
