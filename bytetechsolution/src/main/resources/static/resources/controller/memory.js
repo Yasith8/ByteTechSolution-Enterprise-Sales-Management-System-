@@ -330,3 +330,71 @@ const checkMemoryFormUpdates = () => {
 
     return updates;
 }
+
+const buttonGpuUpdate = () => {
+    //check form error
+    let errors = checkMemoryInputErrors();
+
+    //check code has error, if code doesn't have  any errors
+    if (errors == "") {
+
+        //check form update
+
+        let updates = checkMemoryFormUpdates();
+
+        //check there is no updates or any updations
+        if (updates == "") {
+            alert("Nothing Updates")
+        } else {
+
+            //get conformation from user to made updation
+            let userConfirm = confirm("Are You Sure to Update this Changes? \n" + updates);
+
+            //if user conform
+            if (userConfirm) {
+                //call put service requestd  -this use for updations
+                let putServiceResponse;
+
+                $.ajax("/memory", {
+                    type: "PUT",
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(memory),
+
+
+                    success: function(successResponseOb) {
+                        putServiceResponse = successResponseOb;
+                    },
+
+                    error: function(failedResponseOb) {
+                        putServiceResponse = failedResponseOb;
+                    }
+
+                });
+                //check put service response
+                if (putServiceResponse == "OK") {
+                    alert("Updated Successfully");
+
+                    //hide the moadel
+                    $('#memoryAddModal').modal('hide');
+                    //refreash Item table for realtime updation
+                    refreshMemoryTable();
+                    //reset the Item form
+                    formMemory.reset();
+                    //Item form refresh
+                    refreshMemoryForm();
+                } else {
+                    //handling errors
+                    alert("Update not Completed :\n" + putServiceResponse);
+                    //refreash the employee form
+                    refreshMemoryForm();
+                }
+            }
+        }
+    } else {
+        //show user to what errors happen
+        alert("Memory Form  has Following Errors..\n" + errors)
+    }
+
+
+}
