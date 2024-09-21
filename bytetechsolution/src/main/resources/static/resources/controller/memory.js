@@ -435,3 +435,20 @@ const deleteMemory = (ob, rowIndex) => {
         }
     }
 }
+
+const buttonModalClose = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
+
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#memoryAddModal').modal('hide');
+
+
+        //formItem is id of form
+        //this will reset all data(refreash)
+        formMemory.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshMemoryForm();
+    }
+}
