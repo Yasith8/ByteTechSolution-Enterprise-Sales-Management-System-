@@ -217,14 +217,14 @@ const checkMemoryInputErrors = () => {
     }
     if (memory.memorytype_id == null) {
         errors = errors + "Memory Type can't be Null...!\n";
-        selectGpuType.classList.add("is-invalid");
+        selectMemoryType.classList.add("is-invalid");
     }
-    if (memory.motherboardformfactor_id == null) {
-        errors = errors + "Motherboard Form Factor can't be Null...!\n";
-        selectMotherboardFormFactor.classList.add("is-invalid");
+    if (memory.memoryformfactor_id == null) {
+        errors = errors + "Memory Form Factor can't be Null...!\n";
+        selectMemoryFormFactor.classList.add("is-invalid");
     }
     if (memory.capacity_id == null) {
-        errors = errors + "GPU Capacity can't be Null...!\n";
+        errors = errors + "Memory Capacity can't be Null...!\n";
         selectCapacity.classList.add("is-invalid");
     }
 
