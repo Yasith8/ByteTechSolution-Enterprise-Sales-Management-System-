@@ -284,3 +284,49 @@ const buttonMemorySubmit = () => {
     }
 
 }
+
+const checkMemoryFormUpdates = () => {
+    updates = "";
+
+    if (memory.itemname != oldMemory.itemname) {
+        updates = updates + "Processor Name is Changed \n";
+    }
+    if (memory.purchaseprice != oldMemory.purchaseprice) {
+        updates = updates + "Purchase Price is Changed \n";
+    }
+    if (memory.profitrate != oldMemory.profitrate) {
+        updates = updates + "Profit Rate is Changed \n";
+    }
+    if (memory.warranty != oldMemory.warranty) {
+        updates = updates + "Warranty is Changed \n";
+    }
+    if (memory.rop != oldMemory.rop) {
+        updates = updates + "ROP is Changed \n";
+    }
+    if (memory.roq != oldMemory.roq) {
+        updates = updates + "ROQ is Changed \n";
+    }
+    if (memory.description != oldMemory.description) {
+        updates = updates + "Description is Changed \n";
+    }
+    if (memory.speed != oldMemory.speed) {
+        updates = updates + "Memory Speed is Changed \n";
+    }
+    if (memory.brand_id.name != oldMemory.brand_id.name) {
+        updates = updates + "Brand is Changed \n";
+    }
+    if (memory.memorytype_id.name != oldMemory.memorytype_id.name) {
+        updates = updates + "Memory Type is Changed \n";
+    }
+    if (memory.memoryformfactor_id.name != oldMemory.memoryformfactor_id.name) {
+        updates = updates + "Memory Form Factor is Changed \n";
+    }
+    if (memory.capacity_id.name != oldMemory.capacity_id.name) {
+        updates = updates + "Capacity is Changed \n";
+    }
+    if (memory.itemstatus_id.name != oldMemory.itemstatus_id.name) {
+        updates = updates + "Item Status is Changed \n";
+    }
+
+    return updates;
+}
