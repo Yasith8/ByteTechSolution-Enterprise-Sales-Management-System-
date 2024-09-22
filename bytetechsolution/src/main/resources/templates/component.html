@@ -62,7 +62,7 @@
 
 <body>
 
-    <nav class="navbar bg-green p-3" th:fragment="navFragment">
+    <nav class="navbar bg-green p-3 get-nav-top" th:fragment="navFragment">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="/resources/image/logo/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
@@ -89,7 +89,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><button class="btn-logout"><a href="/logout" class="btn-logout-a">Logout</a></button></li>
+                        <li><a href="/logout" class="btn-logout btn-logout-a">Logout</a></li>
                     </ul>
                 </div>
                 <button class="btn btn-burger ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="fa-solid fa-bars"></i></button>

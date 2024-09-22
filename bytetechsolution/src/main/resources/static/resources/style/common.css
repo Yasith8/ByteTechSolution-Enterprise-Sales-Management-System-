@@ -175,7 +175,12 @@ Navbar and Sidebar
     pointer-events: none;
 }
 
-.btn-logout {
+.btn-logout-a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: red;
     background-color: rgba(255, 0, 0, 0.152);
     font-weight: 500;
     border: 2px solid red;
@@ -186,18 +191,10 @@ Navbar and Sidebar
     margin-bottom: 10px;
 }
 
-.btn-logout-a {
-    text-decoration: none;
-    color: red;
-}
-
 .btn-logout-a:hover {
     text-decoration: none;
     color: rgb(255, 255, 255);
     font-weight: 500;
-}
-
-.btn-logout:hover {
     background-color: rgb(255, 0, 0);
     border: 2px solid red;
 }
@@ -216,6 +213,10 @@ Navbar and Sidebar
 
 .sidebar-btn:hover {
     background-color: #7ff990;
+}
+
+.get-nav-top {
+    z-index: 100;
 }
 
 

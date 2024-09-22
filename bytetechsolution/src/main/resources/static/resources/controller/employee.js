@@ -745,7 +745,7 @@ const checkEmployeeFormUpdates = () => {
         updates = updates + " Employee Land No is Changed \n";
     }
 
-    if ((employee.photo != employee.photo) || (employee.photoname != employeeFormRefill.photoname)) {
+    if ((employee.photo != employee.photo) || (employee.photoname != employee.photoname)) {
         updates = updates + " Employee Profile Photo is Changed \n";
     }
 
@@ -783,6 +783,12 @@ const buttonEmployeeUpdate = () => {
             //check there is no updates or any updations
             if (updates == "") {
                 alert("Nothing Updates")
+                    /* document.body.insertAdjacentHTML('beforeend',
+                        '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
+                        '<strong>Nothing Updates</strong>' +
+                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                        '</div>'
+                    ); */
             } else {
 
                 //get conformation from user to made updation
@@ -812,6 +818,12 @@ const buttonEmployeeUpdate = () => {
                     //check put service response
                     if (putServiceResponse == "OK") {
                         alert("Updated Successfully");
+                        /*  document.body.insertAdjacentHTML('beforeend',
+                             '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                             '<strong>Updated Successfully</strong>' +
+                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                             '</div>'
+                         ); */
 
                         //hide the moadel
                         $('#employeeAddModal').modal('hide');
@@ -824,6 +836,12 @@ const buttonEmployeeUpdate = () => {
                     } else {
                         //handling errors
                         alert("Update not Completed :\n" + putServiceResponse);
+                        /* document.body.insertAdjacentHTML('beforeend',
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                            '<strong>Update not Completed: \n</strong>' + putServiceResponse +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                            '</div>'
+                        ); */
                         //refreash the employee form
                         refreshEmployeeForm();
                     }
@@ -832,6 +850,13 @@ const buttonEmployeeUpdate = () => {
         } else {
             //show user to what errors happen
             alert("Employee Form  has Following Errors..\n" + errors)
+
+            /* document.body.insertAdjacentHTML('beforeend',
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                '<strong>Error!</strong> Your system has the following errors: ' + errors +
+                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                '</div>'
+            ); */
         }
 
 

@@ -1,10 +1,11 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: "Nunito Sans", sans-serif;
 }
 
 body {
-    background: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%) !important;
+    background-color: #00ff99 !important;
 }
 
 .Btn {
@@ -18,17 +19,24 @@ body {
     border: 1px solid #43456e;
 }
 
+.fw-bold {
+    font-weight: 800 !important;
+}
+
 .addBtn {
     background-color: #6669b0;
     color: white;
+    padding-inline: 40px;
+    padding-block: 10px;
+    margin-bottom: 5px;
 }
 
 .printTableBtn {
     background-color: #c471f5;
     margin-right: 10px;
     color: white;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-inline: 30px;
+    padding-block: 10px;
     border: 1px solid #c471f5;
 }
 
@@ -69,39 +77,34 @@ body {
     gap: 30px;
 }
 
-.status-working {
-    padding: 5px;
-    border-radius: 8px;
-    border: none;
-    background-color: green;
-    color: white;
-    text-align: center;
-}
-
 .status-resign {
     padding: 5px;
     border-radius: 8px;
     border: none;
-    background-color: orange;
-    color: white;
+    background-color: #FFEDDD;
     text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #ff9d48;
 }
 
 .status-delete {
     padding: 5px;
     border-radius: 8px;
     border: none;
-    background-color: red;
-    color: white;
+    background-color: #FCD7D4;
     text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #EF3826;
 }
 
 .status-other {
     padding: 5px;
     border-radius: 8px;
     border: none;
-    background-color: grey;
-    color: white;
+    background-color: rgb(209, 209, 209);
+    color: rgb(114, 114, 114);
     text-align: center;
 }
 
@@ -109,9 +112,11 @@ body {
     padding: 5px;
     border-radius: 8px;
     border: none;
-    background-color: green;
-    color: white;
+    background-color: #CCF0EB;
     text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #00B69B;
 }
 
 .btn-user-selectImage {
