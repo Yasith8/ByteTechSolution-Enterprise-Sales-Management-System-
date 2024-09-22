@@ -155,4 +155,46 @@ public class StorageController {
     }
 
 
+    @DeleteMapping(value = "/storage")
+    public String deleteStorageData(@RequestBody StorageEntity storage){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"STORAGE");
+
+        if(!userPrivilage.get("delete")){
+            return "Permission Denied! Delete not Completed";
+        }
+
+        //existance check
+        StorageEntity extStorage=daoStorage.getReferenceById(storage.getId());
+
+        if(extStorage==null){
+            return "Delete not Completed. Processor not existed";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+            storage.setDeleteuser(deleteUser.getId());
+
+            //asign modify time
+            storage.setDeletedate(LocalDateTime.now());
+
+            //processor status change as soft delete
+            storage.setItemstatus_id(daoItemStatus.getReferenceById(3));
+
+            //save operation
+            daoStorage.save(storage);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+
+
+    }
+
+
+
 }
