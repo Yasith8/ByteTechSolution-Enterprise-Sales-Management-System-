@@ -12,6 +12,18 @@ body {
 .addBtn {
     background-color: #6669b0;
     color: white;
+    padding-inline: 40px;
+    padding-block: 7px;
+    margin-bottom: 5px;
+}
+
+.printTableBtn {
+    background-color: #c471f5;
+    margin-right: 10px;
+    color: white;
+    padding-inline: 30px;
+    padding-block: 7px;
+    border: 1px solid #c471f5;
 }
 
 .btnDel:hover {
@@ -62,22 +74,26 @@ body {
     border: 2px solid black;
 }
 
-.user-active {
-    padding: 5px;
-    border-radius: 8px;
-    border: none;
-    background-color: green;
-    color: white;
-    text-align: center;
-}
-
 .user-inactive {
     padding: 5px;
     border-radius: 8px;
     border: none;
-    background-color: red;
-    color: white;
+    background-color: #FCD7D4;
     text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #EF3826;
+}
+
+.user-active {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #CCF0EB;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #00B69B;
 }
 
 tr {

@@ -10,6 +10,18 @@ body {
 .addBtn {
     background-color: #6669b0;
     color: white;
+    padding-inline: 40px;
+    padding-block: 7px;
+    margin-bottom: 5px;
+}
+
+.printTableBtn {
+    background-color: #c471f5;
+    margin-right: 10px;
+    color: white;
+    padding-inline: 30px;
+    padding-block: 7px;
+    border: 1px solid #c471f5;
 }
 
 .btnDel:hover {
@@ -61,27 +73,33 @@ body {
     padding: 5px;
     border-radius: 8px;
     border: none;
-    background-color: green;
-    color: white;
+    background-color: #CCF0EB;
     text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #00B69B;
 }
 
 .item-status-resign {
     padding: 5px;
     border-radius: 8px;
     border: none;
-    background-color: orange;
-    color: white;
+    background-color: #FFEDDD;
     text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #ff9d48;
 }
 
 .item-status-delete {
     padding: 5px;
     border-radius: 8px;
     border: none;
-    background-color: red;
-    color: white;
+    background-color: #FCD7D4;
     text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #EF3826;
 }
 
 .item-status-other {
