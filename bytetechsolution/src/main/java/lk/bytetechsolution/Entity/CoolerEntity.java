@@ -25,11 +25,11 @@ import lombok.NoArgsConstructor;
  * java tell system to instance of this class will represent rows in db's table
  */
 @Entity
-@Table(name = "storage") // map the modularity table
+@Table(name = "cooler") // map the modularity table
 @Data//genarate getters and setters and toString to class
 @AllArgsConstructor//default constructor       ----usefull when create object that not have any initial values
 @NoArgsConstructor//all argument constructor  ----usefull when create object that have any initial values
-public class StorageEntity {
+public class CoolerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //set Auto Increment
     @Column(name = "id",unique = true)
@@ -110,16 +110,10 @@ public class StorageEntity {
      private ItemStatusEntity itemstatus_id;
 
      @ManyToOne  
-     @JoinColumn(name="storageinterface_id",referencedColumnName = "id")
-     private StorageInterfaceEntity storageinterface_id;
+     @JoinColumn(name="cpusocket_id",referencedColumnName = "id")
+     private CpuSocketEntity cpusocket_id;
 
      @ManyToOne  
-     @JoinColumn(name="storagetype_id",referencedColumnName = "id")
-     private StorageTypeEntity storagetype_id;
-
-     @ManyToOne  
-     @JoinColumn(name="capacity_id",referencedColumnName = "id")
-     private CapacityEntity capacity_id;
-
-
+     @JoinColumn(name="coolertype_id",referencedColumnName = "id")
+     private CoolerTypeEntity coolertype_id;
 }
