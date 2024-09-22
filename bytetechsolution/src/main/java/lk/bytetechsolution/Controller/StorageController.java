@@ -102,4 +102,57 @@ public class StorageController {
     }
 
 
+    @PostMapping(value = "/storage")
+    public String addStorageData(@RequestBody StorageEntity storage){
+
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"STORAGE");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        //Check any Duplications
+        StorageEntity extStorage=daoStorage.getByStorageName(storage.getItemname());
+
+        if(extStorage!=null){
+            return "Save not Completed : given Name - "+storage.getItemname()+" Already Exist...!";
+        }
+
+
+
+
+        try {
+            //set AutoGenarated Value
+            String nextNumber=daoStorage.getNextStorageNumber();
+
+            //if next employee number is not come then set manualy last number+1
+            if(nextNumber==null){
+                storage.setItemcode("STO0001");
+            }else{
+                storage.setItemcode(nextNumber);
+            }
+
+            //assign added user id
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            //because of security reason only add user id
+            storage.setAddeduser(addedUserData.getId());
+
+            //assign added date
+            storage.setAddeddate(LocalDateTime.now());
+
+            //assign category
+            storage.setCategory_id(daoCategory.getReferenceById(5));
+            
+            //saving operation
+            daoStorage.save(storage);
+            //return the message about success
+            return "OK";
+        } catch (Exception e) {
+            return "Save not Completed : "+e.getMessage();
+        }
+    }
+
+
 }
