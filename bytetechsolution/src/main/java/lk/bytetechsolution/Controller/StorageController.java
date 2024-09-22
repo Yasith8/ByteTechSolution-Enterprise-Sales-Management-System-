@@ -27,7 +27,6 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.StorageDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.GpuEntity;
 import lk.bytetechsolution.Entity.StorageEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -193,6 +192,48 @@ public class StorageController {
         }
 
 
+    }
+
+    @PutMapping(value = "/storage")
+    public String updateStorageData(@RequestBody StorageEntity storage){
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "STORAGE");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied. Update not completed.";
+        }
+
+        //existance check
+        StorageEntity extStorage=daoStorage.getReferenceById(storage.getId());
+
+        if(extStorage==null){
+            return "Update not Completed. Processor not existed";
+        }
+        
+        //check duplicategpu
+        StorageEntity extStorageName=daoStorage.getByStorageName(storage.getItemname());
+
+        if(extStorage==null && extStorageName.getId()!=storage.getId()){
+            return "Update is not Completed : this "+storage.getItemname()+" Item Name is already existed.";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            storage.setModifyuser(modifyUser.getId());
+
+            //asign modify time
+            storage.setModifydate(LocalDateTime.now());
+
+            //save operation
+            daoStorage.save(storage);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
     }
 
 
