@@ -100,4 +100,56 @@ public class CoolerController {
         return daoCooler.findAll();
     }
 
+    @PostMapping(value = "/cooler")
+    public String addCoolerData(@RequestBody CoolerEntity cooler){
+
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"COOLER");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        //Check any Duplications
+        CoolerEntity extCooler=daoCooler.getByCoolerName(cooler.getItemname());
+
+        if(extCooler!=null){
+            return "Save not Completed : given Name - "+cooler.getItemname()+" Already Exist...!";
+        }
+
+
+
+
+        try {
+            //set AutoGenarated Value
+            String nextNumber=daoCooler.getNextCoolerNumber();
+
+            //if next employee number is not come then set manualy last number+1
+            if(nextNumber==null){
+                cooler.setItemcode("CLR0001");
+            }else{
+                cooler.setItemcode(nextNumber);
+            }
+
+            //assign added user id
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            //because of security reason only add user id
+            cooler.setAddeduser(addedUserData.getId());
+
+            //assign added date
+            cooler.setAddeddate(LocalDateTime.now());
+
+            //assign category
+            cooler.setCategory_id(daoCategory.getReferenceById(6));
+            
+            //saving operation
+            daoCooler.save(cooler);
+            //return the message about success
+            return "OK";
+        } catch (Exception e) {
+            return "Save not Completed : "+e.getMessage();
+        }
+    }
+
 }
