@@ -22,23 +22,24 @@ import org.springframework.web.bind.annotation.RestController;
 */
 import org.springframework.web.servlet.ModelAndView;
 
+import lk.bytetechsolution.Dao.CasingDao;
 import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.CoolerDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.CoolerEntity;
+import lk.bytetechsolution.Entity.CasingEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
-public class CoolerController {
+public class CasingController {
       /* 
      * AutoWired used for automatic dependency injection
      * inject memorytype Instance into dao variable
      * the method can use dao for save,retrive,maipulate motherboardformfactor data
      */
     @Autowired
-    private CoolerDao daoCooler;
+    private CasingDao daoCasing;
 
     @Autowired
     private UserDao daoUser;
@@ -55,8 +56,8 @@ public class CoolerController {
     @Autowired
     private PrivilageController privilageController;
 
-    @RequestMapping(value = "/cooler")
-    public ModelAndView coolerUI(){
+    @RequestMapping(value = "/casing")
+    public ModelAndView casingUI(){
          //get logged user authentication object using security
         // this help to retrieve the current authentication object which holds the user detail
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
@@ -70,9 +71,9 @@ public class CoolerController {
         // Create a new ModelAndView object to hold the model data and view information
         ModelAndView coolerView=new ModelAndView();
         //pass the ui
-        coolerView.setViewName("cooler.html");
+        coolerView.setViewName("casing.html");
         //attributes set to show titles in web page using theamleaf
-        coolerView.addObject("title", "Cooler Management || Bytetech Solution");
+        coolerView.addObject("title", "Casing Management || Bytetech Solution");
         coolerView.addObject("user", authentication.getName());// passing logged user name
         coolerView.addObject("EmpName", loggedEmployee);
         coolerView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
@@ -83,38 +84,38 @@ public class CoolerController {
     }
 
      @GetMapping(value = "/storage/alldata", produces ="application/json" ) 
-    public List<CoolerEntity> allCoolerData() {
+    public List<CasingEntity> allCasingData() {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"STORAGE");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"CASING");
 
 
         //if current logged user doesnt have privilages show empty list
         if(!userPrivilage.get("select")){
-            return new ArrayList<CoolerEntity>();
+            return new ArrayList<CasingEntity>();
         }
 
 
-        return daoCooler.findAll();
+        return daoCasing.findAll();
     }
 
-    @PostMapping(value = "/cooler")
-    public String addCoolerData(@RequestBody CoolerEntity cooler){
+    @PostMapping(value = "/casing")
+    public String addCasingData(@RequestBody CasingEntity casing){
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"COOLER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"CASING");
 
         if(!userPrivilage.get("insert")){
             return "Permission Denied! Save not Completed";
         }
 
         //Check any Duplications
-        CoolerEntity extCooler=daoCooler.getByCoolerName(cooler.getItemname());
+        CasingEntity extCasing=daoCasing.getByCaseName(casing.getItemname());
 
-        if(extCooler!=null){
-            return "Save not Completed : given Name - "+cooler.getItemname()+" Already Exist...!";
+        if(extCasing!=null){
+            return "Save not Completed : given Name - "+casing.getItemname()+" Already Exist...!";
         }
 
 
@@ -122,28 +123,28 @@ public class CoolerController {
 
         try {
             //set AutoGenarated Value
-            String nextNumber=daoCooler.getNextCoolerNumber();
+            String nextNumber=daoCasing.getNextCaseNumber();
 
             //if next employee number is not come then set manualy last number+1
             if(nextNumber==null){
-                cooler.setItemcode("CLR0001");
+                casing.setItemcode("CAS0001");
             }else{
-                cooler.setItemcode(nextNumber);
+                casing.setItemcode(nextNumber);
             }
 
             //assign added user id
             UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
             //because of security reason only add user id
-            cooler.setAddeduser(addedUserData.getId());
+            casing.setAddeduser(addedUserData.getId());
 
             //assign added date
-            cooler.setAddeddate(LocalDateTime.now());
+            casing.setAddeddate(LocalDateTime.now());
 
             //assign category
-            cooler.setCategory_id(daoCategory.getReferenceById(6));
+            casing.setCategory_id(daoCategory.getReferenceById(7));
             
             //saving operation
-            daoCooler.save(cooler);
+            daoCasing.save(casing);
             //return the message about success
             return "OK";
         } catch (Exception e) {
@@ -151,20 +152,20 @@ public class CoolerController {
         }
     }
 
-    @DeleteMapping(value = "/cooler")
-    public String deleteCoolerData(@RequestBody CoolerEntity cooler){
+    @DeleteMapping(value = "/casing")
+    public String deleteCasingData(@RequestBody CasingEntity casing){
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"COOLER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"CASING");
 
         if(!userPrivilage.get("delete")){
             return "Permission Denied! Delete not Completed";
         }
 
         //existance check
-        CoolerEntity extCooler=daoCooler.getReferenceById(cooler.getId());
+        CasingEntity extCase=daoCasing.getReferenceById(casing.getId());
 
-        if(extCooler==null){
+        if(extCase==null){
             return "Delete not Completed. Processor not existed";
         }
         
@@ -172,16 +173,16 @@ public class CoolerController {
 
             //assign modify user
             UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
-            cooler.setDeleteuser(deleteUser.getId());
+            casing.setDeleteuser(deleteUser.getId());
 
             //asign modify time
-            cooler.setDeletedate(LocalDateTime.now());
+            casing.setDeletedate(LocalDateTime.now());
 
             //processor status change as soft delete
-            cooler.setItemstatus_id(daoItemStatus.getReferenceById(3));
+            casing.setItemstatus_id(daoItemStatus.getReferenceById(3));
 
             //save operation
-            daoCooler.save(cooler);
+            daoCasing.save(casing);
             
             return "OK";
         } catch (Exception e) {
@@ -192,41 +193,41 @@ public class CoolerController {
     }
 
 
-    @PutMapping(value = "/cooler")
-    public String updateCoolerData(@RequestBody CoolerEntity cooler){
+    @PutMapping(value = "/casing")
+    public String updateCasingData(@RequestBody CasingEntity casing){
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "COOLER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "CASING");
 
         if(!userPrivilage.get("update")){
             return "Permission Denied. Update not completed.";
         }
 
         //existance check
-        CoolerEntity extCooler=daoCooler.getReferenceById(cooler.getId());
+        CasingEntity extCase=daoCasing.getReferenceById(casing.getId());
 
-        if(extCooler==null){
+        if(extCase==null){
             return "Update not Completed. Cooler not existed";
         }
         
         //check duplicategpu
-        CoolerEntity extCoolerName=daoCooler.getByCoolerName(cooler.getItemname());
+        CasingEntity extCaseName=daoCasing.getByCaseName(casing.getItemname());
 
-        if(extCooler==null && extCoolerName.getId()!=cooler.getId()){
-            return "Update is not Completed : this "+cooler.getItemname()+" Item Name is already existed.";
+        if(extCase==null && extCaseName.getId()!=casing.getId()){
+            return "Update is not Completed : this "+casing.getItemname()+" Item Name is already existed.";
         }
         
         try {
 
             //assign modify user
             UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
-            cooler.setModifyuser(modifyUser.getId());
+            casing.setModifyuser(modifyUser.getId());
 
             //asign modify time
-            cooler.setModifydate(LocalDateTime.now());
+            casing.setModifydate(LocalDateTime.now());
 
             //save operation
-            daoCooler.save(cooler);
+            daoCasing.save(casing);
             
             return "OK";
         } catch (Exception e) {
