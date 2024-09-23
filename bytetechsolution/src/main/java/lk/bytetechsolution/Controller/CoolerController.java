@@ -27,6 +27,8 @@ import lk.bytetechsolution.Dao.CoolerDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.CoolerEntity;
+import lk.bytetechsolution.Entity.StorageEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -79,6 +81,23 @@ public class CoolerController {
 
         return coolerView;
 
+    }
+
+     @GetMapping(value = "/storage/alldata", produces ="application/json" ) 
+    public List<CoolerEntity> allCoolerData() {
+
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"STORAGE");
+
+
+        //if current logged user doesnt have privilages show empty list
+        if(!userPrivilage.get("select")){
+            return new ArrayList<CoolerEntity>();
+        }
+
+
+        return daoCooler.findAll();
     }
 
 }
