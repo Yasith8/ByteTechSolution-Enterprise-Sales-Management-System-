@@ -152,4 +152,44 @@ public class CoolerController {
         }
     }
 
+    @DeleteMapping(value = "/cooler")
+    public String deleteCoolerData(@RequestBody CoolerEntity cooler){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"COOLER");
+
+        if(!userPrivilage.get("delete")){
+            return "Permission Denied! Delete not Completed";
+        }
+
+        //existance check
+        CoolerEntity extCooler=daoCooler.getReferenceById(cooler.getId());
+
+        if(extCooler==null){
+            return "Delete not Completed. Processor not existed";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+            cooler.setDeleteuser(deleteUser.getId());
+
+            //asign modify time
+            cooler.setDeletedate(LocalDateTime.now());
+
+            //processor status change as soft delete
+            cooler.setItemstatus_id(daoItemStatus.getReferenceById(3));
+
+            //save operation
+            daoCooler.save(cooler);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+
+
+    }
+
 }
