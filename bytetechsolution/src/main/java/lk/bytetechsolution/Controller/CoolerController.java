@@ -192,4 +192,48 @@ public class CoolerController {
 
     }
 
+
+    @PutMapping(value = "/cooler")
+    public String updateCoolerData(@RequestBody CoolerEntity cooler){
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "COOLER");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied. Update not completed.";
+        }
+
+        //existance check
+        CoolerEntity extCooler=daoCooler.getReferenceById(cooler.getId());
+
+        if(extCooler==null){
+            return "Update not Completed. Cooler not existed";
+        }
+        
+        //check duplicategpu
+        CoolerEntity extCoolerName=daoCooler.getByCoolerName(cooler.getItemname());
+
+        if(extCooler==null && extCoolerName.getId()!=cooler.getId()){
+            return "Update is not Completed : this "+cooler.getItemname()+" Item Name is already existed.";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            cooler.setModifyuser(modifyUser.getId());
+
+            //asign modify time
+            cooler.setModifydate(LocalDateTime.now());
+
+            //save operation
+            daoCooler.save(cooler);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+    }
+
+
 }
