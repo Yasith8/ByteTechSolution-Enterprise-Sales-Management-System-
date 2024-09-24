@@ -103,5 +103,56 @@ public class PowerSupplyController {
         return daoPowerSupply.findAll();
     }
 
+    @PostMapping(value = "/powersupply")
+    public String addPowerSupplyData(@RequestBody PowerSupplyEntity powersupply){
+
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"POWERSUPPLY");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        //Check any Duplications
+        PowerSupplyEntity extPowerSupply=daoPowerSupply.getByPowerSupplyName(powersupply.getItemname());
+
+        if(extPowerSupply!=null){
+            return "Save not Completed : given Name - "+powersupply.getItemname()+" Already Exist...!";
+        }
+
+
+
+
+        try {
+            //set AutoGenarated Value
+            String nextNumber=daoPowerSupply.getNextPowerSupplyNumber();
+
+            //if next employee number is not come then set manualy last number+1
+            if(nextNumber==null){
+                powersupply.setItemcode("PWR0001");
+            }else{
+                powersupply.setItemcode(nextNumber);
+            }
+
+            //assign added user id
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            //because of security reason only add user id
+            powersupply.setAddeduser(addedUserData.getId());
+
+            //assign added date
+            powersupply.setAddeddate(LocalDateTime.now());
+
+            //assign category
+            powersupply.setCategory_id(daoCategory.getReferenceById(8));
+            
+            //saving operation
+            daoPowerSupply.save(powersupply);
+            //return the message about success
+            return "OK";
+        } catch (Exception e) {
+            return "Save not Completed : "+e.getMessage();
+        }
+    }
 
 }
