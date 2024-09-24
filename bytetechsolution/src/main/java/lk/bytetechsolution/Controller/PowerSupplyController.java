@@ -30,6 +30,7 @@ import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.PowerSupplyDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.CasingEntity;
+import lk.bytetechsolution.Entity.PowerSupplyEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -84,5 +85,23 @@ public class PowerSupplyController {
         return powerSupplyView;
 
     }
+
+    @GetMapping(value = "/powersupply/alldata", produces ="application/json" ) 
+    public List<PowerSupplyEntity> allPowerSupplyData() {
+
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"POWERSUPPLY");
+
+
+        //if current logged user doesnt have privilages show empty list
+        if(!userPrivilage.get("select")){
+            return new ArrayList<PowerSupplyEntity>();
+        }
+
+
+        return daoPowerSupply.findAll();
+    }
+
 
 }
