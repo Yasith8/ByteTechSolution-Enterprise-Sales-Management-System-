@@ -27,6 +27,7 @@ import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.CoolerDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
+import lk.bytetechsolution.Dao.MonitorDao;
 import lk.bytetechsolution.Dao.PowerSupplyDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.CasingEntity;
@@ -42,7 +43,7 @@ public class MonitorController {
      * the method can use dao for save,retrive,maipulate motherboardformfactor data
      */
     @Autowired
-    private MonitorEntity daoMonitor;
+    private MonitorDao daoMonitor;
 
     @Autowired
     private UserDao daoUser;
@@ -86,5 +87,22 @@ public class MonitorController {
 
         return monitorView;
 
+    }
+
+    @GetMapping(value = "/monitor/alldata", produces ="application/json" ) 
+    public List<MonitorEntity> allMonitorData() {
+
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MONITOR");
+
+
+        //if current logged user doesnt have privilages show empty list
+        if(!userPrivilage.get("select")){
+            return new ArrayList<MonitorEntity>();
+        }
+
+
+        return daoMonitor.findAll();
     }
 }
