@@ -195,4 +195,46 @@ public class PowerSupplyController {
 
     }
 
+    @PutMapping(value = "/powersupply")
+    public String updatePowerSupplyData(@RequestBody PowerSupplyEntity powersupply){
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "POWERSUPPLY");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied. Update not completed.";
+        }
+
+        //existance check
+        PowerSupplyEntity extPowerSupply=daoPowerSupply.getReferenceById(powersupply.getId());
+
+        if(extPowerSupply==null){
+            return "Update not Completed. Cooler not existed";
+        }
+        
+        //check duplicategpu
+        PowerSupplyEntity extPowerSupplyName=daoPowerSupply.getByPowerSupplyName(powersupply.getItemname());
+
+        if(extPowerSupply==null && extPowerSupplyName.getId()!=powersupply.getId()){
+            return "Update is not Completed : this "+powersupply.getItemname()+" Item Name is already existed.";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            powersupply.setModifyuser(modifyUser.getId());
+
+            //asign modify time
+            powersupply.setModifydate(LocalDateTime.now());
+
+            //save operation
+            daoPowerSupply.save(powersupply);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+    }
+
 }
