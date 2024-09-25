@@ -22,17 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 */
 import org.springframework.web.servlet.ModelAndView;
 
-import lk.bytetechsolution.Dao.CasingDao;
 import lk.bytetechsolution.Dao.CategoryDao;
-import lk.bytetechsolution.Dao.CoolerDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.MonitorDao;
-import lk.bytetechsolution.Dao.PowerSupplyDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.CasingEntity;
 import lk.bytetechsolution.Entity.MonitorEntity;
-import lk.bytetechsolution.Entity.PowerSupplyEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -198,6 +193,49 @@ public class MonitorController {
 
 
     }
+
+    @PutMapping(value = "/monitor")
+    public String updateMonitorData(@RequestBody MonitorEntity monitor){
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "MONITOR");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied. Update not completed.";
+        }
+
+        //existance check
+        MonitorEntity extMonitor=daoMonitor.getReferenceById(monitor.getId());
+
+        if(extMonitor==null){
+            return "Update not Completed. Cooler not existed";
+        }
+        
+        //check duplicategpu
+        MonitorEntity extMonitorName=daoMonitor.getByMonitorName(monitor.getItemname());
+
+        if(extMonitor==null && extMonitorName.getId()!=monitor.getId()){
+            return "Update is not Completed : this "+monitor.getItemname()+" Item Name is already existed.";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            monitor.setModifyuser(modifyUser.getId());
+
+            //asign modify time
+            monitor.setModifydate(LocalDateTime.now());
+
+            //save operation
+            daoMonitor.save(monitor);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+    }
+
 
 
 }

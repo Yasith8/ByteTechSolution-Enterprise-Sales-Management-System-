@@ -24,7 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.CasingDao;
 import lk.bytetechsolution.Dao.CategoryDao;
-import lk.bytetechsolution.Dao.CoolerDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
