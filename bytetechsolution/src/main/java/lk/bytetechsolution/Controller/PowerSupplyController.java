@@ -155,4 +155,44 @@ public class PowerSupplyController {
         }
     }
 
+    @DeleteMapping(value = "/powersupply")
+    public String deletePowerSupplyData(@RequestBody PowerSupplyEntity powersupply){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"POWERSUPPLY");
+
+        if(!userPrivilage.get("delete")){
+            return "Permission Denied! Delete not Completed";
+        }
+
+        //existance check
+        PowerSupplyEntity extPowerSupply=daoPowerSupply.getReferenceById(powersupply.getId());
+
+        if(extPowerSupply==null){
+            return "Delete not Completed. Processor not existed";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+            powersupply.setDeleteuser(deleteUser.getId());
+
+            //asign modify time
+            powersupply.setDeletedate(LocalDateTime.now());
+
+            //processor status change as soft delete
+            powersupply.setItemstatus_id(daoItemStatus.getReferenceById(3));
+
+            //save operation
+            daoPowerSupply.save(powersupply);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+
+
+    }
+
 }
