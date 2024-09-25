@@ -105,4 +105,99 @@ public class MonitorController {
 
         return daoMonitor.findAll();
     }
+
+
+    @PostMapping(value = "/monitor")
+    public String addMonitorData(@RequestBody MonitorEntity monitor){
+
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MONITOR");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        //Check any Duplications
+        MonitorEntity extMonitor=daoMonitor.getByMonitorName(monitor.getItemname());
+
+        if(extMonitor!=null){
+            return "Save not Completed : given Name - "+monitor.getItemname()+" Already Exist...!";
+        }
+
+
+
+
+        try {
+            //set AutoGenarated Value
+            String nextNumber=daoMonitor.getNextMonitorNumber();
+
+            //if next employee number is not come then set manualy last number+1
+            if(nextNumber==null){
+                monitor.setItemcode("MON0001");
+            }else{
+                monitor.setItemcode(nextNumber);
+            }
+
+            //assign added user id
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            //because of security reason only add user id
+            monitor.setAddeduser(addedUserData.getId());
+
+            //assign added date
+            monitor.setAddeddate(LocalDateTime.now());
+
+            //assign category
+            monitor.setCategory_id(daoCategory.getReferenceById(9));
+            
+            //saving operation
+            daoMonitor.save(monitor);
+            //return the message about success
+            return "OK";
+        } catch (Exception e) {
+            return "Save not Completed : "+e.getMessage();
+        }
+    }
+
+    @DeleteMapping(value = "/monitor")
+    public String deleteMonitorData(@RequestBody MonitorEntity monitor){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"MONITOR");
+
+        if(!userPrivilage.get("delete")){
+            return "Permission Denied! Delete not Completed";
+        }
+
+        //existance check
+        MonitorEntity extMointor=daoMonitor.getReferenceById(monitor.getId());
+
+        if(extMointor==null){
+            return "Delete not Completed. Processor not existed";
+        }
+        
+        try {
+
+            //assign modify user
+            UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+            monitor.setDeleteuser(deleteUser.getId());
+
+            //asign modify time
+            monitor.setDeletedate(LocalDateTime.now());
+
+            //processor status change as soft delete
+            monitor.setItemstatus_id(daoItemStatus.getReferenceById(3));
+
+            //save operation
+            daoMonitor.save(monitor);
+            
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed : "+e.getMessage();
+        }
+
+
+    }
+
+
 }
