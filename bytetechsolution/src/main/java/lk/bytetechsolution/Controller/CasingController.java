@@ -82,7 +82,7 @@ public class CasingController {
 
     }
 
-     @GetMapping(value = "/storage/alldata", produces ="application/json" ) 
+     @GetMapping(value = "/casing/alldata", produces ="application/json" ) 
     public List<CasingEntity> allCasingData() {
 
         //authentication and autherization

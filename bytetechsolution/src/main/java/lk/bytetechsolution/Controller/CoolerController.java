@@ -82,12 +82,12 @@ public class CoolerController {
 
     }
 
-     @GetMapping(value = "/storage/alldata", produces ="application/json" ) 
+     @GetMapping(value = "/cooler/alldata", produces ="application/json" ) 
     public List<CoolerEntity> allCoolerData() {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"STORAGE");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"COOLER");
 
 
         //if current logged user doesnt have privilages show empty list

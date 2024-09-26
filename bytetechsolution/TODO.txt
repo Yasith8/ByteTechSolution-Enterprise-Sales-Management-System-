@@ -47,18 +47,7 @@ Employee Management Module
 
 
   -------------------------------------------------------MUST ASK--------------------------------------------------------------
-   - printing the data table with design
-   - this key used in email validator
-
-   - cashier user delete error
-
-   - ask about login color
-
-   - ask about item updated date 
-   - decimal poit in item UI
-   - rop/quentity 0 seen
-   - ItemName in dao
-   - is delete privilage in delete function or update function
+   
 
    - Navbar issue z-index issue
 
