@@ -116,12 +116,8 @@ const refillStorageForm = (ob, rowIndex) => {
 
     //assign item name
     textItemName.value = storage.itemname;
-    //assign purchase price
-    decimalPurchasePrice.value = storage.purchaseprice;
     //assign profit rate
     numberProfitRate.value = storage.profitrate;
-    //assign sales price
-    decimalSalesPrice.value = storage.salesprice;
     //assign rop 
     numberROP.value = storage.rop;
     //assign roq 
@@ -171,4 +167,45 @@ const refillStorageForm = (ob, rowIndex) => {
 
     buttonClear.disabled = true;
 
+}
+
+const checkStorageInputErrors = () => {
+    let errors = "";
+
+    if (storage.itemname == null) {
+        errors = errors + "Storage Name can't be Null...!\n";
+        textItemName.classList.add("is-invalid");
+    }
+    if (storage.profitrate == null) {
+        errors = errors + "Profit Rate can't be Null...!\n";
+        numberProfitRate.classList.add("is-invalid");
+    }
+
+    if (storage.warranty == null) {
+        errors = errors + "Warranty can't be Null...!\n";
+        numberWarranty.classList.add("is-invalid");
+    }
+
+    if (storage.storageinterface_id == null) {
+        errors = errors + "Interface can't be Null...!\n";
+        selectStorageInterface.classList.add("is-invalid");
+    }
+    if (storage.itemstatus_id == null) {
+        errors = errors + "Item Status can't be Null...!\n";
+        selectItemStatus.classList.add("is-invalid");
+    }
+    if (storage.brand_id == null) {
+        errors = errors + "Brand can't be Null...!\n";
+        selectBrand.classList.add("is-invalid");
+    }
+    if (storage.storagetype_id == null) {
+        errors = errors + "Storage Type can't be Null...!\n";
+        selectStorageType.classList.add("is-invalid");
+    }
+    if (storage.capacity_id == null) {
+        errors = errors + "Storage Capacity can't be Null...!\n";
+        selectCapacity.classList.add("is-invalid");
+    }
+
+    return errors;
 }
