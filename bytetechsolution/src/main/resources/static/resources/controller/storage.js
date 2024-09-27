@@ -5,7 +5,7 @@ window.addEventListener('load', () => {
 
 
 const refreshStorageTable = () => {
-    //get gpu data
+    //get storage data
     storages = getServiceAjaxRequest('/storage/alldata')
 
     const displayPropertyList = [
@@ -141,7 +141,7 @@ const refillStorageForm = (ob, rowIndex) => {
     fillDataIntoSelect(selectCapacity, "Please Select Capacity", capacities, "name", ob.capacity_id.name);
 
     storagetypes = getServiceAjaxRequest("/storagetype/alldata")
-    fillDataIntoSelect(selectGpuType, "Please Select Storage Type", storagetypes, "name", ob.storagetype_id.name);
+    fillDataIntoSelect(selectStorageType, "Please Select Storage Type", storagetypes, "name", ob.storagetype_id.name);
 
     inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectStorageType, selectStorageInterface, selectCapacity], false);
     buttonClear.classList.add('modal-btn-clear');
@@ -265,54 +265,113 @@ const buttonStorageSubmit = () => {
 }
 
 
-const checkGpuFormUpdates = () => {
+const checkStorageFormUpdates = () => {
     updates = "";
 
-    if (gpu.itemname != oldGpu.itemname) {
+    if (storage.itemname != oldStorage.itemname) {
         updates = updates + "Processor Name is Changed \n";
     }
-    if (gpu.purchaseprice != oldGpu.purchaseprice) {
+    if (storage.purchaseprice != oldStorage.purchaseprice) {
         updates = updates + "Purchase Price is Changed \n";
     }
-    if (gpu.profitrate != oldGpu.profitrate) {
+    if (storage.profitrate != oldStorage.profitrate) {
         updates = updates + "Profit Rate is Changed \n";
     }
-    if (gpu.warranty != oldGpu.warranty) {
+    if (storage.warranty != oldStorage.warranty) {
         updates = updates + "Warranty is Changed \n";
     }
-    if (gpu.rop != oldGpu.rop) {
+    if (storage.rop != oldStorage.rop) {
         updates = updates + "ROP is Changed \n";
     }
-    if (gpu.roq != oldGpu.roq) {
+    if (storage.roq != oldStorage.roq) {
         updates = updates + "ROQ is Changed \n";
     }
-    if (gpu.interface_id.name != oldGpu.interface_id.name) {
-        updates = updates + "Interface is Changed \n";
+    if (storage.storageinterface_id.name != oldStorage.storageinterface_id.name) {
+        updates = updates + "Storage Interface is Changed \n";
     }
-    if (gpu.description != oldGpu.description) {
+    if (storage.description != oldStorage.description) {
         updates = updates + "Description is Changed \n";
     }
-    if (gpu.brand_id.name != oldGpu.brand_id.name) {
+    if (storage.brand_id.name != oldStorage.brand_id.name) {
         updates = updates + "Brand is Changed \n";
     }
-    if (gpu.gpuchipset_id.name != oldGpu.gpuchipset_id.name) {
-        updates = updates + "GPU Chipset is Changed \n";
+    if (storage.storagetype_id.name != oldStorage.storagetype_id.name) {
+        updates = updates + "Storage Type is Changed \n";
     }
-    if (gpu.gputype_id.name != oldGpu.gputype_id.name) {
-        updates = updates + "GPU Type is Changed \n";
-    }
-    if (gpu.gpuseries_id.name != oldGpu.gpuseries_id.name) {
-        updates = updates + "GPU Series is Changed \n";
-    }
-    if (gpu.motherboardformfactor_id.name != oldGpu.motherboardformfactor_id.name) {
-        updates = updates + "Motherboard Form Factor is Changed \n";
-    }
-    if (gpu.capacity_id.name != oldGpu.capacity_id.name) {
+    if (storage.capacity_id.name != oldStorage.capacity_id.name) {
         updates = updates + "Capacity is Changed \n";
     }
-    if (gpu.itemstatus_id.name != oldGpu.itemstatus_id.name) {
+    if (storage.itemstatus_id.name != oldStorage.itemstatus_id.name) {
         updates = updates + "Item Status is Changed \n";
     }
 
     return updates;
+}
+
+const buttonStorageUpdate = () => {
+    //check form error
+    let errors = checkStorageInputErrors();
+
+    //check code has error, if code doesn't have  any errors
+    if (errors == "") {
+
+        //check form update
+
+        let updates = checkStorageFormUpdates();
+
+        //check there is no updates or any updations
+        if (updates == "") {
+            alert("Nothing Updates")
+        } else {
+
+            //get conformation from user to made updation
+            let userConfirm = confirm("Are You Sure to Update this Changes? \n" + updates);
+
+            //if user conform
+            if (userConfirm) {
+                //call put service requestd  -this use for updations
+                let putServiceResponse;
+
+                $.ajax("/storage", {
+                    type: "PUT",
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(storage),
+
+
+                    success: function(successResponseOb) {
+                        putServiceResponse = successResponseOb;
+                    },
+
+                    error: function(failedResponseOb) {
+                        putServiceResponse = failedResponseOb;
+                    }
+
+                });
+                //check put service response
+                if (putServiceResponse == "OK") {
+                    alert("Updated Successfully");
+
+                    //hide the moadel
+                    $('#storageAddModal').modal('hide');
+                    //refreash Item table for realtime updation
+                    refreshStorageTable();
+                    //reset the Item form
+                    formStorage.reset();
+                    //Item form refresh
+                    refreshStorageForm();
+                } else {
+                    //handling errors
+                    alert("Update not Completed :\n" + putServiceResponse);
+                    //refreash the employee form
+                    refreshStorageForm();
+                }
+            }
+        }
+    } else {
+        //show user to what errors happen
+        alert("Storage Form  has Following Errors..\n" + errors)
+    }
+
+
 }
