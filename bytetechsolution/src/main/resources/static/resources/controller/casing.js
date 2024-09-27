@@ -1,35 +1,35 @@
 window.addEventListener('load', () => {
-    refreshCoolerTable();
-    refreshCoolerForm();
+    refreshCasingTable();
+    refreshCasingForm();
 })
 
 
-const refreshCoolerTable = () => {
+const refreshCasingTable = () => {
 
-    //get cooler data
-    coolers = getServiceAjaxRequest('/cooler/alldata')
+    //get casing data
+    casings = getServiceAjaxRequest('/casing/alldata')
 
     const displayPropertyList = [
         { dataType: 'text', propertyName: 'itemcode' },
         { dataType: 'text', propertyName: 'itemname' },
         { dataType: 'function', propertyName: getBrandName },
         { dataType: 'text', propertyName: 'profitrate' },
-        { dataType: 'function', propertyName: getCpuSocket },
-        { dataType: 'function', propertyName: getCoolerType },
+        { dataType: 'function', propertyName: getCaseMaterial },
+        { dataType: 'function', propertyName: getCaseColor },
         { dataType: 'function', propertyName: getItemStatus },
     ]
 
-    fillDataIntoTable(tableCooler, coolers, displayPropertyList, refillCoolerForm, divModifyButton)
+    fillDataIntoTable(tableCasing, casings, displayPropertyList, refillCasingForm, divModifyButton)
         //table show with dataTable
-    $('#tableCooler').dataTable();
+    $('#tableCasing').dataTable();
     //hide button section
     divModifyButton.className = 'd-none';
 
 }
 
 
-const refreshCoolerForm = () => {
-    cooler = new Object();
+const refreshCasingForm = () => {
+    casing = new Object();
 
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
@@ -39,28 +39,31 @@ const refreshCoolerForm = () => {
 
     staticBackdropLabel.textContent = "Add New Item";
 
-    brands = getServiceAjaxRequest("/brand/brandbycategory/Cooler");
+    brands = getServiceAjaxRequest("/brand/brandbycategory/casing");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
 
     itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
     fillDataIntoSelect(selectItemStatus, "Please Select Item Status", itemstatuses, "name");
 
-    coolertypes = getServiceAjaxRequest("/coolertype/alldata")
-    fillDataIntoSelect(selectCoolerType, "Please Select GPU Type", coolertypes, "name");
+    casematerials = getServiceAjaxRequest("/casematerial/alldata")
+    fillDataIntoSelect(selectCaseMaterial, "Please Select Case Material", casematerials, "name");
 
-    cpusockets = getServiceAjaxRequest("/cpusocket/alldata")
-    fillDataIntoSelect(selectCpuSocket, "Please Select Processor Socket", cpusockets, "name");
+    casecolors = getServiceAjaxRequest("/casecolor/alldata")
+    fillDataIntoSelect(selectCaseColor, "Please SelectCase Color", casecolors, "name");
+
+    motherboardformfactors = getServiceAjaxRequest("/motherboardformfactor/alldata")
+    fillDataIntoSelect(selectMotherboardFormFactor, "Please Select Motherboard Form Factor", motherboardformfactors, "name");
 
 
-    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectSocketType])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMotherboardFormFactor, selectCaseColor, selectCaseMaterial])
 
-    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/COOLER");
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/CASING");
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectSocketType], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMotherboardFormFactor, selectCaseColor, selectCaseMaterial], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 
@@ -70,12 +73,12 @@ const getBrandName = (ob) => {
     return ob.brand_id.name;
 }
 
-const getCpuSocket = (ob) => {
-    return ob.cpusocket_id.name;
+const getCaseMaterial = (ob) => {
+    return ob.casematerial_id.name;
 }
 
-const getCoolerType = (ob) => {
-    return ob.coolertype_id.name;
+const getCaseColor = (ob) => {
+    return ob.casecolor_id.name;
 }
 
 const getItemStatus = (ob) => {
@@ -95,9 +98,9 @@ const getItemStatus = (ob) => {
     }
 }
 
-const refillCoolerForm = (ob, rowIndex) => {
-    $('#coolerAddModal').modal('show');
-    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectSocketType])
+const refillCasingForm = (ob, rowIndex) => {
+    $('#casingAddModal').modal('show');
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMotherboardFormFactor, selectCaseColor, selectCaseMaterial])
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
@@ -105,44 +108,51 @@ const refillCoolerForm = (ob, rowIndex) => {
     buttonUpdate.disabled = false;
     buttonUpdate.classList.add('modal-btn-update');
 
-    cooler = JSON.parse(JSON.stringify(ob));
-    oldCooler = ob;
+    casing = JSON.parse(JSON.stringify(ob));
+    oldCasing = ob;
 
     //asign itemcode
-    staticBackdropLabel.textContent = cooler.itemcode;
+    staticBackdropLabel.textContent = casing.itemcode;
 
     //assign item name
-    textItemName.value = cooler.itemname;
+    textItemName.value = casing.itemname;
     //assign profit rate
-    numberProfitRate.value = cooler.profitrate;
+    numberProfitRate.value = casing.profitrate;
     //assign rop 
-    numberROP.value = cooler.rop;
+    numberROP.value = casing.rop;
     //assign roq 
-    numberROQ.value = cooler.roq;
+    numberROQ.value = casing.roq;
     //assign warranty
-    numberWarranty.value = cooler.warranty;
+    numberWarranty.value = casing.warranty;
     //asign description
-    textDescription.value = cooler.description;
+    textDescription.value = casing.description;
+
+    numberHeight.value = casing.height;
+    numberWidth.value = casing.width;
+    numberDepth.value = casing.depth;
 
     //get brands of motherboard
-    brands = getServiceAjaxRequest("/brand/brandbycategory/Cooler");
+    brands = getServiceAjaxRequest("/brand/brandbycategory/Casing");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", ob.brand_id.name);
 
     itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
     fillDataIntoSelect(selectItemStatus, "Please Select", itemstatuses, "name", ob.itemstatus_id.name);
 
-    coolertypes = getServiceAjaxRequest("/coolertype/alldata")
-    fillDataIntoSelect(selectCoolerType, "Please Select Cooler Type", coolertypes, "name", ob.coolertype_id.name);
+    casematerials = getServiceAjaxRequest("/casematerial/alldata")
+    fillDataIntoSelect(selectCaseMaterial, "Please Select Case Material", casematerials, "name", ob.casematerial_id.name);
 
-    cpusockets = getServiceAjaxRequest("/cpucokset/alldata")
-    fillDataIntoSelect(selectCpuSocket, "Please Select Interface", cpusockets, "name", ob.cpucokset_id.name);
+    casecolors = getServiceAjaxRequest("/casecolor/alldata")
+    fillDataIntoSelect(selectCaseColor, "Please SelectCase Color", casecolors, "name", ob.casecolor_id.name);
 
-    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectSocketType], false);
+    motherboardformfactors = getServiceAjaxRequest("/motherboardformfactor/alldata")
+    fillDataIntoSelect(selectMotherboardFormFactor, "Please Select Motherboard Form Factor", motherboardformfactors, "name", ob.motherboardformfactor_id.name);
+
+    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMotherboardFormFactor, selectCaseColor, selectCaseMaterial], false);
     buttonClear.classList.add('modal-btn-clear');
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/COOLER");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/CASING");
     //console.log(userPrivilage);
 
 
@@ -150,7 +160,7 @@ const refillCoolerForm = (ob, rowIndex) => {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
 
-        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectSocketType], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMotherboardFormFactor, selectCaseColor, selectCaseMaterial], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
     if (!userPrivilage.delete) {
@@ -164,45 +174,59 @@ const refillCoolerForm = (ob, rowIndex) => {
 
 }
 
-const checkCoolerInputErrors = () => {
+const checkCasingInputErrors = () => {
     let errors = "";
 
-    if (cooler.itemname == null) {
-        errors = errors + "GPU Name can't be Null...!\n";
+    if (casing.itemname == null) {
+        errors = errors + "Case Name can't be Null...!\n";
         textItemName.classList.add("is-invalid");
     }
-    if (cooler.profitrate == null) {
+    if (casing.profitrate == null) {
         errors = errors + "Profit Rate can't be Null...!\n";
         numberProfitRate.classList.add("is-invalid");
     }
-
-    if (cooler.warranty == null) {
+    if (casing.warranty == null) {
         errors = errors + "Warranty can't be Null...!\n";
         numberWarranty.classList.add("is-invalid");
     }
-
-    if (cooler.cpusocket_id == null) {
-        errors = errors + "CPU Socket can't be Null...!\n";
-        selectCpuSocket.classList.add("is-invalid");
+    if (casing.width == null) {
+        errors = errors + "Width can't be Null...!\n";
+        numberWidth.classList.add("is-invalid");
     }
-    if (cooler.itemstatus_id == null) {
+    if (casing.height == null) {
+        errors = errors + "Height can't be Null...!\n";
+        numberHeight.classList.add("is-invalid");
+    }
+    if (casing.depth == null) {
+        errors = errors + "Depth can't be Null...!\n";
+        numberDepth.classList.add("is-invalid");
+    }
+    if (casing.casecolor_id == null) {
+        errors = errors + "Case Coloor can't be Null...!\n";
+        selectCaseColor.classList.add("is-invalid");
+    }
+    if (casing.itemstatus_id == null) {
         errors = errors + "Item Status can't be Null...!\n";
         selectItemStatus.classList.add("is-invalid");
     }
-    if (cooler.brand_id == null) {
+    if (casing.brand_id == null) {
         errors = errors + "Brand can't be Null...!\n";
         selectBrand.classList.add("is-invalid");
     }
-    if (cooler.coolertype_id == null) {
-        errors = errors + "Cooler Type can't be Null...!\n";
-        selectCoolerType.classList.add("is-invalid");
+    if (casing.motherboardformfactor_id == null) {
+        errors = errors + "Motherboard Form Factor can't be Null...!\n";
+        selectMotherboardFormFactor.classList.add("is-invalid");
+    }
+    if (casing.casematerial_id == null) {
+        errors = errors + "Case Material can't be Null...!\n";
+        selectCaseMaterial.classList.add("is-invalid");
     }
 
     return errors;
 }
 
-const buttonCoolerSubmit = () => {
-    let errors = checkCoolerInputErrors();
+const buttonCasingSubmit = () => {
+    let errors = checkCasingInputErrors();
 
     if (errors == "") {
 
@@ -215,10 +239,10 @@ const buttonCoolerSubmit = () => {
 
             let postServiceResponce;
 
-            $.ajax("/cooler", {
+            $.ajax("/casing", {
                 type: "POST",
                 contentType: "application/json",
-                data: JSON.stringify(cooler),
+                data: JSON.stringify(casing),
                 async: false,
 
                 success: function(data) {
@@ -237,15 +261,15 @@ const buttonCoolerSubmit = () => {
             if (postServiceResponce == "OK") {
                 alert("Save successfully...!");
                 //hide the model
-                $('#coolerAddModal').modal('hide');
+                $('#casingAddModal').modal('hide');
                 //reset the Item form
-                formCooler.reset();
+                formCasing.reset();
                 //refreash Item form
-                refreshCoolerForm();
+                refreshCasingForm();
                 //refreash Item table
-                refreshCoolerTable();
+                refreshCasingTable();
             } else {
-                alert("Fail to submit Cooler form \n" + postServiceResponce);
+                alert("Fail to submit Casing form \n" + postServiceResponce);
             }
         }
     } else {
@@ -255,53 +279,56 @@ const buttonCoolerSubmit = () => {
 
 }
 
-const checkCoolerFormUpdates = () => {
+const checkCasingFormUpdates = () => {
     updates = "";
 
-    if (cooler.itemname != oldCooler.itemname) {
+    if (casing.itemname != oldCasing.itemname) {
         updates = updates + "Processor Name is Changed \n";
     }
-    if (cooler.profitrate != oldCooler.profitrate) {
+    if (casing.profitrate != oldCasing.profitrate) {
         updates = updates + "Profit Rate is Changed \n";
     }
-    if (cooler.warranty != oldCooler.warranty) {
+    if (casing.warranty != oldCasing.warranty) {
         updates = updates + "Warranty is Changed \n";
     }
-    if (cooler.rop != oldCooler.rop) {
+    if (casing.rop != oldCasing.rop) {
         updates = updates + "ROP is Changed \n";
     }
-    if (cooler.roq != oldCooler.roq) {
+    if (casing.roq != oldCasing.roq) {
         updates = updates + "ROQ is Changed \n";
     }
-    if (cooler.cpusocket_id.name != oldCooler.cpusocket_id.name) {
-        updates = updates + "CPU Socket is Changed \n";
+    if (casing.casecolor_id.name != oldCasing.casecolor_id.name) {
+        updates = updates + "Case Color is Changed \n";
     }
-    if (cooler.description != oldCooler.description) {
+    if (casing.description != oldCasing.description) {
         updates = updates + "Description is Changed \n";
     }
-    if (cooler.brand_id.name != oldCooler.brand_id.name) {
+    if (casing.brand_id.name != oldCasing.brand_id.name) {
         updates = updates + "Brand is Changed \n";
     }
-    if (cooler.coolertype_id.name != oldCooler.coolertype_id.name) {
-        updates = updates + "Cooler Type is Changed \n";
+    if (casing.casematerial_id.name != oldCasing.casematerial_id.name) {
+        updates = updates + "Case Material is Changed \n";
     }
-    if (cooler.itemstatus_id.name != oldCooler.itemstatus_id.name) {
+    if (casing.motherboardformfactor_id.name != oldCasing.motherboardformfactor_id.name) {
+        updates = updates + "Motherboard Form is Changed \n";
+    }
+    if (casing.itemstatus_id.name != oldCasing.itemstatus_id.name) {
         updates = updates + "Item Status is Changed \n";
     }
 
     return updates;
 }
 
-const buttonCoolerUpdate = () => {
+const buttonCasingUpdate = () => {
     //check form error
-    let errors = checkCoolerInputErrors();
+    let errors = checkCasingInputErrors();
 
     //check code has error, if code doesn't have  any errors
     if (errors == "") {
 
         //check form update
 
-        let updates = checkCoolerFormUpdates();
+        let updates = checkCasingFormUpdates();
 
         //check there is no updates or any updations
         if (updates == "") {
@@ -316,11 +343,11 @@ const buttonCoolerUpdate = () => {
                 //call put service requestd  -this use for updations
                 let putServiceResponse;
 
-                $.ajax("/cooler", {
+                $.ajax("/casing", {
                     type: "PUT",
                     async: false,
                     contentType: "application/json",
-                    data: JSON.stringify(cooler),
+                    data: JSON.stringify(casing),
 
 
                     success: function(successResponseOb) {
@@ -337,39 +364,39 @@ const buttonCoolerUpdate = () => {
                     alert("Updated Successfully");
 
                     //hide the moadel
-                    $('#coolerAddModal').modal('hide');
+                    $('#casingAddModal').modal('hide');
                     //refreash Item table for realtime updation
-                    refreshCoolerTable();
+                    refreshCasingTable();
                     //reset the Item form
-                    formCooler.reset();
+                    formCasing.reset();
                     //Item form refresh
-                    refreshCoolerForm();
+                    refreshCasingForm();
                 } else {
                     //handling errors
                     alert("Update not Completed :\n" + putServiceResponse);
                     //refreash the employee form
-                    refreshCoolerForm();
+                    refreshCasingForm();
                 }
             }
         }
     } else {
         //show user to what errors happen
-        alert("Cooler Form  has Following Errors..\n" + errors)
+        alert("Casing Form  has Following Errors..\n" + errors)
     }
 
 
 }
 
-const deleteCooler = (ob, rowIndex) => {
+const deleteCasing = (ob, rowIndex) => {
     //user conformation
-    let userConform = confirm("Are you sure  to delete following Cooler? " + ob.itemname);
+    let userConform = confirm("Are you sure  to delete following Casing? " + ob.itemname);
 
     //if ok
     if (userConform) {
         let deleteServiceResponse;
 
         //ajax request fot delete data
-        $.ajax("/cooler", {
+        $.ajax("/casing", {
             type: "DELETE",
             contentType: "application/json",
             data: JSON.stringify(ob),
@@ -388,8 +415,8 @@ const deleteCooler = (ob, rowIndex) => {
         //so because of that we can see realtime update
         if (deleteServiceResponse == "OK") {
             alert("Delete Successfullly");
-            $('#coolerAddModal').modal('hide');
-            refreshCoolerTable()
+            $('#casingAddModal').modal('hide');
+            refreshCasingTable()
         } else {
             console.log("system has following errors:\n" + deleteServiceResponse);
         }
@@ -402,14 +429,14 @@ const buttonModalClose = () => {
 
     //check closeResponse is true or false
     if (closeResponse) {
-        $('#coolerAddModal').modal('hide');
+        $('#casingAddModal').modal('hide');
 
 
         //formItem is id of form
         //this will reset all data(refreash)
-        formCooler.reset();
+        formCasing.reset();
         divModifyButton.className = 'd-none';
 
-        refreshCoolerForm();
+        refreshCasingForm();
     }
 }
