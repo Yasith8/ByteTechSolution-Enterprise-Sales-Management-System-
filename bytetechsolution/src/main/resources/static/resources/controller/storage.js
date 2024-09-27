@@ -411,3 +411,20 @@ const deleteStorage = (ob, rowIndex) => {
         }
     }
 }
+
+const buttonModalClose = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
+
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#storageAddModal').modal('hide');
+
+
+        //formItem is id of form
+        //this will reset all data(refreash)
+        formStorage.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshStorageForm();
+    }
+}
