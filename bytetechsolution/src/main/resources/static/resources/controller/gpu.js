@@ -167,7 +167,7 @@ const refillGpuForm = (ob, rowIndex) => {
     textDescription.value = gpu.description;
 
     //get brands of motherboard
-    brands = getServiceAjaxRequest("/brand/brandbycategory/Motherboard");
+    brands = getServiceAjaxRequest("/brand/brandbycategory/GPU");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", ob.brand_id.name);
 
     itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")

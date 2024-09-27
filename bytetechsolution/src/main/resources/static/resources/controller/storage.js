@@ -98,5 +98,77 @@ const getItemStatus = (ob) => {
 }
 
 const refillStorageForm = (ob, rowIndex) => {
+    $('#storageForm').modal('show');
+    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectStorageType, selectStorageInterface, selectCapacity])
+
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit');
+
+    buttonUpdate.disabled = false;
+    buttonUpdate.classList.add('modal-btn-update');
+
+    storage = JSON.parse(JSON.stringify(ob))
+    oldStorage = ob;
+
+
+    //asign itemcode
+    staticBackdropLabel.textContent = storage.itemcode;
+
+    //assign item name
+    textItemName.value = storage.itemname;
+    //assign purchase price
+    decimalPurchasePrice.value = storage.purchaseprice;
+    //assign profit rate
+    numberProfitRate.value = storage.profitrate;
+    //assign sales price
+    decimalSalesPrice.value = storage.salesprice;
+    //assign rop 
+    numberROP.value = storage.rop;
+    //assign roq 
+    numberROQ.value = storage.roq;
+    //assign warranty
+    numberWarranty.value = storage.warranty;
+    //asign description
+    textDescription.value = storage.description;
+
+    //get brands of motherboard
+    brands = getServiceAjaxRequest("/brand/brandbycategory/Motherboard");
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", ob.brand_id.name);
+
+    itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
+    fillDataIntoSelect(selectItemStatus, "Please Select Item Status", itemstatuses, "name", ob.itemstatus_id.name);
+
+    storageinterfaces = getServiceAjaxRequest("/storageinterface/alldata")
+    fillDataIntoSelect(selectStorageInterface, "Please Select Storage Interface", storageinterfaces, "name", ob.storageinterface_id.name);
+
+    capacities = getServiceAjaxRequest("/capacity/alldata")
+    fillDataIntoSelect(selectCapacity, "Please Select Capacity", capacities, "name", ob.capacity_id.name);
+
+    storagetypes = getServiceAjaxRequest("/storagetype/alldata")
+    fillDataIntoSelect(selectGpuType, "Please Select Storage Type", storagetypes, "name", ob.storagetype_id.name);
+
+    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectStorageType, selectStorageInterface, selectCapacity], false);
+    buttonClear.classList.add('modal-btn-clear');
+
+
+
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/STORAGE");
+    //console.log(userPrivilage);
+
+
+    if (!userPrivilage.update) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectStorageType, selectStorageInterface, selectCapacity], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+    if (!userPrivilage.delete) {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
+
+
+    buttonClear.disabled = true;
 
 }
