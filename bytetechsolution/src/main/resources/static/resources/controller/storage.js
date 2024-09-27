@@ -263,3 +263,56 @@ const buttonStorageSubmit = () => {
     }
 
 }
+
+
+const checkGpuFormUpdates = () => {
+    updates = "";
+
+    if (gpu.itemname != oldGpu.itemname) {
+        updates = updates + "Processor Name is Changed \n";
+    }
+    if (gpu.purchaseprice != oldGpu.purchaseprice) {
+        updates = updates + "Purchase Price is Changed \n";
+    }
+    if (gpu.profitrate != oldGpu.profitrate) {
+        updates = updates + "Profit Rate is Changed \n";
+    }
+    if (gpu.warranty != oldGpu.warranty) {
+        updates = updates + "Warranty is Changed \n";
+    }
+    if (gpu.rop != oldGpu.rop) {
+        updates = updates + "ROP is Changed \n";
+    }
+    if (gpu.roq != oldGpu.roq) {
+        updates = updates + "ROQ is Changed \n";
+    }
+    if (gpu.interface_id.name != oldGpu.interface_id.name) {
+        updates = updates + "Interface is Changed \n";
+    }
+    if (gpu.description != oldGpu.description) {
+        updates = updates + "Description is Changed \n";
+    }
+    if (gpu.brand_id.name != oldGpu.brand_id.name) {
+        updates = updates + "Brand is Changed \n";
+    }
+    if (gpu.gpuchipset_id.name != oldGpu.gpuchipset_id.name) {
+        updates = updates + "GPU Chipset is Changed \n";
+    }
+    if (gpu.gputype_id.name != oldGpu.gputype_id.name) {
+        updates = updates + "GPU Type is Changed \n";
+    }
+    if (gpu.gpuseries_id.name != oldGpu.gpuseries_id.name) {
+        updates = updates + "GPU Series is Changed \n";
+    }
+    if (gpu.motherboardformfactor_id.name != oldGpu.motherboardformfactor_id.name) {
+        updates = updates + "Motherboard Form Factor is Changed \n";
+    }
+    if (gpu.capacity_id.name != oldGpu.capacity_id.name) {
+        updates = updates + "Capacity is Changed \n";
+    }
+    if (gpu.itemstatus_id.name != oldGpu.itemstatus_id.name) {
+        updates = updates + "Item Status is Changed \n";
+    }
+
+    return updates;
+}
