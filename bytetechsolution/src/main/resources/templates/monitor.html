@@ -4,8 +4,8 @@
 <head th:replace="~{component::headerFragment}"></head>
 
 <head>
-    <link rel="stylesheet" href="resources/style/cooler.css">
-    <script src="resources/controller/cooler.js"></script>
+    <link rel="stylesheet" href="resources/style/monitor.css">
+    <script src="resources/controller/monitor.js"></script>
 </head>
 
 
@@ -20,7 +20,7 @@
         <div class="row m-2">
             <div class="col-12 text-center 
             title-header-div">
-                <h2> Cooler Management </h2>
+                <h2> Monitor Management </h2>
             </div>
         </div>
         <!-- title area End -->
@@ -32,11 +32,11 @@
 
             </div>
             <div class="col-4 text-end">
-                <button type="button" class="Btn printTableBtn" onclick="printGpuTable('tableCooler')">
+                <button type="button" class="Btn printTableBtn" onclick="printGpuTable('tableMonitor')">
                     Print
                 </button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#coolerAddModal" class="btn addBtn">
-                    Add New Cooler </button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#monitorAddModal" class="btn addBtn">
+                    Add New Monitor </button>
             </div>
             <div class="col-1"></div>
         </div>
@@ -49,16 +49,17 @@
                 <div class="card employee-card">
                     <div class="card-body employee-cardbody">
 
-                        <table class="table table-hover" id="tableCooler">
+                        <table class="table table-hover" id="tableMonitor">
                             <thead class="table-header">
                                 <tr>
                                     <th> # </th>
                                     <th> Item Code </th>
                                     <th> Item Name </th>
                                     <th> Brand </th>
-                                    <th> Profit Rate (%) </th>
-                                    <th> Series </th>
-                                    <th> CPU Socket </th>
+                                    <th> Screen Size</th>
+                                    <th> Resolution </th>
+                                    <th> Efficiency </th>
+                                    <th> Power Supply Form Factor </th>
                                     <th> Item Status </th>
                                 </tr>
                             </thead>
@@ -105,21 +106,21 @@
     </div>
 
     <!-- employee Add Modal -->
-    <div class="modal fade" id="coolerAddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="monitorAddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Cooler</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Power Supply</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formCooler">
+                    <form id="formMonitor">
                         <!-- itemname Input Start -->
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textItemName" placeholder="cooler name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','cooler','itemname')">
-                                    <label for="textItemName">Cooler Name<span class="requiredIcon">*</span></label>
+                                    <input type="text" class="form-control" id="textItemName" placeholder="monitor name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','monitor','itemname')">
+                                    <label for="textItemName">Power Supply Name<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                         </div>
@@ -135,7 +136,7 @@
                                        eather maximum can add 100 or can add 
                                          [1-9]?(requler expression)[0-9] mean 
                                     -->
-                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','cooler','profitrate')">
+                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','monitor','profitrate')">
                                     <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -143,7 +144,7 @@
                             <!-- profit rate start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="numberWarranty" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','cooler','warranty')">
+                                    <input type="text" class="form-control" id="numberWarranty" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','monitor','warranty')">
                                     <label for="numberWarranty">Warranty (Months)<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -157,7 +158,7 @@
                                        eather maximum can add 100 or can add 
                                          [1-9]?(requler expression)[0-9] mean 
                                     -->
-                                    <input type="number" class="form-control" id="numberROP" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','cooler','rop')">
+                                    <input type="number" class="form-control" id="numberROP" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','monitor','rop')">
                                     <label for="numberROP">ROP</label>
                                 </div>
                             </div>
@@ -174,7 +175,7 @@
                                        eather maximum can add 100 or can add 
                                          [1-9]?(requler expression)[0-9] mean 
                                     -->
-                                    <input type="number" class="form-control" id="numberROQ" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','cooler','roq')">
+                                    <input type="number" class="form-control" id="numberROQ" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','monitor','roq')">
                                     <label for="numberROQ">ROQ</label>
                                 </div>
                             </div>
@@ -182,7 +183,7 @@
                             <!-- rop start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <select name="itemStatus" id="selectItemStatus" class="form-select" onchange="selectDynamicValidator(this,'','cooler','itemstatus_id')">
+                                    <select name="itemStatus" id="selectItemStatus" class="form-select" onchange="selectDynamicValidator(this,'','monitor','itemstatus_id')">
                                         <option value=""  selected disabled>Select Item Status</option>
                                     </select>
                                 </div>
@@ -191,7 +192,7 @@
                             <!-- roq start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" id="textDescription" placeholder="" onkeyup="textValidator(this,'^(([0-9A-Za-z\\.\\-\\s]{1,300}))$','cooler','description')"></textarea>
+                                    <textarea class="form-control" id="textDescription" placeholder="" onkeyup="textValidator(this,'^(([0-9A-Za-z\\.\\-\\s]{1,300}))$','monitor','description')"></textarea>
                                     <label for="textDescription">Description</label>
                                 </div>
                             </div>
@@ -203,7 +204,7 @@
                             <!--item status start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','cooler','brand_id')">
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','monitor','brand_id')">
                                         <option value=""  selected disabled>Select Brand</option>
                                     </select>
                                 </div>
@@ -213,8 +214,8 @@
                             <!--interface start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="interface" id="selectCpuSocket" class="form-select" onchange="selectDynamicValidator(this,'','cooler','cpusocket_id')">
-                                    <option value=""  selected disabled>Select Processor Socket</option>
+                                    <select name="modularity" id="selectModularity" class="form-select" onchange="selectDynamicValidator(this,'','monitor','modularity_id')">
+                                    <option value=""  selected disabled>Select Modularity</option>
                                 </select>
                                 </div>
                             </div>
@@ -222,10 +223,35 @@
                             <!-- Description start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <select name="gputype" id="selectCoolerType" class="form-select" onchange="selectDynamicValidator(this,'','cooler','coolertype_id')">
-                                        <option value=""  selected disabled>Select Cooler Type</option>
+                                    <select name="gputype" id="selectEfficiency" class="form-select" onchange="selectDynamicValidator(this,'','monitor','efficiency_id')">
+                                        <option value=""  selected disabled>Select Efficiency</option>
                                     </select>
                                 </div>
+                            </div>
+                            <!-- Description end -->
+                        </div>
+                        <div class="row">
+                            <!--item status start-->
+                            <div class="col-4">
+                                <div class="mb-3 form-floating">
+                                    <select name="brand" id="selectMonitorFormFactor" class="form-select" onchange="selectDynamicValidator(this,'','monitor','monitorformfactor_id')">
+                                        <option value=""  selected disabled>Select Power Supply Form Factor</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--item status end-->
+
+                            <!--interface start-->
+                            <div class="col-4">
+                                <div class="mb-3 form-floating">
+                                    <input type="text" class="form-control" id="numberWattage" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','monitor','wattage')">
+                                    <label for="numberWattage">Wattage<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!--interface  end-->
+                            <!-- Description start -->
+                            <div class="col-4">
+
                             </div>
                             <!-- Description end -->
                         </div>
@@ -237,8 +263,8 @@
                         <div id="divModifyButton">
                             <div class="row" id="">
                                 <div class="col-1"></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printCoolerDetails(window['editOb'], window['editRow'])">Print</button></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteCooler(window['editOb'], window['editRow'])">Delete</button></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printMonitorDetails(window['editOb'], window['editRow'])">Print</button></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteMonitor(window['editOb'], window['editRow'])">Delete</button></div>
                                 <div class="col-7"></div>
                             </div>
                         </div>
@@ -247,8 +273,8 @@
                         <div class="row">
                             <div class="col-5"></div>
                             <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonCoolerUpdate()">Update</button></div>
-                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonCoolerSubmit()">Submit</button></div>
+                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonMonitorUpdate()">Update</button></div>
+                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonMonitorSubmit()">Submit</button></div>
                             <div class="col-1"></div>
                         </div>
                     </div>
