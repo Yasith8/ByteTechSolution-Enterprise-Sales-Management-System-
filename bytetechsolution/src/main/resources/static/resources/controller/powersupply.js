@@ -120,12 +120,8 @@ const refillPowerSupplyForm = (ob, rowIndex) => {
 
     //assign item name
     textItemName.value = powersupply.itemname;
-    //assign purchase price
-    decimalPurchasePrice.value = powersupply.purchaseprice;
     //assign profit rate
     numberProfitRate.value = powersupply.profitrate;
-    //assign sales price
-    decimalSalesPrice.value = powersupply.salesprice;
     //assign rop 
     numberROP.value = powersupply.rop;
     //assign roq 
@@ -135,6 +131,8 @@ const refillPowerSupplyForm = (ob, rowIndex) => {
     //asign description
     textDescription.value = powersupply.description;
 
+    numberWattage.value = powersupply.wattage;
+
     //get brands of motherboard
     brands = getServiceAjaxRequest("/brand/brandbycategory/GPU");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", ob.brand_id.name);
@@ -142,37 +140,21 @@ const refillPowerSupplyForm = (ob, rowIndex) => {
     itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
     fillDataIntoSelect(selectItemStatus, "Please Select", itemstatuses, "name", ob.itemstatus_id.name);
 
-    motherboardformfactors = getServiceAjaxRequest("/motherboardformfactor/alldata")
-    fillDataIntoSelect(selectMotherboardFormFactor, "Please Select Motherboard Form Factor", motherboardformfactors, "name", ob.motherboardformfactor_id.name);
+    powersupplyformfactors = getServiceAjaxRequest("/powersupplyformfactor/alldata")
+    fillDataIntoSelect(selectPowerSupplyFormFactor, "Please Select Power Supply Form Factor", powersupplyformfactors, "name", ob.powersupplyformfactor_id.name);
 
-    powersupplytypes = getServiceAjaxRequest("/powersupplytype/alldata")
-    fillDataIntoSelect(selectPowerSupplyType, "Please Select GPU Type", powersupplytypes, "name", ob.powersupplytype_id.name);
+    efficiency = getServiceAjaxRequest("/efficiency/alldata")
+    fillDataIntoSelect(selectEfficiency, "Please Select Efficiency", efficiency, "name", ob.efficiency_id.name);
 
-    interfaces = getServiceAjaxRequest("/interface/alldata")
-    fillDataIntoSelect(selectInterface, "Please Select Interface", interfaces, "name", ob.interface_id.name);
-
-    capacities = getServiceAjaxRequest("/capacity/alldata")
-    fillDataIntoSelect(selectCapacity, "Please Select Capacity", capacities, "name", ob.capacity_id.name);
-
-    powersupplychipsets = getServiceAjaxRequest("/powersupplychipset/alldata")
-    fillDataIntoSelect(selectPowerSupplyChipset, "Please Select GPU Chipset", powersupplychipsets, "name", ob.powersupplychipset_id.name);
-
-    fillDataIntoSelect(selectPowerSupplySeries, "Select GPU Series", [], "name", ob.powersupplyseries_id.name);
-
-    selectPowerSupplyChipset.addEventListener('change', () => {
-        const powersupplychipset = selectValueHandler(selectPowerSupplyChipset);
-        powersupplyseries = getServiceAjaxRequest("/powersupplyseries/powersupplyseriesbypowersupplychipset/" + powersupplychipset.name);
-        fillDataIntoSelect(selectPowerSupplySeries, "Select GPU Series", powersupplyseries, "name");
-    })
-
-
+    modularity = getServiceAjaxRequest("/modularity/alldata")
+    fillDataIntoSelect(selectModularity, "Please Select Modularity", modularity, "name", ob.modularity_id.name);
 
     inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectPowerSupplyFormFactor, selectBrand, selectItemStatus, selectModularity, selectEfficiency, numberWattage], false);
     buttonClear.classList.add('modal-btn-clear');
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/GPU");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/POWERSUPPLY");
     //console.log(userPrivilage);
 
 
@@ -198,18 +180,9 @@ const checkPowerSupplyInputErrors = () => {
     let errors = "";
 
     if (powersupply.itemname == null) {
-        errors = errors + "GPU Name can't be Null...!\n";
+        errors = errors + "Power Supply Name can't be Null...!\n";
         textItemName.classList.add("is-invalid");
     }
-    if (powersupply.purchaseprice == null) {
-        errors = errors + "Purchase Price can't be Null...!\n";
-        decimalPurchasePrice.classList.add("is-invalid");
-    }
-    if (powersupply.salesprice == null) {
-        errors = errors + "Sales Price can't be Null...!\n";
-        decimalSalesPrice.classList.add("is-invalid");
-    }
-
     if (powersupply.profitrate == null) {
         errors = errors + "Profit Rate can't be Null...!\n";
         numberProfitRate.classList.add("is-invalid");
@@ -219,11 +192,11 @@ const checkPowerSupplyInputErrors = () => {
         errors = errors + "Warranty can't be Null...!\n";
         numberWarranty.classList.add("is-invalid");
     }
-
-    if (powersupply.interface_id == null) {
-        errors = errors + "Interface can't be Null...!\n";
-        selectInterface.classList.add("is-invalid");
+    if (powersupply.wattage == null) {
+        errors = errors + "wattage can't be Null...!\n";
+        numberWattage.classList.add("is-invalid");
     }
+
     if (powersupply.itemstatus_id == null) {
         errors = errors + "Item Status can't be Null...!\n";
         selectItemStatus.classList.add("is-invalid");
@@ -232,25 +205,17 @@ const checkPowerSupplyInputErrors = () => {
         errors = errors + "Brand can't be Null...!\n";
         selectBrand.classList.add("is-invalid");
     }
-    if (powersupply.powersupplychipset_id == null) {
-        errors = errors + "GPU Chipset can't be Null...!\n";
-        selectPowerSupplyChipset.classList.add("is-invalid");
+    if (powersupply.powersupplyformfactor_id == null) {
+        errors = errors + "Power Supply Form Factor can't be Null...!\n";
+        selectPowerSupplyFormFactor.classList.add("is-invalid");
     }
-    if (powersupply.powersupplyseries_id == null) {
-        errors = errors + "GPU Series can't be Null...!\n";
-        selectPowerSupplySeries.classList.add("is-invalid");
+    if (powersupply.modularity_id == null) {
+        errors = errors + "Modularity can't be Null...!\n";
+        selectModularity.classList.add("is-invalid");
     }
-    if (powersupply.powersupplytype_id == null) {
-        errors = errors + "GPU Type can't be Null...!\n";
-        selectPowerSupplyType.classList.add("is-invalid");
-    }
-    if (powersupply.motherboardformfactor_id == null) {
-        errors = errors + "Motherboard Form Factor can't be Null...!\n";
-        selectMotherboardFormFactor.classList.add("is-invalid");
-    }
-    if (powersupply.capacity_id == null) {
-        errors = errors + "GPU Capacity can't be Null...!\n";
-        selectCapacity.classList.add("is-invalid");
+    if (powersupply.efficiency_id == null) {
+        errors = errors + "Efficiency can't be Null...!\n";
+        selectEfficiency.classList.add("is-invalid");
     }
 
     return errors;
@@ -316,8 +281,8 @@ const checkPowerSupplyFormUpdates = () => {
     if (powersupply.itemname != oldPowerSupply.itemname) {
         updates = updates + "Processor Name is Changed \n";
     }
-    if (powersupply.purchaseprice != oldPowerSupply.purchaseprice) {
-        updates = updates + "Purchase Price is Changed \n";
+    if (powersupply.wattage != oldPowerSupply.wattage) {
+        updates = updates + "wattage is Changed \n";
     }
     if (powersupply.profitrate != oldPowerSupply.profitrate) {
         updates = updates + "Profit Rate is Changed \n";
@@ -331,8 +296,8 @@ const checkPowerSupplyFormUpdates = () => {
     if (powersupply.roq != oldPowerSupply.roq) {
         updates = updates + "ROQ is Changed \n";
     }
-    if (powersupply.interface_id.name != oldPowerSupply.interface_id.name) {
-        updates = updates + "Interface is Changed \n";
+    if (powersupply.efficiency_id.name != oldPowerSupply.efficiency_id.name) {
+        updates = updates + "Efficiency is Changed \n";
     }
     if (powersupply.description != oldPowerSupply.description) {
         updates = updates + "Description is Changed \n";
@@ -340,20 +305,8 @@ const checkPowerSupplyFormUpdates = () => {
     if (powersupply.brand_id.name != oldPowerSupply.brand_id.name) {
         updates = updates + "Brand is Changed \n";
     }
-    if (powersupply.powersupplychipset_id.name != oldPowerSupply.powersupplychipset_id.name) {
-        updates = updates + "GPU Chipset is Changed \n";
-    }
-    if (powersupply.powersupplytype_id.name != oldPowerSupply.powersupplytype_id.name) {
-        updates = updates + "GPU Type is Changed \n";
-    }
-    if (powersupply.powersupplyseries_id.name != oldPowerSupply.powersupplyseries_id.name) {
-        updates = updates + "GPU Series is Changed \n";
-    }
-    if (powersupply.motherboardformfactor_id.name != oldPowerSupply.motherboardformfactor_id.name) {
-        updates = updates + "Motherboard Form Factor is Changed \n";
-    }
-    if (powersupply.capacity_id.name != oldPowerSupply.capacity_id.name) {
-        updates = updates + "Capacity is Changed \n";
+    if (powersupply.modularity_id.name != oldPowerSupply.modularity_id.name) {
+        updates = updates + "Modularity is Changed \n";
     }
     if (powersupply.itemstatus_id.name != oldPowerSupply.itemstatus_id.name) {
         updates = updates + "Item Status is Changed \n";

@@ -303,6 +303,15 @@ const checkCasingFormUpdates = () => {
     if (casing.description != oldCasing.description) {
         updates = updates + "Description is Changed \n";
     }
+    if (casing.width != oldCasing.width) {
+        updates = updates + "width is Changed \n";
+    }
+    if (casing.height != oldCasing.height) {
+        updates = updates + "height is Changed \n";
+    }
+    if (casing.depth != oldCasing.depth) {
+        updates = updates + "depth is Changed \n";
+    }
     if (casing.brand_id.name != oldCasing.brand_id.name) {
         updates = updates + "Brand is Changed \n";
     }
@@ -315,6 +324,7 @@ const checkCasingFormUpdates = () => {
     if (casing.itemstatus_id.name != oldCasing.itemstatus_id.name) {
         updates = updates + "Item Status is Changed \n";
     }
+
 
     return updates;
 }
