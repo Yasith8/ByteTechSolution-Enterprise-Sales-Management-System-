@@ -14,8 +14,6 @@ const refreshGpuTable = () => {
         { dataType: 'text', propertyName: 'itemname' },
         { dataType: 'function', propertyName: getBrandName },
         { dataType: 'text', propertyName: 'profitrate' },
-        { dataType: 'text', propertyName: 'purchaseprice' },
-        { dataType: 'text', propertyName: 'salesprice' },
         { dataType: 'function', propertyName: getGpuSeries },
         { dataType: 'function', propertyName: getGpuType },
         { dataType: 'function', propertyName: getMotherboardFormFactor },
@@ -74,7 +72,7 @@ const refreshGpuForm = () => {
         fillDataIntoSelect(selectGpuSeries, "Select GPU Series", gpuseries, "name");
     })
 
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries])
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/GPU");
 
@@ -82,7 +80,7 @@ const refreshGpuForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 
@@ -135,7 +133,7 @@ const getItemStatus = (ob) => {
 
 const refillGpuForm = (ob, rowIndex) => {
     $('#gpuAddModal').modal('show');
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries])
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
@@ -151,12 +149,8 @@ const refillGpuForm = (ob, rowIndex) => {
 
     //assign item name
     textItemName.value = gpu.itemname;
-    //assign purchase price
-    decimalPurchasePrice.value = gpu.purchaseprice;
     //assign profit rate
     numberProfitRate.value = gpu.profitrate;
-    //assign sales price
-    decimalSalesPrice.value = gpu.salesprice;
     //assign rop 
     numberROP.value = gpu.rop;
     //assign roq 
@@ -198,7 +192,7 @@ const refillGpuForm = (ob, rowIndex) => {
 
 
 
-    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries], false);
+    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries], false);
     buttonClear.classList.add('modal-btn-clear');
 
 
@@ -211,7 +205,7 @@ const refillGpuForm = (ob, rowIndex) => {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
     if (!userPrivilage.delete) {
@@ -231,14 +225,6 @@ const checkGpuInputErrors = () => {
     if (gpu.itemname == null) {
         errors = errors + "GPU Name can't be Null...!\n";
         textItemName.classList.add("is-invalid");
-    }
-    if (gpu.purchaseprice == null) {
-        errors = errors + "Purchase Price can't be Null...!\n";
-        decimalPurchasePrice.classList.add("is-invalid");
-    }
-    if (gpu.salesprice == null) {
-        errors = errors + "Sales Price can't be Null...!\n";
-        decimalSalesPrice.classList.add("is-invalid");
     }
 
     if (gpu.profitrate == null) {
@@ -346,9 +332,6 @@ const checkGpuFormUpdates = () => {
 
     if (gpu.itemname != oldGpu.itemname) {
         updates = updates + "Processor Name is Changed \n";
-    }
-    if (gpu.purchaseprice != oldGpu.purchaseprice) {
-        updates = updates + "Purchase Price is Changed \n";
     }
     if (gpu.profitrate != oldGpu.profitrate) {
         updates = updates + "Profit Rate is Changed \n";

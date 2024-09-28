@@ -13,8 +13,6 @@ const refreshProcessorTable = () => {
         { dataType: 'text', propertyName: 'itemname' },
         { dataType: 'function', propertyName: getBrandName },
         { dataType: 'text', propertyName: 'profitrate' },
-        { dataType: 'text', propertyName: 'purchaseprice' },
-        { dataType: 'text', propertyName: 'salesprice' },
         { dataType: 'function', propertyName: getCpuSeries },
         { dataType: 'function', propertyName: getCpuGeneration },
         { dataType: 'function', propertyName: getCpuSocket },
@@ -93,7 +91,7 @@ const refreshProcessorForm = () => {
     //fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
 
 
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/PROCESSOR");
 
@@ -101,7 +99,7 @@ const refreshProcessorForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 
@@ -145,7 +143,7 @@ const getItemStatus = (ob) => {
 
 const refillProcessorForm = (ob, rowIndex) => {
     $('#processorAddModal').modal('show');
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
 
 
     buttonSubmit.disabled = true;
@@ -162,12 +160,8 @@ const refillProcessorForm = (ob, rowIndex) => {
 
     //assign item name
     textItemName.value = processor.itemname;
-    //assign purchase price
-    decimalPurchasePrice.value = processor.purchaseprice;
-    //assign profit rate
-    numberProfitRate.value = processor.profitrate;
     //assign sales price
-    decimalSalesPrice.value = processor.salesprice;
+    numberProfitRate.value = processor.profitrate;
     //assign rop 
     numberROP.value = processor.rop;
     //assign roq 
@@ -224,7 +218,7 @@ const refillProcessorForm = (ob, rowIndex) => {
 
 
 
-    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
+    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
     buttonClear.classList.add('modal-btn-clear');
 
 
@@ -237,7 +231,7 @@ const refillProcessorForm = (ob, rowIndex) => {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
     if (!userPrivilage.delete) {
@@ -284,14 +278,6 @@ const checkProcessorInputErrors = () => {
     if (processor.itemname == null) {
         errors = errors + "Processor Name can't be Null...!\n";
         textItemName.classList.add("is-invalid");
-    }
-    if (processor.purchaseprice == null) {
-        errors = errors + "Purchase Price can't be Null...!\n";
-        decimalPurchasePrice.classList.add("is-invalid");
-    }
-    if (processor.salesprice == null) {
-        errors = errors + "Sales Price can't be Null...!\n";
-        decimalSalesPrice.classList.add("is-invalid");
     }
 
     if (processor.profitrate == null) {
@@ -392,9 +378,6 @@ const checkProcessorFormUpdates = () => {
 
     if (processor.itemname != oldProcessor.itemname) {
         updates = updates + "Processor Name is Changed \n";
-    }
-    if (processor.purchaseprice != oldProcessor.purchaseprice) {
-        updates = updates + "Purchase Price is Changed \n";
     }
     if (processor.profitrate != oldProcessor.profitrate) {
         updates = updates + "Profit Rate is Changed \n";

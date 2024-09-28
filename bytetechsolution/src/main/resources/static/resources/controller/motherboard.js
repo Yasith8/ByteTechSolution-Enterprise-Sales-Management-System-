@@ -12,8 +12,6 @@ const refreshMotherboardTable = () => {
         { dataType: 'text', propertyName: 'itemname' },
         { dataType: 'function', propertyName: getBrandName },
         { dataType: 'text', propertyName: 'profitrate' },
-        { dataType: 'text', propertyName: 'purchaseprice' },
-        { dataType: 'text', propertyName: 'salesprice' },
         { dataType: 'function', propertyName: getMotherboardSeries },
         { dataType: 'function', propertyName: getMotherboardType },
         { dataType: 'function', propertyName: getMotherboardFormFactor },
@@ -75,7 +73,7 @@ const refreshMotherboardForm = () => {
     })
 
 
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType])
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/MOTHERBOARD");
 
@@ -83,7 +81,7 @@ const refreshMotherboardForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 
@@ -139,7 +137,7 @@ const getItemStatus = (ob) => {
  */
 const refillMotherboardForm = (ob, rowIndex) => {
     $('#motherboardAddModal').modal('show');
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType])
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
@@ -155,12 +153,10 @@ const refillMotherboardForm = (ob, rowIndex) => {
 
     //assign item name
     textItemName.value = motherboard.itemname;
-    //assign purchase price
-    decimalPurchasePrice.value = motherboard.purchaseprice;
+
     //assign profit rate
     numberProfitRate.value = motherboard.profitrate;
-    //assign sales price
-    decimalSalesPrice.value = motherboard.salesprice;
+
     //assign rop 
     numberROP.value = motherboard.rop;
     //assign roq 
@@ -211,7 +207,7 @@ const refillMotherboardForm = (ob, rowIndex) => {
     })
 
 
-    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType], false);
+    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType], false);
     buttonClear.classList.add('modal-btn-clear');
 
 
@@ -224,7 +220,7 @@ const refillMotherboardForm = (ob, rowIndex) => {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
     if (!userPrivilage.delete) {
@@ -244,15 +240,6 @@ const checkMotherboardInputErrors = () => {
         errors = errors + "Motherboard Name can't be Null...!\n";
         textItemName.classList.add("is-invalid");
     }
-    if (motherboard.purchaseprice == null) {
-        errors = errors + "Purchase Price can't be Null...!\n";
-        decimalPurchasePrice.classList.add("is-invalid");
-    }
-    if (motherboard.salesprice == null) {
-        errors = errors + "Sales Price can't be Null...!\n";
-        decimalSalesPrice.classList.add("is-invalid");
-    }
-
     if (motherboard.profitrate == null) {
         errors = errors + "Profit Rate can't be Null...!\n";
         numberProfitRate.classList.add("is-invalid");
@@ -358,9 +345,6 @@ const checkMotherboardFormUpdates = () => {
 
     if (motherboard.itemname != oldMotherboard.itemname) {
         updates = updates + "Processor Name is Changed \n";
-    }
-    if (motherboard.purchaseprice != oldMotherboard.purchaseprice) {
-        updates = updates + "Purchase Price is Changed \n";
     }
     if (motherboard.profitrate != oldMotherboard.profitrate) {
         updates = updates + "Profit Rate is Changed \n";

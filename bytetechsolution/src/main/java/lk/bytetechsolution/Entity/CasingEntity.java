@@ -1,7 +1,7 @@
 package lk.bytetechsolution.Entity;
 
 
-import java.math.BigDecimal;
+
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -42,14 +42,6 @@ public class CasingEntity {
     @NotNull
     @Column(name = "itemname",unique = true)
     private String itemname;
-
-    @NotNull
-    @Column(name = "salesprice")
-    private BigDecimal salesprice;
-
-    @NotNull
-    @Column(name = "purchaseprice")
-    private BigDecimal purchaseprice;
 
     @NotNull
     @Column(name = "profitrate")

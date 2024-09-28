@@ -11,8 +11,6 @@ const refreshMemoryTable = () => {
         { dataType: 'text', propertyName: 'itemname' },
         { dataType: 'function', propertyName: getBrandName },
         { dataType: 'text', propertyName: 'profitrate' },
-        { dataType: 'text', propertyName: 'purchaseprice' },
-        { dataType: 'text', propertyName: 'salesprice' },
         { dataType: 'text', propertyName: 'speed' },
         { dataType: 'function', propertyName: getMemoryType },
         { dataType: 'function', propertyName: getMemoryFormFactor },
@@ -52,7 +50,7 @@ const refreshMemoryForm = () => {
     capacities = getServiceAjaxRequest("/capacity/alldata")
     fillDataIntoSelect(selectCapacity, "Please Select Capacity", capacities, "name");
 
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType])
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/MEMORY");
 
@@ -60,7 +58,7 @@ const refreshMemoryForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 }
@@ -99,7 +97,7 @@ const getItemStatus = (ob) => {
 
 const refillMemoryForm = (ob, rowIndex) => {
     $('#memoryAddModal').modal('show');
-    removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType])
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
@@ -115,12 +113,10 @@ const refillMemoryForm = (ob, rowIndex) => {
 
     //assign item name
     textItemName.value = memory.itemname;
-    //assign purchase price
-    decimalPurchasePrice.value = memory.purchaseprice;
+
     //assign profit rate
     numberProfitRate.value = memory.profitrate;
-    //assign sales price
-    decimalSalesPrice.value = memory.salesprice;
+
     //assign rop 
     numberROP.value = memory.rop;
     //assign roq 
@@ -148,7 +144,7 @@ const refillMemoryForm = (ob, rowIndex) => {
     fillDataIntoSelect(selectCapacity, "Please Select Capacity", capacities, "name", ob.capacity_id.name);
 
 
-    inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType], false);
+    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType], false);
     buttonClear.classList.add('modal-btn-clear');
 
 
@@ -161,7 +157,7 @@ const refillMemoryForm = (ob, rowIndex) => {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
 
-        inputFieldsHandler([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
     if (!userPrivilage.delete) {
@@ -183,15 +179,6 @@ const checkMemoryInputErrors = () => {
         errors = errors + "GPU Name can't be Null...!\n";
         textItemName.classList.add("is-invalid");
     }
-    if (memory.purchaseprice == null) {
-        errors = errors + "Purchase Price can't be Null...!\n";
-        decimalPurchasePrice.classList.add("is-invalid");
-    }
-    if (memory.salesprice == null) {
-        errors = errors + "Sales Price can't be Null...!\n";
-        decimalSalesPrice.classList.add("is-invalid");
-    }
-
     if (memory.profitrate == null) {
         errors = errors + "Profit Rate can't be Null...!\n";
         numberProfitRate.classList.add("is-invalid");
@@ -290,9 +277,6 @@ const checkMemoryFormUpdates = () => {
 
     if (memory.itemname != oldMemory.itemname) {
         updates = updates + "Processor Name is Changed \n";
-    }
-    if (memory.purchaseprice != oldMemory.purchaseprice) {
-        updates = updates + "Purchase Price is Changed \n";
     }
     if (memory.profitrate != oldMemory.profitrate) {
         updates = updates + "Profit Rate is Changed \n";
