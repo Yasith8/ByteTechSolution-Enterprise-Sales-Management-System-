@@ -1,13 +1,13 @@
 window.addEventListener('load', () => {
-    refreshCoolerTable();
-    refreshCoolerForm();
+    refreshMonitorTable();
+    refreshMonitorForm();
 })
 
 
-const refreshCoolerTable = () => {
+const refreshMonitorTable = () => {
 
-    //get cooler data
-    coolers = getServiceAjaxRequest('/cooler/alldata')
+    //get monitor data
+    monitors = getServiceAjaxRequest('/monitor/alldata')
 
     const displayPropertyList = [
         { dataType: 'text', propertyName: 'itemcode' },
@@ -15,21 +15,21 @@ const refreshCoolerTable = () => {
         { dataType: 'function', propertyName: getBrandName },
         { dataType: 'text', propertyName: 'profitrate' },
         { dataType: 'function', propertyName: getCpuSocket },
-        { dataType: 'function', propertyName: getCoolerType },
+        { dataType: 'function', propertyName: getMonitorType },
         { dataType: 'function', propertyName: getItemStatus },
     ]
 
-    fillDataIntoTable(tableCooler, coolers, displayPropertyList, refillCoolerForm, divModifyButton)
+    fillDataIntoTable(tableMonitor, monitors, displayPropertyList, refillMonitorForm, divModifyButton)
         //table show with dataTable
-    $('#tableCooler').dataTable();
+    $('#tableMonitor').dataTable();
     //hide button section
     divModifyButton.className = 'd-none';
 
 }
 
 
-const refreshCoolerForm = () => {
-    cooler = new Object();
+const refreshMonitorForm = () => {
+    monitor = new Object();
 
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
@@ -39,28 +39,28 @@ const refreshCoolerForm = () => {
 
     staticBackdropLabel.textContent = "Add New Item";
 
-    brands = getServiceAjaxRequest("/brand/brandbycategory/Cooler");
+    brands = getServiceAjaxRequest("/brand/brandbycategory/Monitor");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
 
     itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
     fillDataIntoSelect(selectItemStatus, "Please Select Item Status", itemstatuses, "name");
 
-    coolertypes = getServiceAjaxRequest("/coolertype/alldata")
-    fillDataIntoSelect(selectCoolerType, "Please Select GPU Type", coolertypes, "name");
+    monitortypes = getServiceAjaxRequest("/monitortype/alldata")
+    fillDataIntoSelect(selectMonitorType, "Please Select GPU Type", monitortypes, "name");
 
     cpusockets = getServiceAjaxRequest("/cpusocket/alldata")
     fillDataIntoSelect(selectCpuSocket, "Please Select Processor Socket", cpusockets, "name");
 
 
-    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectCpuSocketType])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMonitorType, selectSocketType])
 
-    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/COOLER");
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/MONITOR");
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectCpuSocketType], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMonitorType, selectSocketType], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 
@@ -74,8 +74,8 @@ const getCpuSocket = (ob) => {
     return ob.cpusocket_id.name;
 }
 
-const getCoolerType = (ob) => {
-    return ob.coolertype_id.name;
+const getMonitorType = (ob) => {
+    return ob.monitortype_id.name;
 }
 
 const getItemStatus = (ob) => {
@@ -95,9 +95,9 @@ const getItemStatus = (ob) => {
     }
 }
 
-const refillCoolerForm = (ob, rowIndex) => {
-    $('#coolerAddModal').modal('show');
-    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectCpuSocketType])
+const refillMonitorForm = (ob, rowIndex) => {
+    $('#monitorAddModal').modal('show');
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMonitorType, selectSocketType])
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
@@ -105,44 +105,44 @@ const refillCoolerForm = (ob, rowIndex) => {
     buttonUpdate.disabled = false;
     buttonUpdate.classList.add('modal-btn-update');
 
-    cooler = JSON.parse(JSON.stringify(ob));
-    oldCooler = ob;
+    monitor = JSON.parse(JSON.stringify(ob));
+    oldMonitor = ob;
 
     //asign itemcode
-    staticBackdropLabel.textContent = cooler.itemcode;
+    staticBackdropLabel.textContent = monitor.itemcode;
 
     //assign item name
-    textItemName.value = cooler.itemname;
+    textItemName.value = monitor.itemname;
     //assign profit rate
-    numberProfitRate.value = cooler.profitrate;
+    numberProfitRate.value = monitor.profitrate;
     //assign rop 
-    numberROP.value = cooler.rop;
+    numberROP.value = monitor.rop;
     //assign roq 
-    numberROQ.value = cooler.roq;
+    numberROQ.value = monitor.roq;
     //assign warranty
-    numberWarranty.value = cooler.warranty;
+    numberWarranty.value = monitor.warranty;
     //asign description
-    textDescription.value = cooler.description;
+    textDescription.value = monitor.description;
 
     //get brands of motherboard
-    brands = getServiceAjaxRequest("/brand/brandbycategory/Cooler");
+    brands = getServiceAjaxRequest("/brand/brandbycategory/Monitor");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", ob.brand_id.name);
 
     itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
     fillDataIntoSelect(selectItemStatus, "Please Select", itemstatuses, "name", ob.itemstatus_id.name);
 
-    coolertypes = getServiceAjaxRequest("/coolertype/alldata")
-    fillDataIntoSelect(selectCoolerType, "Please Select Cooler Type", coolertypes, "name", ob.coolertype_id.name);
+    monitortypes = getServiceAjaxRequest("/monitortype/alldata")
+    fillDataIntoSelect(selectMonitorType, "Please Select Monitor Type", monitortypes, "name", ob.monitortype_id.name);
 
     cpusockets = getServiceAjaxRequest("/cpucokset/alldata")
     fillDataIntoSelect(selectCpuSocket, "Please Select Interface", cpusockets, "name", ob.cpucokset_id.name);
 
-    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectCpuSocketType], false);
+    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMonitorType, selectSocketType], false);
     buttonClear.classList.add('modal-btn-clear');
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/COOLER");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/MONITOR");
     //console.log(userPrivilage);
 
 
@@ -150,7 +150,7 @@ const refillCoolerForm = (ob, rowIndex) => {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
 
-        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectCpuSocketType], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMonitorType, selectSocketType], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
     if (!userPrivilage.delete) {
@@ -164,45 +164,45 @@ const refillCoolerForm = (ob, rowIndex) => {
 
 }
 
-const checkCoolerInputErrors = () => {
+const checkMonitorInputErrors = () => {
     let errors = "";
 
-    if (cooler.itemname == null) {
+    if (monitor.itemname == null) {
         errors = errors + "GPU Name can't be Null...!\n";
         textItemName.classList.add("is-invalid");
     }
-    if (cooler.profitrate == null) {
+    if (monitor.profitrate == null) {
         errors = errors + "Profit Rate can't be Null...!\n";
         numberProfitRate.classList.add("is-invalid");
     }
 
-    if (cooler.warranty == null) {
+    if (monitor.warranty == null) {
         errors = errors + "Warranty can't be Null...!\n";
         numberWarranty.classList.add("is-invalid");
     }
 
-    if (cooler.cpusocket_id == null) {
+    if (monitor.cpusocket_id == null) {
         errors = errors + "CPU Socket can't be Null...!\n";
         selectCpuSocket.classList.add("is-invalid");
     }
-    if (cooler.itemstatus_id == null) {
+    if (monitor.itemstatus_id == null) {
         errors = errors + "Item Status can't be Null...!\n";
         selectItemStatus.classList.add("is-invalid");
     }
-    if (cooler.brand_id == null) {
+    if (monitor.brand_id == null) {
         errors = errors + "Brand can't be Null...!\n";
         selectBrand.classList.add("is-invalid");
     }
-    if (cooler.coolertype_id == null) {
-        errors = errors + "Cooler Type can't be Null...!\n";
-        selectCoolerType.classList.add("is-invalid");
+    if (monitor.monitortype_id == null) {
+        errors = errors + "Monitor Type can't be Null...!\n";
+        selectMonitorType.classList.add("is-invalid");
     }
 
     return errors;
 }
 
-const buttonCoolerSubmit = () => {
-    let errors = checkCoolerInputErrors();
+const buttonMonitorSubmit = () => {
+    let errors = checkMonitorInputErrors();
 
     if (errors == "") {
 
@@ -215,10 +215,10 @@ const buttonCoolerSubmit = () => {
 
             let postServiceResponce;
 
-            $.ajax("/cooler", {
+            $.ajax("/monitor", {
                 type: "POST",
                 contentType: "application/json",
-                data: JSON.stringify(cooler),
+                data: JSON.stringify(monitor),
                 async: false,
 
                 success: function(data) {
@@ -237,15 +237,15 @@ const buttonCoolerSubmit = () => {
             if (postServiceResponce == "OK") {
                 alert("Save successfully...!");
                 //hide the model
-                $('#coolerAddModal').modal('hide');
+                $('#monitorAddModal').modal('hide');
                 //reset the Item form
-                formCooler.reset();
+                formMonitor.reset();
                 //refreash Item form
-                refreshCoolerForm();
+                refreshMonitorForm();
                 //refreash Item table
-                refreshCoolerTable();
+                refreshMonitorTable();
             } else {
-                alert("Fail to submit Cooler form \n" + postServiceResponce);
+                alert("Fail to submit Monitor form \n" + postServiceResponce);
             }
         }
     } else {
@@ -255,53 +255,53 @@ const buttonCoolerSubmit = () => {
 
 }
 
-const checkCoolerFormUpdates = () => {
+const checkMonitorFormUpdates = () => {
     updates = "";
 
-    if (cooler.itemname != oldCooler.itemname) {
+    if (monitor.itemname != oldMonitor.itemname) {
         updates = updates + "Processor Name is Changed \n";
     }
-    if (cooler.profitrate != oldCooler.profitrate) {
+    if (monitor.profitrate != oldMonitor.profitrate) {
         updates = updates + "Profit Rate is Changed \n";
     }
-    if (cooler.warranty != oldCooler.warranty) {
+    if (monitor.warranty != oldMonitor.warranty) {
         updates = updates + "Warranty is Changed \n";
     }
-    if (cooler.rop != oldCooler.rop) {
+    if (monitor.rop != oldMonitor.rop) {
         updates = updates + "ROP is Changed \n";
     }
-    if (cooler.roq != oldCooler.roq) {
+    if (monitor.roq != oldMonitor.roq) {
         updates = updates + "ROQ is Changed \n";
     }
-    if (cooler.cpusocket_id.name != oldCooler.cpusocket_id.name) {
+    if (monitor.cpusocket_id.name != oldMonitor.cpusocket_id.name) {
         updates = updates + "CPU Socket is Changed \n";
     }
-    if (cooler.description != oldCooler.description) {
+    if (monitor.description != oldMonitor.description) {
         updates = updates + "Description is Changed \n";
     }
-    if (cooler.brand_id.name != oldCooler.brand_id.name) {
+    if (monitor.brand_id.name != oldMonitor.brand_id.name) {
         updates = updates + "Brand is Changed \n";
     }
-    if (cooler.coolertype_id.name != oldCooler.coolertype_id.name) {
-        updates = updates + "Cooler Type is Changed \n";
+    if (monitor.monitortype_id.name != oldMonitor.monitortype_id.name) {
+        updates = updates + "Monitor Type is Changed \n";
     }
-    if (cooler.itemstatus_id.name != oldCooler.itemstatus_id.name) {
+    if (monitor.itemstatus_id.name != oldMonitor.itemstatus_id.name) {
         updates = updates + "Item Status is Changed \n";
     }
 
     return updates;
 }
 
-const buttonCoolerUpdate = () => {
+const buttonMonitorUpdate = () => {
     //check form error
-    let errors = checkCoolerInputErrors();
+    let errors = checkMonitorInputErrors();
 
     //check code has error, if code doesn't have  any errors
     if (errors == "") {
 
         //check form update
 
-        let updates = checkCoolerFormUpdates();
+        let updates = checkMonitorFormUpdates();
 
         //check there is no updates or any updations
         if (updates == "") {
@@ -316,11 +316,11 @@ const buttonCoolerUpdate = () => {
                 //call put service requestd  -this use for updations
                 let putServiceResponse;
 
-                $.ajax("/cooler", {
+                $.ajax("/monitor", {
                     type: "PUT",
                     async: false,
                     contentType: "application/json",
-                    data: JSON.stringify(cooler),
+                    data: JSON.stringify(monitor),
 
 
                     success: function(successResponseOb) {
@@ -337,39 +337,39 @@ const buttonCoolerUpdate = () => {
                     alert("Updated Successfully");
 
                     //hide the moadel
-                    $('#coolerAddModal').modal('hide');
+                    $('#monitorAddModal').modal('hide');
                     //refreash Item table for realtime updation
-                    refreshCoolerTable();
+                    refreshMonitorTable();
                     //reset the Item form
-                    formCooler.reset();
+                    formMonitor.reset();
                     //Item form refresh
-                    refreshCoolerForm();
+                    refreshMonitorForm();
                 } else {
                     //handling errors
                     alert("Update not Completed :\n" + putServiceResponse);
                     //refreash the employee form
-                    refreshCoolerForm();
+                    refreshMonitorForm();
                 }
             }
         }
     } else {
         //show user to what errors happen
-        alert("Cooler Form  has Following Errors..\n" + errors)
+        alert("Monitor Form  has Following Errors..\n" + errors)
     }
 
 
 }
 
-const deleteCooler = (ob, rowIndex) => {
+const deleteMonitor = (ob, rowIndex) => {
     //user conformation
-    let userConform = confirm("Are you sure  to delete following Cooler? " + ob.itemname);
+    let userConform = confirm("Are you sure  to delete following Monitor? " + ob.itemname);
 
     //if ok
     if (userConform) {
         let deleteServiceResponse;
 
         //ajax request fot delete data
-        $.ajax("/cooler", {
+        $.ajax("/monitor", {
             type: "DELETE",
             contentType: "application/json",
             data: JSON.stringify(ob),
@@ -388,8 +388,8 @@ const deleteCooler = (ob, rowIndex) => {
         //so because of that we can see realtime update
         if (deleteServiceResponse == "OK") {
             alert("Delete Successfullly");
-            $('#coolerAddModal').modal('hide');
-            refreshCoolerTable()
+            $('#monitorAddModal').modal('hide');
+            refreshMonitorTable()
         } else {
             console.log("system has following errors:\n" + deleteServiceResponse);
         }
@@ -402,14 +402,14 @@ const buttonModalClose = () => {
 
     //check closeResponse is true or false
     if (closeResponse) {
-        $('#coolerAddModal').modal('hide');
+        $('#monitorAddModal').modal('hide');
 
 
         //formItem is id of form
         //this will reset all data(refreash)
-        formCooler.reset();
+        formMonitor.reset();
         divModifyButton.className = 'd-none';
 
-        refreshCoolerForm();
+        refreshMonitorForm();
     }
 }
