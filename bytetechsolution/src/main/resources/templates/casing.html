@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{component::headerFragment}"></head>
+
+<head>
+    <link rel="stylesheet" href="resources/style/casing.css">
+    <script src="resources/controller/casing.js"></script>
+</head>
+
+
+<body>
+
+    <nav th:replace="~{component::navFragment}"></nav>
+    <div th:replace="~{component::offcanvasFragment}"></div>
+
+    <div class="container-fluid mt-3 mb-3">
+
+        <!-- title area start -->
+        <div class="row m-2">
+            <div class="col-12 text-center 
+            title-header-div">
+                <h2> Casing Management </h2>
+            </div>
+        </div>
+        <!-- title area End -->
+
+        <!-- Card area start  -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-6">
+
+            </div>
+            <div class="col-4 text-end">
+                <button type="button" class="Btn printTableBtn" onclick="printCasingTable('tableCasing')">
+                    Print
+                </button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#casingAddModal" class="btn addBtn">
+                    Add New Case </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- Card area end  -->
+
+        <!-- table Area Start-->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="card employee-card">
+                    <div class="card-body employee-cardbody">
+
+                        <table class="table table-hover" id="tableCasing">
+                            <thead class="table-header">
+                                <tr>
+                                    <th> # </th>
+                                    <th> Item Code </th>
+                                    <th> Item Name </th>
+                                    <th> Brand </th>
+                                    <th> Profit Rate (%) </th>
+                                    <th> Case Material </th>
+                                    <th> Case Color </th>
+                                    <th> Item Status </th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="table-body">
+
+                                <!-- create static values for table -->
+                                <!-- used for initial designs -->
+                                <!-- probebly this appear when data not loading to table from db -->
+                                <tr>
+                                    <td> 1 </td>
+                                    <td> Initial User </td>
+                                    <td> 00000000000V </td>
+                                    <td> 0000000000 </td>
+                                    <td> inituser@gmail.com </td>
+                                    <td> Doctor </td>
+                                    <td>
+                                        Active
+                                    </td>
+
+                                    <td>
+                                        <button type="button" class="btn btnEdit">
+                                            <i class="fa-solid fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn ms-1 me-1 btnDel">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                        <button type="button" class="btn btnView">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+
+        </div>
+        <!-- table Area End-->
+
+    </div>
+
+    <!-- employee Add Modal -->
+    <div class="modal fade" id="casingAddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Case</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCasing">
+                        <!-- itemname Input Start -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="textItemName" placeholder="procesor name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','casing','itemname')">
+                                    <label for="textItemName">Case Name <span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- itemname Input end -->
+
+                        <!-- purchase Price Start -->
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <!-- 
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
+                                    -->
+                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','casing','profitrate');salePriceCalculator('casing')">
+                                    <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- purchase Price end -->
+                            <!-- profit rate start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <!-- 
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
+                                    -->
+                                    <input type="number" class="form-control" id="numberROP" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','casing','rop')">
+                                    <label for="numberROP">ROP</label>
+                                </div>
+                            </div>
+                            <!-- profit rate end -->
+                            <!-- sales price start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <!-- 
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
+                                    -->
+                                    <input type="number" class="form-control" id="numberROQ" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','casing','roq')">
+                                    <label for="numberROQ">ROQ</label>
+                                </div>
+                            </div>
+                            <!-- sales price end -->
+                        </div>
+
+                        <div class="row">
+                            <!-- warranty start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="numberWarranty" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','casing','warranty')">
+                                    <label for="numberWarranty">Warranty (Months)<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- warranty end -->
+                            <!-- rop start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <div class="mb-3 form-floating">
+                                        <textarea class="form-control" id="textDescription" placeholder="" onkeyup="textValidator(this,'^(([0-9A-Za-z\\.\\-\\s]{1,300}))$','casing','description')"></textarea>
+                                        <label for="textDescription">Description</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <select name="itemStatus" id="selectItemStatus" class="form-select" onchange="selectDynamicValidator(this,'','casing','itemstatus_id')">
+                                    <option value=""  selected disabled>Select Item Status</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <!--item status start-->
+                            <div class="col-4">
+                                <div class="mb-3 form-floating">
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','casing','brand_id')">
+                                             <option value=""  selected disabled>Select Brand</option>
+                                        </select>
+                                </div>
+                            </div>
+                            <!--item status end-->
+
+                            <!--interface start-->
+                            <div class="col-4">
+                                <div class="mb-3 form-floating">
+                                    <select name="brand" id="selectCaseColor" class="form-select" onchange="selectDynamicValidator(this,'','casing','casecolor_id')">
+                                            <option value=""  selected disabled>Select Case Color</option>
+                                       </select>
+                                </div>
+                            </div>
+                            <!--interface  end-->
+                            <!-- Description start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <select name="brand" id="selectCaseMaterial" class="form-select" onchange="selectDynamicValidator(this,'','casing','casematerial_id')">
+                                            <option value=""  selected disabled>Select Case Material</option>
+                                       </select>
+                                </div>
+                            </div>
+                            <!-- Description end -->
+                        </div>
+                        <div class="row">
+                            <!-- selectBrand start -->
+                            <div class="col-4">
+                                <div class="mb-3 form-floating">
+                                    <select name="brand" id="selectMotherboardFormFactor" class="form-select" onchange="selectDynamicValidator(this,'','casing','motherboardformfactor_id')">
+                                    <option value=""  selected disabled>Select Motherboard Form Factor</option>
+                                </select>
+                                </div>
+                            </div>
+                            <!-- selectBrand end -->
+
+                            <!--selectCpuSocket start-->
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="mb-3 form-floating">
+                                            <input type="number" class="form-control" id="numberWidth" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','casing','width')">
+                                            <label for="numberWidth">Width<span class="requiredIcon">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="mb-3 form-floating">
+                                            <input type="number" class="form-control" id="numberHeight" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','casing','height')">
+                                            <label for="numberHeight">Height<span class="requiredIcon">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="mb-3 form-floating">
+                                            <input type="number" class="form-control" id="numberDepth" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','casing','depth')">
+                                            <label for="numberDepth">Depth<span class="requiredIcon">*</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--selectCpuSocket end-->
+                            <!-- selectMotherboardSeries start -->
+                            <div class="col-2">
+
+                            </div>
+                            <!-- selectMotherboardSeries end -->
+                        </div>
+
+
+                    </form>
+                </div>
+
+                <div class="row mt-3 mb-3">
+                    <div class="col-6">
+                        <div id="divModifyButton">
+                            <div class="row" id="">
+                                <div class="col-1"></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printCasingDetails(window['editOb'], window['editRow'])">Print</button></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteCasing(window['editOb'], window['editRow'])">Delete</button></div>
+                                <div class="col-7"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-5"></div>
+                            <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
+                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonCasingUpdate()">Update</button></div>
+                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonCasingSubmit()">Submit</button></div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

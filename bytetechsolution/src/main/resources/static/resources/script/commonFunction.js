@@ -32,10 +32,10 @@ const getHTTPBodyAjaxRequest = (url, method, ob) => {
     let serviceResponse;
 
     $.ajax(url, {
-        type: method,
-        contentType: 'application/json',
-        data: JSON.stringify(ob),
         async: false,
+        type: method,
+        data: JSON.stringify(ob),
+        contentType: 'application/json',
         success: function(data) {
             console.log("success" + data);
             serviceResponse = data;
@@ -52,13 +52,11 @@ const getHTTPBodyAjaxRequest = (url, method, ob) => {
 }
 
 //this function used to fill dynamic data come from db to dropdown
-//todo ask about selectedValue
 const fillDataIntoSelect = (fieldId, message, dataList, propertyName, selectedValue) => {
     //empty static content of dropdown
     fieldId.innerHTML = '';
 
     //check message is empty or not
-    //todo ask about select the message
     if (message != "") {
         //create option element
         const optionMsg = document.createElement('option');
