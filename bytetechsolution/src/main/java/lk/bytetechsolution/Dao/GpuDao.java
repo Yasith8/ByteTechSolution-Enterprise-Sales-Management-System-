@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import lk.bytetechsolution.Entity.GpuEntity;
-import lk.bytetechsolution.Entity.MotherboardEntity;
 
 /* 
  * GpuDao extended from jparepository
@@ -14,9 +13,9 @@ import lk.bytetechsolution.Entity.MotherboardEntity;
 public interface GpuDao extends JpaRepository<GpuEntity,Integer>{
 
     @Query("select gpu from GpuEntity gpu where gpu.itemname=?1")
-    public String getNextGPUNumber();
-
-    @Query(value = "select concat('GPU',lpad(substring(max(gpu.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.gpu as gpu",nativeQuery = true)
     public GpuEntity getByGPUName(String itemname);
+    
+    @Query(value = "select concat('GPU',lpad(substring(max(gpu.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.gpu as gpu",nativeQuery = true)
+    public String getNextGPUNumber();
     
 }

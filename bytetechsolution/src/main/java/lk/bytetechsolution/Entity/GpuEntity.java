@@ -31,7 +31,7 @@ public class GpuEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //set Auto Increment
     @Column(name = "id",unique = true)
-    private int id;
+    private Integer id;
 
     @NotNull
     @Column(name = "itemcode",unique = true)

@@ -124,6 +124,7 @@ public class GpuController {
         try {
             //set AutoGenarated Value
             String nextNumber=daoGpu.getNextGPUNumber();
+            System.out.println(nextNumber);
 
             //if next employee number is not come then set manualy last number+1
             if(nextNumber==null){
