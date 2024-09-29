@@ -57,8 +57,6 @@
                                     <th> Item Name </th>
                                     <th> Brand </th>
                                     <th> Profit Rate (%) </th>
-                                    <th> Sales Price </th>
-                                    <th> Purchase Price </th>
                                     <th> Series </th>
                                     <th> Generation </th>
                                     <th> CPU Socket </th>
@@ -133,15 +131,13 @@
                             <div class="col-4">
                                 <div class="form-floating mb-3">
                                     <!-- 
-                                    regex --- 
-                                        [0-9] - anything can add like numbers
-                                        (\\.[0-9]{1,2})? --
-                                          --\\.  define the decimal point
-                                          --{1,2} -- 1 or 2 digits after decimal point
-                                          --?  -- reguler eather 2 decimal points or one decimal points not 3 decimal points
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
                                     -->
-                                    <input type="number" class="form-control" id="decimalPurchasePrice" placeholder="" required onkeyup="textValidator(this,'^[0-9]+(\\.[0-9]{1,2})?$','processor','purchaseprice')">
-                                    <label for="decimalPurchasePrice">Purchase Price<span class="requiredIcon">*</span></label>
+                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','processor','profitrate');salePriceCalculator('processor')">
+                                    <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <!-- purchase Price end -->
@@ -154,8 +150,8 @@
                                        eather maximum can add 100 or can add 
                                          [1-9]?(requler expression)[0-9] mean 
                                     -->
-                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','processor','profitrate');salePriceCalculator('processor')">
-                                    <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
+                                    <input type="number" class="form-control" id="numberROP" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','processor','rop')">
+                                    <label for="numberROP">ROP</label>
                                 </div>
                             </div>
                             <!-- profit rate end -->
@@ -163,15 +159,13 @@
                             <div class="col-4">
                                 <div class="form-floating mb-3">
                                     <!-- 
-                                    regex --- 
-                                        [0-9] - anything can add like numbers
-                                        (\\.[0-9]{1,2})? --
-                                          --\\.  define the decimal point
-                                          --{1,2} -- 1 or 2 digits after decimal point
-                                          --?  -- reguler eather 2 decimal points or one decimal points not 3 decimal points
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
                                     -->
-                                    <input type="number" class="form-control" id="decimalSalesPrice" placeholder="" required>
-                                    <label for="decimalSalesPrice">Sales Price<span class="requiredIcon">*</span></label>
+                                    <input type="number" class="form-control" id="numberROQ" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','processor','roq')">
+                                    <label for="numberROQ">ROQ</label>
                                 </div>
                             </div>
                             <!-- sales price end -->
@@ -189,28 +183,17 @@
                             <!-- rop start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <!-- 
-                                    regex---
-                                       100|[1-9]?[0-9]---
-                                       eather maximum can add 100 or can add 
-                                         [1-9]?(requler expression)[0-9] mean 
-                                    -->
-                                    <input type="number" class="form-control" id="numberROP" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','processor','rop')">
-                                    <label for="numberROP">ROP</label>
+                                    <select name="itemStatus" id="selectItemStatus" class="form-select" onchange="selectDynamicValidator(this,'','processor','itemstatus_id')">
+                                        <option value=""  selected disabled>Select Item Status</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- rop end -->
                             <!-- roq start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <!-- 
-                                    regex---
-                                       100|[1-9]?[0-9]---
-                                       eather maximum can add 100 or can add 
-                                         [1-9]?(requler expression)[0-9] mean 
-                                    -->
-                                    <input type="number" class="form-control" id="numberROQ" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','processor','roq')">
-                                    <label for="numberROQ">ROQ</label>
+                                    <input type="number" class="form-control" id="numberTotalCore" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','processor','totalcore')">
+                                    <label for="numberTotalCore">Total Cores<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <!-- roq end -->
@@ -221,9 +204,8 @@
                             <!--item status start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="itemStatus" id="selectItemStatus" class="form-select" onchange="selectDynamicValidator(this,'','processor','itemstatus_id')">
-                                    <option value=""  selected disabled>Select Item Status</option>
-                                </select>
+                                    <textarea class="form-control" id="textDescription" placeholder="" onkeyup="textValidator(this,'^(([0-9A-Za-z\\.\\-\\s]{1,300}))$','processor','description')"></textarea>
+                                    <label for="textDescription">Description</label>
                                 </div>
                             </div>
                             <!--item status end-->
@@ -231,16 +213,18 @@
                             <!-- totalcore start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberTotalCore" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','processor','totalcore')">
-                                    <label for="numberTotalCore">Total Cores<span class="requiredIcon">*</span></label>
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','processor','brand_id')">
+                                        <option value=""  selected disabled>1. Select Brand</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- totalcore end -->
                             <!-- Description start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" id="textDescription" placeholder="" onkeyup="textValidator(this,'^(([0-9A-Za-z\\.\\-\\s]{1,300}))$','processor','description')"></textarea>
-                                    <label for="textDescription">Description</label>
+                                    <select name="cpusocket" id="selectCpuSocket" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpusocket_id')">
+                                        <option value=""  selected disabled>Select Processor Brand First</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- Description end -->
@@ -249,9 +233,9 @@
                             <!-- selectBrand start -->
                             <div class="col-6">
                                 <div class="mb-3 form-floating">
-                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','processor','brand_id')">
-                                    <option value=""  selected disabled>1. Select Brand</option>
-                                </select>
+                                    <select name="cpuseries" id="selectCpuSeries" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpuseries_id')">
+                                        <option value=""  selected disabled>Select Processor Brand First</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- selectBrand end -->
@@ -259,34 +243,12 @@
                             <!--selectCpuSocket start-->
                             <div class="col-6">
                                 <div class="mb-3 form-floating">
-                                    <select name="cpusocket" id="selectCpuSocket" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpusocket_id')">
-                                    <option value=""  selected disabled>Select Processor Brand First</option>
-                                </select>
+                                    <select name="cpugeneration" id="selectCpuGeneration" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpugeneration_id')">
+                                        <option value=""  selected disabled>Select Processor Socket First</option>
+                                    </select>
                                 </div>
                             </div>
                             <!--selectCpuSocket end-->
-                        </div>
-
-                        <div class="row">
-                            <!-- selectCpuSeries start -->
-                            <div class="col-6">
-                                <div class="mb-3 form-floating">
-                                    <select name="cpuseries" id="selectCpuSeries" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpuseries_id')">
-                                    <option value=""  selected disabled>Select Processor Brand First</option>
-                                </select>
-                                </div>
-                            </div>
-                            <!-- selectCpuSeries end -->
-                            <!--selectCpuGeneration start-->
-                            <div class="col-6">
-                                <div class="mb-3 form-floating">
-                                    <select name="cpugeneration" id="selectCpuGeneration" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpugeneration_id')">
-                                    <option value=""  selected disabled>Select Processor Socket First</option>
-                                </select>
-                                </div>
-                            </div>
-                            <!--selectCpuGeneration end-->
-
                         </div>
                     </form>
                 </div>

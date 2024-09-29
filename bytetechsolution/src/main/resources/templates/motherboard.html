@@ -57,8 +57,6 @@
                                     <th> Item Name </th>
                                     <th> Brand </th>
                                     <th> Profit Rate (%) </th>
-                                    <th> Sales Price </th>
-                                    <th> Purchase Price </th>
                                     <th> Series </th>
                                     <th> Type </th>
                                     <th> Form Factor </th>
@@ -135,22 +133,6 @@
                             <div class="col-4">
                                 <div class="form-floating mb-3">
                                     <!-- 
-                                    regex --- 
-                                        [0-9] - anything can add like numbers
-                                        (\\.[0-9]{1,2})? --
-                                          --\\.  define the decimal point
-                                          --{1,2} -- 1 or 2 digits after decimal point
-                                          --?  -- reguler eather 2 decimal points or one decimal points not 3 decimal points
-                                    -->
-                                    <input type="number" class="form-control" id="decimalPurchasePrice" placeholder="" required onkeyup="textValidator(this,'^[0-9]+(\\.[0-9]{1,2})?$','motherboard','purchaseprice')">
-                                    <label for="decimalPurchasePrice">Purchase Price<span class="requiredIcon">*</span></label>
-                                </div>
-                            </div>
-                            <!-- purchase Price end -->
-                            <!-- profit rate start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <!-- 
                                     regex---
                                        100|[1-9]?[0-9]---
                                        eather maximum can add 100 or can add 
@@ -160,35 +142,16 @@
                                     <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
-                            <!-- profit rate end -->
-                            <!-- sales price start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <!-- 
-                                    regex --- 
-                                        [0-9] - anything can add like numbers
-                                        (\\.[0-9]{1,2})? --
-                                          --\\.  define the decimal point
-                                          --{1,2} -- 1 or 2 digits after decimal point
-                                          --?  -- reguler eather 2 decimal points or one decimal points not 3 decimal points
-                                    -->
-                                    <input type="number" class="form-control" id="decimalSalesPrice" placeholder="" required>
-                                    <label for="decimalSalesPrice">Sales Price<span class="requiredIcon">*</span></label>
-                                </div>
-                            </div>
-                            <!-- sales price end -->
-                        </div>
-
-                        <div class="row">
-                            <!-- warranty start -->
+                            <!-- purchase Price end -->
+                            <!-- profit rate start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="numberWarranty" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','motherboard','warranty')">
                                     <label for="numberWarranty">Warranty (Months)<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
-                            <!-- warranty end -->
-                            <!-- rop start -->
+                            <!-- profit rate end -->
+                            <!-- sales price start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
                                     <!-- 
@@ -201,8 +164,11 @@
                                     <label for="numberROP">ROP</label>
                                 </div>
                             </div>
-                            <!-- rop end -->
-                            <!-- roq start -->
+                            <!-- sales price end -->
+                        </div>
+
+                        <div class="row">
+                            <!-- warranty start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
                                     <!-- 
@@ -215,6 +181,23 @@
                                     <label for="numberROQ">ROQ</label>
                                 </div>
                             </div>
+                            <!-- warranty end -->
+                            <!-- rop start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <select name="itemStatus" id="selectItemStatus" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','itemstatus_id')">
+                                        <option value=""  selected disabled>Select Item Status</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- rop end -->
+                            <!-- roq start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="numberMaxCapacity" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','motherboard','maxcapacity')">
+                                    <label for="numberMaxCapacity">Max Capacity<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
                             <!-- roq end -->
                         </div>
 
@@ -223,9 +206,8 @@
                             <!--item status start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="itemStatus" id="selectItemStatus" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','itemstatus_id')">
-                                    <option value=""  selected disabled>Select Item Status</option>
-                                </select>
+                                    <textarea class="form-control" id="textDescription" placeholder="" onkeyup="textValidator(this,'^(([0-9A-Za-z\\.\\-\\s]{1,300}))$','motherboard','description')"></textarea>
+                                    <label for="textDescription">Description</label>
                                 </div>
                             </div>
                             <!--item status end-->
@@ -233,16 +215,18 @@
                             <!-- totalcore start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberMaxCapacity" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','motherboard','maxcapacity')">
-                                    <label for="numberMaxCapacity">Max Capacity<span class="requiredIcon">*</span></label>
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','brand_id')">
+                                        <option value=""  selected disabled>Select Brand</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- totalcore end -->
                             <!-- Description start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" id="textDescription" placeholder="" onkeyup="textValidator(this,'^(([0-9A-Za-z\\.\\-\\s]{1,300}))$','motherboard','description')"></textarea>
-                                    <label for="textDescription">Description</label>
+                                    <select name="cpusocket" id="selectCpuSocket" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','cpusocket_id')">
+                                        <option value=""  selected disabled>Select Processor Socket</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- Description end -->
@@ -251,9 +235,9 @@
                             <!-- selectBrand start -->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','brand_id')">
-                                    <option value=""  selected disabled>Select Brand</option>
-                                </select>
+                                    <select name="motherboardseries" id="selectMotherboardSeries" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardseries_id')">
+                                        <option value=""  selected disabled>Select Motherboard series</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- selectBrand end -->
@@ -261,18 +245,18 @@
                             <!--selectCpuSocket start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="cpusocket" id="selectCpuSocket" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','cpusocket_id')">
-                                    <option value=""  selected disabled>Select Processor Socket</option>
-                                </select>
+                                    <select name="motherboardtype" id="selectMotherboardType" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardtype_id')">
+                                        <option value=""  selected disabled>Select Motherboard type</option>
+                                    </select>
                                 </div>
                             </div>
                             <!--selectCpuSocket end-->
                             <!-- selectMotherboardSeries start -->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="motherboardseries" id="selectMotherboardSeries" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardseries_id')">
-                                    <option value=""  selected disabled>Select Motherboard series</option>
-                                </select>
+                                    <select name="mbordformfactor" id="selectMotherboardFormFactor" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardformfactor_id')">
+                                        <option value=""  selected disabled>Select Motherboard Form Factor</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- selectMotherboardSeries end -->
@@ -282,28 +266,20 @@
                             <!-- selectMotherboardSeries start -->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="motherboardtype" id="selectMotherboardType" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardtype_id')">
-                                    <option value=""  selected disabled>Select Motherboard type</option>
-                                </select>
+                                    <select name="mbordmemtype" id="selectMemoryType" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','memorytype_id')">
+                                        <option value=""  selected disabled>Select Memorytype</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- selectMotherboardType end -->
                             <!--selectmotherboardformfactor start-->
                             <div class="col-4">
-                                <div class="mb-3 form-floating">
-                                    <select name="mbordformfactor" id="selectMotherboardFormFactor" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardformfactor_id')">
-                                    <option value=""  selected disabled>Select Motherboard Form Factor</option>
-                                </select>
-                                </div>
+
                             </div>
                             <!--selectmotherboardformfactor end-->
                             <!--selectMemoryType start-->
                             <div class="col-4">
-                                <div class="mb-3 form-floating">
-                                    <select name="mbordmemtype" id="selectMemoryType" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','memorytype_id')">
-                                    <option value=""  selected disabled>Select Memorytype</option>
-                                </select>
-                                </div>
+
                             </div>
                             <!--selectMemoryType end-->
                         </div>
