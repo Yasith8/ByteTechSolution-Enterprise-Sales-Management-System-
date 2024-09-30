@@ -37,6 +37,8 @@
     <script src="resources/script/commonFunction.js"></script>
     <script src="resources/script/validationFunction.js"></script>
 
+    <script src="resources/controller/component.js"></script>
+
     <script th:inline="javascript">
         window.addEventListener("load", () => {
             let userPhoto = /*[[${LoggedUserPhoto}]]*/ 'LoggedUserPhoto';
@@ -109,12 +111,13 @@
         </div>
         <div class="offcanvas-body">
             <div id="sidebarUL">
+                <!-- <button class="sidebar-btn">User Management</button>
                 <button class="sidebar-btn">User Management</button>
-                <button class="sidebar-btn">User Management</button>
-                <button class="sidebar-btn">User Management</button>
+                <button class="sidebar-btn">User Management</button> -->
             </div>
         </div>
     </div>
+
 
 </body>
 
