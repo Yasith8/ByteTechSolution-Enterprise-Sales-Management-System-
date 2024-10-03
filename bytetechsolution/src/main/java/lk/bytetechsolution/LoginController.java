@@ -35,20 +35,23 @@ public class LoginController {
     @RequestMapping(value = "/login")
     public ModelAndView logInUI(){
         ModelAndView logView=new ModelAndView();
+        logView.addObject("title", "LogIn || Bytetech Solution");
         logView.setViewName("login.html");
         return logView;
     }
-
+    
     @RequestMapping(value = "/dashboard")
     public ModelAndView dashboardUI(){
         ModelAndView dashView=new ModelAndView();
+        dashView.addObject("title", "Dashboard || Bytetech Solution");
         dashView.setViewName("dashboard.html");
         return dashView;
     }
-
+    
     @RequestMapping(value = "/errorpage")
     public ModelAndView errorPageUI(){
         ModelAndView errorView=new ModelAndView();
+        errorView.addObject("title", "404 Not Found !");
         errorView.setViewName("errorpage.html");
         return errorView;
     }
