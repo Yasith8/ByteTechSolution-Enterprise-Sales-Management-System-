@@ -42,7 +42,17 @@ public class WebConfiguration {
         .requestMatchers("/user/**").hasAnyAuthority("Admin","Manager")
         //allow only for admin Manager
         .requestMatchers("/privilage/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/item/**").hasAnyAuthority("Admin","Manager")
+
+        //allow for items
+        /* .requestMatchers("/processor/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/motherboard/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/gpu/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/memory/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/storage/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/cooler/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/powersupply/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/casing/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/monitor/**").hasAnyAuthority("Admin","Manager","Technician") */
         .anyRequest().authenticated();// any other requst need authenticate
         
         
