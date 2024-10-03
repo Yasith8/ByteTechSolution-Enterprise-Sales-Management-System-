@@ -131,9 +131,11 @@ document.addEventListener("DOMContentLoaded", function() {
                         if (accessedModules.includes(child.name)) {
                             let subItem = document.createElement('li');
                             subItem.classList.add('nav-item');
+                            childLink.classList.add('removeAStyles');
 
                             let childLink = document.createElement('a');
                             childLink.classList.add('nav-link');
+                            childLink.classList.add('navLinkStyles');
                             childLink.href = child.page || '#'; // Fallback to '#' if no page is defined
                             childLink.innerHTML = `${child.icon} <span>${child.label}</span>`;
                             subItem.appendChild(childLink);
