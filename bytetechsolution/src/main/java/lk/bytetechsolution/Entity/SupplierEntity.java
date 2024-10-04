@@ -49,13 +49,18 @@ public class SupplierEntity {
     @NotNull
     private String nic;
     
-    @Column(name = "companyname")
+    @Column(name = "agentname")
     @NotNull
-    private String companyname;
+    private String agentname;
     
-    @Column(name = "companyphone")
+    @Column(name = "agentphone")
     @NotNull
-    private String companyphone;
+    private String agentphone;
+
+    
+    @Column(name = "agentemail")
+    @NotNull
+    private String agentemail;
 
     @Column(name = "addeddatetime")
     @NotNull

@@ -88,7 +88,7 @@ public class GpuController {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GPU");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
 
         //if current logged user doesnt have privilages show empty list
@@ -105,7 +105,7 @@ public class GpuController {
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GPU");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
         if(!userPrivilage.get("insert")){
             return "Permission Denied! Save not Completed";
@@ -157,7 +157,7 @@ public class GpuController {
     public String deleteGpuData(@RequestBody GpuEntity gpu){
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GPU");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
         if(!userPrivilage.get("delete")){
             return "Permission Denied! Delete not Completed";
@@ -197,7 +197,7 @@ public class GpuController {
     public String updateGpuData(@RequestBody GpuEntity gpu){
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "GPU");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "ITEM");
 
         if(!userPrivilage.get("update")){
             return "Permission Denied. Update not completed.";

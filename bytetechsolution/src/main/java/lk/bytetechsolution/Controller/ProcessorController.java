@@ -86,7 +86,7 @@ public class ProcessorController {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PROCESSOR");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
 
         //if current logged user doesnt have privilages show empty list
@@ -104,7 +104,7 @@ public class ProcessorController {
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PROCESSOR");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
         if(!userPrivilage.get("insert")){
             return "Permission Denied! Save not Completed";
@@ -155,7 +155,7 @@ public class ProcessorController {
     public String deleteProcessorData(@RequestBody ProcessorEntity processor){
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PROCESSOR");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
         if(!userPrivilage.get("delete")){
             return "Permission Denied! Delete not Completed";
@@ -197,7 +197,7 @@ public class ProcessorController {
     public String updateProcessorData(@RequestBody ProcessorEntity processor){
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "PROCESSOR");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "ITEM");
 
         if(!userPrivilage.get("update")){
             return "Permission Denied. Update not completed.";

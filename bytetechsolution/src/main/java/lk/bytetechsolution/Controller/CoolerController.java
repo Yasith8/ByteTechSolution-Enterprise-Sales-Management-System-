@@ -87,7 +87,7 @@ public class CoolerController {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"COOLER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
 
         //if current logged user doesnt have privilages show empty list
@@ -104,7 +104,7 @@ public class CoolerController {
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"COOLER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
         if(!userPrivilage.get("insert")){
             return "Permission Denied! Save not Completed";
@@ -155,7 +155,7 @@ public class CoolerController {
     public String deleteCoolerData(@RequestBody CoolerEntity cooler){
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"COOLER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
         if(!userPrivilage.get("delete")){
             return "Permission Denied! Delete not Completed";
@@ -196,7 +196,7 @@ public class CoolerController {
     public String updateCoolerData(@RequestBody CoolerEntity cooler){
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "COOLER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "ITEM");
 
         if(!userPrivilage.get("update")){
             return "Permission Denied. Update not completed.";

@@ -88,7 +88,7 @@ public class PowerSupplyController {
 
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"POWERSUPPLY");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
 
         //if current logged user doesnt have privilages show empty list
@@ -105,7 +105,7 @@ public class PowerSupplyController {
 
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"POWERSUPPLY");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
         if(!userPrivilage.get("insert")){
             return "Permission Denied! Save not Completed";
@@ -156,7 +156,7 @@ public class PowerSupplyController {
     public String deletePowerSupplyData(@RequestBody PowerSupplyEntity powersupply){
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"POWERSUPPLY");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
         if(!userPrivilage.get("delete")){
             return "Permission Denied! Delete not Completed";
@@ -196,7 +196,7 @@ public class PowerSupplyController {
     public String updatePowerSupplyData(@RequestBody PowerSupplyEntity powersupply){
         //authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "POWERSUPPLY");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "ITEM");
 
         if(!userPrivilage.get("update")){
             return "Permission Denied. Update not completed.";
