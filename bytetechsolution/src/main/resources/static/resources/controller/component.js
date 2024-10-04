@@ -111,42 +111,56 @@ document.addEventListener("DOMContentLoaded", function() {
         navigatorData.navigators.forEach(item => {
             // Check if the main item is accessible
             if (accessedModules.includes(item.name)) {
-                let listItem = document.createElement('li');
-                listItem.classList.add('nav-item');
 
-                let link = document.createElement('a');
-                link.classList.add('nav-link');
-                link.href = item.page || '#'; // Fallback to '#' if no page is defined
-                link.innerHTML = `${item.icon} <span>${item.label}</span>`;
-                listItem.appendChild(link);
-                sidebarUL.appendChild(listItem);
+                if (item.page != null) {
+                    let listItem = document.createElement('li');
+                    listItem.classList.add('nav-item');
+                    let link = document.createElement('a');
+                    link.classList.add('nav-link');
+                    link.href = item.page || '#issue main list'; // Fallback to '#' if no page is defined
+                    link.innerHTML = `${item.icon} <span>${item.label}</span>`;
+                    listItem.appendChild(link);
+                    sidebarUL.appendChild(listItem);
 
-                // If the item has children, create a submenu
-                if (item.children) {
-                    let subMenu = document.createElement('ul');
-                    subMenu.classList.add('submenu');
+                } else {
+                    let dropdownDiv = document.createElement('div');
+                    let mainDropBtn = document.createElement('button');
+                    mainDropBtn.classList.add('btn')
+                    mainDropBtn.classList.add('dropdown-toggle');
+                    mainDropBtn.type = "button";
+                    mainDropBtn.setAttribute('data-bs-toggle', 'dropdown'); // Bootstrap data attribute for dropdown toggle
+                    mainDropBtn.innerHTML = `${item.icon} <span>${item.label}</span>`;
 
-                    item.children.forEach(child => {
-                        // Check if the child item is accessible
-                        if (accessedModules.includes(child.name)) {
+                    dropdownDiv.appendChild(mainDropBtn); // Append the button to the div
+
+
+                    // If the item has children, create a submenu
+                    if (item.children) {
+                        let subMenu = document.createElement('ul');
+                        subMenu.classList.add('submenu');
+
+                        item.children.forEach(child => {
                             let subItem = document.createElement('li');
                             subItem.classList.add('nav-item');
-                            childLink.classList.add('removeAStyles');
 
-                            let childLink = document.createElement('a');
-                            childLink.classList.add('nav-link');
-                            childLink.classList.add('navLinkStyles');
-                            childLink.href = child.page || '#'; // Fallback to '#' if no page is defined
+                            let childLink = document.createElement('a'); // Moved declaration before usage
+                            childLink.classList.add('dropdown-item'); // Use Bootstrap dropdown-item class
+                            childLink.href = child.page || '#issue sub list'; // Fallback to '#' if no page is defined
                             childLink.innerHTML = `${child.icon} <span>${child.label}</span>`;
                             subItem.appendChild(childLink);
                             subMenu.appendChild(subItem);
-                        }
-                    });
+                        });
 
-                    // Append the submenu to the main item
-                    if (subMenu.children.length > 0) { // Only append if there are accessible children
-                        listItem.appendChild(subMenu);
+                        // Append the submenu to the main item
+                        if (subMenu.children.length > 0) { // Only append if there are accessible children
+                            dropdownDiv.appendChild(subMenu);
+                        }
                     }
+                    // Append the dropdown div to the sidebar
+                    let listItem = document.createElement('li');
+                    listItem.classList.add('nav-item');
+                    listItem.appendChild(dropdownDiv);
+                    sidebarUL.appendChild(listItem);
                 }
             }
         });
