@@ -93,7 +93,7 @@ const refreshProcessorForm = () => {
 
     removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
 
-    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/PROCESSOR");
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
@@ -223,7 +223,7 @@ const refillProcessorForm = (ob, rowIndex) => {
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/PROCESSOR");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
     //console.log(userPrivilage);
 
 

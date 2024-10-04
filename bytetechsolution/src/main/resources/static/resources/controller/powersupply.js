@@ -57,7 +57,7 @@ const refreshPowerSupplyForm = () => {
 
     removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectPowerSupplyFormFactor, selectBrand, selectItemStatus, selectModularity, selectEfficiency, numberWattage])
 
-    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/POWERSUPPLY");
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
@@ -154,7 +154,7 @@ const refillPowerSupplyForm = (ob, rowIndex) => {
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/POWERSUPPLY");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
     //console.log(userPrivilage);
 
 

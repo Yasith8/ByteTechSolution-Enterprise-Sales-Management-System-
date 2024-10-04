@@ -52,7 +52,7 @@ const refreshMemoryForm = () => {
 
     removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType])
 
-    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/MEMORY");
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
@@ -149,7 +149,7 @@ const refillMemoryForm = (ob, rowIndex) => {
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/MEMORY");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
     //console.log(userPrivilage);
 
 

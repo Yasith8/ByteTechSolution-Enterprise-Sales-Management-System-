@@ -37,7 +37,7 @@ const refreshStorageForm = () => {
 
     staticBackdropLabel.textContent = "Add New Item";
 
-    brands = getServiceAjaxRequest("/brand/brandbycategory/STORAGE");
+    brands = getServiceAjaxRequest("/brand/brandbycategory/Storage");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
 
     itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
@@ -56,7 +56,7 @@ const refreshStorageForm = () => {
 
     removeValidationColor([textItemName, decimalPurchasePrice, decimalSalesPrice, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectStorageType, selectStorageInterface, selectCapacity])
 
-    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/STORAGE");
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
@@ -128,7 +128,7 @@ const refillStorageForm = (ob, rowIndex) => {
     textDescription.value = storage.description;
 
     //get brands of motherboard
-    brands = getServiceAjaxRequest("/brand/brandbycategory/Motherboard");
+    brands = getServiceAjaxRequest("/brand/brandbycategory/Storage");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", ob.brand_id.name);
 
     itemstatuses = getServiceAjaxRequest("/itemstatus/alldata")
@@ -148,7 +148,7 @@ const refillStorageForm = (ob, rowIndex) => {
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/STORAGE");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
     //console.log(userPrivilage);
 
 

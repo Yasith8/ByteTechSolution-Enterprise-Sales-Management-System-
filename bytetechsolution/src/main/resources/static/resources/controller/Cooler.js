@@ -54,7 +54,7 @@ const refreshCoolerForm = () => {
 
     removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectCoolerType, selectCpuSocketType])
 
-    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/COOLER");
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
@@ -142,7 +142,7 @@ const refillCoolerForm = (ob, rowIndex) => {
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/COOLER");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
     //console.log(userPrivilage);
 
 

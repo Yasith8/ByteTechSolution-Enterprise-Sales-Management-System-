@@ -54,7 +54,7 @@ const refreshMonitorForm = () => {
 
     removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMonitorType, selectSocketType])
 
-    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/MONITOR");
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
@@ -142,7 +142,7 @@ const refillMonitorForm = (ob, rowIndex) => {
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/MONITOR");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
     //console.log(userPrivilage);
 
 

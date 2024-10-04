@@ -74,7 +74,7 @@ const refreshGpuForm = () => {
 
     removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardFormFactor, selectBrand, selectItemStatus, selectGpuType, selectInterface, selectCapacity, selectGpuChipset, selectGpuSeries])
 
-    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/GPU");
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
@@ -197,7 +197,7 @@ const refillGpuForm = (ob, rowIndex) => {
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/GPU");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
     //console.log(userPrivilage);
 
 

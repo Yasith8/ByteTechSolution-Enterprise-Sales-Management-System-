@@ -57,7 +57,7 @@ const refreshCasingForm = () => {
 
     removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectBrand, selectItemStatus, selectMotherboardFormFactor, selectCaseColor, selectCaseMaterial])
 
-    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/CASING");
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
     if (!userPrivilages.insert) {
         buttonSubmit.disabled = true;
@@ -152,7 +152,7 @@ const refillCasingForm = (ob, rowIndex) => {
 
 
 
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/CASING");
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
     //console.log(userPrivilage);
 
 
