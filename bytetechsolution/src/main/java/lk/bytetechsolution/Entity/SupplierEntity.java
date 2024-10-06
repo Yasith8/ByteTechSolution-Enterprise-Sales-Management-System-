@@ -45,10 +45,6 @@ public class SupplierEntity {
     @NotNull
     private String email;
     
-    @Column(name = "nic")
-    @NotNull
-    private String nic;
-    
     @Column(name = "agentname")
     @NotNull
     private String agentname;
@@ -62,16 +58,46 @@ public class SupplierEntity {
     @NotNull
     private String agentemail;
 
-    @Column(name = "addeddatetime")
+    @Column(name = "branchname")
     @NotNull
-    private LocalDateTime addeddatetime;
+    private String branchname;
+
+    @Column(name = "accountname")
+    @NotNull
+    private String accountname;
+
+    @Column(name = "accountno")
+    @NotNull
+    private int accountno;
+
+    @Column(name="addeddate")
+    @NotNull
+    private LocalDateTime addeddate;
+
+    @Column(name="modifydate")
+    private LocalDateTime modifydate;
+
+    @Column(name="deletedate")
+    private LocalDateTime deletedate;
+
     
+    @Column(name = "addeduser")
+    @NotNull
+    private int addeduser;
+
+    @Column(name = "modifyuser")
+    private int modifyuser;
+    
+    @Column(name = "deleteuser")
+    private int deleteuser;
+
+    
+    @ManyToOne
+    @JoinColumn(name="bankname_id",referencedColumnName = "id")
+    private BankNameEntity bankname_id;
+
     @ManyToOne
     @JoinColumn(name="supplierstatus_id",referencedColumnName = "id")
     private SupplierStatusEntity supplierstatus_id;
-
-    @ManyToOne
-    @JoinColumn(name="addedemployee_id",referencedColumnName = "id")
-    private EmployeeEntity addedemployee_id;
 
 }

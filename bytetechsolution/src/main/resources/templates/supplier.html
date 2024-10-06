@@ -215,9 +215,8 @@
                             <!--account no start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="brand" id="selectBankName" class="form-select" onchange="selectDynamicValidator(this,'','supplier','bankname_id')">
-                                        <option value=""  selected disabled>Select Bank Name</option>
-                                    </select>
+                                    <input type="text" class="form-control" id="numberAccountNo" placeholder="account name" required onkeyup="textValidator(this,'^[0-9]{10}$','supplier','accountno')">
+                                    <label for="numberAccountNo">Account No<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <!--Bank Name end-->
@@ -225,8 +224,9 @@
                             <!--branch start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <input type="text" class="form-control" id="textBranch" placeholder=" name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','supplier','branch')">
-                                    <label for="textBranch">Branch<span class="requiredIcon">*</span></label>
+                                    <select name="brand" id="selectSupplierStatus" class="form-select" onchange="selectDynamicValidator(this,'','supplier','supplierstatus_id')">
+                                        <option value=""  selected disabled>Select Supplier Status</option>
+                                    </select>
                                     </select>
                                 </div>
                             </div>
@@ -234,8 +234,7 @@
                             <!-- account name start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textAccountName" placeholder="account name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z]+$','supplier','accountname')">
-                                    <label for="textAccountName">Account Name<span class="requiredIcon">*</span></label>
+
                                 </div>
                             </div>
                             <!-- account name end -->
