@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +16,7 @@ import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.SupplierEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -65,5 +68,47 @@ public class SupplierController {
         }
 
         return daoSupplier.findAll();
+    }
+
+    @PostMapping(value = "/supplier")
+    public String addSupplierData(@RequestBody SupplierEntity supplier){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"SUPPLIER");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        //check already existance
+        SupplierEntity extSupplierEmail=daoSupplier.getByEmail(supplier.getEmail());
+
+        if(extSupplierEmail==null){
+            return "Save not Completed : given Name - "+supplier.getEmail()+" Already Exist...!";
+        }
+
+
+        try {
+
+            //set AutoGenarated Value
+            String nextNumber=daoSupplier.getNextSupplierNumber();
+
+            //if next employee number is not come then set manualy last number+1
+            if(nextNumber==null){
+                supplier.setSupplierid("SUP0001");
+            }else{
+                supplier.setSupplierid(nextNumber);
+            }
+
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            supplier.setAddeduser(addedUserData.getId());
+
+            supplier.setAddeddate(LocalDateTime.now());
+
+            daoSupplier.save(supplier);
+            return "OK";
+        } catch (Exception e) {
+            return "Save not Completed: "+e.getMessage();
+        }
     }
 }
