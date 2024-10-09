@@ -110,165 +110,258 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Supplier</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formSupplier">
-                        <!-- supplier Input Start -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textSupplierName" placeholder="cooler name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','supplier','name')">
-                                    <label for="textSupplierName">Supplier Name<span class="requiredIcon">*</span></label>
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="card">
+                                <div class="card-header">Genaral Supplier Details</div>
+                                <div class="card-body">
+                                    <!-- supplier Basic Details -->
+                                    <form id="formSupplier">
+                                        <!-- supplier Input Start -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="textSupplierName" placeholder="cooler name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','supplier','name')">
+                                                    <label for="textSupplierName">Supplier Name<span class="requiredIcon">*</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- supplier Input end -->
+
+                                        <!-- supplier phone Start -->
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="form-floating mb-3">
+
+                                                    <input type="number" class="form-control" id="numberSupplierPhone" placeholder="" required onkeyup="textValidator(this,'^[0][7][01245678][0-9]{7}$', 'supplier', 'phone')">
+                                                    <label for="numberSupplierPhone">Phone <span class="requiredIcon">*</span></label>
+                                                </div>
+                                            </div>
+                                            <!--supplier phone end -->
+                                            <!-- email start -->
+                                            <div class="col-4">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="textSupplierEmail" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'supplier','email')">
+                                                    <label for="textSupplierEmail">Email<span class="requiredIcon">*</span></label>
+                                                </div>
+                                            </div>
+                                            <!-- email end -->
+                                            <!-- address start -->
+                                            <div class="col-4">
+                                                <div class="form-floating mb-3">
+
+                                                    <textarea class="form-control" id="textAddress" placeholder="Enter Address" required onkeyup="textValidator(this,'^(([0-9\\/\\-\\sA-Za-z]{1,20}[\\,][\\s])+([A-Z][a-z0-9\\-]{1,20}[.]))$','supplier','address')"></textarea>
+                                                    <label for="textAddress">Address</label>
+                                                </div>
+                                            </div>
+                                            <!-- saddress end -->
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- agent name start -->
+                                            <div class="col-4">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="textAgentName" placeholder="cooler name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','supplier','agentname')">
+                                                    <label for="textAgentrName">Agent Name<span class="requiredIcon">*</span></label>
+                                                </div>
+                                            </div>
+                                            <!-- agent name end -->
+                                            <!-- rop start -->
+                                            <div class="col-4">
+                                                <div class="form-floating mb-3">
+                                                    <input type="number" class="form-control" id="numberAgentPhone" placeholder="" required onkeyup="textValidator(this,'^[0][7][01245678][0-9]{7}$', 'supplier', 'agentphone')">
+                                                    <label for="numberAgentPhone">Agent Phone<span class="requiredIcon">*</span></label>
+                                                </div>
+                                            </div>
+                                            <!-- rop end -->
+                                            <!-- roq start -->
+                                            <div class="col-4">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="textAgentEmail" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'supplier','agentemail')">
+                                                    <label for="textAgentEmail">Agent Email<span class="requiredIcon">*</span></label>
+                                                </div>
+                                            </div>
+                                            <!-- roq end -->
+                                        </div>
+
+
+                                        <div class="row">
+                                            <!--Bank Name start-->
+                                            <div class="col-4">
+                                                <div class="mb-3 form-floating">
+                                                    <select name="brand" id="selectBankName" class="form-select" onchange="selectDynamicValidator(this,'','supplier','bankname_id')">
+                                                <option value=""  selected disabled>Select Bank Name</option>
+                                            </select>
+                                                </div>
+                                            </div>
+                                            <!--Bank Name end-->
+
+                                            <!--branch start-->
+                                            <div class="col-4">
+                                                <div class="mb-3 form-floating">
+                                                    <input type="text" class="form-control" id="textBranch" placeholder=" name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','supplier','branch')">
+                                                    <label for="textBranch">Branch<span class="requiredIcon">*</span></label>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--branch  end-->
+                                            <!-- account name start -->
+                                            <div class="col-4">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" class="form-control" id="textAccountName" placeholder="account name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z]+$','supplier','accountname')">
+                                                    <label for="textAccountName">Account Name<span class="requiredIcon">*</span></label>
+                                                </div>
+                                            </div>
+                                            <!-- account name end -->
+                                        </div>
+                                        <div class="row">
+                                            <!--account no start-->
+                                            <div class="col-4">
+                                                <div class="mb-3 form-floating">
+                                                    <input type="text" class="form-control" id="numberAccountNo" placeholder="account name" required onkeyup="textValidator(this,'^[0-9]{10}$','supplier','accountno')">
+                                                    <label for="numberAccountNo">Account No<span class="requiredIcon">*</span></label>
+                                                </div>
+                                            </div>
+                                            <!--Bank Name end-->
+
+                                            <!--branch start-->
+                                            <div class="col-4">
+                                                <div class="mb-3 form-floating">
+                                                    <select name="brand" id="selectSupplierStatus" class="form-select" onchange="selectDynamicValidator(this,'','supplier','supplierstatus_id')">
+                                                <option value=""  selected disabled>Select Supplier Status</option>
+                                            </select>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--branch  end-->
+                                            <!-- account name start -->
+                                            <div class="col-4">
+                                                <div class="form-floating mb-3">
+
+                                                </div>
+                                            </div>
+                                            <!-- account name end -->
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
+
+                            <!-- supplier Basic Details -->
                         </div>
-                        <!-- supplier Input end -->
+                        <div class="col-5">
+                            <!-- supplier products -->
+                            <!-- supplier baic product form -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">Product Selection</div>
+                                        <div class="card-body">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3 form-floating">
+                                                            <select name="brand" id="selectCategory" class="form-select" onchange="selectDynamicValidator(this,'','supplier','bankname_id')">
+                                                                <option value=""  selected disabled>Select Category Name</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3 form-floating">
+                                                            <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','supplier','bankname_id')">
+                                                                <option value=""  selected disabled>Select Brand Name</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-2"><button class="btn inner-cancel-btn modal-button">Clear</button></div>
+                                                    <div class="col-6"></div>
+                                                    <div class="col-2"><button class="btn inner-update-btn modal-button" onclick="innerSupplierProductUpdate()">Update</button></div>
+                                                    <div class="col-2"><button class="btn inner-add-btn modal-button" onclick="innerSupplierProductAdd()">Add</button></div>
 
-                        <!-- supplier phone Start -->
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
+                                                </div>
+                                            </form>
+                                        </div>
 
-                                    <input type="number" class="form-control" id="numberSupplierPhone" placeholder="" required onkeyup="textValidator(this,'^[0][7][01245678][0-9]{7}$', 'supplier', 'phone')">
-                                    <label for="numberSupplierPhone">Phone <span class="requiredIcon">*</span></label>
+                                    </div>
+
                                 </div>
                             </div>
-                            <!--supplier phone end -->
-                            <!-- email start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textSupplierEmail" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'supplier','email')">
-                                    <label for="textSupplierEmail">Email<span class="requiredIcon">*</span></label>
-                                </div>
-                            </div>
-                            <!-- email end -->
-                            <!-- address start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
+                            <!-- supplier baic product form -->
+                            <!-- supplier baic product table -->
+                            <div class="row mt-3">
 
-                                    <textarea class="form-control" id="textAddress" placeholder="Enter Address" required onkeyup="textValidator(this,'^(([0-9\\/\\-\\sA-Za-z]{1,20}[\\,][\\s])+([A-Z][a-z0-9\\-]{1,20}[.]))$','supplier','address')"></textarea>
-                                    <label for="textAddress">Address</label>
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">Product Overview</div>
+                                        <div class="card-body">
+                                            <table class="table table-hover table-striped" id="innerSupplierTable">
+                                                <thead class="table-header">
+                                                    <tr align="center">
+                                                        <th style="background-color: #009d27 !important"> # </th>
+                                                        <th style="background-color: #009d27 !important"> Category </th>
+                                                        <th style="background-color: #009d27 !important"> Brand </th>
+                                                        <th style="background-color: #009d27 !important"> </th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody class="table-body">
+
+                                                    <!-- create static values for table -->
+                                                    <!-- used for initial designs -->
+                                                    <!-- probebly this appear when data not loading to table from db -->
+                                                    <tr align="center" style="vertical-align: middle;">
+                                                        <td align="center"> 1 </td>
+                                                        <td align="center"> CPU0001 </td>
+                                                        <td align="center"> Core I7 20th Gen User Cor </td>
+                                                        <td>
+                                                            <button type="button" class="btn ms-1 me-1 btnDel">
+                                                                <i class="fa-regular fa-circle-xmark"></i>
+                                                            </button> </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- saddress end -->
+
+
+                            <!-- supplier baic product table -->
+                            <!-- supplier products -->
                         </div>
-
-                        <div class="row">
-                            <!-- agent name start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textAgentName" placeholder="cooler name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','supplier','agentname')">
-                                    <label for="textAgentrName">Agent Name<span class="requiredIcon">*</span></label>
-                                </div>
-                            </div>
-                            <!-- agent name end -->
-                            <!-- rop start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberAgentPhone" placeholder="" required onkeyup="textValidator(this,'^[0][7][01245678][0-9]{7}$', 'supplier', 'agentphone')">
-                                    <label for="numberAgentPhone">Agent Phone<span class="requiredIcon">*</span></label>
-                                </div>
-                            </div>
-                            <!-- rop end -->
-                            <!-- roq start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textAgentEmail" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'supplier','agentemail')">
-                                    <label for="textAgentEmail">Agent Email<span class="requiredIcon">*</span></label>
-                                </div>
-                            </div>
-                            <!-- roq end -->
-                        </div>
-
-
-                        <div class="row">
-                            <!--Bank Name start-->
-                            <div class="col-4">
-                                <div class="mb-3 form-floating">
-                                    <select name="brand" id="selectBankName" class="form-select" onchange="selectDynamicValidator(this,'','supplier','bankname_id')">
-                                        <option value=""  selected disabled>Select Bank Name</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--Bank Name end-->
-
-                            <!--branch start-->
-                            <div class="col-4">
-                                <div class="mb-3 form-floating">
-                                    <input type="text" class="form-control" id="textBranch" placeholder=" name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','supplier','branch')">
-                                    <label for="textBranch">Branch<span class="requiredIcon">*</span></label>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--branch  end-->
-                            <!-- account name start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textAccountName" placeholder="account name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z]+$','supplier','accountname')">
-                                    <label for="textAccountName">Account Name<span class="requiredIcon">*</span></label>
-                                </div>
-                            </div>
-                            <!-- account name end -->
-                        </div>
-                        <div class="row">
-                            <!--account no start-->
-                            <div class="col-4">
-                                <div class="mb-3 form-floating">
-                                    <input type="text" class="form-control" id="numberAccountNo" placeholder="account name" required onkeyup="textValidator(this,'^[0-9]{10}$','supplier','accountno')">
-                                    <label for="numberAccountNo">Account No<span class="requiredIcon">*</span></label>
-                                </div>
-                            </div>
-                            <!--Bank Name end-->
-
-                            <!--branch start-->
-                            <div class="col-4">
-                                <div class="mb-3 form-floating">
-                                    <select name="brand" id="selectSupplierStatus" class="form-select" onchange="selectDynamicValidator(this,'','supplier','supplierstatus_id')">
-                                        <option value=""  selected disabled>Select Supplier Status</option>
-                                    </select>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--branch  end-->
-                            <!-- account name start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-
-                                </div>
-                            </div>
-                            <!-- account name end -->
-                        </div>
-                    </form>
+                    </div>
                 </div>
 
                 <div class="row mt-3 mb-3">
                     <div class="col-6">
-                        <div id="divModifyButton">
-                            <div class="row" id="">
-                                <div class="col-1"></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printCoolerDetails(window['editOb'], window['editRow'])">Print</button></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteCooler(window['editOb'], window['editRow'])">Delete</button></div>
-                                <div class="col-7"></div>
+                        <div class="row">
+                            <div class="col-4" style="display: flex; justify-content: center;gap: 5px;">
+                                <button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal">Print</button>
+                                <button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal">Delete</button>
                             </div>
+                            <div class="col-8"></div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5"></div>
-                            <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonCoolerUpdate()">Update</button></div>
-                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonCoolerSubmit()">Submit</button></div>
-                            <div class="col-1"></div>
+                            <div class="col-7" style="display: flex; justify-content: center;gap: 12px;">
+                                <button type="button" class="modal-button modal-btn-clear" data-bs-dismiss="modal" onclick="clearSupplier()">Clear</button>
+                                <button type="button" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="updateSupplier()">Update</button>
+                                <button type="button" class="modal-button modal-btn-submit" onclick="submitSupplier()">Submit</button>
+                            </div>
                         </div>
                     </div>
 
                 </div>
-
-
             </div>
-        </div>
-    </div>
 </body>
 
 </html>
