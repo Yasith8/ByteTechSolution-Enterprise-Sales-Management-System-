@@ -16,7 +16,7 @@ public class SupplierStatusController {
     private SupplierStatusDao dao;
 
 
-    @GetMapping(value = "/supplierstatus",produces = "application/json")
+    @GetMapping(value = "/supplierstatus/alldata",produces = "application/json")
     public List<SupplierStatusEntity> GetSupplierStatusData(){
         return dao.findAll();
     }

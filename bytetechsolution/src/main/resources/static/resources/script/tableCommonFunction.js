@@ -119,7 +119,6 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
         deleteButton.innerHTML = '<i class="fa-solid fa-trash "></i> Delete';
 
         deleteButton.onclick = function() {
-            // console.log('delete' , element);
             deleteFunction(element, index);
         }
 

@@ -28,7 +28,7 @@ const refreshSupplierForm = () => {
     banknames = getServiceAjaxRequest("/bankname/alldata")
     fillDataIntoSelect(selectBankName, "Select Bank Name", banknames, "name");
 
-    removeValidationColor([textSupplierName, numberSupplierPhone, textSupplierEmail, textAddress, textAgentrName, numberAgentPhone, textAgentEmail, selectBankName, textBranch, textAccountName, numberAccountNo, selectSupplierStatus])
+    removeValidationColor([selectInnerCategory, selectInnerBrand, , textSupplierName, numberSupplierPhone, textSupplierEmail, textAddress, textAgentName, numberAgentPhone, textAgentEmail, selectBankName, textBranch, textAccountName, numberAccountNo, selectSupplierStatus])
 
 
     //made security privilages
@@ -38,7 +38,7 @@ const refreshSupplierForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textSupplierName, numberSupplierPhone, textSupplierEmail, textAddress, textAgentrName, numberAgentPhone, textAgentEmail, selectBankName, textBranch, textAccountName, numberAccountNo, selectSupplierStatus], true);
+        inputFieldsHandler([selectInnerCategory, selectInnerBrand, textSupplierName, numberSupplierPhone, textSupplierEmail, textAddress, textAgentName, numberAgentPhone, textAgentEmail, selectBankName, textBranch, textAccountName, numberAccountNo, selectSupplierStatus], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 
@@ -49,19 +49,23 @@ const refreshSupplierForm = () => {
 const refreshSupplierInnerFormAndTable = () => {
 
     //inner form
-    inputFieldsHandler([selectInnerCategory, selectInnerBrand], true)
+
+    supplierItem = new Object();
+    oldSupplierItem = null;
+
+    inputFieldsHandler([selectInnerCategory, selectInnerBrand], false)
     removeValidationColor([selectInnerCategory, selectInnerBrand])
 
 
-    categories = getServiceAjaxRequest('category/alldata')
+    categories = getServiceAjaxRequest('/category/alldata')
     fillDataIntoSelect(selectInnerCategory, "Please Select Category", categories, "name");
 
     fillDataIntoSelect(selectInnerBrand, "Please Select Category First", [], "name");
 
-    selectInnerCategory.addEventListener('onchange', () => {
-        let category = selectInnerCategory.value;
+    selectInnerCategory.addEventListener('change', () => {
+        let category = selectValueHandler(selectInnerCategory);
 
-        brands = getServiceAjaxRequest("/brand/brandbycategory/" + category);
+        brands = getServiceAjaxRequest("/brand/brandbycategory/" + category.name);
         fillDataIntoSelect(selectInnerBrand, "Please Select Brand", brands, "name");
     })
 
@@ -88,5 +92,23 @@ const refillInnerSupplierForm = (ob, rowIndex) => {
 
 }
 const deleteInnerSupplierForm = (ob, rowIndex) => {
+
+}
+
+const innerSupplierProductAdd = () => {
+    supplier.supplier_has_brand_category.push(supplierItem)
+    console.log(supplierItem)
+    console.log(supplier.supplier_has_brand_category)
+    refreshSupplierInnerFormAndTable();
+}
+
+const innerSupplierProductUpdate = () => {
+
+}
+
+const updateSupplier = () => {
+
+}
+const submitSupplier = () => {
 
 }

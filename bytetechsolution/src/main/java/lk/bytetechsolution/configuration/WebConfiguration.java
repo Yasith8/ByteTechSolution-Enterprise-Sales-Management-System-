@@ -42,7 +42,7 @@ public class WebConfiguration {
         .requestMatchers("/user/**").hasAnyAuthority("Admin","Manager")
         //allow only for admin Manager
         .requestMatchers("/privilage/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/item/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/supplier/**").hasAnyAuthority("Admin","Manager","Technician")
 
         //allow for items
         .requestMatchers("/processor/**").hasAnyAuthority("Admin","Manager","Technician")
