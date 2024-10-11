@@ -4,6 +4,18 @@ window.addEventListener('load', () => {
 })
 
 const refreshSupplierTable = () => {
+    suppliers = getServiceAjaxRequest("/supplier/alldata");
+
+    const displayMainColumnList = [
+        { dataType: 'text', propertyName: 'supplierid' },
+        { dataType: 'text', propertyName: 'suppliername' },
+        { dataType: 'text', propertyName: 'agentname' },
+        { dataType: 'text', propertyName: 'phone' },
+        { dataType: 'text', propertyName: 'email' },
+        { dataType: 'function', propertyName: getSupplierStatus },
+    ]
+
+    fillDataIntoTable(tableSupplier, suppliers, displayMainColumnList, refillSupplierForm, divModifyButton)
 
 }
 
@@ -81,12 +93,62 @@ const refreshSupplierInnerFormAndTable = () => {
 
 }
 
+
+const refillSupplierForm = (ob, rowIndex) => {
+    $('#supplierAddModal').modal('show');
+    removeValidationColor([selectInnerCategory, selectInnerBrand, textSupplierName, numberSupplierPhone, textSupplierEmail, textAddress, textAgentName, numberAgentPhone, textAgentEmail, selectBankName, textBranch, textAccountName, numberAccountNo, selectSupplierStatus])
+
+
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit');
+
+    buttonUpdate.disabled = false;
+    buttonUpdate.classList.add('modal-btn-update');
+
+    supplier = JSON.parse(JSON.stringify(ob));
+    oldSupplier = ob;
+
+    //assign itemcode
+    staticBackdropLabel.textContent = supplier.supplierid;
+
+    //asign the obj name
+    textSupplierName.value = supplier.name;
+    //assign phone
+    numberSupplierPhone.value = supplier.phone;
+    //assign email
+    textSupplierEmail.value = supplier.email;
+    //assign address
+    textAddress.value = supplier.address;
+    //assign agent name
+    textAgentName.value = supplier.agentname;
+    //assign agent phone
+    numberAgentPhone.value = supplier.agentphone;
+    //assign agent email
+    textAgentEmail.value = supplier.agentemail;
+    //assign bank name
+    selectBankName.value = supplier.bankname_id.name;
+    //assign branch
+    textBranch.value = supplier.branch;
+    //assign account name
+    textAccountName.value = supplier.accountname;
+    //assign account no
+    numberAccountNo.value = supplier.accountno;
+    //assign supplier status
+    selectSupplierStatus.value = supplier.supplierstatus_id.name
+
+
+}
+
 const getInnerFormBrand = (ob) => {
     return ob.brand_id.name;
 }
 const getInnerFormCategory = (ob) => {
     return ob.category_id.name;
 }
+const getSupplierStatus = (ob) => {
+    return ob.supplierstatus_id.name;
+}
+
 
 const refillInnerSupplierForm = (ob, rowIndex) => {
 
