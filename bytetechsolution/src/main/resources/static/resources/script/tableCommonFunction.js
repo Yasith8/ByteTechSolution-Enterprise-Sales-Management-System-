@@ -107,19 +107,19 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
 
         const editButton = document.createElement('button');
         editButton.className = 'btn btn-edit fw-bold';
-        editButton.innerHTML = '<i class="fa-solid fa-edit "></i> Edit';
+        editButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i>';
 
         editButton.onclick = function() {
             //console.log('edit');
-            refillFunction(element, index);
+            editButtonFunction(element, index);
         }
 
         const deleteButton = document.createElement('button');
         deleteButton.className = 'btn btn-outline-danger fw-bold ms-1 me-1';
-        deleteButton.innerHTML = '<i class="fa-solid fa-trash "></i> Delete';
+        deleteButton.innerHTML = '<i class="fa-regular fa-circle-xmark"></i>';
 
         deleteButton.onclick = function() {
-            deleteFunction(element, index);
+            deleteButtonFunction(element, index);
         }
 
 
