@@ -281,8 +281,8 @@
                                                 <div class="row">
                                                     <div class="col-2"><button type="reset" class="btn inner-cancel-btn modal-button">Clear</button></div>
                                                     <div class="col-6"></div>
-                                                    <div class="col-2"><button id="buttonUpdate" type="button" class="btn inner-update-btn modal-button" onclick="innerSupplierProductUpdate()">Update</button></div>
-                                                    <div class="col-2"><button id="buttonSubmit" type="button" class="btn inner-add-btn modal-button" onclick="innerSupplierProductAdd()">Add</button></div>
+                                                    <div class="col-2"><button id="buttonInnerUpdate" type="button" class="btn inner-update-btn modal-button" onclick="innerSupplierProductUpdate()">Update</button></div>
+                                                    <div class="col-2"><button id="buttonInnerSubmit" type="button" class="btn inner-add-btn modal-button" onclick="innerSupplierProductAdd()">Add</button></div>
 
                                                 </div>
                                             </form>
@@ -355,9 +355,9 @@
                         <div class="row">
                             <div class="col-5"></div>
                             <div class="col-7" style="display: flex; justify-content: center;gap: 12px;">
-                                <button type="button" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button>
-                                <button type="button" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="updateSupplier()">Update</button>
-                                <button type="button" class="modal-button modal-btn-submit" onclick="submitSupplier()">Submit</button>
+                                <button type="reset" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button>
+                                <button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="updateSupplier()">Update</button>
+                                <button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="submitSupplier()">Submit</button>
                             </div>
                         </div>
                     </div>

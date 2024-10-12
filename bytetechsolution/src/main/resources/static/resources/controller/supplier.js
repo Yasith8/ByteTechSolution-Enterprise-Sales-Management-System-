@@ -72,6 +72,13 @@ const refreshSupplierInnerFormAndTable = () => {
     inputFieldsHandler([selectInnerCategory, selectInnerBrand], false)
     removeValidationColor([selectInnerCategory, selectInnerBrand])
 
+    buttonInnerSubmit.disabled = false;
+    buttonInnerSubmit.classList.add('inner-add-btn');
+
+    buttonInnerUpdate.disabled = true;
+    buttonInnerUpdate.classList.remove('inner-update-btn');
+
+
 
     categories = getServiceAjaxRequest('/category/alldata')
     fillDataIntoSelect(selectInnerCategory, "Please Select Category", categories, "name");
@@ -276,7 +283,46 @@ const checkSupplierSubmitErrors = () => {
 
 
 const submitSupplier = () => {
+    let errors = checkSupplierSubmitErrors();
+    if (errors == "") {
+        let userConfirm = confirm("Are you sure for add this supplier?");
+        if (userConfirm) {
+            let postServiceResponce;
 
+            $.ajax("/supplier", {
+                type: "POST",
+                data: JSON.stringify(supplier),
+                contentType: "application/json",
+                async: false,
+
+                success: function(data) {
+                    console.log("success", data);
+                    postServiceResponce = data;
+                },
+
+                error: function(resData) {
+                    console.log("Fail", resData);
+                    postServiceResponce = resData;
+                }
+            })
+
+            if (postServiceResponce == "OK") {
+                alert("Supplier Added Successfully");
+                //hide the model
+                $('#supplierAddModal').modal('hide');
+                //reset the Item form
+                formSupplier.reset();
+                //refreash Item form
+                refreshSupplierForm();
+                //refreash Item table
+                refreshSupplierTable();
+            } else {
+                alert("Fail to submit Supplier form \n" + postServiceResponce);
+            }
+        }
+    } else {
+        alert("Submit not completed.Supplier form has following errors\n" + errors);
+    }
 }
 
 const updateSupplier = () => {
