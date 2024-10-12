@@ -17,6 +17,10 @@ const refreshSupplierTable = () => {
 
     fillDataIntoTable(tableSupplier, suppliers, displayMainColumnList, refillSupplierForm, divModifyButton)
 
+    $('#tableSupplier').dataTable();
+    //hide button section
+    divModifyButton.className = 'd-none';
+
 }
 
 const refreshSupplierForm = () => {
@@ -155,7 +159,14 @@ const refillInnerSupplierForm = (ob, rowIndex) => {
 
 }
 const deleteInnerSupplierForm = (ob, rowIndex) => {
+    let userConfirm = confirm(`Are you sure to remove the ${ob.brand_id.name} ${ob.category_id.name} from this supplier?`);
 
+    if (userConfirm) {
+        //remove the item
+        supplier.supplier_has_brand_category.splice(rowIndex, 1)
+        refreshSupplierInnerFormAndTable()
+        alert("Removed Successfully!")
+    }
 }
 
 const checkInnerItemFormErrors = () => {
@@ -270,4 +281,22 @@ const submitSupplier = () => {
 
 const updateSupplier = () => {
 
+}
+
+
+const buttonModalClose = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
+
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#supplierAddModal').modal('hide');
+
+
+        //formItem is id of form
+        //this will reset all data(refreash)
+        formSupplier.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshSupplierForm();
+    }
 }
