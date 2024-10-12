@@ -77,6 +77,7 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
 
         const tdIndex = document.createElement('td');
         tdIndex.innerText = index + 1;
+        tdIndex.style.textAlign = "center";
         tr.appendChild(tdIndex);
 
         displayPropertyList.forEach((ob, ind) => {
@@ -99,6 +100,7 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
             }
 
 
+            td.style.textAlign = "center";
             tr.appendChild(td);
 
         });
@@ -108,6 +110,7 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
         const editButton = document.createElement('button');
         editButton.className = 'btn btn-edit fw-bold';
         editButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i>';
+        editButton.type = "button";
 
         editButton.onclick = function() {
             //console.log('edit');
@@ -117,6 +120,7 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
         const deleteButton = document.createElement('button');
         deleteButton.className = 'btn btn-outline-danger fw-bold ms-1 me-1';
         deleteButton.innerHTML = '<i class="fa-regular fa-circle-xmark"></i>';
+        deleteButton.type = "button";
 
         deleteButton.onclick = function() {
             deleteButtonFunction(element, index);
@@ -126,6 +130,7 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
 
         tdButton.appendChild(editButton); // append button into table column 
         tdButton.appendChild(deleteButton); // append button into table column 
+        tdButton.style.textAlign = "center";
 
         if (buttonVisibility) {
             tr.appendChild(tdButton); // append button column into table row

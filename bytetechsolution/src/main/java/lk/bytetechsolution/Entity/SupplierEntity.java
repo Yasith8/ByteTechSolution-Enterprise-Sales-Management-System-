@@ -62,9 +62,9 @@ public class SupplierEntity {
     @NotNull
     private String agentemail;
 
-    @Column(name = "branchname")
+    @Column(name = "branch")
     @NotNull
-    private String branchname;
+    private String branch;
 
     @Column(name = "accountname")
     @NotNull

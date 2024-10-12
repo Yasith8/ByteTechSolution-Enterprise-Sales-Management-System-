@@ -85,8 +85,8 @@ const refreshSupplierInnerFormAndTable = () => {
     //inner table
 
     let displayPropertyList = [
-        { dataType: 'function', propertyName: getInnerFormBrand },
         { dataType: 'function', propertyName: getInnerFormCategory },
+        { dataType: 'function', propertyName: getInnerFormBrand },
     ]
 
     fillDataIntoInnerTable(innerSupplierTable, supplier.supplier_has_brand_category, displayPropertyList, refillInnerSupplierForm, deleteInnerSupplierForm)
@@ -136,6 +136,7 @@ const refillSupplierForm = (ob, rowIndex) => {
     //assign supplier status
     selectSupplierStatus.value = supplier.supplierstatus_id.name
 
+    /* //optimize need to assign inner form data */
 
 }
 
@@ -157,20 +158,116 @@ const deleteInnerSupplierForm = (ob, rowIndex) => {
 
 }
 
-const innerSupplierProductAdd = () => {
-    supplier.supplier_has_brand_category.push(supplierItem)
-    console.log(supplierItem)
-    console.log(supplier.supplier_has_brand_category)
-    refreshSupplierInnerFormAndTable();
+const checkInnerItemFormErrors = () => {
+    let errors = "";
+
+    if (supplierItem.category_id == null) {
+        errors += "Category cannot be null \n";
+    }
+    if (supplierItem.brand_id == null) {
+        errors += "Brand cannot be null \n";
+    }
+
+    return errors;
 }
+
+const itemExistTableHandler = () => {
+    let selectedCategory = JSON.parse(selectInnerCategory.value);
+    let selectedBrand = JSON.parse(selectInnerBrand.value);
+
+
+    buttonSubmit.disabled = false;
+    selectInnerCategory.classList.remove('is-invalid');
+    selectInnerBrand.classList.remove('is-invalid');
+
+
+    supplier.supplier_has_brand_category.map(element => {
+        if (element.brand_id.name === selectedBrand.name && element.category_id.name === selectedCategory.name) {
+            console.log("invalid");
+            buttonSubmit.disabled = true;
+            selectInnerCategory.classList.add('is-invalid');
+            selectInnerBrand.classList.add('is-invalid');
+        }
+    });
+
+
+}
+
+const innerSupplierProductAdd = () => {
+    //error check
+    let errors = checkInnerItemFormErrors();
+    if (errors == "") {
+        //optimize if time have add unique names instead of common name
+        let userConform = confirm("Are you sure to assign this product to supplier?")
+        if (userConform) {
+            //add obj into array
+            supplier.supplier_has_brand_category.push(supplierItem)
+            console.log(supplier.supplier_has_brand_category);
+            alert("Items assigned to the supplier successfully!")
+            refreshSupplierInnerFormAndTable();
+        }
+    } else {
+        alert("Item assign failed because of following errors! \n" + errors)
+    }
+    //get user confirmation
+
+
+}
+
+
 
 const innerSupplierProductUpdate = () => {
 
 }
 
-const updateSupplier = () => {
+const checkSupplierSubmitErrors = () => {
+    let errors = "";
+
+    if (supplier.supplierid == null) {
+        errors += "Supplier ID is required\n";
+    }
+    if (supplier.name == null) {
+        errors += "Supplier Name is required\n";
+    }
+    if (supplier.phone == null) {
+        errors += "Supplier Phone No is required\n";
+    }
+    if (supplier.email == null) {
+        errors += "Supplier Email is required\n";
+    }
+    if (supplier.agentname == null) {
+        errors += "Agent Name is required\n";
+    }
+    if (supplier.agentphone == null) {
+        errors += "Agent Phone no is required\n";
+    }
+    if (supplier.agentemail == null) {
+        errors += "Agent Email is required\n";
+    }
+    if (supplier.bankname_id == null) {
+        errors += "Bank Name is required\n";
+    }
+    if (supplier.branch == null) {
+        errors += "Bank Branch is required\n";
+    }
+    if (supplier.accountname == null) {
+        errors += "Bank Account Name is required\n";
+    }
+    if (supplier.accountno == null) {
+        errors += "Bank Account No is required\n";
+    }
+    if (supplier.supplierstatus_id == null) {
+        errors += "Supplier Status is required\n";
+    }
+
+    return errors;
+}
+
+
+const submitSupplier = () => {
 
 }
-const submitSupplier = () => {
+
+const updateSupplier = () => {
 
 }
