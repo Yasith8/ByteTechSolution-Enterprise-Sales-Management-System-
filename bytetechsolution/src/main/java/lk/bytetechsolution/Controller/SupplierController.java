@@ -14,6 +14,7 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.SupplierDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.SupplierEntity;
+import lk.bytetechsolution.Entity.SupplierHasBrandCategoryEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 import java.time.LocalDateTime;
@@ -83,7 +84,7 @@ public class SupplierController {
         //check already existance
         SupplierEntity extSupplierEmail=daoSupplier.getByEmail(supplier.getEmail());
 
-        if(extSupplierEmail==null){
+        if(extSupplierEmail!=null){
             return "Save not Completed : given Name - "+supplier.getEmail()+" Already Exist...!";
         }
 
@@ -104,6 +105,10 @@ public class SupplierController {
             supplier.setAddeduser(addedUserData.getId());
 
             supplier.setAddeddate(LocalDateTime.now());
+
+            for(SupplierHasBrandCategoryEntity supplierHasBrandCategory:supplier.getSupplier_has_brand_category()){
+                supplierHasBrandCategory.setSupplier_id(supplier);
+            }
 
             daoSupplier.save(supplier);
             return "OK";

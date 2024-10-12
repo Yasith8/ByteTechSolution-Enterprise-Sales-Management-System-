@@ -240,10 +240,6 @@ const innerSupplierProductUpdate = () => {
 
 const checkSupplierSubmitErrors = () => {
     let errors = "";
-
-    if (supplier.supplierid == null) {
-        errors += "Supplier ID is required\n";
-    }
     if (supplier.name == null) {
         errors += "Supplier Name is required\n";
     }
@@ -276,6 +272,9 @@ const checkSupplierSubmitErrors = () => {
     }
     if (supplier.supplierstatus_id == null) {
         errors += "Supplier Status is required\n";
+    }
+    if (supplier.supplier_has_brand_category.length == 0) {
+        errors += "At least one Item need to assign to the supplier\n";
     }
 
     return errors;
