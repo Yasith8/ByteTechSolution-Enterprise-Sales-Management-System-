@@ -324,6 +324,49 @@ const submitSupplier = () => {
     }
 }
 
+
+const checkSupplierFormUpdates = () => {
+    updates = "";
+
+    if (supplier.name != oldSupplier.name) {
+        updates = updates + "Supplier Name is Changed \n";
+    }
+    if (supplier.address != oldSupplier.address) {
+        updates = updates + "Supplier Address is Changed \n";
+    }
+    if (supplier.phone != oldSupplier.phone) {
+        updates = updates + "Supplier Phone is Changed \n";
+    }
+    if (supplier.email != oldSupplier.email) {
+        updates = updates + "Supplier Email is Changed \n";
+    }
+    if (supplier.agentname != oldSupplier.agentname) {
+        updates = updates + "Agent Name is Changed \n";
+    }
+    if (supplier.agentphone != oldSupplier.agentphone) {
+        updates = updates + "Agent phone is Changed \n";
+    }
+    if (supplier.agentemail != oldSupplier.agentemail) {
+        updates = updates + "Agent Email is Changed \n";
+    }
+    if (supplier.bankname_id.name != oldSupplier.bankname_id.name) {
+        updates = updates + "Supplier Bank name is Changed \n";
+    }
+    if (supplier.branch != oldSupplier.branch) {
+        updates = updates + "Bank Branch is Changed \n";
+    }
+    if (supplier.accountname != oldSupplier.accountname) {
+        updates = updates + "Account name is Changed \n";
+    }
+    if (supplier.accountno != oldSupplier.accountno) {
+        updates = updates + "Account no is Changed \n";
+    }
+    if (supplier.supplierstatus_id.name != oldSupplier.supplierstatus_id.name) {
+        updates = updates + "Supplier Status is Changed \n";
+    }
+
+}
+
 const updateSupplier = () => {
 
 }
