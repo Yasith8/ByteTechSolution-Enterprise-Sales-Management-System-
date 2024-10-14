@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.*;
 
 @Entity
 @Table(name = "supplier_has_brand_category")

@@ -106,6 +106,8 @@ public class SupplierController {
 
             supplier.setAddeddate(LocalDateTime.now());
 
+            /* System.out.println("Supplier data: " + supplier); */
+
             for(SupplierHasBrandCategoryEntity supplierHasBrandCategory:supplier.getSupplier_has_brand_category()){
                 supplierHasBrandCategory.setSupplier_id(supplier);
             }

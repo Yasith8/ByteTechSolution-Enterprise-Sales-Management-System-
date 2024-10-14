@@ -72,7 +72,7 @@ public class SupplierEntity {
 
     @Column(name = "accountno")
     @NotNull
-    private int accountno;
+    private String accountno;
 
     @Column(name="addeddate")
     @NotNull

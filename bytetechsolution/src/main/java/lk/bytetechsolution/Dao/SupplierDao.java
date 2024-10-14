@@ -12,3 +12,5 @@ public interface SupplierDao extends JpaRepository<SupplierEntity,Integer>{
     @Query(value = "select concat('SUP',lpad(substring(max(sup.supplierid),4)+1,4,'0')) as supplierid from bytetechsolution.supplier as sup",nativeQuery = true)
     public String getNextSupplierNumber();
 } 
+
+

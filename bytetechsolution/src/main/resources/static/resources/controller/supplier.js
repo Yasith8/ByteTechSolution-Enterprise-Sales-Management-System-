@@ -282,6 +282,7 @@ const checkSupplierSubmitErrors = () => {
 
 
 const submitSupplier = () => {
+    console.log(supplier);
     let errors = checkSupplierSubmitErrors();
     if (errors == "") {
         let userConfirm = confirm("Are you sure for add this supplier?");
@@ -365,10 +366,17 @@ const checkSupplierFormUpdates = () => {
         updates = updates + "Supplier Status is Changed \n";
     }
 
+    //optimize supplier order tika danna
+
+    return updates;
 }
 
 const updateSupplier = () => {
+    let errors = checkSupplierSubmitErrors();
 
+    if (errors == "") {
+
+    }
 }
 
 
