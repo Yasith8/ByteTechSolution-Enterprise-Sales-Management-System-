@@ -158,7 +158,20 @@ const getInnerFormCategory = (ob) => {
     return ob.category_id.name;
 }
 const getSupplierStatus = (ob) => {
-    return ob.supplierstatus_id.name;
+    if (ob.supplierstatus_id.name == 'Active') {
+        return '<p class="supplier-status-available">' + ob.supplierstatus_id.name + '</p>';
+    }
+
+    if (ob.supplierstatus_id.name == 'Resign') {
+        return '<p class="supplier-status-resign">' + ob.supplierstatus_id.name + '</p>'
+    }
+
+
+    if (ob.supplierstatus_id.name == 'Delete') {
+        return '<p class="supplier-status-delete">' + ob.supplierstatus_id.name + '</p>'
+    } else {
+        return '<p class="supplier-status-other">' + ob.supplierstatus_id.name + '</p>'
+    }
 }
 
 
