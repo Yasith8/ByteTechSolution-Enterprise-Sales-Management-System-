@@ -3,6 +3,7 @@ package lk.bytetechsolution.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.SupplierDao;
+import lk.bytetechsolution.Dao.SupplierStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.SupplierEntity;
 import lk.bytetechsolution.Entity.SupplierHasBrandCategoryEntity;
@@ -31,6 +33,9 @@ public class SupplierController {
 
     @Autowired
     private EmployeeDao daoEmployee;
+
+    @Autowired
+    private SupplierStatusDao daoSupplierStatus;
 
     @Autowired
     private PrivilageController privilageController;
@@ -117,5 +122,36 @@ public class SupplierController {
         } catch (Exception e) {
             return "Save not Completed: "+e.getMessage();
         }
+    }
+
+    @DeleteMapping(value = "/supplier")
+    public String deleteSupplierData(@RequestBody SupplierEntity supplier){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"SUPPLIER");
+
+        if(!userPrivilage.get("delete")){
+            return "Permission Denied! Delete not Completed";
+        }
+
+       SupplierEntity extSupplier=daoSupplier.getReferenceById(supplier.getId());
+       if(extSupplier==null){
+        return "Delete not Completed.Supplier not exists";
+       }
+
+       try {
+        UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+        supplier.setDeleteuser(deleteUser.getId());
+
+        supplier.setDeletedate(LocalDateTime.now());
+
+        supplier.setSupplierstatus_id(daoSupplierStatus.getReferenceById(3));
+
+        daoSupplier.save(supplier);
+
+        return "OK";
+       } catch (Exception e) {
+        return "Delete not completed. "+e.getMessage();
+       }
     }
 }
