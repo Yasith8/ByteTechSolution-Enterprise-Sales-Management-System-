@@ -1,6 +1,8 @@
 package lk.bytetechsolution.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +29,7 @@ public class SupplierHasBrandCategoryEntity {
 
     @ManyToOne
     @JoinColumn(name="supplier_id",referencedColumnName = "id")
+    @JsonIgnore //block the recursion
     private SupplierEntity supplier_id;
 
     @ManyToOne

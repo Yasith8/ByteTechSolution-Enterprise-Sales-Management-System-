@@ -1,5 +1,6 @@
 package lk.bytetechsolution.Entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -104,8 +105,7 @@ public class SupplierEntity {
     @JoinColumn(name="supplierstatus_id",referencedColumnName = "id")
     private SupplierStatusEntity supplierstatus_id;
     
-    @OneToMany(mappedBy = "supplier_id")
-    @JsonIgnore //block the recursion
+    @OneToMany(mappedBy = "supplier_id",cascade = CascadeType.ALL)
     private List<SupplierHasBrandCategoryEntity> supplier_has_brand_category;
 
 }

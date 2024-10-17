@@ -8,7 +8,7 @@ const refreshSupplierTable = () => {
 
     const displayMainColumnList = [
         { dataType: 'text', propertyName: 'supplierid' },
-        { dataType: 'text', propertyName: 'suppliername' },
+        { dataType: 'text', propertyName: 'name' },
         { dataType: 'text', propertyName: 'agentname' },
         { dataType: 'text', propertyName: 'phone' },
         { dataType: 'text', propertyName: 'email' },
