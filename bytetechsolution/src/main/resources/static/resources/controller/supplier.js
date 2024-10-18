@@ -147,7 +147,26 @@ const refillSupplierForm = (ob, rowIndex) => {
     //assign supplier status
     selectSupplierStatus.value = supplier.supplierstatus_id.name
 
-    /* //optimize need to assign inner form data */
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/SUPPLIER");
+    //console.log(userPrivilage);
+
+
+    if (!userPrivilage.update) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([selectInnerCategory, selectInnerBrand, textSupplierName, numberSupplierPhone, textSupplierEmail, textAddress, textAgentName, numberAgentPhone, textAgentEmail, selectBankName, textBranch, textAccountName, numberAccountNo, selectSupplierStatus], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+    if (!userPrivilage.delete) {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
+
+
+    buttonClear.disabled = true;
+
+    refreshSupplierInnerFormAndTable()
 
 }
 
@@ -175,9 +194,7 @@ const getSupplierStatus = (ob) => {
 }
 
 
-const refillInnerSupplierForm = (ob, rowIndex) => {
-
-}
+const refillInnerSupplierForm = (ob, rowIndex) => {}
 const deleteInnerSupplierForm = (ob, rowIndex) => {
     let userConfirm = confirm(`Are you sure to remove the ${ob.brand_id.name} ${ob.category_id.name} from this supplier?`);
 
