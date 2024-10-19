@@ -405,7 +405,50 @@ const updateSupplier = () => {
     let errors = checkSupplierSubmitErrors();
 
     if (errors == "") {
+        //check form update
 
+        let updates = checkSupplierFormUpdates();
+
+        if (updates = "") {
+            alert("Nothing Update")
+        } else {
+            let userConfirm = confirm("Are you sure to Update this changes?\n" + updates);
+
+            if (userConfirm) {
+                //call the put service request
+                let putServiceResponse;
+
+                $.ajax("/supplier", {
+                    type: "PUT",
+                    async: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(supplier),
+
+                    success: function(successResponseOb) {
+                        putServiceResponse = successResponseOb;
+                    },
+
+                    error: function(failedResponseOb) {
+                        putServiceResponse = failedResponseOb;
+                    }
+                });
+
+                if (putServiceResponse == "OK") {
+                    alert("Supplier Updated Successfully");
+
+                    $('#supplierAddModal').modal('hide');
+                    refreshSupplierTable();
+                    formSupplier.reset();
+                    refreshSupplierForm();
+                } else {
+                    alert("Update not completed:\n" + putServiceResponse);
+                    refreshSupplierForm()
+                }
+            }
+        }
+    } else {
+        //show user to what errors happen
+        alert("Supplier Form  has Following Errors..\n" + errors)
     }
 }
 
