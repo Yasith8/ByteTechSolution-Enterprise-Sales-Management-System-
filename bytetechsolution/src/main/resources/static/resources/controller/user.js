@@ -534,13 +534,21 @@ const checkUserformUpdates = () => {
     if (user.roles.length != olduser.roles.length) {
         updates = updates + "Roles is changed. \n";
     } else {
-        let extcount = 0;
+        /* let extcount = 0;
         for (let newrole of user.roles) {
             for (let oldrole of olduser.roles) {
                 if (newrole.id == oldrole.id)
                     extcount = extcount + 1;
             }
+        } */
+        for (let newRole of user.roles) {
+            let matchOldRole = olduser.roles.find(oldRole => oldRole.id === newRole.id);
+
+            if (!matchOldRole) {
+                updates = updates + "Role is changed. \n";
+            }
         }
+
     }
 
     return updates

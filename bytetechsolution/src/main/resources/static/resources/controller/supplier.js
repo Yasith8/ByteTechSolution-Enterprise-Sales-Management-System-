@@ -395,6 +395,17 @@ const checkSupplierFormUpdates = () => {
     if (supplier.supplierstatus_id.name != oldSupplier.supplierstatus_id.name) {
         updates = updates + "Supplier Status is Changed \n";
     }
+    if (supplier.supplier_has_brand_category.length != oldSupplier.supplier_has_brand_category.length) {
+        updates = updates + "Supplier Inner Form is Changed \n";
+    } else {
+        for (let newSupplierItem of supplier.supplier_has_brand_category) {
+            const matchOldSupplier = oldSupplier.supplier_has_brand_category.find(oldSupplierItem => oldSupplierItem.id === newSupplierItem.id);
+
+            if (!matchOldSupplier) {
+                updates = updates + "Supplier Inner Form is Changed \n";
+            }
+        }
+    }
 
     //optimize supplier order tika danna
 
