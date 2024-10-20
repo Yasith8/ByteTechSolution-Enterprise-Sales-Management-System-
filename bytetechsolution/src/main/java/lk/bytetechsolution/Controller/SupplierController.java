@@ -21,6 +21,9 @@ import lk.bytetechsolution.Entity.UserEntity;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 public class SupplierController {
@@ -153,5 +156,36 @@ public class SupplierController {
        } catch (Exception e) {
         return "Delete not completed. "+e.getMessage();
        }
+    }
+
+    @PutMapping(value = "/supplier")
+    public String updateSupplierData(@RequestBody SupplierEntity suppler) {
+       
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"SUPPLIER");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied! Update not Completed";
+        }
+
+        //check existance
+        SupplierEntity extSupplier=daoSupplier.getReferenceById(suppler.getId());
+
+        if(extSupplier==null){
+            return "Delete not Completed.Supplier not exists";
+        }
+
+        SupplierEntity extSupplierEmail=daoSupplier.getByEmail(suppler.getEmail());
+        if(extSupplier==null && extSupplierEmail.getId()!=suppler.getId()){
+            return "Update is not Completed : this "+suppler.getEmail()+" Supplier Email is already existed.";
+        }
+
+
+        try {
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed."+e.getMessage();
+        }
     }
 }
