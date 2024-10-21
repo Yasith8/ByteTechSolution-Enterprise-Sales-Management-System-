@@ -136,16 +136,20 @@ const refillSupplierForm = (ob, rowIndex) => {
     numberAgentPhone.value = supplier.agentphone;
     //assign agent email
     textAgentEmail.value = supplier.agentemail;
-    //assign bank name
-    selectBankName.value = supplier.bankname_id.name;
     //assign branch
     textBranch.value = supplier.branch;
     //assign account name
     textAccountName.value = supplier.accountname;
     //assign account no
     numberAccountNo.value = supplier.accountno;
-    //assign supplier status
-    selectSupplierStatus.value = supplier.supplierstatus_id.name
+
+
+    supplierstatuses = getServiceAjaxRequest("/supplierstatus/alldata", ob.supplierstatus_id.name)
+    fillDataIntoSelect(selectSupplierStatus, "Select Supplier Status", supplierstatuses, "name");
+
+    banknames = getServiceAjaxRequest("/bankname/alldata")
+    fillDataIntoSelect(selectBankName, "Select Bank Name", banknames, "name", ob.bankname_id.name);
+
 
     let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/SUPPLIER");
     //console.log(userPrivilage);
