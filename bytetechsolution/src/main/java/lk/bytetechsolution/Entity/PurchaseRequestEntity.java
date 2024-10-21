@@ -2,6 +2,8 @@ package lk.bytetechsolution.Entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,5 +46,16 @@ public class PurchaseRequestEntity {
     @Column(name = "requireddate")
     @NotNull
     private LocalDateTime requireddate;
+    
+    @Column(name = "note")
+    private String note;
+
+    @ManyToOne
+    @JoinColumn(name = "purchasestatus_id",referencedColumnName ="id" )
+    private PurchaseStatusEntity purchasestatus_id;
+
+    @ManyToOne
+    @JoinColumn(name="supplier_id",referencedColumnName="id")
+    private SupplierEntity supplier_id;
 
 }
