@@ -144,8 +144,8 @@ const refillSupplierForm = (ob, rowIndex) => {
     numberAccountNo.value = supplier.accountno;
 
 
-    supplierstatuses = getServiceAjaxRequest("/supplierstatus/alldata", ob.supplierstatus_id.name)
-    fillDataIntoSelect(selectSupplierStatus, "Select Supplier Status", supplierstatuses, "name");
+    supplierstatuses = getServiceAjaxRequest("/supplierstatus/alldata")
+    fillDataIntoSelect(selectSupplierStatus, "Select Supplier Status", supplierstatuses, "name", ob.supplierstatus_id.name);
 
     banknames = getServiceAjaxRequest("/bankname/alldata")
     fillDataIntoSelect(selectBankName, "Select Bank Name", banknames, "name", ob.bankname_id.name);
@@ -168,9 +168,8 @@ const refillSupplierForm = (ob, rowIndex) => {
     }
 
 
-    buttonClear.disabled = true;
-
     refreshSupplierInnerFormAndTable()
+    buttonClear.disabled = true;
 
 }
 
