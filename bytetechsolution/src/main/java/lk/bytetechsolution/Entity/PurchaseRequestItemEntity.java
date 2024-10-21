@@ -21,6 +21,11 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@Entity
+@Table(name = "purchase_request_item")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PurchaseRequestItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,5 +59,5 @@ public class PurchaseRequestItemEntity {
     @ManyToOne
     @JoinColumn(name = "purchase_request_id", referencedColumnName = "id")
     @JsonIgnore
-    private PurchaseRequestEntity purchaserequest_id;
+    private PurchaseRequestEntity purchase_request_id;
 }
