@@ -159,7 +159,7 @@ public class SupplierController {
     }
 
     @PutMapping(value = "/supplier")
-    public String updateSupplierData(@RequestBody SupplierEntity suppler) {
+    public String updateSupplierData(@RequestBody SupplierEntity supplier) {
        
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
@@ -170,19 +170,32 @@ public class SupplierController {
         }
 
         //check existance
-        SupplierEntity extSupplier=daoSupplier.getReferenceById(suppler.getId());
+        SupplierEntity extSupplier=daoSupplier.getReferenceById(supplier.getId());
 
         if(extSupplier==null){
             return "Delete not Completed.Supplier not exists";
         }
 
-        SupplierEntity extSupplierEmail=daoSupplier.getByEmail(suppler.getEmail());
-        if(extSupplier==null && extSupplierEmail.getId()!=suppler.getId()){
-            return "Update is not Completed : this "+suppler.getEmail()+" Supplier Email is already existed.";
+        SupplierEntity extSupplierEmail=daoSupplier.getByEmail(supplier.getEmail());
+        if(extSupplier==null && extSupplierEmail.getId()!=supplier.getId()){
+            return "Update is not Completed : this "+supplier.getEmail()+" Supplier Email is already existed.";
         }
 
 
         try {
+            //asign update user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            supplier.setModifyuser(modifyUser.getId());
+
+            //assign update date
+            supplier.setModifydate(LocalDateTime.now());
+
+            for(SupplierHasBrandCategoryEntity supplierHasBrandCategory:supplier.getSupplier_has_brand_category()){
+                supplierHasBrandCategory.setSupplier_id(supplier);
+            }
+
+            //save the data
+            daoSupplier.save(supplier);
             return "OK";
         } catch (Exception e) {
             return "Update not Completed."+e.getMessage();
