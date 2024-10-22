@@ -55,6 +55,32 @@ public class PurchaseRequestController {
     @Autowired
     private PrivilageController privilageController;
 
+    @RequestMapping(value = "/purchaserequest")
+    public ModelAndView GetPurchaseRequestUI(){
+         //get logged user authentication object using security
+        // this help to retrieve the current authentication object which holds the user detail
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+
+        //get current log user
+        UserEntity loggedUser=daoUser.getByUsername(authentication.getName());
+
+        //current loggedemployee
+        String loggedEmployee=daoEmployee.getFullnameById(loggedUser.getId());
+
+        // Create a new ModelAndView object to hold the model data and view information
+        ModelAndView purchaseRequestView=new ModelAndView();
+        //pass the ui
+        purchaseRequestView.setViewName("purchaserequest.html");
+        //attributes set to show titles in web page using theamleaf
+        purchaseRequestView.addObject("title", "Purchase Request Management || Bytetech Solution");
+        purchaseRequestView.addObject("user", authentication.getName());// passing logged user name
+        purchaseRequestView.addObject("EmpName", loggedEmployee);
+        purchaseRequestView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
+        purchaseRequestView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
+
+        return purchaseRequestView;
+    }
+
     @GetMapping(value="/purchaserequest/alldata",produces = "application/json")
     public List<PurchaseRequestEntity> GetPurchaseRequestData(){
         //Authentication and autherization
@@ -69,4 +95,6 @@ public class PurchaseRequestController {
 
         return daoPurchaseRequest.findAll();
     }
+
+
 }
