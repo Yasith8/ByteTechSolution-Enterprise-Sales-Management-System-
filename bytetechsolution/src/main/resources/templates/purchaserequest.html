@@ -191,15 +191,16 @@
                                                 <div class="row">
                                                     <div class="col-4">
                                                         <div class="mb-3 form-floating">
-                                                            <select name="brand" id="selectInnerCategory" class="form-select" onchange="selectDynamicValidator(this,'','purchaserequestitem','category_id')">
+                                                            <select name="category" id="selectInnerCategory" class="form-select" onchange="selectDynamicValidator(this,'','purchaserequestitem','category_id')">
                                                                 <option value=""  selected disabled>Select Category Name</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="mb-3 form-floating">
-                                                            <input type="text" class="form-control" id="textItemName" onchange="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','purchaserequestitem','itemname')" placeholder="" required>
-                                                            <label for="textItemName">Item Name<span class="requiredIcon">*</span></label>
+                                                            <select name="itemname" id="selectItemName" class="form-select" onchange="selectDynamicValidator(this,'','purchaserequestitem','itemname_id')">
+                                                                <option value=""  selected disabled>Select Item Name</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
@@ -249,9 +250,13 @@
                                                 <thead class="table-header">
                                                     <tr align="center">
                                                         <th style="background-color: #009d27 !important"> # </th>
+                                                        <th style="background-color: #009d27 !important"> Item Code </th>
+                                                        <th style="background-color: #009d27 !important"> Item Name </th>
                                                         <th style="background-color: #009d27 !important"> Category </th>
-                                                        <th style="background-color: #009d27 !important"> Brand </th>
-                                                        <th style="background-color: #009d27 !important"> </th>
+                                                        <th style="background-color: #009d27 !important"> Unit Price </th>
+                                                        <th style="background-color: #009d27 !important"> Qty </th>
+                                                        <th style="background-color: #009d27 !important"> Line Total </th>
+                                                        <th style="background-color: #009d27 !important"></th>
                                                     </tr>
                                                 </thead>
 
