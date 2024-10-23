@@ -57,6 +57,11 @@ public class PurchaseRequestItemEntity {
     private CategoryEntity category_id;
 
     @ManyToOne
+    @JoinColumn(name = "brand_id", referencedColumnName = "id")
+    private BrandEntity brand_id;
+
+
+    @ManyToOne
     @JoinColumn(name = "purchase_request_id", referencedColumnName = "id")
     @JsonIgnore
     private PurchaseRequestEntity purchase_request_id;
