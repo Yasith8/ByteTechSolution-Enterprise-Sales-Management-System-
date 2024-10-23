@@ -4,8 +4,8 @@
 <head th:replace="~{component::headerFragment}"></head>
 
 <head>
-    <link rel="stylesheet" href="resources/style/supplier.css">
-    <script src="resources/controller/supplier.js"></script>
+    <link rel="stylesheet" href="resources/style/prequest.css">
+    <script src="resources/controller/prequest.js"></script>
 </head>
 
 
@@ -35,7 +35,7 @@
                 <button type="button" class="Btn printTableBtn" onclick="printSupplierTable('tablePrequest')">
                     Print
                 </button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#supplierAddModal" class="btn addBtn">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#prequestAddModal" class="btn addBtn">
                     Add New Purchase Request </button>
             </div>
             <div class="col-1"></div>
@@ -246,7 +246,7 @@
                                     <div class="card">
                                         <div class="card-header">Purchase Cart Overview</div>
                                         <div class="card-body">
-                                            <table class="table table-hover table-striped" id="innerSupplierTable">
+                                            <table class="table table-hover table-striped" id="tableInnerPrequestItem">
                                                 <thead class="table-header">
                                                     <tr align="center">
                                                         <th style="background-color: #009d27 !important"> # </th>
@@ -256,7 +256,7 @@
                                                         <th style="background-color: #009d27 !important"> Unit Price </th>
                                                         <th style="background-color: #009d27 !important"> Qty </th>
                                                         <th style="background-color: #009d27 !important"> Line Total </th>
-                                                        <th style="background-color: #009d27 !important"></th>
+                                                        <th style="background-color: #009d27 !important"> </th>
                                                     </tr>
                                                 </thead>
 

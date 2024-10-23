@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: rgb(0, 240, 132);
+}
+
+.modal-button {
+    width: 5rem;
+    padding: 5px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.addBtn {
+    background-color: #6669b0;
+    color: white;
+}
+
+.btnDel:hover {
+    color: red;
+}
+
+.btnEdit:hover {
+    color: rgb(0, 255, 0);
+}
+
+.btnView:hover {
+    color: #6669b0;
+}
+
+.modal-content {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 94rem !important;
+}
+
+.success-status-btn {
+    padding: 5px;
+    width: 100px;
+    border: 2px solid rgb(0, 255, 0);
+    border-radius: 10px;
+    color: rgb(0, 255, 0);
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 255, 0, 0.203);
+}
+
+.status-dot {
+    padding-left: 6px;
+    width: 7px;
+    height: 7px;
+    background-color: rgb(0, 255, 0);
+    border-radius: 50px;
+}
+
+
+/* Inner Form Button start */
+
+.inner-cancel-btn {
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+}
+
+.inner-update-btn {
+    background-color: #00ff04;
+    color: white;
+}
+
+.inner-add-btn {
+    background-color: #00ff04;
+    color: white;
+}
+
+.inner-add-btn:hover {
+    color: white;
+    background-color: #00ff5e;
+}
+
+.inner-update-btn:hover {
+    color: white;
+    background-color: #00ff5e;
+}
+
+
+/* Inner Form Button end */
+
+.supplier-status-available {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #CCF0EB;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #00B69B;
+}
+
+.supplier-status-resign {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #FFEDDD;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #ff9d48;
+}
+
+.supplier-status-delete {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #FCD7D4;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #EF3826;
+}
+
+.supplier-status-other {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: grey;
+    color: white;
+    text-align: center;
+}
