@@ -22,7 +22,6 @@ import lk.bytetechsolution.Entity.UserEntity;
 import java.time.LocalDateTime;
 import java.util.*;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController

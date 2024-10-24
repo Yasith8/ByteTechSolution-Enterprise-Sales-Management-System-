@@ -2,7 +2,6 @@ package lk.bytetechsolution.Entity;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,6 +51,27 @@ public class PurchaseRequestEntity {
     
     @Column(name = "note")
     private String note;
+
+    @Column(name="addeddate")
+    @NotNull
+    private LocalDateTime addeddate;
+
+    @Column(name="modifydate")
+    private LocalDateTime modifydate;
+
+    @Column(name="deletedate")
+    private LocalDateTime deletedate;
+
+    
+    @Column(name = "addeduser")
+    @NotNull
+    private int addeduser;
+
+    @Column(name = "modifyuser")
+    private int modifyuser;
+    
+    @Column(name = "deleteuser")
+    private int deleteuser;
 
     @ManyToOne
     @JoinColumn(name = "purchasestatus_id",referencedColumnName ="id" )

@@ -139,5 +139,37 @@ public class PurchaseRequestController {
         }
     }
 
+    @DeleteMapping(value = "/purchaserequest")
+    public String DeletePurchaseRequest(@RequestBody PurchaseRequestEntity prequest){
+        //Autherntication and autherization
+        Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "PREQUEST");
+    
+        
+        if(!userPrivilage.get("delete")){
+            return "Permission Denied! Delete not Completed";
+        }
+
+       PurchaseRequestEntity extSupplier=daoPurchaseRequest.getReferenceById(prequest.getId());
+       if(extSupplier==null){
+        return "Delete not Completed.Purchase Request not exists";
+       }
+
+       try {
+        UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+        prequest.setDeleteuser(deleteUser.getId());
+
+        prequest.setDeletedate(LocalDateTime.now());
+
+        prequest.setPurchasestatus_id(daoPurchaseStatus.getReferenceById(3));
+
+        daoPurchaseRequest.save(prequest);
+
+        return "OK";
+       } catch (Exception e) {
+        return "Delete not completed. "+e.getMessage();
+       }
+    }
+
 
 }
