@@ -26,6 +26,9 @@ import lk.bytetechsolution.Dao.PurchaseStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.PowerSupplyEntity;
 import lk.bytetechsolution.Entity.PurchaseRequestEntity;
+import lk.bytetechsolution.Entity.PurchaseRequestItemEntity;
+import lk.bytetechsolution.Entity.SupplierEntity;
+import lk.bytetechsolution.Entity.SupplierHasBrandCategoryEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 /*
 * implemented mapping to available for use  
@@ -94,6 +97,46 @@ public class PurchaseRequestController {
         }
 
         return daoPurchaseRequest.findAll();
+    }
+
+    @PostMapping(value = "/purchaserequst")
+    public String AddPurchaseRequest(@RequestBody PurchaseRequestEntity prequest){
+        //authentiction and autherzation
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PREQUEST");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        try {
+
+            //set AutoGenarated Value
+            String nextNumber=daoPurchaseRequest.getNextPrequestCode();
+
+            //if next employee number is not come then set manualy last number+1
+            if(nextNumber==null){
+                prequest.setRequestcode("SUP0001");
+            }else{
+                prequest.setRequestcode(nextNumber);
+            }
+
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            prequest.setAddeduser(addedUserData.getId());
+
+            prequest.setAddeddate(LocalDateTime.now());
+
+            /* System.out.println("Supplier data: " + supplier); */
+
+            for(PurchaseRequestItemEntity purchaseequestitem:prequest.getPurchase_request_item()){
+                purchaseequestitem.setPurchase_request_id(prequest);
+            }
+
+            daoPurchaseRequest.save(prequest);
+            return "OK";
+        } catch (Exception e) {
+            return "Save not Completed: "+e.getMessage();
+        }
     }
 
 
