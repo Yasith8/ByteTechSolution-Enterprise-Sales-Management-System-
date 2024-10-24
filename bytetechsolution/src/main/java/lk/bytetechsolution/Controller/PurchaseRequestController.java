@@ -126,7 +126,6 @@ public class PurchaseRequestController {
 
             prequest.setAddeddate(LocalDateTime.now());
 
-            /* System.out.println("Supplier data: " + supplier); */
 
             for(PurchaseRequestItemEntity purchaseequestitem:prequest.getPurchase_request_item()){
                 purchaseequestitem.setPurchase_request_id(prequest);
@@ -171,5 +170,42 @@ public class PurchaseRequestController {
        }
     }
 
+    @PutMapping(value = "/purchaserequest")
+    public String updatePurchaseRequest(@RequestBody PurchaseRequestEntity prequest) {
+       
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PREQUEST");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied! Update not Completed";
+        }
+
+        PurchaseRequestEntity extSupplier=daoPurchaseRequest.getReferenceById(prequest.getId());
+        if(extSupplier==null){
+         return "Delete not Completed.Purchase Request not exists";
+        }
+      
+
+
+        try {
+            //asign update user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            prequest.setModifyuser(modifyUser.getId());
+
+            //assign update date
+            prequest.setModifydate(LocalDateTime.now());
+
+            for(PurchaseRequestItemEntity purchaseequestitem:prequest.getPurchase_request_item()){
+                purchaseequestitem.setPurchase_request_id(prequest);
+            }
+
+            //save the data
+            daoPurchaseRequest.save(prequest);
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed."+e.getMessage();
+        }
+    }
 
 }
