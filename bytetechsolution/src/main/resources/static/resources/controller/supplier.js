@@ -196,8 +196,9 @@ const getSupplierStatus = (ob) => {
     }
 }
 
-
+//optimize update eka hadala na.meka hadanna one
 const refillInnerSupplierForm = (ob, rowIndex) => {}
+
 const deleteInnerSupplierForm = (ob, rowIndex) => {
     let userConfirm = confirm(`Are you sure to remove the ${ob.brand_id.name} ${ob.category_id.name} from this supplier?`);
 
@@ -266,7 +267,7 @@ const innerSupplierProductAdd = () => {
 }
 
 
-
+//optimize meka hadalath na //bug meka aniwa balanna one
 const innerSupplierProductUpdate = () => {
 
 }

@@ -114,7 +114,7 @@ body {
     color: #ff9d48;
 }
 
-.supplier-status-delete {
+.supplier-status-reject {
     padding: 5px;
     border-radius: 8px;
     border: none;
@@ -123,6 +123,17 @@ body {
     padding-inline: 30px;
     padding-block: 8px;
     color: #EF3826;
+}
+
+.supplier-status-delete {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #ff1100;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #ffffff;
 }
 
 .supplier-status-other {

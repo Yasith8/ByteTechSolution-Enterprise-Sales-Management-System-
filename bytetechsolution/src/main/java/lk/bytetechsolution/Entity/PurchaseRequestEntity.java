@@ -1,5 +1,6 @@
 package lk.bytetechsolution.Entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -43,7 +44,7 @@ public class PurchaseRequestEntity {
 
     @Column(name = "totalamount")
     @NotNull
-    private Integer totalamount;
+    private BigDecimal totalamount;
 
     @Column(name = "requireddate")
     @NotNull
