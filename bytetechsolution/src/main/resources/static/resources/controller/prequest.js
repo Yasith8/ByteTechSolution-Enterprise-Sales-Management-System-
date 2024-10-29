@@ -58,6 +58,37 @@ const refreshPurchaseRequestForm = () => {
         inputFieldsHandler([decimalTtoalAmount, dateRequiredDate, textNote, selectSupplierName, selectPurchaseStatus, selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal, selectCategory], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
+
+    refreshPurchaseRequestHasItemInnerFormAndTable();
+}
+
+const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
+    //inner form
+    purchaseRequestItem = new Object();
+    oldPurchaseRequestItem = null;
+
+    inputFieldsHandler([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal, selectCategory], false)
+    removeValidationColor([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal, selectCategory])
+
+    buttonInnerSubmit.disabled = false;
+    buttonInnerSubmit.classList.add('inner-add-btn');
+
+    buttonInnerUpdate.disabled = true;
+    buttonInnerUpdate.classList.remove('inner-update-btn');
+
+    //get category
+    categories = getServiceAjaxRequest('/category/alldata')
+    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name");
+
+    //item name
+    fillDataIntoSelect(selectItemName, "Please Select Category First", [], "name");
+
+    //auto add item code when item select
+
+    //item price need to get from grn list
+
+    //when adding the quantity line total need to auto calculate, also total amount
+    //inner table
 }
 
 
