@@ -68,17 +68,17 @@ public class CasingController {
         String loggedEmployee=daoEmployee.getFullnameById(loggedUser.getId());
 
         // Create a new ModelAndView object to hold the model data and view information
-        ModelAndView coolerView=new ModelAndView();
+        ModelAndView casignView=new ModelAndView();
         //pass the ui
-        coolerView.setViewName("casing.html");
+        casignView.setViewName("casing.html");
         //attributes set to show titles in web page using theamleaf
-        coolerView.addObject("title", "Casing Management || Bytetech Solution");
-        coolerView.addObject("user", authentication.getName());// passing logged user name
-        coolerView.addObject("EmpName", loggedEmployee);
-        coolerView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
-        coolerView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
+        casignView.addObject("title", "Casing Management || Bytetech Solution");
+        casignView.addObject("user", authentication.getName());// passing logged user name
+        casignView.addObject("EmpName", loggedEmployee);
+        casignView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
+        casignView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
 
-        return coolerView;
+        return casignView;
 
     }
 
