@@ -3,6 +3,8 @@ package lk.bytetechsolution.Entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -59,6 +61,7 @@ public class SupplierQuotationEntity {
 
     @ManyToOne
     @JoinColumn(name = "quotation_request_id",referencedColumnName = "id")
+    @JsonIgnore
     private QuotationRequestEntity quotation_request_id;
 
     @ManyToOne
