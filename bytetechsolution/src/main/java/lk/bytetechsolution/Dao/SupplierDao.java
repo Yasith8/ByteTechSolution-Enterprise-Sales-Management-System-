@@ -4,6 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import lk.bytetechsolution.Entity.SupplierEntity;
 
+/* 
+ * This dao file extends from JpaRepositoy
+ * JPA Repository CRUD and Pagination operations
+ * crud save(),delete(),findAll(),findById()
+ * pagination findAl()
+ * can use for custom query methods
+ */
 public interface SupplierDao extends JpaRepository<SupplierEntity,Integer>{
 
     @Query("select e from SupplierEntity e where e.email=?1")
