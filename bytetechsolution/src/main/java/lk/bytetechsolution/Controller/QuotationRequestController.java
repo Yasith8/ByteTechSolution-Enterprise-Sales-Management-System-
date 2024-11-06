@@ -1,0 +1,54 @@
+package lk.bytetechsolution.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import lk.bytetechsolution.Dao.EmployeeDao;
+import lk.bytetechsolution.Dao.QuotationRequestDao;
+import lk.bytetechsolution.Dao.SupplierStatusDao;
+import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.UserEntity;
+
+@RestController
+public class QuotationRequestController {
+    
+    @Autowired
+    private QuotationRequestDao quotationRequestDao;
+
+    @Autowired
+    private UserDao daoUser;
+
+    @Autowired
+    private EmployeeDao daoEmployee;
+
+    @Autowired
+    private PrivilageController privilageController;
+
+    @RequestMapping(value = "/quotationrequest")
+    public ModelAndView getQuotationRequestUI(){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+         //get current log user
+        UserEntity loggedUser=daoUser.getByUsername(authentication.getName());
+
+        //current loggedemployee
+        String loggedEmployee=daoEmployee.getFullnameById(loggedUser.getId());
+
+        // Create a new ModelAndView object to hold the model data and view information
+        ModelAndView quotationRequestView=new ModelAndView();
+        //pass the ui
+        quotationRequestView.setViewName("quotationrequest.html");
+        //attributes set to show titles in web page using theamleaf
+        quotationRequestView.addObject("title", "Quotation Request Management || Bytetech Solution");
+        quotationRequestView.addObject("user", authentication.getName());// passing logged user name
+        quotationRequestView.addObject("EmpName", loggedEmployee);
+        quotationRequestView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
+        quotationRequestView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
+
+        return quotationRequestView;
+    }
+
+}
