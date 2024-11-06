@@ -1,8 +1,13 @@
 package lk.bytetechsolution.Controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,13 +16,15 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.QuotationRequestDao;
 import lk.bytetechsolution.Dao.SupplierStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.QuotationRequestEntity;
+import lk.bytetechsolution.Entity.SupplierEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
 public class QuotationRequestController {
     
     @Autowired
-    private QuotationRequestDao quotationRequestDao;
+    private QuotationRequestDao daoQuotationRequest;
 
     @Autowired
     private UserDao daoUser;
@@ -49,6 +56,19 @@ public class QuotationRequestController {
         quotationRequestView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
 
         return quotationRequestView;
+    }
+
+
+    @GetMapping(value = "/quotationrequest/alldata",produces = "application/json")
+    public List<QuotationRequestEntity> GetAllQuotationRequestData(){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"QUOTATION");
+
+        if(!userPrivilage.get("select")){
+            return new ArrayList<QuotationRequestEntity>();
+        }
+
+        return daoQuotationRequest.findAll();
     }
 
 }
