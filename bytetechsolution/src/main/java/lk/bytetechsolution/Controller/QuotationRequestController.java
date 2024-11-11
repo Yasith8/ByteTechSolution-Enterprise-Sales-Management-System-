@@ -94,9 +94,9 @@ public class QuotationRequestController {
 
             //if next employee number is not come then set manualy last number+1
             if(nextNumber==null){
-                quotationrequest.setSupplierid("QRC0001");
+                quotationrequest.setQuotationrequestcode("QRC0001");
             }else{
-                quotationrequest.setSupplierid(nextNumber);
+                quotationrequest.setQuotationrequestcode(nextNumber);
             }
 
             UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
@@ -104,13 +104,7 @@ public class QuotationRequestController {
 
             quotationrequest.setAddeddate(LocalDateTime.now());
 
-            /* System.out.println("Supplier data: " + supplier); */
-
-            for(SupplierHasBrandCategoryEntity supplierHasBrandCategory:quotationrequest.getSupplier_has_brand_category()){
-                supplierHasBrandCategory.setSupplier_id(quotationrequest);
-            }
-
-            daoSupplier.save(quotationrequest);
+            daoQuotationRequest.save(quotationrequest);
             return "OK";
         } catch (Exception e) {
             return "Save not Completed: "+e.getMessage();
