@@ -120,7 +120,6 @@ public class UserController {
 
 
         try {
-            //authentication and autherization
 
             //operations
 

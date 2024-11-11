@@ -1,5 +1,6 @@
 package lk.bytetechsolution.Controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,6 +21,7 @@ import lk.bytetechsolution.Dao.SupplierStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.QuotationRequestEntity;
 import lk.bytetechsolution.Entity.SupplierEntity;
+import lk.bytetechsolution.Entity.SupplierHasBrandCategoryEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -67,8 +71,50 @@ public class QuotationRequestController {
         if(!userPrivilage.get("select")){
             return new ArrayList<QuotationRequestEntity>();
         }
-
         return daoQuotationRequest.findAll();
+    }
+
+    @PostMapping(value = "/quotationrequest")
+    public String addQuotationRequestData(@RequestBody QuotationRequestEntity quotationrequest){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"QUOTATION");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        //check already existance
+        //todo try to validate using date and product
+
+        try {
+
+            //set AutoGenarated Value
+            String nextNumber=daoQuotationRequest.getNextQuotationRequestCode();
+
+            //if next employee number is not come then set manualy last number+1
+            if(nextNumber==null){
+                quotationrequest.setSupplierid("QRC0001");
+            }else{
+                quotationrequest.setSupplierid(nextNumber);
+            }
+
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            quotationrequest.setAddeduser(addedUserData.getId());
+
+            quotationrequest.setAddeddate(LocalDateTime.now());
+
+            /* System.out.println("Supplier data: " + supplier); */
+
+            for(SupplierHasBrandCategoryEntity supplierHasBrandCategory:quotationrequest.getSupplier_has_brand_category()){
+                supplierHasBrandCategory.setSupplier_id(quotationrequest);
+            }
+
+            daoSupplier.save(quotationrequest);
+            return "OK";
+        } catch (Exception e) {
+            return "Save not Completed: "+e.getMessage();
+        }
     }
 
 }
