@@ -102,7 +102,7 @@
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <select name="category" id="selectCategory" class="form-select">
+                                    <select name="category" id="selectCategory" class="form-select" onchange="selectDynamicValidator(this,'','qoutationrequest','category_id')">
                                     <option value=""  selected disabled>Select Category</option>
                                 </select>
                                 </div>
@@ -111,37 +111,36 @@
                             <!-- product name start -->
                             <div class="col-8">
                                 <div class="form-floating mb-3">
-                                    <select name="item" id="selectItem" class="form-select">
+                                    <select name="item" id="selectItem" class="form-select" onchange="selectDynamicValidator(this,'','qoutationrequest','itemcode_id')">
                                     <option value=""  selected disabled>Select Item</option>
-                                    <option value=""  >CPU0001 - Intel I3 LA1700 14GEN</option>
                                 </select>
                                 </div>
                             </div>
                             <!-- product name end -->
                         </div>
 
-                        <div class="row">
+                        <div class="row ">
                             <!-- Quantity start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberQuantity" placeholder="" required>
-                                    <label for="numberQuantity">Quantity<span class="requiredIcon">*</span></label>
+                            <div class="col-4 ">
+                                <div class="form-floating mb-3 ">
+                                    <input type="number " class="form-control " id="numberQuantity " placeholder=" " required required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$', 'quotationrequest', 'quantity')">
+                                    <label for="numberQuantity ">Quantity<span class="requiredIcon ">*</span></label>
                                 </div>
                             </div>
                             <!-- Quantity end -->
                             <!-- required date start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" id="dateRequiredDate" placeholder="" required>
-                                    <label for="dateRequiredDate">Required Date<span class="requiredIcon">*</span></label>
+                            <div class="col-4 ">
+                                <div class="form-floating mb-3 ">
+                                    <input type="date " class="form-control " id="dateRequiredDate " placeholder=" " required onkeyup="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$', 'quotationrequest', 'requireddate')">
+                                    <label for="dateRequiredDate ">Required Date<span class="requiredIcon ">*</span></label>
                                 </div>
                             </div>
                             <!--  required date end -->
                             <!-- request status start -->
-                            <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <select name="qrequeststatus" id="selectRequestStatus" class="form-select">
-                                    <option value=""  selected disabled>Select Request Status</option>
+                            <div class="col-4 ">
+                                <div class="form-floating mb-3 ">
+                                    <select name="qrequeststatus " id="selectRequestStatus " class="form-select " onchange="selectDynamicValidator(this,'','qoutationrequest','quotationstatus_id')">
+                                    <option value=" "  selected disabled>Select Request Status</option>
                                 </select>
                                 </div>
                             </div>
@@ -149,27 +148,27 @@
                         </div>
 
                         <!-- Quentity Start -->
-                        <div class="row">
-                            <div class="row mt-5">
-                                <div class="col-1"></div>
-                                <div class="col-4">
-                                    <select class="form-select" multiple id="selectAllItem">
+                        <div class="row ">
+                            <div class="row mt-5 ">
+                                <div class="col-1 "></div>
+                                <div class="col-4 ">
+                                    <select class="form-select " multiple id="selectAllItem ">
                     
                 </select>
                                 </div>
-                                <div class="col-2">
-                                    <div class="item">
-                                        <button class="move-btn" type="button" onclick="btnAddOneItem()"><i class="fa-solid fa-caret-right"></i> </button>
-                                        <button class="move-btn" type="button" onclick="btnAddAllItem()"> <i class="fa-solid fa-forward double-arrow"></i> </button>
-                                        <button class="move-btn" type="button" onclick="btnRemoveOneItem()"> <i class="fa-solid fa-caret-left"></i> </button>
-                                        <button class="move-btn" type="button" onclick="btnRemoveAllItem()"> <i class="fa-solid fa-backward double-arrow"></i></button>
+                                <div class="col-2 ">
+                                    <div class="item ">
+                                        <button class="move-btn " type="button " onclick="btnAddOneItem() "><i class="fa-solid fa-caret-right "></i> </button>
+                                        <button class="move-btn " type="button " onclick="btnAddAllItem() "> <i class="fa-solid fa-forward double-arrow "></i> </button>
+                                        <button class="move-btn " type="button " onclick="btnRemoveOneItem() "> <i class="fa-solid fa-caret-left "></i> </button>
+                                        <button class="move-btn " type="button " onclick="btnRemoveAllItem() "> <i class="fa-solid fa-backward double-arrow "></i></button>
                                     </div>
                                 </div>
-                                <div class="col-4">
-                                    <select class="form-select" id="selectSelectedItem" multiple>
+                                <div class="col-4 ">
+                                    <select class="form-select " id="selectSelectedItem " multiple>
                 </select>
                                 </div>
-                                <div class="col-1"></div>
+                                <div class="col-1 "></div>
                             </div>
 
                         </div>
@@ -179,23 +178,23 @@
                     </form>
                 </div>
 
-                <div class="row mt-3 mb-3">
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-1"></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal">Print</button></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal">Delete</button></div>
-                            <div class="col-7"></div>
+                <div class="row mt-3 mb-3 ">
+                    <div class="col-6 ">
+                        <div class="row ">
+                            <div class="col-1 "></div>
+                            <div class="col-2 "><button type="button " class="modal-button modal-btn-print " data-bs-dismiss="modal ">Print</button></div>
+                            <div class="col-2 "><button type="button " class="modal-button modal-btn-delete " data-bs-dismiss="modal ">Delete</button></div>
+                            <div class="col-7 "></div>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-5"></div>
-                            <div class="col-2">
-                                <!-- <button type="button" class="modal-button modal-btn-update" data-bs-dismiss="modal">Update</button> --></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                            <div class="col-2"><button type="button" onclick="" class="modal-button modal-btn-submit">Request</button></div>
-                            <div class="col-1"></div>
+                    <div class="col-6 ">
+                        <div class="row ">
+                            <div class="col-5 "></div>
+                            <div class="col-2 ">
+                                <!-- <button type="button " class="modal-button modal-btn-update " data-bs-dismiss="modal ">Update</button> --></div>
+                            <div class="col-2 "><button type="button " class="modal-button modal-btn-clear " data-bs-dismiss="modal ">Clear</button></div>
+                            <div class="col-2 "><button type="button " onclick=" " class="modal-button modal-btn-submit ">Request</button></div>
+                            <div class="col-1 "></div>
                         </div>
                     </div>
 
