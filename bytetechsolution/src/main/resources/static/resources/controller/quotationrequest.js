@@ -25,6 +25,22 @@ const refreshQuotationRequestTable = () => {
 
 }
 const refreshQuotationRequestForm = () => {
+    quotationrequest = new Object();
+
+    buttonSubmit.disabled = false;
+    buttonSubmit.classList.add('modal-btn-submit');
+
+    staticBackdropLabel.textContent = "Add New Quotation Request";
+
+    //load category
+    const categories = getServiceAjaxRequest("/category/alldata");
+    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name");
+
+
+    //load request status
+    const qrequeststatuses = getServiceAjaxRequest("/quotationstatus/alldata");
+    fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name", qrequeststatuses[1].name);
+    selectRequestStatus.disabled = true;
 
 }
 
