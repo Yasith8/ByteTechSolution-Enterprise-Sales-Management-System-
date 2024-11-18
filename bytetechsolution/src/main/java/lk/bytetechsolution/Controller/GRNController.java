@@ -47,7 +47,7 @@ public class GRNController {
     @Autowired
     private PrivilageController privilageController;
 
-   @RequestMapping(value = "/casing")
+   @RequestMapping(value = "/grn")
    public ModelAndView GetGRNUI(){
     //get logged user authentication object using security
         // this help to retrieve the current authentication object which holds the user detail

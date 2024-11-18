@@ -22,6 +22,7 @@ public class CategoryController {
     public List<CategoryEntity> allCategoryData(){
         return dao.findAll();
     }
+
    
     
 }

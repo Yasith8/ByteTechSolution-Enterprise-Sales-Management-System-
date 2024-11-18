@@ -37,6 +37,8 @@ const refreshQuotationRequestForm = () => {
     fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name");
 
 
+
+
     //load request status
     const qrequeststatuses = getServiceAjaxRequest("/quotationstatus/alldata");
     fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name", qrequeststatuses[1].name);
@@ -53,6 +55,7 @@ const getQRequestStatus = (ob) => {
 }
 const refillQuotationRequestForm = () => {
 
+    selectRequestStatus.disabled = false;
 }
 
 const btnAddOneSupplier = () => {

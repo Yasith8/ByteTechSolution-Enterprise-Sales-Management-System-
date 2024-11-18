@@ -2,6 +2,8 @@ package lk.bytetechsolution.Dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import lk.bytetechsolution.Entity.SerialNoListEntity;
+
 /* 
  * This dao file extends from JpaRepositoy
  * JPA Repository CRUD and Pagination operations
@@ -9,6 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * pagination findAl()
  * can use for custom query methods
  */
-public interface SerialNoListDao extends JpaRepository<SerialNoListDao,Integer>{
+public interface SerialNoListDao extends JpaRepository<SerialNoListEntity,Integer>{
     
 }
