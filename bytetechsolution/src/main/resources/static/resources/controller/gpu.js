@@ -187,6 +187,8 @@ const refillGpuForm = (ob, rowIndex) => {
     fillDataIntoSelect(selectGpuSeries, "Select GPU Series", [], "name", ob.gpuseries_id.name);
 
     selectGpuChipset.addEventListener('change', () => {
+        gpu.gpuseries_id = null;
+        removeValidationColor([selectGpuSeries]);
         const gpuchipset = selectValueHandler(selectGpuChipset);
         gpuseries = getServiceAjaxRequest("/gpuseries/gpuseriesbygpuchipset/" + gpuchipset.name);
         fillDataIntoSelect(selectGpuSeries, "Select GPU Series", gpuseries, "name");
