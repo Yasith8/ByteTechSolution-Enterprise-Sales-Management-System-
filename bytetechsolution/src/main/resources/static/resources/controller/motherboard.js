@@ -60,11 +60,15 @@ const refreshMotherboardForm = () => {
 
 
     selectCpuSocket.addEventListener('change', () => {
+        motherboard.motherboardseries_id = null;
+        removeValidationColor([selectMotherboardSeries]);
         const cpusocket = selectValueHandler(selectCpuSocket);
         motherboardSeries = getServiceAjaxRequest("/motherboardseries/motherboardseriesbycpusocket/" + cpusocket.name);
         fillDataIntoSelect(selectMotherboardSeries, "Select Motherboard Series", motherboardSeries, "name");
 
         selectMotherboardSeries.addEventListener('change', () => {
+            motherboard.motherboardtype_id = null;
+            removeValidationColor([selectMotherboardType]);
             const motherboardseries = selectValueHandler(selectMotherboardSeries);
             motherboardTypes = getServiceAjaxRequest("/motherboardtype/motherboardtypebymotherboardseries/" + motherboardseries.name);
             fillDataIntoSelect(selectMotherboardType, "Select Motherboard Type", motherboardTypes, "name");
@@ -194,11 +198,15 @@ const refillMotherboardForm = (ob, rowIndex) => {
 
 
     selectCpuSocket.addEventListener('change', () => {
+        motherboard.motherboardseries_id = null;
+        removeValidationColor([selectMotherboardSeries]);
         const cpusocket = selectValueHandler(selectCpuSocket);
         motherboardSeries = getServiceAjaxRequest("/motherboardseries/motherboardseriesbycpusocket/" + cpusocket.name);
         fillDataIntoSelect(selectMotherboardSeries, "Select Motherboard Series", motherboardSeries, "name");
 
         selectMotherboardSeries.addEventListener('change', () => {
+            motherboard.motherboardtype_id = null;
+            removeValidationColor([selectMotherboardType]);
             const motherboardseries = selectValueHandler(selectMotherboardSeries);
             motherboardTypes = getServiceAjaxRequest("/motherboardtype/motherboardtypebymotherboardseries/" + motherboardseries.name);
             fillDataIntoSelect(selectMotherboardType, "Select Motherboard Type", motherboardTypes, "name");
