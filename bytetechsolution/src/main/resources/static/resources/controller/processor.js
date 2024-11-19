@@ -57,6 +57,10 @@ const refreshProcessorForm = () => {
 
 
     selectBrand.addEventListener('change', () => {
+        processor.cpuseries_id = null;
+        processor.cpusocket_id = null;
+        removeValidationColor([selectCpuSeries, selectCpuSocket]);
+
         const cpuBrand = selectValueHandler(selectBrand);
         cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuBrand.name);
         fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
@@ -65,6 +69,8 @@ const refreshProcessorForm = () => {
         fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
 
         selectCpuSocket.addEventListener('change', () => {
+            processor.cpugeneration_id = null;
+            removeValidationColor([selectCpuGeneration]);
             const cpuGentoSocket = selectValueHandler(selectCpuSocket);
             cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + cpuGentoSocket.name);
             fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
@@ -200,6 +206,10 @@ const refillProcessorForm = (ob, rowIndex) => {
 
     //when user change brand all the data need to change
     selectBrand.addEventListener('change', () => {
+        processor.cpuseries_id = null;
+        processor.cpusocket_id = null;
+        removeValidationColor([selectCpuSeries, selectCpuSocket]);
+
         const cpuBrand = selectValueHandler(selectBrand);
         cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuBrand.name);
         fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
@@ -208,8 +218,10 @@ const refillProcessorForm = (ob, rowIndex) => {
         fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
 
         selectCpuSocket.addEventListener('change', () => {
+            processor.cpugeneration_id = null;
+            removeValidationColor([selectCpuGeneration]);
+
             const cpuGentoSocket = selectValueHandler(selectCpuSocket);
-            console.log(cpuGentoSocket)
             cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + cpuGentoSocket.name);
             fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
         });
