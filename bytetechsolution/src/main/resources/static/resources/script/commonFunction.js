@@ -102,6 +102,10 @@ const removeValidationColor = (fieldIds) => {
     })
 }
 
+const addValidationColor = (fieldId) => {
+    fieldId.classList.add('is-invalid')
+}
+
 const inputFieldsHandler = (fieldIds, isDisabled) => {
     fieldIds.forEach((fieldId) => {
         fieldId.disabled = isDisabled;
