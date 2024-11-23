@@ -98,6 +98,12 @@ public class ProcessorController {
         return daoProcessor.findAll();
     }
 
+    @GetMapping(value = "/processor/itemlist", produces ="application/json" ) 
+    public List<ProcessorEntity> ProcessorItemList() {
+
+        return daoProcessor.processorItemList();
+    }
+
 
     @PostMapping(value = "/processor")
     public String addProcessorData(@RequestBody ProcessorEntity processor){
