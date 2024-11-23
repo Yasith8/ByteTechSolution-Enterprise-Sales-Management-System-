@@ -100,6 +100,11 @@ public class GpuController {
         return daoGpu.findAll();
     }
 
+    @GetMapping(value = "/gpu/itemlist",produces = "application/json")
+    public List<GpuEntity> gpuItemList() {
+        return daoGpu.GpuItemList();
+    }
+
     @PostMapping(value = "/gpu")
     public String addGpuData(@RequestBody GpuEntity gpu){
 
@@ -235,4 +240,5 @@ public class GpuController {
         }
     }
 
+    
 }

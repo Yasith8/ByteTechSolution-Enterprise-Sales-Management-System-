@@ -126,4 +126,11 @@ public class GpuEntity {
      @JoinColumn(name="capacity_id",referencedColumnName = "id")
      private CapacityEntity capacity_id;
 
+     public GpuEntity(Integer id,String itemcode,String itemname,CategoryEntity category_id){
+      this.id = id;
+      this.itemcode=itemcode;
+      this.itemname=itemname;
+      this.category_id=category_id;
+     }
+
 }

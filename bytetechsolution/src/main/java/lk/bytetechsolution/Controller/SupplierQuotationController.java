@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.QuotationStatusDao;
+import lk.bytetechsolution.Dao.SupplierQuotationDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.GpuEntity;
 import lk.bytetechsolution.Entity.SupplierQuotationEntity;
@@ -22,7 +23,7 @@ import lk.bytetechsolution.Entity.UserEntity;
 @RestController
 public class SupplierQuotationController {
     @Autowired
-    private SupplierQuotationEntity daoSupplierQuotation;
+    private SupplierQuotationDao daoSupplierQuotation;
 
      @Autowired
     private UserDao daoUser;

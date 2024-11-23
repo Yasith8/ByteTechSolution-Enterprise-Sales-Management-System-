@@ -1,5 +1,7 @@
 package lk.bytetechsolution.Dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,5 +19,9 @@ public interface GpuDao extends JpaRepository<GpuEntity,Integer>{
     
     @Query(value = "select concat('GPU',lpad(substring(max(gpu.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.gpu as gpu",nativeQuery = true)
     public String getNextGPUNumber();
+
+    @Query("select new GpuEntity(gpu.id,gpu.itemcode,gpu.itemname,gpu.category_id) from GpuEntity gpu")
+    public List<GpuEntity> GpuItemList();
+    
     
 }
