@@ -100,6 +100,12 @@ public class StorageController {
         return daoStorage.findAll();
     }
 
+    @GetMapping(value = "/storage/itemlist", produces ="application/json" ) 
+    public List<StorageEntity> StorageItemList() {
+
+        return daoStorage.storageItemList();
+    }
+
 
     @PostMapping(value = "/storage")
     public String addStorageData(@RequestBody StorageEntity storage){

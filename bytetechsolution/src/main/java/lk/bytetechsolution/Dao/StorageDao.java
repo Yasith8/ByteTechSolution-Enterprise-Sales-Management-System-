@@ -1,5 +1,7 @@
 package lk.bytetechsolution.Dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -19,6 +21,8 @@ public interface StorageDao extends JpaRepository<StorageEntity,Integer>{
     @Query(value = "select concat('STO',lpad(substring(max(sto.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.storage as sto",nativeQuery = true)
     public String getNextStorageNumber();
 
+    
     @Query(value="select new StorageEntity(s.id,s.itemcode,s.itemname,s.category_id) from StorageEntity s")
+    public List<StorageEntity> storageItemList();
     
 }
