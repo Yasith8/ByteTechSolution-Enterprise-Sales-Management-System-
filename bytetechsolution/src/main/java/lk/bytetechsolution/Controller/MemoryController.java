@@ -101,6 +101,12 @@ public class MemoryController {
         return daoMemory.findAll();
     }
 
+    @GetMapping(value = "/memory/itemlist", produces ="application/json" ) 
+    public List<MemoryEntity> MemoryItemList() {
+
+        return daoMemory.memoryItemList();
+    }
+
     @PostMapping(value = "/memory")
     public String addMemoryData(@RequestBody MemoryEntity memory){
 
