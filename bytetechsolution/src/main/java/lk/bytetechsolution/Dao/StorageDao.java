@@ -18,5 +18,7 @@ public interface StorageDao extends JpaRepository<StorageEntity,Integer>{
 
     @Query(value = "select concat('STO',lpad(substring(max(sto.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.storage as sto",nativeQuery = true)
     public String getNextStorageNumber();
+
+    @Query(value="select new StorageEntity(s.id,s.itemcode,s.itemname,s.category_id) from StorageEntity s")
     
 }

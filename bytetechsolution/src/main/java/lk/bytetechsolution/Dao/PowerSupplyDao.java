@@ -11,4 +11,6 @@ public interface PowerSupplyDao extends JpaRepository<PowerSupplyEntity,Integer>
 
     @Query(value = "select concat('PWR',lpad(substring(max(pwr.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.powersupply as pwr",nativeQuery = true)
     public String getNextPowerSupplyNumber();
+
+    @Query(value="select new PowerSupplyEntity(p.id,p.itemcode,p.itemname,p.category_id) from PowerSupplyEntity p")
 }

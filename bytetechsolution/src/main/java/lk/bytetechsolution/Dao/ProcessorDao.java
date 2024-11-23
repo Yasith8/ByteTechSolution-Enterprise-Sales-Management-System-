@@ -19,5 +19,7 @@ public interface ProcessorDao extends JpaRepository<ProcessorEntity,Integer>{
 
     @Query(value = "select concat('CPU',lpad(substring(max(cu.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.processor as cu",nativeQuery = true)
     public String getNextProcessorNumber();
+
+    @Query(value="select new ProcessorEntity(p.id,p.itemcode,p.itemname,p.category_id) from ProcessorEntity p")
     
 }
