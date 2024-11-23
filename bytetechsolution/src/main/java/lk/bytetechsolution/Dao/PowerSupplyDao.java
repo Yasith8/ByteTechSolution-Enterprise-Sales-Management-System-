@@ -1,5 +1,7 @@
 package lk.bytetechsolution.Dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +15,5 @@ public interface PowerSupplyDao extends JpaRepository<PowerSupplyEntity,Integer>
     public String getNextPowerSupplyNumber();
 
     @Query(value="select new PowerSupplyEntity(p.id,p.itemcode,p.itemname,p.category_id) from PowerSupplyEntity p")
+    public List<PowerSupplyEntity> powersupplyItemList();
 }

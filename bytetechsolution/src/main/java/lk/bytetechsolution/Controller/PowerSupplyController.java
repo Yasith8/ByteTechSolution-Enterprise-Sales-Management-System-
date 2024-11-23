@@ -100,6 +100,13 @@ public class PowerSupplyController {
         return daoPowerSupply.findAll();
     }
 
+    @GetMapping(value = "/powersupply/itemlist", produces ="application/json" ) 
+    public List<PowerSupplyEntity> PowerSupplyItemList() {
+
+        return daoPowerSupply.powersupplyItemList();
+    }
+
+
     @PostMapping(value = "/powersupply")
     public String addPowerSupplyData(@RequestBody PowerSupplyEntity powersupply){
 
