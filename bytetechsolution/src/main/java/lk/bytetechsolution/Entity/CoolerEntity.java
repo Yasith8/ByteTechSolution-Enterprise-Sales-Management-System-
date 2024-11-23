@@ -107,4 +107,11 @@ public class CoolerEntity {
      @ManyToOne  
      @JoinColumn(name="coolertype_id",referencedColumnName = "id")
      private CoolerTypeEntity coolertype_id;
+
+     public CoolerEntity(Integer id,String itemcode, String itemname, CategoryEntity category_id){
+        this.id = id;
+        this.itemcode=itemcode;
+        this.itemname=itemname;
+        this.category_id=category_id;
+     }
 }

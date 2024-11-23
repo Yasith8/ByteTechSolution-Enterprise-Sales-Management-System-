@@ -99,6 +99,12 @@ public class CoolerController {
         return daoCooler.findAll();
     }
 
+    @GetMapping(value = "/cooler/itemlist", produces ="application/json" ) 
+    public List<CoolerEntity> CoolerItemList() {
+
+        return daoCooler.coolerItemList();
+    }
+
     @PostMapping(value = "/cooler")
     public String addCoolerData(@RequestBody CoolerEntity cooler){
 
