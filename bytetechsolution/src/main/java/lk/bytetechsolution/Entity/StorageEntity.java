@@ -111,5 +111,12 @@ public class StorageEntity {
      @JoinColumn(name="capacity_id",referencedColumnName = "id")
      private CapacityEntity capacity_id;
 
+     public StorageEntity(int id,String itemcode,String itmname,CategoryEntity category_id){
+        this.id=id;
+        this.itemcode=itemcode;
+        this.itemname=itmname;
+        this.category_id=category_id;
+     }
+
 
 }

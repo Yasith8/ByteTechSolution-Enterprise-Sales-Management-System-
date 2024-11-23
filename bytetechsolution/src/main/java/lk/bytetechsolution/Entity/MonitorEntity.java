@@ -120,4 +120,11 @@ public class MonitorEntity {
      @ManyToOne  
      @JoinColumn(name="panaltype_id",referencedColumnName = "id")
      private PanalTypeEntity panaltype_id;
+
+     public MonitorEntity(int id,String itemcode,String itmname,CategoryEntity category_id){
+        this.id=id;
+        this.itemcode=itemcode;
+        this.itemname=itmname;
+        this.category_id=category_id;
+     }
 }

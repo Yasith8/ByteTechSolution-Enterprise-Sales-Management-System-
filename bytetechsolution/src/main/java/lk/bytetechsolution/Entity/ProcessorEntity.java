@@ -116,4 +116,11 @@ public class ProcessorEntity {
     @ManyToOne  
     @JoinColumn(name="itemstatus_id",referencedColumnName = "id")
     private ItemStatusEntity itemstatus_id;
+
+    public ProcessorEntity(int id,String itemcode,String itmname,CategoryEntity category_id){
+        this.id=id;
+        this.itemcode=itemcode;
+        this.itemname=itmname;
+        this.category_id=category_id;
+     }
 }

@@ -114,4 +114,11 @@ public class PowerSupplyEntity {
      @ManyToOne  
      @JoinColumn(name="powersupplyformfactor_id",referencedColumnName = "id")
      private PowerSupplyFormFactorEntity powersupplyformfactor_id;
+
+     public PowerSupplyEntity(int id,String itemcode,String itmname,CategoryEntity category_id){
+        this.id=id;
+        this.itemcode=itemcode;
+        this.itemname=itmname;
+        this.category_id=category_id;
+     }
 }

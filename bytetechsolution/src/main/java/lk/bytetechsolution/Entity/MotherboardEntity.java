@@ -129,4 +129,11 @@ public class MotherboardEntity {
      @JoinColumn(name="memorytype_id",referencedColumnName = "id")
      private MemoryTypeEntity memorytype_id;
 
+     public MotherboardEntity(int id,String itemcode,String itmname,CategoryEntity category_id){
+      this.id=id;
+      this.itemcode=itemcode;
+      this.itemname=itmname;
+      this.category_id=category_id;
+   }
+
 }

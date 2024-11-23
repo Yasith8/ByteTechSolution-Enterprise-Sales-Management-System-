@@ -87,4 +87,19 @@ public class LaptopEntity {
 
     @Column(name = "description")
     private String description;
+     
+    @ManyToOne  
+    @JoinColumn(name="brand_id",referencedColumnName = "id")
+    private BrandEntity brand_id;
+
+    @ManyToOne  
+    @JoinColumn(name="category_id",referencedColumnName = "id")
+    private CategoryEntity category_id;
+
+    public LaptopEntity(int id,String itemcode,String itmname,CategoryEntity category_id){
+        this.id=id;
+        this.itemcode=itemcode;
+        this.itemname=itmname;
+        this.category_id=category_id;
+     }
 }
