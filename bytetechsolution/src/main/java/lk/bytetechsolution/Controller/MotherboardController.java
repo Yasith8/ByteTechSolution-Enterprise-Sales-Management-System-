@@ -100,6 +100,12 @@ public class MotherboardController {
         return daoMotherboard.findAll();
     }
 
+    @GetMapping(value = "/motherboard/itemlist", produces ="application/json" ) 
+    public List<MotherboardEntity> MotherboardItemList() {
+
+        return daoMotherboard.motherboardItemList();
+    }
+
     
     @PostMapping(value = "/motherboard")
     public String addMotherboardData(@RequestBody MotherboardEntity motherboard){
