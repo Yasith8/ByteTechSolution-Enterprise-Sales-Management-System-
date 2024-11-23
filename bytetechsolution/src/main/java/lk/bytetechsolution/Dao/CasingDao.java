@@ -1,5 +1,7 @@
 package lk.bytetechsolution.Dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,5 +17,8 @@ public interface CasingDao extends JpaRepository<CasingEntity,Integer>{
 
     @Query(value = "select concat('CAS',lpad(substring(max(cas.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.casing as cas",nativeQuery = true)
     public String getNextCaseNumber();
+
+    @Query(value="select new CasingEntity(c.id,c.itemcode,c.itemname,c.category_id) from CasingEntity c")
+    public List<CasingEntity> CasingItemList();
 }
 

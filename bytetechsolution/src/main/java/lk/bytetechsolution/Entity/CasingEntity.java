@@ -128,4 +128,11 @@ public class CasingEntity {
      @JoinColumn(name="motherboardformfactor_id",referencedColumnName = "id")
      private MotherBoardFormFactorEntity motherboardformfactor_id;
 
+     public CasingEntity(int id,String itemcode,String itmname,CategoryEntity category_id){
+        this.id=id;
+        this.itemcode=itemcode;
+        this.itemname=itmname;
+        this.category_id=category_id;
+     }
+
 }

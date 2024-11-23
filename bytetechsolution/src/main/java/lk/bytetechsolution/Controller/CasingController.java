@@ -99,6 +99,13 @@ public class CasingController {
         return daoCasing.findAll();
     }
 
+    @GetMapping(value="/casing/itemlist",produces="application/json")
+    public List<CasingEntity> GetCasingLists() {
+
+        return daoCasing.CasingItemList();
+    }
+
+
     @PostMapping(value = "/casing")
     public String addCasingData(@RequestBody CasingEntity casing){
 
