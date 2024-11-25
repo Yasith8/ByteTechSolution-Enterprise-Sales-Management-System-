@@ -67,6 +67,10 @@ public class QuotationRequestEntity {
     @ManyToOne
     @JoinColumn(name = "category_id",referencedColumnName = "id")
     private CategoryEntity category_id;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id",referencedColumnName = "id")
+    private BrandEntity brand_id;
     
     @ManyToMany
     @JoinTable(name = "quotation_request_has_supplier",joinColumns=@JoinColumn(name="quotation_request_id"),inverseJoinColumns =@JoinColumn(name = "supplier_id"))

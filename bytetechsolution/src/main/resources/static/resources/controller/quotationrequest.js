@@ -9,8 +9,6 @@ const refreshQuotationRequestTable = () => {
     const displayColumnList = [
         { dataType: 'text', propertyName: 'quotationrequestcode' },
         { dataType: 'function', propertyName: getCategoryName },
-        { dataType: 'text', propertyName: 'itemcode' },
-        { dataType: 'text', propertyName: 'itemname' },
         { dataType: 'text', propertyName: 'quantity' },
         { dataType: 'text', propertyName: 'requireddate' },
         { dataType: 'function', propertyName: getQRequestStatus },
@@ -36,14 +34,8 @@ const refreshQuotationRequestForm = () => {
     const categories = getServiceAjaxRequest("/category/alldata");
     fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name");
 
-    selectCategory.addEventListener('change', () => {
-        processor.itemname = null;
-        removeValidationColor([selectItem]);
 
-        const itemCategory = selectValueHandler(selectCategory);
-        itemList = getServiceAjaxRequest(`/${itemCategory.toUpperCase()}/itemlist/`);
-        fillDataIntoSelect(selectItem, "Select Category First", itemList, "name");
-    });
+
 
 
 
