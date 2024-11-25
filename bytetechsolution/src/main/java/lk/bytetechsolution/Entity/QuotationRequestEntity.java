@@ -37,14 +37,6 @@ public class QuotationRequestEntity {
     private String quotationrequestcode;
 
     @NotNull
-    @Column(name = "itemcode")
-    private String itemcode;
-    
-    @NotNull
-    @Column(name = "itemname")
-    private String itemname;
-
-    @NotNull
     @Column(name = "quantity")
     private Integer quantity;
 
