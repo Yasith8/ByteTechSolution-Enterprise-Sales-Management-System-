@@ -5,9 +5,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -77,6 +79,12 @@ public class SupplierController {
 
         return daoSupplier.findAll();
     }
+
+    @GetMapping(value = "/supplier/suppliergetbybrandcategory",params = {"categoryid","brandid"},produces = "application/json")
+    public List<SupplierEntity> GetAllSupplierDataByCategoryBrand(@RequestParam("categoryid") Integer categoryid,@RequestParam("brandid") Integer brandid){
+        return daoSupplier.getSupplierByBrandCategory(categoryid,brandid);
+    }
+
 
     @PostMapping(value = "/supplier")
     public String addSupplierData(@RequestBody SupplierEntity supplier){

@@ -25,6 +25,8 @@ const refreshQuotationRequestTable = () => {
 const refreshQuotationRequestForm = () => {
     quotationrequest = new Object();
 
+    quotationrequest.supplier
+
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
 
@@ -44,6 +46,12 @@ const refreshQuotationRequestForm = () => {
         const itemCategory = selectValueHandler(selectCategory);
         brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
         fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
+
+        selectBrand.addEventListener('change', () => {
+            const itemBrand = selectValueHandler(selectBrand);
+            brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
+            fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
+        })
     });
 
     //load request status
@@ -79,8 +87,9 @@ const refillQuotationRequestForm = () => {
 }
 
 const btnAddOneSupplier = () => {
-
+    let selectedSupplier = JSON.parse()
 }
+
 const btnAddAllSupplier = () => {
 
 }
