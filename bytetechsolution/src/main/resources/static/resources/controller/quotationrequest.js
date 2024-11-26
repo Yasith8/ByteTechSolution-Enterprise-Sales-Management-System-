@@ -34,18 +34,35 @@ const refreshQuotationRequestForm = () => {
     const categories = getServiceAjaxRequest("/category/alldata");
     fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name");
 
+    //pass instruction to user for select category first
+    fillDataIntoSelect(selectBrand, "Please Select Category First", [], "name");
 
+    selectCategory.addEventListener('change', () => {
+        quotationrequest.brand_id = null;
+        removeValidationColor([selectBrand]);
 
-
-
-
-
-
+        const itemCategory = selectValueHandler(selectCategory);
+        brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
+        fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
+    });
 
     //load request status
     const qrequeststatuses = getServiceAjaxRequest("/quotationstatus/alldata");
     fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name", qrequeststatuses[1].name);
     selectRequestStatus.disabled = true;
+
+    removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
+
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/QUOTATION");
+
+    if (!userPrivilages.insert) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.remove('modal-btn-submit');
+
+        inputFieldsHandler([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+
 
 }
 
