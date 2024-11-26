@@ -53,7 +53,11 @@ public class WebConfiguration {
         .requestMatchers("/cooler/**").hasAnyAuthority("Admin","Manager","Technician")
         .requestMatchers("/powersupply/**").hasAnyAuthority("Admin","Manager","Technician")
         .requestMatchers("/casing/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/monitor/**").hasAnyAuthority("Admin","Manager","Technician") 
+        .requestMatchers("/monitor/**").hasAnyAuthority("Admin","Manager","Technician")
+        
+        //allow for quotations
+        .requestMatchers("/quotationrequest/**").hasAnyAuthority("Admin","Manager") 
+        .requestMatchers("/supplierquotation/**").hasAnyAuthority("Admin","Manager") 
         .anyRequest().authenticated();// any other requst need authenticate
         
         

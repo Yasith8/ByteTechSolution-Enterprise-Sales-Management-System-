@@ -57,8 +57,9 @@ const refreshQuotationRequestForm = () => {
 
     //load request status
     const qrequeststatuses = getServiceAjaxRequest("/quotationstatus/alldata");
-    fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name", qrequeststatuses[1].name);
-    selectRequestStatus.disabled = true;
+    //fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name", qrequeststatuses[1].name);
+    fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name");
+    //selectRequestStatus.disabled = true;
 
     removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
 
