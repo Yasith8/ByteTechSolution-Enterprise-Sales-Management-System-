@@ -38,6 +38,7 @@ const refreshQuotationRequestForm = () => {
 
     //pass instruction to user for select category first
     fillDataIntoSelect(selectBrand, "Please Select Category First", [], "name");
+    fillDataIntoSelect(selectAvailableSupplier, "Empty", [], "name");
 
     selectCategory.addEventListener('change', () => {
         quotationrequest.brand_id = null;
@@ -49,8 +50,8 @@ const refreshQuotationRequestForm = () => {
 
         selectBrand.addEventListener('change', () => {
             const itemBrand = selectValueHandler(selectBrand);
-            brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
-            fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
+            suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
+            fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
         })
     });
 
