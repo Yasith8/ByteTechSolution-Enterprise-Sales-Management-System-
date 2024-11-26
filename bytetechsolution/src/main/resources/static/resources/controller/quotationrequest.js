@@ -45,7 +45,7 @@ const refreshQuotationRequestForm = () => {
         removeValidationColor([selectBrand]);
 
         const itemCategory = selectValueHandler(selectCategory);
-        brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
+        brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.id);
         fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
 
         selectBrand.addEventListener('change', () => {
