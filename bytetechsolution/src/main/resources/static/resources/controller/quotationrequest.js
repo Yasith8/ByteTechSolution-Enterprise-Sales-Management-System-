@@ -235,5 +235,18 @@ const deleteQuotationRequest = () => {
 }
 
 const closeQRequestModal = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
 
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#qRequestAddModal').modal('hide');
+
+
+        //formItem is id of form
+        //this will reset all data(refreash)
+        formQuotationRequest.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshQuotationRequestForm();
+    }
 }
