@@ -108,6 +108,15 @@ const btnAddOneSupplier = () => {
 }
 
 const btnAddAllSupplier = () => {
+    for (const supplier of suppliers) {
+        quotationrequest.itemSuppliers.push(supplier);
+    }
+
+    fillDataIntoSelect(selectSelectedSupplier, quotationrequest.itemSuppliers, "", "name");
+
+    itemSuppliers = [];
+    fillDataIntoSelect(selectAvailableSupplier, itemSuppliers, "", "name")
+
 
 }
 
