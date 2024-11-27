@@ -230,8 +230,40 @@ const QuotationRequestHandler = () => {
     }
 }
 
-const deleteQuotationRequest = () => {
+const deleteQuotationRequest = (ob, rowIndex) => {
+    //user conformation
+    let userConform = confirm("Are you sure  to delete this Quotation Request? ");
 
+    //if ok
+    if (userConform) {
+        let deleteServiceResponse;
+
+        //ajax request fot delete data
+        $.ajax("/quotationrequest", {
+            type: "DELETE",
+            contentType: "application/json",
+            data: JSON.stringify(ob),
+            async: false,
+
+            success: function(data) {
+                deleteServiceResponse = data
+            },
+
+            error: function(errData) {
+                deleteServiceResponse = errData;
+            }
+        })
+
+        //if delete response ok alert the success message and close the modal and refreash item table
+        //so because of that we can see realtime update
+        if (deleteServiceResponse == "OK") {
+            alert("Delete Successfullly");
+            $('#qRequestAddModal').modal('hide');
+            refreshQuotationRequestTable()
+        } else {
+            console.log("system has following errors:\n" + deleteServiceResponse);
+        }
+    }
 }
 
 const closeQRequestModal = () => {
