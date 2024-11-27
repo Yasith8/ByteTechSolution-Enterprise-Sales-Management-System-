@@ -21,3 +21,159 @@
 .double-arrow {
     scale: 0.8;
 }
+
+
+/* fix issue */
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Nunito Sans", sans-serif;
+}
+
+body {
+    background-color: #00ff99 !important;
+}
+
+.Btn {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #6669b0;
+}
+
+.Btn:hover {
+    background-color: #43456e;
+    border: 1px solid #43456e;
+}
+
+.fw-bold {
+    font-weight: 800 !important;
+}
+
+.addBtn {
+    background-color: #6669b0;
+    color: white;
+    padding-inline: 40px;
+    padding-block: 7px;
+    margin-bottom: 5px;
+}
+
+.printTableBtn {
+    background-color: #c471f5;
+    margin-right: 10px;
+    color: white;
+    padding-inline: 30px;
+    padding-block: 7px;
+    border: 1px solid #c471f5;
+}
+
+.printTableBtn:hover {
+    border: 1px solid #b83dff;
+    background-color: #b83dff;
+}
+
+.btnDel:hover {
+    color: red;
+}
+
+.btnEdit:hover {
+    color: rgb(0, 255, 0);
+}
+
+.btnView:hover {
+    color: #6669b0;
+}
+
+.modal-content {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70rem;
+}
+
+.radioAlign {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.radioBtnAlign {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.status-resign {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #FFEDDD;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #ff9d48;
+}
+
+.status-delete {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #FCD7D4;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #EF3826;
+}
+
+.status-other {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: rgb(209, 209, 209);
+    color: rgb(114, 114, 114);
+    text-align: center;
+}
+
+.status-active {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #CCF0EB;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #00B69B;
+}
+
+.btn-user-selectImage {
+    background-color: #00bbff;
+}
+
+.btn-user-removeImage {
+    background-color: tomato;
+    color: white;
+}
+
+.btn-common-image {
+    margin: 5px;
+}
+
+.btn-user-selectImage:hover {
+    background-color: #007ca9;
+}
+
+.btn-user-removeImage:hover {
+    background-color: rgb(255, 36, 36);
+}
+
+#textUserPhoto {
+    margin-left: 5px;
+}
+
+.profileImgBtn {
+    margin-left: 20px;
+}
+
+
+/* fix issue */

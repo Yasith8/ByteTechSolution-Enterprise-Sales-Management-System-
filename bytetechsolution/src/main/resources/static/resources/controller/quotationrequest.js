@@ -57,9 +57,9 @@ const refreshQuotationRequestForm = () => {
 
     //load request status
     const qrequeststatuses = getServiceAjaxRequest("/quotationstatus/alldata");
-    fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name", qrequeststatuses[1].name);
+    fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name", qrequeststatuses[0].name);
     //fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name");
-    //selectRequestStatus.disabled = true;
+    selectRequestStatus.disabled = true;
 
     removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
 
@@ -160,7 +160,28 @@ const btnRemoveAllSupplier = () => {
 
 
 const checkQuotationRequestInputErrors = () => {
+    const errors = "";
 
+    if (quotationrequest.brand_id == null) {
+        errors += "Brand is empty\n";
+    }
+    if (quotationrequest.category_id == null) {
+        errors += "Category is empty\n";
+    }
+    if (quotationrequest.quantity == null) {
+        errors += "Quantity is empty\n";
+    }
+    if (quotationrequest.requireddate == null) {
+        errors += "Required Date is empty\n";
+    }
+    if (quotationrequest.supplier.length == 0) {
+        errors += "At leaset one supplier is required\n"
+    }
+    if (quotationrequest.quotationstatus_id == null) {
+        errors += "Quotation Status is empty\n";
+    }
+
+    return errors;
 }
 
 const QuotationRequestHandler = () => {
