@@ -83,9 +83,60 @@ const getCategoryName = (ob) => {
 const getQRequestStatus = (ob) => {
 
 }
-const refillQuotationRequestForm = () => {
+const refillQuotationRequestForm = (ob, rowIndex) => {
+    $('#qRequestAddModal').modal('show');
+    removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
 
+
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit');
+
+    buttonUpdate.disabled = false;
+    buttonUpdate.classList.add('modal-btn-update');
+
+    quotationRequest = JSON.parse(JSON.stringify(ob));
+    oldQuotationRequest = ob;
+
+    staticBackdropLabel.textContent = quotationRequest.quotationrequestcode;
+
+    numberQuantity.value = quotationRequest.quantity;
+
+    dateRequiredDate.value = quotationRequest.requireddate;
+
+    requestStatuses = getServiceAjaxRequest("/quotationstatus/alldata");
+    fillDataIntoSelect(selectRequestStatus, "Please Select Quotation Status", requestStatuses, "name", ob.quotationstatus_id.name);
     selectRequestStatus.disabled = false;
+
+    categories = getServiceAjaxRequest("/category/alldata");
+    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", ob.category_id.name);
+
+    brnads = getServiceAjaxRequest("/quotationstatus/alldata");
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brnads, "name", ob.brand_id.name);
+
+    inputFieldsHandler([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate], false);
+    buttonClear.classList.add('modal-btn-clear');
+
+
+
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/QUOTATION");
+    //console.log(userPrivilage);
+
+
+    if (!userPrivilage.update) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+    if (!userPrivilage.delete) {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
+
+
+    buttonClear.disabled = true;
+
 }
 
 const btnAddOneSupplier = () => {
