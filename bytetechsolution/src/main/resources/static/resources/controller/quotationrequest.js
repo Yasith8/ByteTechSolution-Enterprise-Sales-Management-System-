@@ -25,7 +25,7 @@ const refreshQuotationRequestTable = () => {
 const refreshQuotationRequestForm = () => {
     quotationrequest = new Object();
 
-    quotationrequest.supplier
+    quotationrequest.itemSuppliers = [];
 
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
@@ -57,8 +57,8 @@ const refreshQuotationRequestForm = () => {
 
     //load request status
     const qrequeststatuses = getServiceAjaxRequest("/quotationstatus/alldata");
-    //fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name", qrequeststatuses[1].name);
-    fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name");
+    fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name", qrequeststatuses[1].name);
+    //fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name");
     //selectRequestStatus.disabled = true;
 
     removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
@@ -89,7 +89,22 @@ const refillQuotationRequestForm = () => {
 }
 
 const btnAddOneSupplier = () => {
-    let selectedSupplier = JSON.parse()
+    let selectedSupplier = JSON.parse(selectAvailableSupplier.value);
+
+    quotationrequest.itemSuppliers.push(selectedSupplier);
+
+    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.suppliers, "name");
+
+    let extIdx = suppliers.map((supplier) => supplier.id).indexOf(selectedSupplier.id);
+
+    //check if index is existed
+    if (extIdx != -1) {
+        //remove supplier from avablelist
+        suppliers.splice(extIdx, 1);
+    }
+
+    //refill Available Supplier
+    fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
 }
 
 const btnAddAllSupplier = () => {
