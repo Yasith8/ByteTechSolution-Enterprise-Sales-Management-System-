@@ -141,6 +141,14 @@ const btnRemoveOneSupplier = () => {
 
 
 const btnRemoveAllSupplier = () => {
+    for (const itemSupplier of quotationrequest.itemSuppliers) {
+        suppliers.push(itemSupplier)
+    }
+
+    fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name")
+
+    quotationrequest.itemSuppliers = [];
+    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name")
 
 }
 
