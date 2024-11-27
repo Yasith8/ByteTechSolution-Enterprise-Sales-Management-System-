@@ -185,7 +185,49 @@ const checkQuotationRequestInputErrors = () => {
 }
 
 const QuotationRequestHandler = () => {
+    let errors = checkQuotationRequestInputErrors();
 
+    if (errors == "") {
+        const userConfirm = confirm("Are you sure to send request to suppliers?");
+
+        if (userConfirm) {
+            let postServiceResponce;
+
+            $.ajax('/quotationrequest', {
+                type: 'POST',
+                data: JSON.stringify(quotationrequest),
+                contentType: 'application/json',
+                async: false,
+
+                success: function(data) {
+                    console.log("success ", data);
+                    postServiceResponce = data;
+                },
+
+                error: function(resData) {
+                    console.log("Fail ", resData);
+                    postServiceResponce = resData;
+                }
+            });
+
+            //if service is success
+            if (postServiceResponce == "OK") {
+                alert("Quotation Request Sent Successfully");
+                //hide the model
+                $('#qRequestAddModal').modal('hide');
+                //reset the Item form
+                formQuotationRequest.reset();
+                //refreash Item form
+                refreshQuotationRequestForm();
+                //refreash Item table
+                refreshQuotationRequestTable()
+            } else {
+                alert("Failed to send Quotation Request\n" + postServiceResponce);
+            }
+        }
+    } else {
+        alert("Form has following errors...\n" + errors);
+    }
 }
 
 const deleteQuotationRequest = () => {
