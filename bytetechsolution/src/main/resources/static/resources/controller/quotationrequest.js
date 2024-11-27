@@ -38,7 +38,7 @@ const refreshQuotationRequestForm = () => {
 
     //pass instruction to user for select category first
     fillDataIntoSelect(selectBrand, "Please Select Category First", [], "name");
-    fillDataIntoSelect(selectAvailableSupplier, "Empty", [], "name");
+    fillDataIntoSelect(selectAvailableSupplier, "", [], "name");
 
     selectCategory.addEventListener('change', () => {
         quotationrequest.brand_id = null;
@@ -93,7 +93,7 @@ const btnAddOneSupplier = () => {
 
     quotationrequest.itemSuppliers.push(selectedSupplier);
 
-    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.suppliers, "name");
+    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name");
 
     let extIdx = suppliers.map((supplier) => supplier.id).indexOf(selectedSupplier.id);
 
@@ -108,11 +108,13 @@ const btnAddOneSupplier = () => {
 }
 
 const btnAddAllSupplier = () => {
+
     for (const supplier of suppliers) {
         quotationrequest.itemSuppliers.push(supplier);
     }
 
-    fillDataIntoSelect(selectSelectedSupplier, quotationrequest.itemSuppliers, "", "name");
+
+    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name");
 
     suppliers = [];
     fillDataIntoSelect(selectAvailableSupplier, suppliers, "", "name")
@@ -123,19 +125,23 @@ const btnAddAllSupplier = () => {
 const btnRemoveOneSupplier = () => {
     let selectedPullSupplier = JSON.parse(selectSelectedSupplier.value);
 
+
     suppliers.push(selectedPullSupplier);
 
-    fillDataIntoSelect(selectSelectedSupplier, "", suppliers, "name");
+
+    fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
 
     let extIdx = quotationrequest.itemSuppliers.map((supplier) => supplier.id).indexOf(selectedPullSupplier.id);
+
 
     //check if index is existed
     if (extIdx != -1) {
         //remove supplier from avablelist
-        quotationrequest.suppliers.splice(extIdx, 1);
+        quotationrequest.itemSuppliers.splice(extIdx, 1);
     }
 
     //refill Available Supplier
+
     fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name");
 }
 
