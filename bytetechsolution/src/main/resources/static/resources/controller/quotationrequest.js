@@ -114,14 +114,29 @@ const btnAddAllSupplier = () => {
 
     fillDataIntoSelect(selectSelectedSupplier, quotationrequest.itemSuppliers, "", "name");
 
-    itemSuppliers = [];
-    fillDataIntoSelect(selectAvailableSupplier, itemSuppliers, "", "name")
+    suppliers = [];
+    fillDataIntoSelect(selectAvailableSupplier, suppliers, "", "name")
 
 
 }
 
 const btnRemoveOneSupplier = () => {
+    let selectedPullSupplier = JSON.parse(selectSelectedSupplier.value);
 
+    suppliers.push(selectedPullSupplier);
+
+    fillDataIntoSelect(selectSelectedSupplier, "", suppliers, "name");
+
+    let extIdx = quotationrequest.itemSuppliers.map((supplier) => supplier.id).indexOf(selectedPullSupplier.id);
+
+    //check if index is existed
+    if (extIdx != -1) {
+        //remove supplier from avablelist
+        quotationrequest.suppliers.splice(extIdx, 1);
+    }
+
+    //refill Available Supplier
+    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name");
 }
 
 
