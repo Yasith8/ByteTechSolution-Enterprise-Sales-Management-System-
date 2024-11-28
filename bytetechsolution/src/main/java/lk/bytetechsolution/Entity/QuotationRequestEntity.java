@@ -74,7 +74,7 @@ public class QuotationRequestEntity {
     
     @ManyToMany
     @JoinTable(name = "quotation_request_has_supplier",joinColumns=@JoinColumn(name="quotation_request_id"),inverseJoinColumns =@JoinColumn(name = "supplier_id"))
-    private Set<SupplierEntity> supplier_id;
+    private Set<SupplierEntity> itemSuppliers;
 
     @ManyToOne
     @JoinColumn(name = "quotationstatus_id",referencedColumnName = "id")

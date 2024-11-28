@@ -59,6 +59,7 @@ const refreshQuotationRequestForm = () => {
     const qrequeststatuses = getServiceAjaxRequest("/quotationstatus/alldata");
     fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name", qrequeststatuses[0].name);
     //fillDataIntoSelect(selectRequestStatus, "Please Select Request Status", qrequeststatuses, "name");
+    quotationrequest.quotationstatus_id = qrequeststatuses[0];
     selectRequestStatus.disabled = true;
 
     removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
@@ -236,6 +237,7 @@ const checkQuotationRequestInputErrors = () => {
 }
 
 const QuotationRequestHandler = () => {
+    console.log(quotationrequest);
     let errors = checkQuotationRequestInputErrors();
 
     if (errors == "") {
