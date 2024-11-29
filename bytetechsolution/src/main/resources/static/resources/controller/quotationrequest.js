@@ -41,11 +41,9 @@ const refreshQuotationRequestForm = () => {
     fillDataIntoSelect(selectAvailableSupplier, "", [], "name");
 
     selectCategory.addEventListener('change', () => {
-        quotationrequest.brand_id = null;
-        removeValidationColor([selectBrand]);
 
         const itemCategory = selectValueHandler(selectCategory);
-        brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.id);
+        brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
         fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
 
         selectBrand.addEventListener('change', () => {
@@ -86,6 +84,7 @@ const getQRequestStatus = (ob) => {
 }
 const refillQuotationRequestForm = (ob, rowIndex) => {
     $('#qRequestAddModal').modal('show');
+    console.log(ob);
     removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
 
 
@@ -212,7 +211,7 @@ const btnRemoveAllSupplier = () => {
 
 
 const checkQuotationRequestInputErrors = () => {
-    const errors = "";
+    let errors = "";
 
     if (quotationrequest.brand_id == null) {
         errors += "Brand is empty\n";
@@ -226,7 +225,7 @@ const checkQuotationRequestInputErrors = () => {
     if (quotationrequest.requireddate == null) {
         errors += "Required Date is empty\n";
     }
-    if (quotationrequest.supplier.length == 0) {
+    if (quotationrequest.itemSuppliers.length == 0) {
         errors += "At leaset one supplier is required\n"
     }
     if (quotationrequest.quotationstatus_id == null) {

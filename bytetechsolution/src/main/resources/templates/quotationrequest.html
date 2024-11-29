@@ -102,7 +102,7 @@
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <select name="category" id="selectCategory" class="form-select" onchange="selectDynamicValidator(this,'','qoutationrequest','category_id')">
+                                    <select name="category" id="selectCategory" class="form-select" onchange="selectDynamicValidator(this,'','quotationrequest','category_id')">
                                     <option value=""  selected disabled>Select Category</option>
                                 </select>
                                 </div>
@@ -111,7 +111,7 @@
                             <!-- product name start -->
                             <div class="col-8">
                                 <div class="form-floating mb-3">
-                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','qoutationrequest','brand_id')">
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','quotationrequest','brand_id')">
                                     <option value=""  selected disabled>Select Brand</option>
                                 </select>
                                 </div>
@@ -131,15 +131,15 @@
                             <!-- required date start -->
                             <div class="col-4 ">
                                 <div class="form-floating mb-3 ">
-                                    <input type="date" class="form-control " id="dateRequiredDate" placeholder=" " required onkeyup="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$', 'quotationrequest', 'requireddate')">
-                                    <label for="dateRequiredDate ">Required Date<span class="requiredIcon ">*</span></label>
+                                    <input type="date" class="form-control" id="dateRequiredDate" placeholder=" " required onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$', 'quotationrequest', 'requireddate')">
+                                    <label for="dateRequiredDate">Required Date<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <!--  required date end -->
                             <!-- request status start -->
                             <div class="col-4 ">
                                 <div class="form-floating mb-3 ">
-                                    <select name="qrequeststatus" id="selectRequestStatus" class="form-select " onchange="selectDynamicValidator(this,'','qoutationrequest','quotationstatus_id')">
+                                    <select name="qrequeststatus" id="selectRequestStatus" class="form-select " onchange="selectDynamicValidator(this,'','quotationrequest','quotationstatus_id')">
                                     <option value=" "  selected disabled>Select Request Status</option>
                                 </select>
                                 </div>

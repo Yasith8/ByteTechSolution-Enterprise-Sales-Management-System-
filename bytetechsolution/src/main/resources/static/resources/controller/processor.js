@@ -207,7 +207,6 @@ const refillProcessorForm = (ob, rowIndex) => {
     //when user change brand all the data need to change
     selectBrand.addEventListener('change', () => {
         processor.cpuseries_id = null;
-        processor.cpusocket_id = null;
         removeValidationColor([selectCpuSeries, selectCpuSocket]);
 
         const cpuBrand = selectValueHandler(selectBrand);
