@@ -104,7 +104,7 @@ body {
     gap: 30px;
 }
 
-.status-resign {
+.quotation-canceled {
     padding: 5px;
     border-radius: 8px;
     border: none;
@@ -115,7 +115,7 @@ body {
     color: #ff9d48;
 }
 
-.status-delete {
+.quotation-deleted {
     padding: 5px;
     border-radius: 8px;
     border: none;
@@ -126,7 +126,7 @@ body {
     color: #EF3826;
 }
 
-.status-other {
+.quotation-other {
     padding: 5px;
     border-radius: 8px;
     border: none;
@@ -135,7 +135,7 @@ body {
     text-align: center;
 }
 
-.status-active {
+.quotation-accepted {
     padding: 5px;
     border-radius: 8px;
     border: none;
@@ -144,6 +144,17 @@ body {
     padding-inline: 30px;
     padding-block: 8px;
     color: #00B69B;
+}
+
+.quotation-denied {
+    padding: 5px;
+    border-radius: 8px;
+    border: 1px solid #db0000;
+    background-color: #252525;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #db0000;
 }
 
 .btn-user-selectImage {

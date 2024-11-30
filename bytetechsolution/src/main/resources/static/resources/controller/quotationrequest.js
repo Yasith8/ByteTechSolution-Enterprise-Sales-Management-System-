@@ -80,19 +80,35 @@ const getCategoryName = (ob) => {
     return ob.category_id.name
 }
 const getQRequestStatus = (ob) => {
+    if (ob.quotationstatus_id.name == 'Requested') {
+        return '<p class="quotation-requested">' + ob.quotationstatus_id.name + '</p>';
+    }
 
+    if (ob.quotationstatus_id.name == 'Canceled') {
+        return '<p class="quotation-canceled">' + ob.quotationstatus_id.name + '</p>'
+    }
+    if (ob.quotationstatus_id.name == 'Deleted') {
+        return '<p class="quotation-deleted">' + ob.quotationstatus_id.name + '</p>'
+    }
+    if (ob.quotationstatus_id.name == 'Accepted') {
+        return '<p class="quotation-accepted">' + ob.quotationstatus_id.name + '</p>'
+    }
+    if (ob.quotationstatus_id.name == 'Denied') {
+        return '<p class="quotation-denied">' + ob.quotationstatus_id.name + '</p>'
+    } else {
+        return '<p class="quotation-other">' + ob.quotationstatus_id.name + '</p>'
+    }
 }
 const refillQuotationRequestForm = (ob, rowIndex) => {
     $('#qRequestAddModal').modal('show');
-    console.log(ob);
     removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
 
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
 
-    buttonUpdate.disabled = false;
-    buttonUpdate.classList.add('modal-btn-update');
+    //buttonUpdate.disabled = false;
+    //buttonUpdate.classList.add('modal-btn-update');
 
     quotationRequest = JSON.parse(JSON.stringify(ob));
     oldQuotationRequest = ob;
@@ -104,14 +120,25 @@ const refillQuotationRequestForm = (ob, rowIndex) => {
     dateRequiredDate.value = quotationRequest.requireddate;
 
     requestStatuses = getServiceAjaxRequest("/quotationstatus/alldata");
-    fillDataIntoSelect(selectRequestStatus, "Please Select Quotation Status", requestStatuses, "name", ob.quotationstatus_id.name);
+    fillDataIntoSelect(selectRequestStatus, "Please Select Quotation Status", requestStatuses, "name", quotationRequest.quotationstatus_id.name);
     selectRequestStatus.disabled = false;
 
     categories = getServiceAjaxRequest("/category/alldata");
-    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", ob.category_id.name);
+    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", quotationRequest.category_id.name);
 
-    brnads = getServiceAjaxRequest("/quotationstatus/alldata");
-    fillDataIntoSelect(selectBrand, "Please Select Brand", brnads, "name", ob.brand_id.name);
+    selectCategory.addEventListener('change', () => {
+        const itemCategory = selectValueHandler(selectCategory);
+        brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
+        fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationRequest.brand_id.name);
+
+        selectBrand.addEventListener('change', () => {
+            const itemBrand = selectValueHandler(selectBrand);
+            suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
+            fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
+            fillDataIntoSelect(selectSelectedSupplier, "", quotationRequest.itemSuppliers, "name");
+        })
+    })
+
 
     inputFieldsHandler([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate], false);
     buttonClear.classList.add('modal-btn-clear');
