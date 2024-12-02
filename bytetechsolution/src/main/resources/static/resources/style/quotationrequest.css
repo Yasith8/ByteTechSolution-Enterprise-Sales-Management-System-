@@ -146,6 +146,17 @@ body {
     color: #00B69B;
 }
 
+.quotation-requested {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #CCF0EB;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #00B69B;
+}
+
 .quotation-denied {
     padding: 5px;
     border-radius: 8px;

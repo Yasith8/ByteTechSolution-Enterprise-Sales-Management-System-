@@ -37,28 +37,12 @@ public class SupplierQuotationEntity {
     private String quotationid;
 
     @NotNull
-    @Column(name = "itemname")
-    private String itemname;
-
-    @NotNull
-    @Column(name = "itemcode")
-    private String itemcode;
-
-    @NotNull
-    @Column(name = "quantity")
-    private Integer quantity;
+    @Column(name = "quotationdate")
+    private LocalDateTime quotationdate;
 
     @NotNull
     @Column(name = "validdate")
     private LocalDateTime validdate;
-
-    @NotNull
-    @Column(name = "unitprice")
-    private BigDecimal unitprice;
-
-    @NotNull
-    @Column(name = "totalprice")
-    private BigDecimal totalprice;
 
     @ManyToOne
     @JoinColumn(name = "quotation_request_id",referencedColumnName = "id")

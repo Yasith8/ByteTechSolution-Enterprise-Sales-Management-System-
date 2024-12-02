@@ -9,6 +9,7 @@ const refreshQuotationRequestTable = () => {
     const displayColumnList = [
         { dataType: 'text', propertyName: 'quotationrequestcode' },
         { dataType: 'function', propertyName: getCategoryName },
+        { dataType: 'function', propertyName: getBrandName },
         { dataType: 'text', propertyName: 'quantity' },
         { dataType: 'text', propertyName: 'requireddate' },
         { dataType: 'function', propertyName: getQRequestStatus },
@@ -79,6 +80,10 @@ const refreshQuotationRequestForm = () => {
 const getCategoryName = (ob) => {
     return ob.category_id.name
 }
+
+const getBrandName = (ob) => {
+    return ob.brand_id.name
+}
 const getQRequestStatus = (ob) => {
     if (ob.quotationstatus_id.name == 'Requested') {
         return '<p class="quotation-requested">' + ob.quotationstatus_id.name + '</p>';
@@ -125,6 +130,10 @@ const refillQuotationRequestForm = (ob, rowIndex) => {
 
     categories = getServiceAjaxRequest("/category/alldata");
     fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", quotationRequest.category_id.name);
+    categories = getServiceAjaxRequest("/category/alldata");
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brand, "name", quotationRequest.brand_id.name);
+    fillDataIntoSelect(selectAvailableSupplier, "Can't Update a Request. Create a New One", [], "name");
+    fillDataIntoSelect(selectSelectedSupplier, "", quotationRequest.itemSuppliers, "name");
 
     selectCategory.addEventListener('change', () => {
         const itemCategory = selectValueHandler(selectCategory);
@@ -135,7 +144,6 @@ const refillQuotationRequestForm = (ob, rowIndex) => {
             const itemBrand = selectValueHandler(selectBrand);
             suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
             fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
-            fillDataIntoSelect(selectSelectedSupplier, "", quotationRequest.itemSuppliers, "name");
         })
     })
 
