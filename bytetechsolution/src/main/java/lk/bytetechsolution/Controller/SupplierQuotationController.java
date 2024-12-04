@@ -22,6 +22,7 @@ import lk.bytetechsolution.Dao.QuotationStatusDao;
 import lk.bytetechsolution.Dao.SupplierQuotationDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.GpuEntity;
+import lk.bytetechsolution.Entity.QuotationItemEntity;
 import lk.bytetechsolution.Entity.SupplierEntity;
 import lk.bytetechsolution.Entity.SupplierHasBrandCategoryEntity;
 import lk.bytetechsolution.Entity.SupplierQuotationEntity;
@@ -185,8 +186,8 @@ public class SupplierQuotationController {
             //assign update date
             supplierquotation.setModifydate(LocalDateTime.now());
 
-            for(SupplierHasBrandCategoryEntity supplierHasBrandCategory:supplier.getSupplier_has_brand_category()){
-                supplierHasBrandCategory.setSupplier_id(supplier);
+            for(QuotationItemEntity quotationItem:supplierquotation.getQuotation_item()){
+                quotationItem.setSupplier_quotation_id(supplierquotation);
             }
 
             //save the data

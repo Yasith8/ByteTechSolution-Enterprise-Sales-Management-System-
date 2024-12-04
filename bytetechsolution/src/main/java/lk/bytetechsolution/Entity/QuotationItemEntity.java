@@ -2,8 +2,6 @@ package lk.bytetechsolution.Entity;
 
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,8 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -54,8 +50,8 @@ public class QuotationItemEntity {
     private BigDecimal lineprice;
 
     @ManyToOne
-    @JoinColumn(name = "quotation_request_id",referencedColumnName = "id")
+    @JoinColumn(name = "supplier_quotation_id",referencedColumnName = "id")
     @JsonIgnore
-    private SupplierQuotationEntity quotation_request_id;
+    private SupplierQuotationEntity supplier_quotation_id;
 
 }

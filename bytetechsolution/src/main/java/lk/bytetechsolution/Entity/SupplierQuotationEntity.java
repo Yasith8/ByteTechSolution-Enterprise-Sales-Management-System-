@@ -73,7 +73,7 @@ public class SupplierQuotationEntity {
     @JoinColumn(name = "quotationstatus_id",referencedColumnName = "id")
     private QuotationStatusEntity quotationstatus_id;
 
-   @OneToMany(mappedBy = "quotation_request_id",cascade = CascadeType.ALL,orphanRemoval = true)
+   @OneToMany(mappedBy = "supplier_quotation_id",cascade = CascadeType.ALL,orphanRemoval = true)
    private List<QuotationItemEntity> quotation_item;
 
 }
