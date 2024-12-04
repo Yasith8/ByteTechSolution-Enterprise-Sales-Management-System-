@@ -112,9 +112,9 @@ public class SupplierQuotationController {
             }
 
             UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
-            supplier.setAddeduser(addedUserData.getId());
+            supplierquotation.setAddeduser(addedUserData.getId());
 
-            supplier.setAddeddate(LocalDateTime.now());
+            supplierquotation.setAddeddate(LocalDateTime.now());
 
             /* System.out.println("Supplier data: " + supplier); */
 
@@ -122,15 +122,15 @@ public class SupplierQuotationController {
                 supplierHasBrandCategory.setSupplier_id(supplier);
             }
 
-            daoSupplier.save(supplier);
+            daoSupplierQuotation.save(supplierquotation);
             return "OK";
         } catch (Exception e) {
             return "Save not Completed: "+e.getMessage();
         }
     }
 
-    @DeleteMapping(value = "/supplier")
-    public String deleteSupplierData(@RequestBody SupplierEntity supplier){
+    @DeleteMapping(value = "/supplierquotation")
+    public String deleteSupplierData(@RequestBody  SupplierQuotationEntity supplierquotation){
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"SUPPLIER");
