@@ -54,8 +54,8 @@ public class QuotationItemEntity {
     private BigDecimal lineprice;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_quotation_id",referencedColumnName = "id")
+    @JoinColumn(name = "quotation_request_id",referencedColumnName = "id")
     @JsonIgnore
-    private SupplierQuotationEntity supplier_quotation_id;
+    private SupplierQuotationEntity quotation_request_id;
 
 }

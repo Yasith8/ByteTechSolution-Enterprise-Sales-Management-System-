@@ -44,9 +44,28 @@ public class SupplierQuotationEntity {
     @Column(name = "validdate")
     private LocalDateTime validdate;
 
+    @NotNull
+    @Column(name = "addeddate")
+    private LocalDateTime addeddate;
+
+    @Column(name = "modifydate")
+    private LocalDateTime modifydate;
+
+    @Column(name = "deletedate")
+    private LocalDateTime deletedate;
+
+    @NotNull
+    @Column(name = "addeduser")
+    private Integer addeduser;
+    
+    @Column(name = "modifyuser")
+    private Integer modifyuser;
+    
+    @Column(name = "deleteuser")
+    private Integer deleteuser;
+
     @ManyToOne
     @JoinColumn(name = "quotation_request_id",referencedColumnName = "id")
-    @JsonIgnore
     private QuotationRequestEntity quotation_request_id;
 
     @ManyToOne
