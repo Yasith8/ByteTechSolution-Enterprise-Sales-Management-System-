@@ -21,10 +21,7 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.QuotationStatusDao;
 import lk.bytetechsolution.Dao.SupplierQuotationDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.GpuEntity;
 import lk.bytetechsolution.Entity.QuotationItemEntity;
-import lk.bytetechsolution.Entity.SupplierEntity;
-import lk.bytetechsolution.Entity.SupplierHasBrandCategoryEntity;
 import lk.bytetechsolution.Entity.SupplierQuotationEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -117,12 +114,9 @@ public class SupplierQuotationController {
 
             supplierquotation.setAddeddate(LocalDateTime.now());
 
-            /* System.out.println("Supplier data: " + supplier); */
-
-            for(SupplierHasBrandCategoryEntity supplierHasBrandCategory:supplier.getSupplier_has_brand_category()){
-                supplierHasBrandCategory.setSupplier_id(supplier);
+            for(QuotationItemEntity quotationItem:supplierquotation.getQuotation_item()){
+                quotationItem.setSupplier_quotation_id(supplierquotation);
             }
-
             daoSupplierQuotation.save(supplierquotation);
             return "OK";
         } catch (Exception e) {
@@ -197,5 +191,4 @@ public class SupplierQuotationController {
             return "Update not Completed."+e.getMessage();
         }
     }
-}
 }
