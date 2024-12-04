@@ -160,7 +160,41 @@ public class SupplierQuotationController {
        }
     }
 
-    @PutMapping(value = "/supplier")
-    public String updateSupplierData(@RequestBody SupplierEntity supplier) {
+    @PutMapping(value = "/supplierquotation")
+    public String updateSupplierData(@RequestBody SupplierQuotationEntity supplierquotation) {
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"QUOTATION");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied! Update not Completed";
+        }
+
+        //check existance
+        SupplierQuotationEntity extSupplierQuotation=daoSupplierQuotation.getReferenceById(supplierquotation.getId());
+
+        if(extSupplierQuotation==null){
+            return "Delete not Completed.Supplier not exists";
+        }
+
+        try {
+            //asign update user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            supplierquotation.setModifyuser(modifyUser.getId());
+
+            //assign update date
+            supplierquotation.setModifydate(LocalDateTime.now());
+
+            for(SupplierHasBrandCategoryEntity supplierHasBrandCategory:supplier.getSupplier_has_brand_category()){
+                supplierHasBrandCategory.setSupplier_id(supplier);
+            }
+
+            //save the data
+            daoSupplierQuotation.save(supplierquotation);
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed."+e.getMessage();
+        }
+    }
 }
 }
