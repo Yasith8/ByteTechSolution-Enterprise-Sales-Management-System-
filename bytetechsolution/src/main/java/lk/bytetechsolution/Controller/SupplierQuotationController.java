@@ -133,26 +133,26 @@ public class SupplierQuotationController {
     public String deleteSupplierData(@RequestBody  SupplierQuotationEntity supplierquotation){
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"SUPPLIER");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"QUOTATION");
 
         if(!userPrivilage.get("delete")){
             return "Permission Denied! Delete not Completed";
         }
 
-       SupplierEntity extSupplier=daoSupplier.getReferenceById(supplier.getId());
-       if(extSupplier==null){
+       SupplierQuotationEntity extSupplierQuotation=daoSupplierQuotation.getReferenceById(supplierquotation.getId());
+       if(extSupplierQuotation==null){
         return "Delete not Completed.Supplier not exists";
        }
 
        try {
         UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
-        supplier.setDeleteuser(deleteUser.getId());
+        supplierquotation.setDeleteuser(deleteUser.getId());
 
-        supplier.setDeletedate(LocalDateTime.now());
+        supplierquotation.setDeletedate(LocalDateTime.now());
 
-        supplier.setSupplierstatus_id(daoSupplierStatus.getReferenceById(3));
+        supplierquotation.setQuotationstatus_id(daoQuotationStatus.getReferenceById(3));
 
-        daoSupplier.save(supplier);
+        daoSupplierQuotation.save(supplierquotation);
 
         return "OK";
        } catch (Exception e) {
