@@ -94,6 +94,49 @@ const fillDataIntoSelect = (fieldId, message, dataList, propertyName, selectedVa
     });
 }
 
+const fillMultipleItemOfDataIntoSingleSelect = (fieldId, message, dataList, propertyName, additionalPropertyName, selectedValue) => {
+    //empty static content of dropdown
+    fieldId.innerHTML = '';
+
+    //check message is empty or not
+    if (message != "") {
+        //create option element
+        const optionMsg = document.createElement('option');
+        //assign message for option
+        optionMsg.innerText = message;
+        //this option need to be selected & disabled
+        optionMsg.selected = 'selected';
+        optionMsg.disabled = 'disabled';
+        //append the option into select
+        fieldId.appendChild(optionMsg);
+    }
+
+    //get each element of data in dataList Array
+    dataList.forEach(element => {
+        //create option element
+        const option = document.createElement('option');
+
+        //assign value for option
+        //normal string object convert into json format
+        //advantage of json is we can found real object
+        option.value = JSON.stringify(element);
+        if (additionalPropertyName) { option.innerText = `${element[propertyName]} - ${element[additionalPropertyName]}` }
+        //assign text to option that key=propertyName in element object
+        //in ex : dataList[i].propertyName or dataLidtI[propertyName]
+        //in ex: students[1].name--> studentOb[name]
+        //option.innerText = element[propertyName];
+
+        //if selectedValue equal with current options value then make it as selected
+        if (selectedValue == element[propertyName]) {
+            //option is need to selected
+            option.selected = true;
+        }
+
+        //append the option element into select
+        fieldId.appendChild(option);
+    });
+}
+
 
 const removeValidationColor = (fieldIds) => {
     fieldIds.forEach((fieldId) => {
