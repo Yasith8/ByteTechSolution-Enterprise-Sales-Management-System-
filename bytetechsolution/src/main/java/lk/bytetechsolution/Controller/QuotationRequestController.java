@@ -22,6 +22,7 @@ import lk.bytetechsolution.Dao.QuotationRequestDao;
 import lk.bytetechsolution.Dao.QuotationStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.QuotationRequestEntity;
+import lk.bytetechsolution.Entity.QuotationRequestItemEntitiy;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -107,6 +108,10 @@ public class QuotationRequestController {
 
             quotationrequest.setAddeddate(LocalDateTime.now());
 
+            for(QuotationRequestItemEntitiy quotationRequestItem:quotationrequest.getQuotation_request_item()){
+                quotationRequestItem.setQuotation_request_id(quotationrequest);
+            }
+
             daoQuotationRequest.save(quotationrequest);
             return "OK";
         } catch (Exception e) {
@@ -172,6 +177,10 @@ public class QuotationRequestController {
 
             //assign update date
             quotationrequest.setModifydate(LocalDateTime.now());
+
+            for(QuotationRequestItemEntitiy quotationRequestItem:quotationrequest.getQuotation_request_item()){
+                quotationRequestItem.setQuotation_request_id(quotationrequest);
+            }
 
             //save the data
             daoQuotationRequest.save(quotationrequest);
