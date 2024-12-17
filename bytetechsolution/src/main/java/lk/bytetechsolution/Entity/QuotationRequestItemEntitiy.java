@@ -35,6 +35,10 @@ public class QuotationRequestItemEntitiy
     @Column(name = "itemname")
     private String itemname;
 
+    @NotNull
+    @Column(name = "quantity")
+    private Integer quantity;
+
     @ManyToOne
     @JoinColumn(name = "quotation_request_id",referencedColumnName = "id")
     @JsonIgnore

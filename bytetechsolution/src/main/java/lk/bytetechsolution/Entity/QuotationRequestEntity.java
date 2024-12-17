@@ -38,10 +38,6 @@ public class QuotationRequestEntity {
     private String quotationrequestcode;
 
     @NotNull
-    @Column(name = "quantity")
-    private Integer quantity;
-
-    @NotNull
     @Column(name = "requireddate")
     private LocalDate requireddate;
 

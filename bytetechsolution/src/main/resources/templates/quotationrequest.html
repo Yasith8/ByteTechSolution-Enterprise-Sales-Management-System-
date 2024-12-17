@@ -173,36 +173,119 @@
 
                         </div>
 
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">Product Selection</div>
+                                            <div class="card-body">
+                                                <form id="innerItemForm">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="mb-3 form-floating">
+                                                                <select name="itemname" id="selectItemName" class="form-select" onchange="selectDynamicValidator(this,'','supplierquotation','itemcode')">
+                                                                <option value=""  selected disabled>Select Item Name</option>
+                                                            </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="mb-3 form-floating">
+                                                                <input type="number" class="form-control" id="decimalUnitprice" placeholder="account name" required onkeyup="textValidator(this,'^\d+$','supplierquotation','quantity')">
+                                                                <label for="decimalUnitprice">Quantity<span class="requiredIcon">*</span></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-2"><button type="reset" class="btn inner-cancel-btn modal-button">Clear</button></div>
+                                                        <div class="col-6"></div>
+                                                        <div class="col-2"><button id="buttonInnerUpdate" type="button" class="btn inner-update-btn modal-button" onclick="innerQuotationRequestProductUpdate()">Update</button></div>
+                                                        <div class="col-2"><button id="buttonInnerSubmit" type="button" class="btn inner-add-btn modal-button" onclick="innerQuotationRequestProductAdd()">Add</button></div>
 
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div class="row mt-3">
+
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">Product Overview</div>
+                                            <div class="card-body">
+                                                <table class="table table-hover table-striped" id="innerItemTable">
+                                                    <thead class="table-header">
+                                                        <tr align="center">
+                                                            <th style="background-color: #009d27 !important"> # </th>
+                                                            <th style="background-color: #009d27 !important"> Itemcode </th>
+                                                            <th style="background-color: #009d27 !important"> Itemname </th>
+                                                            <th style="background-color: #009d27 !important"> Quantity </th>
+                                                            <th style="background-color: #009d27 !important"> </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody class="table-body">
+
+                                                        <!-- create static values for table -->
+                                                        <!-- used for initial designs -->
+                                                        <!-- probebly this appear when data not loading to table from db -->
+                                                        <tr align="center" style="vertical-align: middle;">
+                                                            <td align="center"> 1 </td>
+                                                            <td align="center"> CPU0001 </td>
+                                                            <td align="center"> Core I7 20th Gen User Cor </td>
+                                                            <td align="center">50</td>
+                                                            <td>
+                                                                <button type="button" class="btn ms-1 me-1 btnDel">
+                                                                    <i class="fa-regular fa-circle-xmark"></i>
+                                                                </button> </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3 mb-3 ">
+                            <div class="col-6 ">
+                                <div id="divModifyButton">
+                                    <div class="row ">
+                                        <div class="col-1 "></div>
+                                        <div class="col-2 "><button type="button " class="modal-button modal-btn-print " data-bs-dismiss="modal" id="buttonPrint" onclick="printQuotationRequest(window['editOb'], window['editRow'])">Print</button></div>
+                                        <div class="col-2 "><button type="button " class="modal-button modal-btn-delete " data-bs-dismiss="modal" id="buttonDelete" onclick="deleteQuotationRequest(window['editOb'], window['editRow'])">Delete</button></div>
+                                        <div class="col-7 "></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 ">
+                                <div id="divModifyButton">
+                                    <div class="row ">
+                                        <div class="col-5 "></div>
+                                        <div class="col-2 ">
+                                            <!-- <button type="button " class="modal-button modal-btn-update " data-bs-dismiss="modal ">Update</button> --></div>
+                                        <div class="col-2 "><button type="button" class="modal-button modal-btn-clear " data-bs-dismiss="modal" id="buttonClear">Clear</button></div>
+                                        <div class="col-2 "><button type="button" onclick="QuotationRequestHandler()" class="modal-button modal-btn-submit" id="buttonSubmit">Request</button></div>
+                                        <div class="col-1 "></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
 
                     </form>
                 </div>
 
-                <div class="row mt-3 mb-3 ">
-                    <div class="col-6 ">
-                        <div id="divModifyButton">
-                            <div class="row ">
-                                <div class="col-1 "></div>
-                                <div class="col-2 "><button type="button " class="modal-button modal-btn-print " data-bs-dismiss="modal" id="buttonPrint" onclick="printQuotationRequest(window['editOb'], window['editRow'])">Print</button></div>
-                                <div class="col-2 "><button type="button " class="modal-button modal-btn-delete " data-bs-dismiss="modal" id="buttonDelete" onclick="deleteQuotationRequest(window['editOb'], window['editRow'])">Delete</button></div>
-                                <div class="col-7 "></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 ">
-                        <div id="divModifyButton">
-                            <div class="row ">
-                                <div class="col-5 "></div>
-                                <div class="col-2 ">
-                                    <!-- <button type="button " class="modal-button modal-btn-update " data-bs-dismiss="modal ">Update</button> --></div>
-                                <div class="col-2 "><button type="button" class="modal-button modal-btn-clear " data-bs-dismiss="modal" id="buttonClear">Clear</button></div>
-                                <div class="col-2 "><button type="button" onclick="QuotationRequestHandler()" class="modal-button modal-btn-submit" id="buttonSubmit">Request</button></div>
-                                <div class="col-1 "></div>
-                            </div>
-                        </div>
-                    </div>
 
-                </div>
 
 
             </div>
