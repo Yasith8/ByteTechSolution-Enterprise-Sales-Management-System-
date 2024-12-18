@@ -28,6 +28,8 @@ const refreshQuotationRequestForm = () => {
 
     quotationrequest.itemSuppliers = [];
 
+    quotationrequest.quotation_request_item = new Array();
+
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
 
@@ -73,6 +75,13 @@ const refreshQuotationRequestForm = () => {
         buttonClear.classList.remove('modal-btn-clear');
     }
 
+    refreshInnerQuotationRequestItemFormAndTable()
+
+}
+
+const refreshInnerQuotationRequestItemFormAndTable = () => {
+    const quotationRequestItem = new Object();
+    const oldQuotationRequestItem = null;
 
 }
 

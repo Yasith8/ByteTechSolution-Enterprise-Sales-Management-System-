@@ -184,7 +184,7 @@
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="mb-3 form-floating">
-                                                                <select name="itemname" id="selectItemName" class="form-select" onchange="selectDynamicValidator(this,'','supplierquotation','itemcode')">
+                                                                <select name="itemname" id="selectItemName" class="form-select" onchange="selectDynamicValidator(this,'','quotationRequestItem','itemcode')">
                                                                 <option value=""  selected disabled>Select Item Name</option>
                                                             </select>
                                                             </div>
@@ -193,8 +193,8 @@
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="mb-3 form-floating">
-                                                                <input type="number" class="form-control" id="decimalUnitprice" placeholder="account name" required onkeyup="textValidator(this,'^\d+$','supplierquotation','quantity')">
-                                                                <label for="decimalUnitprice">Quantity<span class="requiredIcon">*</span></label>
+                                                                <input type="number" class="form-control" id="numberQuantity" placeholder="account name" required onkeyup="textValidator(this,'^\d+$','quotationRequestItem','quantity')">
+                                                                <label for="numberQuantity">Quantity<span class="requiredIcon">*</span></label>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -112,6 +112,7 @@ public class QuotationRequestController {
                 quotationRequestItem.setQuotation_request_id(quotationrequest);
             }
 
+            
             daoQuotationRequest.save(quotationrequest);
             return "OK";
         } catch (Exception e) {
