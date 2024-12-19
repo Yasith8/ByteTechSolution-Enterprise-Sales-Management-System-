@@ -19,6 +19,6 @@ public interface CoolerDao extends JpaRepository<CoolerEntity,Integer>{
     @Query(value = "select concat('CLR',lpad(substring(max(clr.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.cooler as clr",nativeQuery = true)
     public String getNextCoolerNumber();
 
-    @Query("select new CoolerEntity(c.id,c.itemcode,c.itemname,c.category_id) from CoolerEntity c")
-    public List<CoolerEntity> coolerItemList();
+    @Query("select new CoolerEntity(c.id,c.itemcode,c.itemname,c.category_id) from CoolerEntity c where c.brand_id=?1")
+    public List<CoolerEntity> coolerItemList(String brandId);
 }
