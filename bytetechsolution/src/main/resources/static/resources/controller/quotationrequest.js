@@ -42,12 +42,17 @@ const refreshQuotationRequestForm = () => {
     //pass instruction to user for select category first
     fillDataIntoSelect(selectBrand, "Please Select Category First", [], "name");
     fillDataIntoSelect(selectAvailableSupplier, "", [], "name");
+    fillDataIntoSelect(selectAvailableSupplier, "", [], "name");
 
     selectCategory.addEventListener('change', () => {
 
         const itemCategory = selectValueHandler(selectCategory);
         brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
         fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
+
+        innerItemList = getServiceAjaxRequest(`/${itemCategory.name}/itemlist`)
+        fillDataIntoSelect(selectItemName, "Please Select Item", innerItemList, "name");
+
 
         selectBrand.addEventListener('change', () => {
             const itemBrand = selectValueHandler(selectBrand);
@@ -80,8 +85,20 @@ const refreshQuotationRequestForm = () => {
 }
 
 const refreshInnerQuotationRequestItemFormAndTable = () => {
-    const quotationRequestItem = new Object();
-    const oldQuotationRequestItem = null;
+    quotationRequestItem = new Object();
+    oldQuotationRequestItem = null;
+
+    inputFieldsHandler([selectItemName, numberQuantity], false)
+    removeValidationColor([selectItemName, numberQuantity])
+
+    buttonInnerSubmit.disabled = false;
+    buttonInnerSubmit.classList.add('inner-add-btn');
+
+    buttonInnerUpdate.disabled = true;
+    buttonInnerUpdate.classList.remove('inner-update-btn');
+
+
+
 
 }
 

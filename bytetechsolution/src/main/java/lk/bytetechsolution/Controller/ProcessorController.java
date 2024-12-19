@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -98,10 +99,9 @@ public class ProcessorController {
         return daoProcessor.findAll();
     }
 
-    @GetMapping(value = "/processor/itemlist", produces ="application/json" ) 
-    public List<ProcessorEntity> ProcessorItemList() {
-
-        return daoProcessor.processorItemList();
+    @GetMapping(value = "/processor/{brandname}/itemlist", produces ="application/json" ) 
+    public List<ProcessorEntity> ProcessorItemList(@PathVariable("brandname") String brandname) {
+        return daoProcessor.processorItemList(brandname);
     }
 
 
