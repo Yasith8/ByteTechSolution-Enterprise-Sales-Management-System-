@@ -23,6 +23,6 @@ public interface ProcessorDao extends JpaRepository<ProcessorEntity,Integer>{
     public String getNextProcessorNumber();
 
     @Query(value="select new ProcessorEntity(p.id,p.itemcode,p.itemname,p.category_id) from ProcessorEntity p where p.brand_id=?1")
-    public List<ProcessorEntity> processorItemList(String brandname);
+    public List<ProcessorEntity> processorItemList(String brandId);
     
 }

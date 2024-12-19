@@ -99,9 +99,9 @@ public class ProcessorController {
         return daoProcessor.findAll();
     }
 
-    @GetMapping(value = "/processor/{brandname}/itemlist", produces ="application/json" ) 
-    public List<ProcessorEntity> ProcessorItemList(@PathVariable("brandname") String brandname) {
-        return daoProcessor.processorItemList(brandname);
+    @GetMapping(value = "/processor/{brandId}/itemlist", produces ="application/json" ) 
+    public List<ProcessorEntity> ProcessorItemList(@PathVariable("brandId") String brandId) {
+        return daoProcessor.processorItemList(brandId);
     }
 
 
