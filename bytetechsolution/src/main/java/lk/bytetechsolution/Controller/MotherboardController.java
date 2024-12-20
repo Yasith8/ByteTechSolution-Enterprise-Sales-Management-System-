@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -100,10 +101,10 @@ public class MotherboardController {
         return daoMotherboard.findAll();
     }
 
-    @GetMapping(value = "/motherboard/itemlist", produces ="application/json" ) 
-    public List<MotherboardEntity> MotherboardItemList() {
+    @GetMapping(value = "/motherboard/{brandId}/itemlist", produces ="application/json" ) 
+    public List<MotherboardEntity> MotherboardItemList(@PathVariable("brandId") String brandId) {
 
-        return daoMotherboard.motherboardItemList();
+        return daoMotherboard.motherboardItemList(brandId);
     }
 
     
