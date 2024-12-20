@@ -22,7 +22,7 @@ public interface StorageDao extends JpaRepository<StorageEntity,Integer>{
     public String getNextStorageNumber();
 
     
-    @Query(value="select new StorageEntity(s.id,s.itemcode,s.itemname,s.category_id) from StorageEntity s")
-    public List<StorageEntity> storageItemList();
+    @Query(value="select new StorageEntity(s.id,s.itemcode,s.itemname,s.category_id) from StorageEntity s where s.brand_id=?1")
+    public List<StorageEntity> storageItemList(String brandId);
     
 }
