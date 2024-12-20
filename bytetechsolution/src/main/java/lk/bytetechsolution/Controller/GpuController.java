@@ -101,7 +101,7 @@ public class GpuController {
         return daoGpu.findAll();
     }
 
-    @GetMapping(value = "/gpu/brandId/itemlist",produces = "application/json")
+    @GetMapping(value = "/gpu/{brandId}/itemlist",produces = "application/json")
     public List<GpuEntity> gpuItemList(@PathVariable("brandId") String brandId) {
         return daoGpu.GpuItemList(brandId);
     }

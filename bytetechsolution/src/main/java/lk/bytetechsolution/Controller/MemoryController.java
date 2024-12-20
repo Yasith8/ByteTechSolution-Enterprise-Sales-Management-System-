@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -101,10 +102,9 @@ public class MemoryController {
         return daoMemory.findAll();
     }
 
-    @GetMapping(value = "/memory/itemlist", produces ="application/json" ) 
-    public List<MemoryEntity> MemoryItemList() {
-
-        return daoMemory.memoryItemList();
+    @GetMapping(value = "/memory/{brandId}/itemlist", produces ="application/json" ) 
+    public List<MemoryEntity> MemoryItemList(@PathVariable("brandId") String barndId) {
+        return daoMemory.memoryItemList(barndId);
     }
 
     @PostMapping(value = "/memory")
