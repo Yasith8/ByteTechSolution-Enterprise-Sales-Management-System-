@@ -43,6 +43,7 @@ const refreshQuotationRequestForm = () => {
     fillDataIntoSelect(selectBrand, "Please Select Category First", [], "name");
     fillDataIntoSelect(selectAvailableSupplier, "", [], "name");
     fillDataIntoSelect(selectAvailableSupplier, "", [], "name");
+    fillDataIntoSelect(selectItemName, "Please Category and Brand First", [], "name");
 
     selectCategory.addEventListener('change', () => {
 
@@ -50,14 +51,15 @@ const refreshQuotationRequestForm = () => {
         brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
         fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
 
-        innerItemList = getServiceAjaxRequest(`/${itemCategory.name}/itemlist`)
-        fillDataIntoSelect(selectItemName, "Please Select Item", innerItemList, "name");
 
 
         selectBrand.addEventListener('change', () => {
             const itemBrand = selectValueHandler(selectBrand);
             suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
             fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
+
+            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", innerItemList, "itemcode", 'itemname');
         })
     });
 
@@ -97,8 +99,39 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
     buttonInnerUpdate.disabled = true;
     buttonInnerUpdate.classList.remove('inner-update-btn');
 
+    console.log(quotationRequestItem);
 
 
+    //inner table
+    let displayPropertyList = [
+        { dataType: 'function', propertyName: getInnerFormItemCode },
+        { dataType: 'function', propertyName: getInnerFormItemName },
+        { dataType: 'text', propertyName: 'quantity' },
+    ]
+
+    fillDataIntoInnerTable(innerItemForm, quotationrequest.quotation_request_item, displayPropertyList, refillInnerQuotationRequestForm, deleteInnerQuotationRequestForm)
+
+
+}
+
+const getInnerFormItemCode = (ob) => {
+    return ob.quotation_request_item_id.itemcode;
+}
+
+const getInnerFormItemName = (ob) => {
+    return ob.quotation_request_item_id.itemname
+}
+
+const innerQuotationRequestProductAdd = () => {
+    console.log(quotationRequestItem);
+}
+
+
+const refillInnerQuotationRequestForm = (ob, rowIndex) => {
+
+}
+
+const deleteInnerQuotationRequestForm = (ob, rowIndex) => {
 
 }
 
@@ -269,6 +302,8 @@ const btnRemoveAllSupplier = () => {
     fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name")
 
 }
+
+
 
 
 const checkQuotationRequestInputErrors = () => {

@@ -117,10 +117,11 @@ public class ProcessorEntity {
     @JoinColumn(name="itemstatus_id",referencedColumnName = "id")
     private ItemStatusEntity itemstatus_id;
 
-    public ProcessorEntity(int id,String itemcode,String itmname,CategoryEntity category_id){
+    public ProcessorEntity(int id,String itemcode,String itmname,CategoryEntity category_id,BrandEntity brand_id){
         this.id=id;
         this.itemcode=itemcode;
         this.itemname=itmname;
         this.category_id=category_id;
+        this.brand_id=brand_id;
      }
 }

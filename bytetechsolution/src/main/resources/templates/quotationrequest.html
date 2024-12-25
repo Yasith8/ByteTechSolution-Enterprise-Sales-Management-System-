@@ -120,14 +120,6 @@
                         </div>
 
                         <div class="row ">
-                            <!-- Quantity start -->
-                            <div class="col-4 ">
-                                <div class="form-floating mb-3 ">
-                                    <input type="number" class="form-control" id="numberQuantity" placeholder=" " required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$', 'quotationrequest', 'quantity')">
-                                    <label for="numberQuantity ">Quantity<span class="requiredIcon ">*</span></label>
-                                </div>
-                            </div>
-                            <!-- Quantity end -->
                             <!-- required date start -->
                             <div class="col-4 ">
                                 <div class="form-floating mb-3 ">
@@ -184,7 +176,7 @@
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="mb-3 form-floating">
-                                                                <select name="itemname" id="selectItemName" class="form-select" onchange="selectDynamicValidator(this,'','quotationRequestItem','itemcode')">
+                                                                <select name="itemname" id="selectItemName" class="form-select" onchange="selectDynamicValidator(this,'','quotationRequestItem','quotation_request_item_id')">
                                                                 <option value=""  selected disabled>Select Item Name</option>
                                                             </select>
                                                             </div>
@@ -193,7 +185,7 @@
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="mb-3 form-floating">
-                                                                <input type="number" class="form-control" id="numberQuantity" placeholder="account name" required onkeyup="textValidator(this,'^\d+$','quotationRequestItem','quantity')">
+                                                                <input type="number" class="form-control" id="numberQuantity" placeholder="quantity" required onkeyup="textValidator(this,'^\d+$','quotationRequestItem','quantity')">
                                                                 <label for="numberQuantity">Quantity<span class="requiredIcon">*</span></label>
                                                             </div>
                                                         </div>

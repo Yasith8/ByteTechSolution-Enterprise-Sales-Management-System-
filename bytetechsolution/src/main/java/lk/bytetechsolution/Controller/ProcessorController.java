@@ -28,6 +28,7 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.ProcessorDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 @RestController
@@ -100,7 +101,7 @@ public class ProcessorController {
     }
 
     @GetMapping(value = "/processor/{brandId}/itemlist", produces ="application/json" ) 
-    public List<ProcessorEntity> ProcessorItemList(@PathVariable("brandId") String brandId) {
+    public List<ProcessorEntity> ProcessorItemList(@PathVariable("brandId") BrandEntity brandId) {
         return daoProcessor.processorItemList(brandId);
     }
 
