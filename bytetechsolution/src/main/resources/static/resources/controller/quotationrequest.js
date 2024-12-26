@@ -136,6 +136,19 @@ const innerQuotationItemFormErrors = () => {
 
 const innerQuotationRequestProductAdd = () => {
     console.log(quotationRequestItem);
+
+    errors = innerQuotationItemFormErrors();
+    if (errors == "") {
+        let userConfirm = confirm("Are you sure for add this product to Quotation Request?")
+
+        if (userConfirm) {
+            quotationrequest.quotation_request_item.push(quotationRequestItem);
+            alert("Item Added Successfully");
+            refreshInnerQuotationRequestItemFormAndTable();
+        }
+    } else {
+        alert("Item add fail because of following errors!\n", errors)
+    }
 }
 
 
