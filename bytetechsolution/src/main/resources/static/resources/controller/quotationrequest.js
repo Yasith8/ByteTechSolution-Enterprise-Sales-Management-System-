@@ -122,6 +122,18 @@ const getInnerFormItemName = (ob) => {
     return ob.quotation_request_item_id.itemname
 }
 
+const innerQuotationItemFormErrors = () => {
+    let errors = "";
+
+    if (quotationRequestItem.quotation_request_item_id == null) {
+        errors += "Quotation Item not Selected"
+    }
+    if (quotationRequestItem.quantity == null) {
+        errors += "Quantity not Added"
+    }
+    return errors;
+}
+
 const innerQuotationRequestProductAdd = () => {
     console.log(quotationRequestItem);
 }
