@@ -57,9 +57,6 @@ const refreshQuotationRequestForm = () => {
             const itemBrand = selectValueHandler(selectBrand);
             suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
             fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
-
-            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
-            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", innerItemList, "itemcode", 'itemname');
         })
     });
 
@@ -89,6 +86,27 @@ const refreshQuotationRequestForm = () => {
 const refreshInnerQuotationRequestItemFormAndTable = () => {
     quotationRequestItem = new Object();
     oldQuotationRequestItem = null;
+
+    selectCategory.addEventListener('change', () => {
+
+        const itemCategory = selectValueHandler(selectCategory);
+
+        selectBrand.addEventListener('change', () => {
+            const itemBrand = selectValueHandler(selectBrand);
+
+            //all item list array
+            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+            const availableItems = innerItemList.filter(innerItem =>
+                !quotationrequest.quotation_request_item.some(quotationItem =>
+                    quotationItem.itemcode === innerItem.itemcode
+                )
+            );
+
+            console.log("Item List", availableItems);
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
+        })
+    });
+
 
     inputFieldsHandler([selectItemName, numberQuantity], false)
     removeValidationColor([selectItemName, numberQuantity])
@@ -340,9 +358,6 @@ const checkQuotationRequestInputErrors = () => {
     if (quotationrequest.category_id == null) {
         errors += "Category is empty\n";
     }
-    if (quotationrequest.quantity == null) {
-        errors += "Quantity is empty\n";
-    }
     if (quotationrequest.requireddate == null) {
         errors += "Required Date is empty\n";
     }
@@ -351,6 +366,9 @@ const checkQuotationRequestInputErrors = () => {
     }
     if (quotationrequest.quotationstatus_id == null) {
         errors += "Quotation Status is empty\n";
+    }
+    if (quotationrequest.quotation_request_item.length == 0) {
+        errors += "At least one item need to assign into the quotation request\n";
     }
 
     return errors;
