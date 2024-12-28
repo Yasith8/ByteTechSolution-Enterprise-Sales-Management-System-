@@ -94,7 +94,7 @@ const fillDataIntoSelect = (fieldId, message, dataList, propertyName, selectedVa
     });
 }
 
-const fillMultipleItemOfDataIntoSingleSelect = (fieldId, message, dataList, propertyName, additionalPropertyName, selectedValue) => {
+const fillMultipleItemOfDataIntoSingleSelect = (fieldId, message, dataList, propertyName, additionalPropertyName, selectedValue1, selectedValue2) => {
     //empty static content of dropdown
     fieldId.innerHTML = '';
 
@@ -127,7 +127,7 @@ const fillMultipleItemOfDataIntoSingleSelect = (fieldId, message, dataList, prop
         //option.innerText = element[propertyName];
 
         //if selectedValue equal with current options value then make it as selected
-        if (selectedValue == element[propertyName]) {
+        if (selectedValue1 == element[propertyName] && selectedValue2 == element[additionalPropertyName]) {
             //option is need to selected
             option.selected = true;
         }

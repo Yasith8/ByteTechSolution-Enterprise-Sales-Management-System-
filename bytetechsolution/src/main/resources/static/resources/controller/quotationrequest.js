@@ -202,6 +202,7 @@ const innerQuotationRequestProductAdd = () => {
             console.log("Passed Item: ", quotationrequest.quotation_request_item);
             alert("Item Added Successfully");
             refreshInnerQuotationRequestItemFormAndTable();
+            quotationRequestInnerItemForm.reset();
         }
     } else {
         alert("Item add fail because of following errors!\n", errors)
@@ -271,20 +272,35 @@ const refillQuotationRequestForm = (ob, rowIndex) => {
 
     categories = getServiceAjaxRequest("/category/alldata");
     fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", quotationRequest.category_id.name);
-    categories = getServiceAjaxRequest("/category/alldata");
-    fillDataIntoSelect(selectBrand, "Please Select Brand", brand, "name", quotationRequest.brand_id.name);
+    brands = getServiceAjaxRequest("/brand/alldata");
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationRequest.brand_id.name);
+
+    //fill quotation request items
+    //requestItems = getServiceAjaxRequest(`/${(quotationRequest.category_id.name).toLowerCase()}/${quotationRequest.brand_id.id}/itemlist`)
+    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", requestItems, "itemcode", 'itemname', ob.quotation_request_item.itemcode, ob.quotation_request_item.itemname);
+
     fillDataIntoSelect(selectAvailableSupplier, "Can't Update a Request. Create a New One", [], "name");
     fillDataIntoSelect(selectSelectedSupplier, "", quotationRequest.itemSuppliers, "name");
 
     selectCategory.addEventListener('change', () => {
         const itemCategory = selectValueHandler(selectCategory);
         brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
-        fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationRequest.brand_id.name);
+        fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationrequest.brand_id.name);
 
         selectBrand.addEventListener('change', () => {
             const itemBrand = selectValueHandler(selectBrand);
             suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
             fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
+
+            //all item list array
+            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+            const availableItems = innerItemList.filter(innerItem =>
+                !quotationrequest.quotation_request_item.some(quotationItem =>
+                    quotationItem.itemcode === innerItem.itemcode
+                )
+            );
+
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
         })
     })
 
@@ -311,6 +327,7 @@ const refillQuotationRequestForm = (ob, rowIndex) => {
     }
 
 
+    refreshInnerQuotationRequestItemFormAndTable()
     buttonClear.disabled = true;
 
 }
