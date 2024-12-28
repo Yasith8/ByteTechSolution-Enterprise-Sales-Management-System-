@@ -172,7 +172,7 @@
                                         <div class="card">
                                             <div class="card-header">Product Selection</div>
                                             <div class="card-body">
-                                                <form id="innerItemForm">
+                                                <form id="quotationRequestInnerItemForm">
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="mb-3 form-floating">
@@ -185,7 +185,7 @@
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="mb-3 form-floating">
-                                                                <input type="number" class="form-control" id="numberQuantity" placeholder="quantity" required onkeyup="textValidator(this,'^\d+$','quotationRequestItem','quantity')">
+                                                                <input type="number" class="form-control" id="numberQuantity" placeholder="quantity" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','quotationRequestItem','quantity')">
                                                                 <label for="numberQuantity">Quantity<span class="requiredIcon">*</span></label>
                                                             </div>
                                                         </div>

@@ -57,6 +57,16 @@ const refreshQuotationRequestForm = () => {
             const itemBrand = selectValueHandler(selectBrand);
             suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
             fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
+
+            //all item list array
+            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+            const availableItems = innerItemList.filter(innerItem =>
+                !quotationrequest.quotation_request_item.some(quotationItem =>
+                    quotationItem.itemcode === innerItem.itemcode
+                )
+            );
+
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
         })
     });
 
@@ -87,25 +97,26 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
     quotationRequestItem = new Object();
     oldQuotationRequestItem = null;
 
-    selectCategory.addEventListener('change', () => {
 
-        const itemCategory = selectValueHandler(selectCategory);
+    /*  selectCategory.addEventListener('change', () => {
 
-        selectBrand.addEventListener('change', () => {
-            const itemBrand = selectValueHandler(selectBrand);
+         const itemCategory = selectValueHandler(selectCategory);
 
-            //all item list array
-            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
-            const availableItems = innerItemList.filter(innerItem =>
-                !quotationrequest.quotation_request_item.some(quotationItem =>
-                    quotationItem.itemcode === innerItem.itemcode
-                )
-            );
+         selectBrand.addEventListener('change', () => {
+             const itemBrand = selectValueHandler(selectBrand);
+             console.log(itemBrand, itemCategory);
 
-            console.log("Item List", availableItems);
-            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
-        })
-    });
+             //all item list array
+             innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+             const availableItems = innerItemList.filter(innerItem =>
+                 !quotationrequest.quotation_request_item.some(quotationItem =>
+                     quotationItem.itemcode === innerItem.itemcode
+                 )
+             );
+
+             fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
+         })
+     }); */
 
 
     inputFieldsHandler([selectItemName, numberQuantity], false)
@@ -117,7 +128,9 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
     buttonInnerUpdate.disabled = true;
     buttonInnerUpdate.classList.remove('inner-update-btn');
 
+
     console.log(quotationRequestItem);
+    updateAvailableItems()
 
 
     //inner table
@@ -127,17 +140,40 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
         { dataType: 'text', propertyName: 'quantity' },
     ]
 
-    fillDataIntoInnerTable(innerItemForm, quotationrequest.quotation_request_item, displayPropertyList, refillInnerQuotationRequestForm, deleteInnerQuotationRequestForm)
+    console.log(quotationrequest.quotation_request_item);
 
+    fillDataIntoInnerTable(innerItemTable, quotationrequest.quotation_request_item, displayPropertyList, refillInnerQuotationRequestForm, deleteInnerQuotationRequestForm)
 
 }
 
+const updateAvailableItems = () => {
+    // Filter out items that are already in the quotation request
+    const availableItems = innerItemList.filter(innerItem =>
+        !quotationrequest.quotation_request_item.some(quotationItem =>
+            quotationItem.itemcode === innerItem.itemcode
+        )
+    );
+
+    console.log(availableItems);
+    console.log(quotationrequest.quotation_request_item);
+
+    // Update the select dropdown with available items
+    fillMultipleItemOfDataIntoSingleSelect(
+        selectItemName,
+        "Please Select Item",
+        availableItems,
+        "itemcode",
+        'itemname'
+    );
+}
+
+
 const getInnerFormItemCode = (ob) => {
-    return ob.quotation_request_item_id.itemcode;
+    return ob.itemcode;
 }
 
 const getInnerFormItemName = (ob) => {
-    return ob.quotation_request_item_id.itemname
+    return ob.itemname
 }
 
 const innerQuotationItemFormErrors = () => {
@@ -154,13 +190,16 @@ const innerQuotationItemFormErrors = () => {
 
 const innerQuotationRequestProductAdd = () => {
     console.log(quotationRequestItem);
+    let { itemcode, itemname } = quotationRequestItem.quotation_request_item_id
+    let formattedQuotationRequestItem = { itemcode, itemname, quantity: quotationRequestItem.quantity }
 
     errors = innerQuotationItemFormErrors();
     if (errors == "") {
         let userConfirm = confirm("Are you sure for add this product to Quotation Request?")
 
         if (userConfirm) {
-            quotationrequest.quotation_request_item.push(quotationRequestItem);
+            quotationrequest.quotation_request_item.push(formattedQuotationRequestItem);
+            console.log("Passed Item: ", quotationrequest.quotation_request_item);
             alert("Item Added Successfully");
             refreshInnerQuotationRequestItemFormAndTable();
         }
