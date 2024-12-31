@@ -10,7 +10,6 @@ const refreshQuotationRequestTable = () => {
         { dataType: 'text', propertyName: 'quotationrequestcode' },
         { dataType: 'function', propertyName: getCategoryName },
         { dataType: 'function', propertyName: getBrandName },
-        { dataType: 'text', propertyName: getInnerQuantity },
         { dataType: 'text', propertyName: 'requireddate' },
         { dataType: 'function', propertyName: getQRequestStatus },
     ];
@@ -135,9 +134,9 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
 
     //inner table
     let displayPropertyList = [
-        { dataType: 'function', propertyName: getInnerFormItemCode },
-        { dataType: 'function', propertyName: getInnerFormItemName },
-        { dataType: 'text', propertyName: 'quantity' },
+        { dataType: 'text', propertyName: "itemcode" },
+        { dataType: 'text', propertyName: "itemname" },
+        { dataType: 'text', propertyName: "quantity" },
     ]
 
     console.log(quotationrequest.quotation_request_item);
@@ -170,15 +169,15 @@ const updateAvailableItems = () => {
 
 
 const getInnerFormItemCode = (ob) => {
-    return ob.itemcode;
+    return ob.quotation_request_item.itemcode;
 }
 
 const getInnerFormItemName = (ob) => {
-    return ob.itemname
+    return ob.quotation_request_item.itemname
 }
 
 const getInnerQuantity = () => {
-    return ob.quantity;
+    return ob.quotation_request_item.quantity;
 }
 
 const innerQuotationItemFormErrors = () => {
