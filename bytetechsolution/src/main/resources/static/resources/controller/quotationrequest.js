@@ -10,7 +10,7 @@ const refreshQuotationRequestTable = () => {
         { dataType: 'text', propertyName: 'quotationrequestcode' },
         { dataType: 'function', propertyName: getCategoryName },
         { dataType: 'function', propertyName: getBrandName },
-        { dataType: 'text', propertyName: 'quantity' },
+        { dataType: 'text', propertyName: getInnerQuantity },
         { dataType: 'text', propertyName: 'requireddate' },
         { dataType: 'function', propertyName: getQRequestStatus },
     ];
@@ -142,12 +142,13 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
 
     console.log(quotationrequest.quotation_request_item);
 
-    fillDataIntoInnerTable(innerItemTable, quotationrequest.quotation_request_item, displayPropertyList, refillInnerQuotationRequestForm, deleteInnerQuotationRequestForm)
+    //fillDataIntoInnerTable(innerItemTable, quotationrequest.quotation_request_item, displayPropertyList, refillInnerQuotationRequestForm, deleteInnerQuotationRequestForm)
 
 }
 
 const updateAvailableItems = () => {
     // Filter out items that are already in the quotation request
+    innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
     const availableItems = innerItemList.filter(innerItem =>
         !quotationrequest.quotation_request_item.some(quotationItem =>
             quotationItem.itemcode === innerItem.itemcode
@@ -174,6 +175,10 @@ const getInnerFormItemCode = (ob) => {
 
 const getInnerFormItemName = (ob) => {
     return ob.itemname
+}
+
+const getInnerQuantity = () => {
+    return ob.quantity;
 }
 
 const innerQuotationItemFormErrors = () => {
@@ -246,91 +251,7 @@ const getQRequestStatus = (ob) => {
         return '<p class="quotation-other">' + ob.quotationstatus_id.name + '</p>'
     }
 }
-const refillQuotationRequestForm = (ob, rowIndex) => {
-    $('#qRequestAddModal').modal('show');
-    removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
 
-
-    buttonSubmit.disabled = true;
-    buttonSubmit.classList.remove('modal-btn-submit');
-
-    //buttonUpdate.disabled = false;
-    //buttonUpdate.classList.add('modal-btn-update');
-
-    quotationRequest = JSON.parse(JSON.stringify(ob));
-    oldQuotationRequest = ob;
-
-    staticBackdropLabel.textContent = quotationRequest.quotationrequestcode;
-
-    numberQuantity.value = quotationRequest.quantity;
-
-    dateRequiredDate.value = quotationRequest.requireddate;
-
-    requestStatuses = getServiceAjaxRequest("/quotationstatus/alldata");
-    fillDataIntoSelect(selectRequestStatus, "Please Select Quotation Status", requestStatuses, "name", quotationRequest.quotationstatus_id.name);
-    selectRequestStatus.disabled = false;
-
-    categories = getServiceAjaxRequest("/category/alldata");
-    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", quotationRequest.category_id.name);
-    brands = getServiceAjaxRequest("/brand/alldata");
-    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationRequest.brand_id.name);
-
-    //fill quotation request items
-    //requestItems = getServiceAjaxRequest(`/${(quotationRequest.category_id.name).toLowerCase()}/${quotationRequest.brand_id.id}/itemlist`)
-    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", requestItems, "itemcode", 'itemname', ob.quotation_request_item.itemcode, ob.quotation_request_item.itemname);
-
-    fillDataIntoSelect(selectAvailableSupplier, "Can't Update a Request. Create a New One", [], "name");
-    fillDataIntoSelect(selectSelectedSupplier, "", quotationRequest.itemSuppliers, "name");
-
-    selectCategory.addEventListener('change', () => {
-        const itemCategory = selectValueHandler(selectCategory);
-        brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
-        fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationrequest.brand_id.name);
-
-        selectBrand.addEventListener('change', () => {
-            const itemBrand = selectValueHandler(selectBrand);
-            suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
-            fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
-
-            //all item list array
-            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
-            const availableItems = innerItemList.filter(innerItem =>
-                !quotationrequest.quotation_request_item.some(quotationItem =>
-                    quotationItem.itemcode === innerItem.itemcode
-                )
-            );
-
-            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
-        })
-    })
-
-
-    inputFieldsHandler([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate], false);
-    buttonClear.classList.add('modal-btn-clear');
-
-
-
-    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/QUOTATION");
-    //console.log(userPrivilage);
-
-
-    if (!userPrivilage.update) {
-        buttonUpdate.disabled = true;
-        buttonUpdate.classList.remove('modal-btn-update');
-
-        inputFieldsHandler([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate], true);
-        buttonClear.classList.remove('modal-btn-clear');
-    }
-    if (!userPrivilage.delete) {
-        buttonDelete.disabled = true;
-        buttonDelete.classList.remove('modal-btn-delete');
-    }
-
-
-    refreshInnerQuotationRequestItemFormAndTable()
-    buttonClear.disabled = true;
-
-}
 
 const btnAddOneSupplier = () => {
     let selectedSupplier = JSON.parse(selectAvailableSupplier.value);
@@ -402,8 +323,92 @@ const btnRemoveAllSupplier = () => {
 
 }
 
+const refillQuotationRequestForm = (ob, rowIndex) => {
+    $('#qRequestAddModal').modal('show');
+    removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
 
 
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit');
+
+    //buttonUpdate.disabled = false;
+    //buttonUpdate.classList.add('modal-btn-update');
+
+    quotationRequest = JSON.parse(JSON.stringify(ob));
+    oldQuotationRequest = ob;
+
+    staticBackdropLabel.textContent = quotationRequest.quotationrequestcode;
+
+    numberQuantity.value = quotationRequest.quantity;
+
+    dateRequiredDate.value = quotationRequest.requireddate;
+
+    requestStatuses = getServiceAjaxRequest("/quotationstatus/alldata");
+    fillDataIntoSelect(selectRequestStatus, "Please Select Quotation Status", requestStatuses, "name", quotationRequest.quotationstatus_id.name);
+    selectRequestStatus.disabled = false;
+
+    categories = getServiceAjaxRequest("/category/alldata");
+    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", quotationRequest.category_id.name);
+    brands = getServiceAjaxRequest("/brand/alldata");
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationRequest.brand_id.name);
+
+    //fill quotation request items
+    console.log(quotationRequest);
+    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", quotationRequest.quotation_request_item, "itemcode", 'itemname', ob.quotation_request_item.itemcode, ob.quotation_request_item.itemname);
+    fillDataIntoInnerTable()
+
+    fillDataIntoSelect(selectSelectedSupplier, "Please Select Item", quotationRequest.itemSuppliers, "name");
+    //fillDataIntoSelect(selectAvailableSupplier, "Can't Update a Request. Create a New One", [], "name");
+
+    selectCategory.addEventListener('change', () => {
+        const itemCategory = selectValueHandler(selectCategory);
+        brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
+        fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationrequest.brand_id.name);
+
+        selectBrand.addEventListener('change', () => {
+            const itemBrand = selectValueHandler(selectBrand);
+            suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
+            fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
+
+            //all item list array
+            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+            const availableItems = innerItemList.filter(innerItem =>
+                !quotationrequest.quotation_request_item.some(quotationItem =>
+                    quotationItem.itemcode === innerItem.itemcode
+                )
+            );
+
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
+        })
+    })
+
+
+    inputFieldsHandler([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate], false);
+    buttonClear.classList.add('modal-btn-clear');
+
+
+
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/QUOTATION");
+    //console.log(userPrivilage);
+
+
+    if (!userPrivilage.update) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+    if (!userPrivilage.delete) {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
+
+
+    refreshInnerQuotationRequestItemFormAndTable()
+    buttonClear.disabled = true;
+
+}
 
 const checkQuotationRequestInputErrors = () => {
     let errors = "";
