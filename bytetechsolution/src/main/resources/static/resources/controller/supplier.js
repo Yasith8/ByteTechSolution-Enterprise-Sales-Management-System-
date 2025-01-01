@@ -100,6 +100,7 @@ const refreshSupplierInnerFormAndTable = () => {
         { dataType: 'function', propertyName: getInnerFormBrand },
     ]
 
+    console.log(supplier.supplier_has_brand_category);
     fillDataIntoInnerTable(innerSupplierTable, supplier.supplier_has_brand_category, displayPropertyList, refillInnerSupplierForm, deleteInnerSupplierForm)
 
 }

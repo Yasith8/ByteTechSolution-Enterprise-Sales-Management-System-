@@ -128,8 +128,6 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
     buttonInnerUpdate.classList.remove('inner-update-btn');
 
 
-    console.log(quotationRequestItem);
-    updateAvailableItems()
 
 
     //inner table
@@ -139,14 +137,18 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
         { dataType: 'text', propertyName: "quantity" },
     ]
 
-    console.log(quotationrequest.quotation_request_item);
+    console.log("QREQUEST", quotationrequest.quotation_request_item);
 
-    //fillDataIntoInnerTable(innerItemTable, quotationrequest.quotation_request_item, displayPropertyList, refillInnerQuotationRequestForm, deleteInnerQuotationRequestForm)
+    fillDataIntoInnerTable(innerItemTable, quotationrequest.quotation_request_item, displayPropertyList, refillInnerQuotationRequestForm, deleteInnerQuotationRequestForm)
+    updateAvailableItems()
 
 }
 
 const updateAvailableItems = () => {
     // Filter out items that are already in the quotation request
+    const itemCategory = selectValueHandler(selectCategory);
+    const itemBrand = selectValueHandler(selectBrand);
+
     innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
     const availableItems = innerItemList.filter(innerItem =>
         !quotationrequest.quotation_request_item.some(quotationItem =>
@@ -183,7 +185,7 @@ const getInnerQuantity = () => {
 const innerQuotationItemFormErrors = () => {
     let errors = "";
 
-    if (quotationRequestItem.quotation_request_item_id == null) {
+    if (quotationRequestItem.quotation_request_item == null) {
         errors += "Quotation Item not Selected"
     }
     if (quotationRequestItem.quantity == null) {
@@ -206,7 +208,7 @@ const innerQuotationRequestProductAdd = () => {
             console.log("Passed Item: ", quotationrequest.quotation_request_item);
             alert("Item Added Successfully");
             refreshInnerQuotationRequestItemFormAndTable();
-            quotationRequestInnerItemForm.reset();
+            //quotationRequestInnerItemForm.reset();
         }
     } else {
         alert("Item add fail because of following errors!\n", errors)
