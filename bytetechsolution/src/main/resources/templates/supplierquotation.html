@@ -140,15 +140,8 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-4">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="date" class="form-control" id="dateQuotaionDate" placeholder=" " required onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$', 'supplierquotation', 'quotationdate')">
-                                                            <label for="dateQuotaionDate">Quotation Date<span class="requiredIcon">*</span></label>
-                                                        </div>
-                                                    </div>
-                                                    <!--supplier phone end -->
                                                     <!-- email start -->
-                                                    <div class="col-4">
+                                                    <div class="col-6">
                                                         <div class="form-floating mb-3">
                                                             <input type="date" class="form-control" id="dateValidDate" placeholder=" " required onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$', 'supplierquotation', 'validdate')">
                                                             <label for="dateValidDate">Valid Date<span class="requiredIcon">*</span></label>
@@ -156,7 +149,7 @@
                                                     </div>
                                                     <!-- email end -->
                                                     <!-- address start -->
-                                                    <div class="col-4">
+                                                    <div class="col-6">
                                                         <div class="form-floating mb-3">
                                                             <select name="quotationrequest" id="selectQuotationRequest" class="form-select" onchange="selectDynamicValidator(this,'','supplierquotation','quotation_request_id')">
                                                                 <option value=""  selected disabled>Select Quotation Request</option>
@@ -265,7 +258,7 @@
                                                         <th style="background-color: #009d27 !important"> Unit Price</th>
                                                         <th style="background-color: #009d27 !important"> Qty </th>
                                                         <th style="background-color: #009d27 !important"> Line Price </th>
-                                                        <th style="background-color: #009d27 !important"> </th>
+                                                        <th style="background-color: #009d27 !important"> Modify </th>
                                                     </tr>
                                                 </thead>
 
