@@ -146,3 +146,89 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
     });
 
 }
+
+
+const fillEditableInnerDataIntoTable = (tableId, dataList, displayPropertyList, refillFunction, deleteFunction, printFunction, buttonVisibility = true) => {
+
+    const tableBody = tableId.children[1];
+    tableBody.innerHTML = '';
+
+    dataList.forEach((element, index) => {
+        const tr = document.createElement('tr');
+
+        const tdIndex = document.createElement('td');
+        tdIndex.innerText = index + 1;
+        tr.appendChild(tdIndex);
+
+        displayPropertyList.forEach((ob, ind) => {
+            const td = document.createElement('td');
+            if (ob.dataType == 'text') {
+                td.innerText = element[ob.propertyName];
+            }
+            if (ob.dataType == 'function') {
+                if (ob.propertyName != null) {
+                    td.innerHTML = ob.propertyName(element);
+                } else {
+                    td.innerHTML = "-";
+                }
+            }
+            if (ob.dataType == 'amount') {
+                td.innerHTML = parseFloat(element[ob.propertyName]).toFixed(2);
+            }
+            if (ob.dataType == 'year') {
+                td.innerHTML = String(element[ob.propertyName]).substring(0, 4);
+            }
+
+
+            tr.appendChild(td);
+
+        });
+
+        const tdButton = document.createElement('td'); // button column
+
+        const editButton = document.createElement('button');
+        editButton.className = 'btn btn-edit fw-bold';
+        editButton.innerHTML = '<i class="fa-solid fa-edit "></i> Edit';
+
+        editButton.onclick = function() {
+            //console.log('edit');
+            refillFunction(element, index);
+        }
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'btn btn-outline-danger fw-bold ms-1 me-1';
+        deleteButton.innerHTML = '<i class="fa-solid fa-trash "></i> Delete';
+
+        deleteButton.onclick = function() {
+            // console.log('delete' , element);
+            deleteFunction(element, index);
+        }
+
+        const printButton = document.createElement('button');
+        printButton.className = 'btn';
+        printButton.innerHTML = '<i class="fa-solid fa-eye fa-beat "></i> ';
+
+        printButton.onclick = function() {
+            // console.log('print');
+            printFunction(element, index);
+        }
+
+
+        tdButton.appendChild(editButton); // append button into table column 
+        tdButton.appendChild(deleteButton); // append button into table column 
+        tdButton.appendChild(printButton); // append button into table column
+
+        if (buttonVisibility) {
+            tr.appendChild(tdButton); // append button column into table row
+        } else {
+            if (document.getElementById('tdModify') != undefined)
+                tdModify.className = 'd-none';
+        }
+
+        tableBody.appendChild(tr); // append tr into table body
+
+
+
+    });
+
+}
