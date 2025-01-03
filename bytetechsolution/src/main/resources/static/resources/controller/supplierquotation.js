@@ -25,6 +25,28 @@ const refreshSupplierQuotationTable = () => {
 }
 
 const refreshSupplierQuotationForm = () => {
+    supplierQuotation = new Object();
+    oldSupplierQuotation = null;
+
+    buttonSubmit.disabled = false;
+    buttonSubmit.classList.add('modal-btn-submit');
+
+    buttonUpdate.disabled = true;
+    buttonUpdate.classList.remove('modal-btn-update');
+
+    staticBackdropLabel.textContent = "Add New Supplier Quotation";
+
+    supplierQuotation.supplierItemQuotationList = new Array();
+
+    quotationrequests = getServiceAjaxRequest("/quotationrequest/alldata")
+    fillDataIntoSelect(selectQuotationRequest, "Select Quotation Request", quotationrequests, "name");
+
+    suppliers = getServiceAjaxRequest("/quotationrequest/alldata")
+    fillDataIntoSelect(selectQuotationRequest, "Select Quotation Request", quotationrequests, "name");
+
+    quotationstatuses = getServiceAjaxRequest("/quotationstatus/alldata")
+    fillDataIntoSelect(selectQuotationStatus, "Select Supplier Status", quotationstatuses, "name");
+
 
 }
 
