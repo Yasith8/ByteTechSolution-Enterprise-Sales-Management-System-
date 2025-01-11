@@ -1,9 +1,4 @@
 package lk.bytetechsolution.Entity;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,9 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.*;
-
 /* 
  * ------------Entity-----------
  * convert into entity class
