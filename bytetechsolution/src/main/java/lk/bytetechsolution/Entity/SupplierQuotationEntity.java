@@ -47,7 +47,6 @@ public class SupplierQuotationEntity {
     @Column(name = "deletedate")
     private LocalDateTime deletedate;
 
-    @NotNull
     @Column(name = "addeduser")
     private Integer addeduser;
     
