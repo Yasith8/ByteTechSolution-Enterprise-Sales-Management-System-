@@ -81,7 +81,7 @@ public class SupplierController {
 
     @GetMapping(value = "/supplier/supplierbyid",params = {"id"},produces = "application/json")
     public SupplierEntity GetSupplierDataById(@RequestParam("id") Integer id){
-        return daoSupplier.getReferenceById(id);
+        return daoSupplier.findById(id).get();
     }
 
     @GetMapping(value = "/supplier/suppliergetbybrandcategory",params = {"categoryid","brandid"},produces = "application/json")
