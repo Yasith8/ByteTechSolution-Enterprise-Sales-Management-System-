@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{component::headerFragment}"></head>
+
+<head>
+    <link rel="stylesheet" href="resources/style/supplierquotationsubmission.css">
+    <script src="resources/controller/supplierquotationsubmission.js"></script>
+</head>
+
+
+<body class="py-5">
+    <div class="container">
+        <div class="form-container p-4 p-md-5 mx-auto animate__animated animate__fadeIn">
+            <h2 class="text-center mb-5" style="color: #1a202c; font-weight: 700;">Supplier Quotation Form</h2>
+
+            <form>
+                <!-- Supplier Information -->
+                <div class="form-section animate-slide-in">
+                    <h5 class="section-title">General Information</h5>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="companyName" placeholder="Company Name" required>
+                                <label for="companyName" class="required-field">Quotation Request</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="contactPerson" placeholder="Contact Person" required>
+                                <label for="contactPerson" class="required-field">Supplier</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="tel" class="form-control" id="phone" placeholder="Phone Number" required>
+                                <label for="phone" class="required-field">Valid Date</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quotation Items -->
+                <div class="form-section">
+                    <h5 class="section-title">Requested Items</h5>
+                    <div class="table-container">
+                        <table class="table mb-0" id="itemsTable">
+                            <thead>
+                                <tr>
+                                    <th>Item Code</th>
+                                    <th>Item Name</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price ($)</th>
+                                    <th>Line Total ($)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="itemsTableBody">
+
+                            </tbody>
+                            <tfoot>
+                                <tr class="total-section">
+                                    <td colspan="4" class="text-end">Total Amount:</td>
+                                    <td id="totalAmount">$0.00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="text-center mt-5 animate-slide-in" style="animation-delay: 0.3s;">
+                    <button type="submit" class="btn btn-primary btn-lg">Submit Quotation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
