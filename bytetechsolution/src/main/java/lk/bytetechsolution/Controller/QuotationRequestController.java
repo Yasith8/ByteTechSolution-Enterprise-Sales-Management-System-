@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -76,6 +77,11 @@ public class QuotationRequestController {
             return new ArrayList<QuotationRequestEntity>();
         }
         return daoQuotationRequest.findAll();
+    }
+
+    @GetMapping(value = "/quotationrequest/requestbyid",params = {"id"},produces = "application/json")
+    public QuotationRequestEntity GetQuotationRequestDataById(@RequestParam("id") Integer id){
+        return daoQuotationRequest.findById(id).get();
     }
 
     @PostMapping(value = "/quotationrequest")

@@ -79,6 +79,11 @@ public class SupplierController {
         return daoSupplier.findAll();
     }
 
+    @GetMapping(value = "/supplier/supplierbyid",params = {"id"},produces = "application/json")
+    public SupplierEntity GetSupplierDataById(@RequestParam("id") Integer id){
+        return daoSupplier.getReferenceById(id);
+    }
+
     @GetMapping(value = "/supplier/suppliergetbybrandcategory",params = {"categoryid","brandid"},produces = "application/json")
     public List<SupplierEntity> GetAllSupplierDataByCategoryBrand(@RequestParam("categoryid") Integer categoryid,@RequestParam("brandid") Integer brandid){
         return daoSupplier.getSupplierByBrandCategory(categoryid,brandid);
