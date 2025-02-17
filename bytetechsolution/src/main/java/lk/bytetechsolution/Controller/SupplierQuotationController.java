@@ -10,10 +10,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -41,6 +43,21 @@ public class SupplierQuotationController {
 
     @Autowired
     private PrivilageController privilageController;
+
+    @GetMapping(value="/suppliersubmitquotation",params = {"quotationreqestid","supplierid"},produces="application/json")
+    public ModelAndView getSupplierSubmitQuotationUI(@RequestParam("quotationreqestid") String quotationReqestId,@RequestParam("supplierid") String supplierId){
+        // Create a new ModelAndView object to hold the model data and view information
+        ModelAndView supplierQuotationView=new ModelAndView();
+        //pass the ui
+        supplierQuotationView.setViewName("supplierquotationsubmission.html");
+        //attributes set to show titles in web page using theamleaf
+        supplierQuotationView.addObject("title", "Supplier Quotation Submission || Bytetech Solution");
+
+        return supplierQuotationView;
+
+    }
+
+    
 
     @RequestMapping(value = "/supplierquotation")
     public ModelAndView supplierQuotationUI(){
