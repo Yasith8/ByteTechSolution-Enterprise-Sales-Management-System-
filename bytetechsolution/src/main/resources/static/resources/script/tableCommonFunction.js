@@ -147,8 +147,11 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
 
 }
 
+//currentList = [{id:1, name:'name1'},{id:2, name:'name2'}]
+//updatedList=[{id:1, name:'name1',class:'class1'},{id:2, name:'name2',class:'class2'}}]
 
-const fillEditableInnerDataIntoTable = (tableId, dataList, displayPropertyList, refillFunction, deleteFunction, printFunction, buttonVisibility = true) => {
+
+const fillEditableInnerDataIntoTable = (tableId, dataList, modifiedList, displayPropertyList, printFunction) => {
 
     const tableBody = tableId.children[1];
     tableBody.innerHTML = '';
@@ -186,23 +189,6 @@ const fillEditableInnerDataIntoTable = (tableId, dataList, displayPropertyList, 
 
         const tdButton = document.createElement('td'); // button column
 
-        const editButton = document.createElement('button');
-        editButton.className = 'btn btn-edit fw-bold';
-        editButton.innerHTML = '<i class="fa-solid fa-edit "></i> Edit';
-
-        editButton.onclick = function() {
-            //console.log('edit');
-            refillFunction(element, index);
-        }
-
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'btn btn-outline-danger fw-bold ms-1 me-1';
-        deleteButton.innerHTML = '<i class="fa-solid fa-trash "></i> Delete';
-
-        deleteButton.onclick = function() {
-            // console.log('delete' , element);
-            deleteFunction(element, index);
-        }
 
         const printButton = document.createElement('button');
         printButton.className = 'btn';
@@ -218,12 +204,6 @@ const fillEditableInnerDataIntoTable = (tableId, dataList, displayPropertyList, 
         tdButton.appendChild(deleteButton); // append button into table column 
         tdButton.appendChild(printButton); // append button into table column
 
-        if (buttonVisibility) {
-            tr.appendChild(tdButton); // append button column into table row
-        } else {
-            if (document.getElementById('tdModify') != undefined)
-                tdModify.className = 'd-none';
-        }
 
         tableBody.appendChild(tr); // append tr into table body
 
