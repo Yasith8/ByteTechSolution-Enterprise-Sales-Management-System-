@@ -24,20 +24,20 @@
                     <div class="row g-4">
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="companyName" placeholder="Company Name" required>
-                                <label for="companyName" class="required-field">Quotation Request</label>
+                                <input type="text" class="form-control" id="textQuotationReqest" placeholder="Company Name" required>
+                                <label for="textQuotationReqest" class="required-field">Quotation Request</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="contactPerson" placeholder="Contact Person" required>
-                                <label for="contactPerson" class="required-field">Supplier</label>
+                                <input type="text" class="form-control" id="textSupplier" placeholder="Contact Person" required>
+                                <label for="textSupplier" class="required-field">Supplier</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="tel" class="form-control" id="phone" placeholder="Phone Number" required>
-                                <label for="phone" class="required-field">Valid Date</label>
+                                <input type="date" class="form-control" id="dateValidDate" placeholder="valid date" onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','supplierSubmitQuotation','validdate')" required>
+                                <label for="dateValidDate" class="required-field">Valid Date</label>
                             </div>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                 </div>
 
                 <div class="text-center mt-5 animate-slide-in" style="animation-delay: 0.3s;">
-                    <button type="submit" class="btn btn-primary btn-lg">Submit Quotation</button>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="submitSupplierQuotation()">Submit Quotation</button>
                 </div>
             </form>
         </div>
