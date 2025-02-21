@@ -33,11 +33,9 @@ public class SupplierQuotationEntity {
     @Column(name = "quotationid")
     private String quotationid;
 
-    @NotNull
     @Column(name = "validdate")
     private LocalDateTime validdate;
 
-    @NotNull
     @Column(name = "addeddate")
     private LocalDateTime addeddate;
 
