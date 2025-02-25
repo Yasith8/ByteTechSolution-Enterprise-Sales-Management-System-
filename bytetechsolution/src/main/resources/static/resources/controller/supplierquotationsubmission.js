@@ -31,7 +31,7 @@ const refreshSubmissionSupplierQuotationForm = () => {
     });
 
 
-    supplierSubmitQuotation.quotationrequest_id = currentQuotationRequest;
+    supplierSubmitQuotation.quotation_request_id = currentQuotationRequest;
     supplierSubmitQuotation.supplier_id = currentSupplier;
 
 
@@ -74,10 +74,10 @@ function updateTotals() {
     rows.forEach(row => {
         const unitprice = parseFloat(row.querySelector('.unit-price').value) || 0;
         const quantity = parseInt(row.querySelector('td:nth-child(3)').textContent);
-        const linetotal = calculateLineTotal(unitprice, quantity);
+        const lineprice = calculateLineTotal(unitprice, quantity);
 
-        row.querySelector('.line-total').textContent = `Rs.${linetotal}`;
-        total += parseFloat(linetotal);
+        row.querySelector('.line-total').textContent = `Rs.${lineprice}`;
+        total += parseFloat(lineprice);
     });
 
     document.getElementById('totalAmount').textContent = `Rs.${total.toFixed(2)}`;
@@ -134,25 +134,87 @@ function supplierSubmitQuotationQuotationHandler() {
     document.getElementById('quotationForm').addEventListener('submit', handleSubmit);
 }); */
 
+const submissionSupplierFormErrors = () => {
+    let errors = "";
+    if (supplierSubmitQuotation.quotation_item.length == 0) {
+        errors += "This Quotation has no items\n";
+    }
+    if (supplierSubmitQuotation.validdate == null) {
+        errors += "Please select a valid date\n";
+    }
+    document.querySelectorAll('.unit-price').forEach(input => {
+        if (input.value.trim() === "") {
+            errors += "Please enter the unit price for all items\n";
+        }
+    });
+
+    return errors;
+}
+
 const submitSupplierQuotation = () => {
     document.querySelectorAll('.item-row').forEach(row => {
         const itemcode = row.querySelector('.unit-price').dataset.itemCode;
         const unitprice = row.querySelector('.unit-price').value;
         const quantity = row.querySelector('td:nth-child(3)').textContent;
-        const linetotal = row.querySelector('.line-total').textContent.replace('Rs.', '');
+        const lineprice = row.querySelector('.line-total').textContent.replace('Rs.', '');
 
         supplierQuotationItemList.push({
             itemcode,
             itemname: currentQuotationRequest.quotation_request_item.find(item => item.itemcode === itemcode).itemname,
             unitprice: parseFloat(unitprice),
             quantity: parseInt(quantity),
-            linetotal: parseFloat(linetotal)
+            lineprice: parseFloat(lineprice)
         });
     });
 
     supplierSubmitQuotation.quotation_item = (supplierQuotationItemList);
 
-    console.log("Supplier Submitted Quotation : " + supplierSubmitQuotation);
+    console.log("Supplier Submitted Quotation : " + JSON.stringify(supplierSubmitQuotation));
+
+    //bug : login issue occur to the accessing the data
+
+
+    let errors = submissionSupplierFormErrors();
+
+    if (errors == "") {
+        const supplierSubmitResponse = confirm("Do you want to submit the Quotation?");
+
+        if (supplierSubmitResponse) {
+            let postServiceResponce;
+
+            $.ajax("/supplierquotation", {
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(supplierSubmitQuotation),
+                async: false,
+
+                success: function(data) {
+                    console.log("success", data);
+                    postServiceResponce = data;
+                },
+
+                error: function(resData) {
+                    console.log("Fail", resData);
+                    postServiceResponce = resData;
+                }
+
+            });
+
+            if (postServiceResponce == "OK") {
+                alert("Your quotation submission has been successfully completed...!");
+
+                //close the tab after the submission
+                window.close();
+            } else {
+                alert("Your quotation submission has been failed. \n Refill the Form or Contact the system administrator. \n Do not Close the window. because of this is one time link for quotation submission..!");
+            }
+
+        }
+
+
+    } else {
+        alert("Your quotation submisson has following errors...!\n" + errors);
+    }
 
 
 
