@@ -1,5 +1,6 @@
 package lk.bytetechsolution.Entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,8 +35,9 @@ public class SupplierQuotationEntity {
     private String quotationid;
 
     @Column(name = "validdate")
-    private LocalDateTime validdate;
+    private LocalDate validdate;
 
+    @NotNull
     @Column(name = "addeddate")
     private LocalDateTime addeddate;
 
@@ -61,10 +63,6 @@ public class SupplierQuotationEntity {
     @ManyToOne
     @JoinColumn(name = "supplier_id",referencedColumnName = "id")
     private SupplierEntity supplier_id;
-
-    @ManyToOne
-    @JoinColumn(name = "quotationstatus_id",referencedColumnName = "id")
-    private QuotationStatusEntity quotationstatus_id;
 
    @OneToMany(mappedBy = "supplier_quotation_id",cascade = CascadeType.ALL,orphanRemoval = true)
    private List<QuotationItemEntity> quotation_item;

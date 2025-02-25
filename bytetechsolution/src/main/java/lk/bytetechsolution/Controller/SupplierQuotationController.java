@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.EmployeeDao;
-import lk.bytetechsolution.Dao.QuotationStatusDao;
 import lk.bytetechsolution.Dao.SupplierQuotationDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.QuotationItemEntity;
@@ -37,9 +35,6 @@ public class SupplierQuotationController {
 
     @Autowired
     private EmployeeDao daoEmployee;
-
-    @Autowired
-    private QuotationStatusDao daoQuotationStatus;
 
     @Autowired
     private PrivilageController privilageController;
@@ -161,8 +156,6 @@ public class SupplierQuotationController {
         supplierquotation.setDeleteuser(deleteUser.getId());
 
         supplierquotation.setDeletedate(LocalDateTime.now());
-
-        supplierquotation.setQuotationstatus_id(daoQuotationStatus.getReferenceById(3));
 
         daoSupplierQuotation.save(supplierquotation);
 

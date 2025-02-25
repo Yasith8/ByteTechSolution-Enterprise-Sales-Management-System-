@@ -43,7 +43,7 @@ public class WebConfiguration {
         //allow only for admin Manager
         .requestMatchers("/privilage/**").hasAnyAuthority("Admin","Manager","Technician")
         .requestMatchers("/supplier/**").hasAnyAuthority("Admin","Manager","Technician")
-
+        
         //allow for items
         .requestMatchers("/processor/**").hasAnyAuthority("Admin","Manager","Technician")
         .requestMatchers("/motherboard/**").hasAnyAuthority("Admin","Manager","Technician")
@@ -58,10 +58,11 @@ public class WebConfiguration {
         //allow for quotations
         .requestMatchers("/quotationrequest/**").hasAnyAuthority("Admin","Manager") 
         .requestMatchers("/supplierquotation/**").hasAnyAuthority("Admin","Manager") 
+        .requestMatchers("/suppliersubmitquotation/**").permitAll()
         .anyRequest().authenticated();// any other requst need authenticate
         
         
-
+        
     })
 
     //login filter
