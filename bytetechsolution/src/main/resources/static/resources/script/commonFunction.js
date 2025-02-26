@@ -120,7 +120,9 @@ const fillMultipleItemOfDataIntoSingleSelect = (fieldId, message, dataList, prop
         //normal string object convert into json format
         //advantage of json is we can found real object
         option.value = JSON.stringify(element);
-        if (additionalPropertyName) { option.innerText = `${element[propertyName]} - ${element[additionalPropertyName]}` }
+        if (additionalPropertyName) {
+            option.innerText = `${element[propertyName]} - ${element[additionalPropertyName]}`
+        }
         //assign text to option that key=propertyName in element object
         //in ex : dataList[i].propertyName or dataLidtI[propertyName]
         //in ex: students[1].name--> studentOb[name]

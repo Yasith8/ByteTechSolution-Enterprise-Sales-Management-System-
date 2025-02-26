@@ -42,7 +42,16 @@ const fillDataIntoTable = (tableId, dataList, displayPropertyList, refillFunctio
 
                 in simple word assign value of current element's objects that key name = propertyName(ob)(in this object have 2 keys-(datatype,propertyname))
                  */
-                td.innerText = element[ob.propertyName];
+
+                if (ob.propertyName == 'addeddate' || ob.propertyName == 'validdate') {
+                    const timestamp = element[ob.propertyName];
+                    const dateOnly = timestamp.split("T")[0];
+                    td.innerText = dateOnly;
+                    console.log(dateOnly);
+                } else {
+                    td.innerText = element[ob.propertyName];
+                }
+
             }
 
             //check if datatype = function
@@ -150,7 +159,7 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
 //currentList = [{id:1, name:'name1'},{id:2, name:'name2'}]
 //updatedList=[{id:1, name:'name1',class:'class1'},{id:2, name:'name2',class:'class2'}}]
 
-
+/* 
 const fillEditableInnerDataIntoTable = (tableId, dataList, modifiedList, displayPropertyList, printFunction) => {
 
     const tableBody = tableId.children[1];
@@ -211,4 +220,4 @@ const fillEditableInnerDataIntoTable = (tableId, dataList, modifiedList, display
 
     });
 
-}
+} */

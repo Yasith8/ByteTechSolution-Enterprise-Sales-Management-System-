@@ -72,11 +72,23 @@ public class QuotationRequestController {
     public List<QuotationRequestEntity> GetAllQuotationRequestData(){
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"QUOTATION");
-
+        
         if(!userPrivilage.get("select")){
             return new ArrayList<QuotationRequestEntity>();
         }
         return daoQuotationRequest.findAll();
+    }
+    
+    @GetMapping(value = "/quotationrequest/withoutexpiredrequest",produces = "application/json")
+    public List<QuotationRequestEntity> GetAvailableRequest(){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"QUOTATION");
+
+        if(!userPrivilage.get("select")){
+            return new ArrayList<QuotationRequestEntity>();
+        }
+
+        return daoQuotationRequest.findByAfterRequireddate();
     }
 
     @GetMapping(value = "/quotationrequest/requestbyid",params = {"id"},produces = "application/json")

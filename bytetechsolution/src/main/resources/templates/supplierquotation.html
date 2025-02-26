@@ -53,12 +53,11 @@
                             <thead class="table-header">
                                 <tr>
                                     <th> # </th>
-                                    <th> Supplier ID </th>
+                                    <th> Quotation ID </th>
+                                    <th> Quotation Request ID </th>
                                     <th> Supplier Name </th>
-                                    <th> Agent Name </th>
-                                    <th> Mobile No </th>
-                                    <th> Email</th>
-                                    <th> Item Status </th>
+                                    <th> Quotation Date </th>
+                                    <th> Valid Date </th>
                                 </tr>
                             </thead>
 
@@ -148,94 +147,12 @@
                                                         </div>
                                                     </div>
                                                     <!-- email end -->
-                                                    <!-- address start -->
-                                                    <div class="col-6">
-                                                        <div class="form-floating mb-3">
-                                                            <select name="quotationrequest" id="selectQuotationRequest" class="form-select" onchange="selectDynamicValidator(this,'','supplierquotation','quotation_request_id')">
-                                                                <option value=""  selected disabled>Select Quotation Request</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <!-- saddress end -->
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 mt-3">
-                                <!-- supplier baic product form -->
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header">Item Pricing Section</div>
-                                            <div class="card-body">
-                                                <form id="innerItemForm">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="mb-3 form-floating">
-                                                                <select name="itemname" id="selectItemName" class="form-select" onchange="selectDynamicValidator(this,'','supplierquotation','itemcode')">
-                                                                <option value=""  selected disabled>Select Item Name</option>
-                                                            </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <div class="mb-3 form-floating">
-                                                                <!-- 
-                                                            \d+: Matches one or more digits (the integer part of the price).
-                                                            (\.\d{1,2})?: Optionally matches a decimal point (.) followed by one or two digits:
-                                                            \.: Matches the decimal point.
-                                                            \d{1,2}: Matches one or two digits after the decimal point.
-                                                            ?: Makes the decimal part optional.
-                                                            -->
-                                                                <input type="number" class="form-control" id="decimalUnitprice" placeholder="account name" required onkeyup="textValidator(this,'^\d+(\.\d{1,2})?$','supplierquotation','unitprice')">
-                                                                <label for="decimalUnitprice">Unit Price<span class="requiredIcon">*</span></label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="mb-3 form-floating">
-                                                                <input type="number" class="form-control" id="decimalUnitprice" placeholder="account name" required onkeyup="textValidator(this,'^\d+$','supplierquotation','quantity')">
-                                                                <label for="decimalUnitprice">Quantity<span class="requiredIcon">*</span></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <div class="mb-3 form-floating">
-                                                                <!-- 
-                                                            \d+: Matches one or more digits (the integer part of the price).
-                                                            (\.\d{1,2})?: Optionally matches a decimal point (.) followed by one or two digits:
-                                                            \.: Matches the decimal point.
-                                                            \d{1,2}: Matches one or two digits after the decimal point.
-                                                            ?: Makes the decimal part optional.
-                                                            -->
-                                                                <input type="number" class="form-control" id="decimalLineprice" placeholder="account name" required onkeyup="textValidator(this,'^\d+(\.\d{1,2})?$','supplierquotation','lineprice')">
-                                                                <label for="decimalLineprice">Line Price<span class="requiredIcon">*</span></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-2"><button type="reset" class="btn inner-cancel-btn modal-button">Clear</button></div>
-                                                        <div class="col-6"></div>
-                                                        <div class="col-2"><button id="buttonInnerUpdate" type="button" class="btn inner-update-btn modal-button" onclick="innerSupplierQuotationItemUpdate()">Update</button></div>
-                                                        <div class="col-2"><button id="buttonInnerSubmit" type="button" class="btn inner-add-btn modal-button" onclick="innerSupplierQuotationItemAdd()">Add</button></div>
-
-                                                    </div>
-                                                </form>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <!-- supplier baic product form -->
-                            </div>
-
-
-
-
                             <!-- supplier Basic Details -->
                         </div>
                         <div class="col-7">
@@ -296,8 +213,8 @@
                         <div id="divModifyButton">
                             <div class="row">
                                 <div class="col-4" style="display: flex; justify-content: center;gap: 5px;">
-                                    <button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printSupplierQuotationDetails(window['editOb'], window['editRow'])">Print</button>
-                                    <button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteSupplierQuotation(window['editOb'], window['editRow'])">Delete</button>
+                                    <!--  <button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printSupplierQuotationDetails(window['editOb'], window['editRow'])">Print</button>
+                                    <button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteSupplierQuotation(window['editOb'], window['editRow'])">Delete</button> -->
                                 </div>
                                 <div class="col-8"></div>
                             </div>
@@ -308,7 +225,7 @@
                             <div class="col-5"></div>
                             <div class="col-7" style="display: flex; justify-content: center;gap: 12px;">
                                 <button type="reset" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button>
-                                <button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="updateSupplierQuotation()">Update</button>
+                                <!-- <button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="updateSupplierQuotation()">Update</button> -->
                                 <button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="submitSupplierQuotation()">Submit</button>
                             </div>
                         </div>

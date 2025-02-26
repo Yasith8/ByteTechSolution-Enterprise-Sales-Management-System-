@@ -1,5 +1,9 @@
 package lk.bytetechsolution.Dao;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -23,5 +27,8 @@ public interface QuotationRequestDao extends JpaRepository<QuotationRequestEntit
      */
     @Query(value ="select concat('QRC',lpad(substring(max(qrc.quotationrequestcode),4)+1,4,'0')) as quotationrequestcode from bytetechsolution.quotation_request as qrc",nativeQuery = true)
     public String getNextQuotationRequestCode();
+
+    @Query(value = "select * from bytetechsolution.quotation_request qr where qr.requireddate>=current_time()",nativeQuery = true)
+    public List<QuotationRequestEntity> findByAfterRequireddate();
     
 }
