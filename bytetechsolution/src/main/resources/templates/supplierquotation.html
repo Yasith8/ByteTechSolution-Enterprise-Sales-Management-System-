@@ -119,19 +119,19 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <!-- supplier Basic Details -->
-                                            <form id="formSupplier">
+                                            <form id="formSupplierQuotation">
                                                 <!-- supplier Input Start -->
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <div class="form-floating mb-3">
-                                                            <select name="quotationrequest" id="selectQuotationRequest" class="form-select" onchange="selectDynamicValidator(this,'','supplierquotation','quotation_request_id')">
+                                                            <select name="quotationrequest" id="selectQuotationRequest" class="form-select" onchange="selectDynamicValidator(this,'','supplierQuotation','quotation_request_id')">
                                                         <option value=""  selected disabled>Select Quotation Request</option>
                                                     </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="form-floating mb-3">
-                                                            <select name="supplier" id="selectSupplier" class="form-select" onchange="selectDynamicValidator(this,'','supplierquotation','supplier_id')">
+                                                            <select name="supplier" id="selectSupplier" class="form-select" onchange="selectDynamicValidator(this,'','supplierQuotation','supplier_id')">
                                                         <option value=""  selected disabled>Select Supplier</option>
                                                     </select>
                                                         </div>
@@ -142,7 +142,7 @@
                                                     <!-- email start -->
                                                     <div class="col-6">
                                                         <div class="form-floating mb-3">
-                                                            <input type="date" class="form-control" id="dateValidDate" placeholder=" " required onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$', 'supplierquotation', 'validdate')">
+                                                            <input type="date" class="form-control" id="dateValidDate" placeholder=" " required onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$', 'supplierQuotation', 'validdate')">
                                                             <label for="dateValidDate">Valid Date<span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
@@ -166,34 +166,25 @@
                                     <div class="card">
                                         <div class="card-header">Quotation Item Overview</div>
                                         <div class="card-body">
-                                            <table class="table table-hover table-striped" id="innerItemTable">
-                                                <thead class="table-header">
-                                                    <tr align="center">
-                                                        <th style="background-color: #009d27 !important"> # </th>
-                                                        <th style="background-color: #009d27 !important"> Item Code </th>
-                                                        <th style="background-color: #009d27 !important"> Item Name </th>
-                                                        <th style="background-color: #009d27 !important"> Unit Price</th>
-                                                        <th style="background-color: #009d27 !important"> Qty </th>
-                                                        <th style="background-color: #009d27 !important"> Line Price </th>
-                                                        <th style="background-color: #009d27 !important"> Modify </th>
+                                            <table class="table mb-0" id="itemsTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Item Code</th>
+                                                        <th>Item Name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Unit Price ($)</th>
+                                                        <th>Line Total ($)</th>
                                                     </tr>
                                                 </thead>
+                                                <tbody id="itemsTableBody">
 
-                                                <tbody class="table-body">
-
-                                                    <!-- create static values for table -->
-                                                    <!-- used for initial designs -->
-                                                    <!-- probebly this appear when data not loading to table from db -->
-                                                    <tr align="center" style="vertical-align: middle;">
-                                                        <td align="center"> 1 </td>
-                                                        <td align="center"> CPU0001 </td>
-                                                        <td align="center"> Core I7 20th Gen User Cor </td>
-                                                        <td>
-                                                            <button type="button" class="btn ms-1 me-1 btnDel">
-                                                                <i class="fa-regular fa-circle-xmark"></i>
-                                                            </button> </td>
-                                                    </tr>
                                                 </tbody>
+                                                <tfoot>
+                                                    <tr class="total-section">
+                                                        <td colspan="4" class="text-end">Total Amount:</td>
+                                                        <td id="totalAmount">$0.00</td>
+                                                    </tr>
+                                                </tfoot>
                                             </table>
 
                                         </div>
