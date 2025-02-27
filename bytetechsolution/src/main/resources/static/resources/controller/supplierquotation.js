@@ -59,6 +59,17 @@ const refreshSupplierQuotationForm = () => {
 
     })
 
+    //made security privilages
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/QUOTATION");
+
+    if (!userPrivilages.insert) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.remove('modal-btn-submit');
+
+        inputFieldsHandler([dateValidDate, selectQuotationRequest, selectSupplier], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+
 }
 
 const getQRcode = (ob) => {
@@ -98,6 +109,8 @@ const refillSupplierForm = (ob) => {
     document.querySelectorAll('.unit-price').forEach(input => {
         input.addEventListener('input', updateTotals);
     });
+
+    updateTotals()
 }
 
 
@@ -106,6 +119,8 @@ function editableTableHandler(requestedItems) {
     requestedItems.forEach(item => {
         const row = document.createElement('tr');
         row.className = 'item-row';
+        console.log("item", item);
+        const isEditable = item.lineprice === undefined;
         row.innerHTML = `
             <td>${item.itemcode}</td>
             <td>${item.itemname}</td>
@@ -113,9 +128,11 @@ function editableTableHandler(requestedItems) {
             <td>
                 <input type="number" class="item-input form-control unit-price" 
                        step="0.01" min="0" required
-                       data-item-code="${item.itemcode}">
+                       data-item-code="${item.itemcode}"
+                        value="${isEditable ? '' : item.unitprice}"
+                       ${isEditable ? '' : 'disabled'}>
             </td>
-            <td class="line-total">Rs.0.00</td>
+            <td class="line-total">Rs.${item.lineprice !== undefined ? item.lineprice.toFixed(2) : '0.00'}</td>
         `;
         tbody.appendChild(row);
     });
@@ -255,6 +272,5 @@ const buttonModalClose = () => {
         formSupplierQuotation.reset();
         divModifyButton.className = 'd-none';
 
-        refreshSupplierQuotationForm();
     }
 }
