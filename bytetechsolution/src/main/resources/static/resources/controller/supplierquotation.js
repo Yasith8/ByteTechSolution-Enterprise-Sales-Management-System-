@@ -69,7 +69,35 @@ const getSupplierName = (ob) => {
 }
 
 const refillSupplierForm = (ob) => {
+    $('#supplierQuotationAddModal').modal('show');
 
+    removeValidationColor([selectQuotationRequest, selectSupplier, dateValidDate])
+
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit')
+
+    supplierQuotation = JSON.parse(JSON.stringify(ob));
+    olfSupplierQuotation = ob;
+
+    staticBackdropLabel.textContent = supplierQuotation.quotationid;
+
+    dateValidDate.disabled = true;
+    dateValidDate.value = supplierQuotation.validdate;
+
+    quotationrequests = getServiceAjaxRequest("/quotationrequest/withoutexpiredrequest")
+    fillMultipleItemOfDataIntoSingleSelect(selectQuotationRequest, "Select Quotation Request", quotationrequests, "quotationrequestcode", "requireddate", supplierQuotation.quotation_request_id.quotationrequestcode, supplierQuotation.quotation_request_id.requireddate);
+    selectQuotationRequest.disabled = true;
+
+    suppliers = getServiceAjaxRequest("/supplier/alldata")
+    fillDataIntoSelect(selectSupplier, "Select Supplier", suppliers, "name", supplierQuotation.supplier_id.name);
+    selectSupplier.disabled = true;
+
+    console.log(supplierQuotation);
+    editableTableHandler(supplierQuotation.quotation_item)
+
+    document.querySelectorAll('.unit-price').forEach(input => {
+        input.addEventListener('input', updateTotals);
+    });
 }
 
 

@@ -47,7 +47,6 @@ const fillDataIntoTable = (tableId, dataList, displayPropertyList, refillFunctio
                     const timestamp = element[ob.propertyName];
                     const dateOnly = timestamp.split("T")[0];
                     td.innerText = dateOnly;
-                    console.log(dateOnly);
                 } else {
                     td.innerText = element[ob.propertyName];
                 }
