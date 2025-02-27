@@ -212,3 +212,21 @@ const submitSupplierQuotation = () => {
 
 
 }
+
+
+const buttonModalClose = () => {
+    const closeResponse = confirm('Are you sure to close the modal?')
+
+    //check closeResponse is true or false
+    if (closeResponse) {
+        $('#supplierQuotationAddModal').modal('hide');
+
+
+        //formItem is id of form
+        //this will reset all data(refreash)
+        formSupplierQuotation.reset();
+        divModifyButton.className = 'd-none';
+
+        refreshSupplierQuotationForm();
+    }
+}
