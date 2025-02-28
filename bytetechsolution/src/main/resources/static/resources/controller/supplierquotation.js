@@ -35,6 +35,11 @@ const refreshSupplierQuotationForm = () => {
 
     supplierQuotationItemList = new Array();
 
+    totalAmount.innerHTML = 'Rs.0.00';
+    dateValidDate.disabled = false;
+    selectQuotationRequest.disabled = false;
+    selectSupplier.disabled = false;
+
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
 
@@ -116,12 +121,15 @@ const refillSupplierForm = (ob) => {
 
 function editableTableHandler(requestedItems) {
     const tbody = document.getElementById('itemsTableBody');
-    requestedItems.forEach(item => {
-        const row = document.createElement('tr');
-        row.className = 'item-row';
-        console.log("item", item);
-        const isEditable = item.lineprice === undefined;
-        row.innerHTML = `
+    if (requestedItems.length == 0) {
+        tbody.innerHTML = '';
+    } else {
+        requestedItems.forEach(item => {
+            const row = document.createElement('tr');
+            row.className = 'item-row';
+            console.log("item", item);
+            const isEditable = item.lineprice === undefined;
+            row.innerHTML = `
             <td>${item.itemcode}</td>
             <td>${item.itemname}</td>
             <td>${item.quantity}</td>
@@ -134,8 +142,9 @@ function editableTableHandler(requestedItems) {
             </td>
             <td class="line-total">Rs.${item.lineprice !== undefined ? item.lineprice.toFixed(2) : '0.00'}</td>
         `;
-        tbody.appendChild(row);
-    });
+            tbody.appendChild(row);
+        })
+    };
 }
 
 // Calculate line total
@@ -266,10 +275,12 @@ const buttonModalClose = () => {
     if (closeResponse) {
         $('#supplierQuotationAddModal').modal('hide');
 
+        refreshSupplierQuotationForm()
 
         //formItem is id of form
         //this will reset all data(refreash)
         formSupplierQuotation.reset();
+        editableTableHandler([])
         divModifyButton.className = 'd-none';
 
     }
