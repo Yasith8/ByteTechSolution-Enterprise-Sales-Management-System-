@@ -269,19 +269,23 @@ const submitSupplierQuotation = () => {
 
 
 const buttonModalClose = () => {
-    const closeResponse = confirm('Are you sure to close the modal?')
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to close the modal?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, close it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $('#supplierQuotationAddModal').modal('hide');
 
-    //check closeResponse is true or false
-    if (closeResponse) {
-        $('#supplierQuotationAddModal').modal('hide');
+            refreshSupplierQuotationForm();
 
-        refreshSupplierQuotationForm()
-
-        //formItem is id of form
-        //this will reset all data(refreash)
-        formSupplierQuotation.reset();
-        editableTableHandler([])
-        divModifyButton.className = 'd-none';
-
-    }
+            // Reset the form
+            formSupplierQuotation.reset();
+            editableTableHandler([]);
+            divModifyButton.className = 'd-none';
+        }
+    });
 }
