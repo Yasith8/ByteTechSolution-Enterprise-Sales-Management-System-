@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.SupplierQuotationDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.PurchaseRequestEntity;
 import lk.bytetechsolution.Entity.QuotationItemEntity;
 import lk.bytetechsolution.Entity.SupplierQuotationEntity;
 import lk.bytetechsolution.Entity.UserEntity;
@@ -40,20 +39,6 @@ public class SupplierQuotationController {
     @Autowired
     private PrivilageController privilageController;
 
-    @GetMapping(value="/suppliersubmitquotation",params = {"quotationreqestid","supplierid"},produces="application/json")
-    public ModelAndView getSupplierSubmitQuotationUI(@RequestParam("quotationreqestid") String quotationReqestId,@RequestParam("supplierid") String supplierId){
-        // Create a new ModelAndView object to hold the model data and view information
-        ModelAndView supplierQuotationView=new ModelAndView();
-        //pass the ui
-        supplierQuotationView.setViewName("supplierquotationsubmission.html");
-        //attributes set to show titles in web page using theamleaf
-        supplierQuotationView.addObject("title", "Supplier Quotation Submission || Bytetech Solution");
-
-        return supplierQuotationView;
-
-    }
-
-    
 
     @RequestMapping(value = "/supplierquotation")
     public ModelAndView supplierQuotationUI(){
