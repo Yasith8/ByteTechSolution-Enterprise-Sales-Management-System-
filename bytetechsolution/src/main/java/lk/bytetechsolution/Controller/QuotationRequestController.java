@@ -91,11 +91,6 @@ public class QuotationRequestController {
         return daoQuotationRequest.findByAfterRequireddate();
     }
 
-    @GetMapping(value = "/quotationrequest/requestbyid",params = {"id"},produces = "application/json")
-    public QuotationRequestEntity GetQuotationRequestDataById(@RequestParam("id") Integer id){
-        return daoQuotationRequest.findById(id).get();
-    }
-
     @PostMapping(value = "/quotationrequest")
     public String addQuotationRequestData(@RequestBody QuotationRequestEntity quotationrequest){
         //Authentication and Autherization

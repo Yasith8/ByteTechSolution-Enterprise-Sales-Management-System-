@@ -1,23 +1,21 @@
 package lk.bytetechsolution.Controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import lk.bytetechsolution.Dao.QuotationRequestDao;
-import lk.bytetechsolution.Entity.QuotationRequestEntity;
+import lk.bytetechsolution.Dao.SupplierDao;
+import lk.bytetechsolution.Entity.SupplierEntity;
 
+@RestController
 public class SupplierSubmitController {
     @Autowired
-    private QuotationRequestDao daoQuotationRequest;
+    private SupplierDao daoSupplier;
 
-    @GetMapping(value = "/quotationrequest/withoutexpiredrequest",produces = "application/json")
-    public List<QuotationRequestEntity> GetAvailableRequest(){
-
-        return daoQuotationRequest.findByAfterRequireddate();
+    @GetMapping(value = "/suppliersubmit/supplierbyid",params = {"id"},produces = "application/json")
+    public SupplierEntity GetSupplierDataById(@RequestParam("id") Integer id){
+        return daoSupplier.findById(id).get();
     }
 
 }
