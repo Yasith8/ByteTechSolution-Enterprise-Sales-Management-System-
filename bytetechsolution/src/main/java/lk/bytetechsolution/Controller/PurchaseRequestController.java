@@ -23,6 +23,7 @@ import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.PowerSupplyDao;
 import lk.bytetechsolution.Dao.PurchaseRequestDao;
 import lk.bytetechsolution.Dao.PurchaseStatusDao;
+import lk.bytetechsolution.Dao.SupplierQuotationDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.PowerSupplyEntity;
 import lk.bytetechsolution.Entity.PurchaseRequestEntity;
@@ -48,6 +49,10 @@ public class PurchaseRequestController {
 
     @Autowired
     private PurchaseStatusDao daoPurchaseStatus;
+    
+    @Autowired
+    private SupplierQuotationDao daoSupplierQuotation;
+
 
     @Autowired
     private UserDao daoUser;

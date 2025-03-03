@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.SupplierQuotationDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.PurchaseRequestEntity;
 import lk.bytetechsolution.Entity.QuotationItemEntity;
 import lk.bytetechsolution.Entity.SupplierQuotationEntity;
 import lk.bytetechsolution.Entity.UserEntity;
@@ -96,6 +97,23 @@ public class SupplierQuotationController {
 
         return daoSupplierQuotation.findAll();
     }
+
+        @GetMapping(value="/supplierquotation/quotationbyvaliddate",produces = "application/json")
+    public List<SupplierQuotationEntity> GetPrequestByValidDate(){
+        //Authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"QUOTATION");
+
+
+        //if current logged user doesnt have privilages show empty list
+        if(!userPrivilage.get("select")){
+            return new ArrayList<SupplierQuotationEntity>();
+        }
+
+        return daoSupplierQuotation.findByAfterValiddate();
+    }
+
+
 
     @PostMapping(value = "/supplierquotation")
     public String addSupplierQuotationData(@RequestBody SupplierQuotationEntity supplierquotation){

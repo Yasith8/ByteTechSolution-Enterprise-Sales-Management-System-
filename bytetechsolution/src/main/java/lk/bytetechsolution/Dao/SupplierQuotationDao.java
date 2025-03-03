@@ -1,5 +1,7 @@
 package lk.bytetechsolution.Dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,5 +19,6 @@ public interface SupplierQuotationDao extends JpaRepository<SupplierQuotationEnt
     @Query(value ="select concat('SQC',lpad(substring(max(sqc.quotationid),4)+1,4,'0')) as quotationid from bytetechsolution.supplier_quotation as sqc",nativeQuery = true)
     public String getNextSupplierQuotationNumber();
 
-  
+   @Query(value = "select * from bytetechsolution.supplier_quotation sq where sq.validdate>=current_time()",nativeQuery = true)
+    public List<SupplierQuotationEntity> findByAfterValiddate();
 }
