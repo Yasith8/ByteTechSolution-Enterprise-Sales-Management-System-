@@ -13,8 +13,8 @@ const refreshSubmissionSupplierQuotationForm = () => {
     supplierQuotationItemList = new Array();
 
 
-    currentQuotationRequest = getServiceAjaxRequest("/quotationrequest/requestbyid?id=" + quotationReqest)
-    currentSupplier = getServiceAjaxRequest("/supplier/supplierbyid?id=" + supplier)
+    currentQuotationRequest = getServiceAjaxRequest("/quotationrequestsubmit/requestbyid?id=" + quotationReqest)
+    currentSupplier = getServiceAjaxRequest("/suppliersubmit/supplierbyid?id=" + supplier)
 
     textQuotationReqest.value = currentQuotationRequest.quotationrequestcode;
     textSupplier.value = currentSupplier.name;
@@ -182,7 +182,7 @@ const submitSupplierQuotation = () => {
         if (supplierSubmitResponse) {
             let postServiceResponce;
 
-            $.ajax("/supplierquotation", {
+            $.ajax("/suppliersubmitquotation", {
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(supplierSubmitQuotation),

@@ -59,6 +59,8 @@ public class WebConfiguration {
         .requestMatchers("/quotationrequest/**").hasAnyAuthority("Admin","Manager") 
         .requestMatchers("/supplierquotation/**").hasAnyAuthority("Admin","Manager") 
         .requestMatchers("/suppliersubmitquotation/**").permitAll()
+        .requestMatchers("/quotationrequestsubmit/**").permitAll()
+        .requestMatchers("/suppliersubmit/**").permitAll()
         .anyRequest().authenticated();// any other requst need authenticate
         
         
