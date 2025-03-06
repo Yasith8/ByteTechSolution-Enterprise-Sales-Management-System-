@@ -1,7 +1,7 @@
 body {
     /*     background: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
  */
-    background-color: #00ff99;
+    background-color: #b9f8cf;
 }
 
 .login-card {
@@ -21,8 +21,8 @@ body {
 
 .logo {
     position: relative;
-    top: 40px;
-    width: 100px;
+    top: 74px;
+    width: 200px;
 }
 
 .logo-div {
@@ -36,8 +36,8 @@ body {
     height: 40px;
     border-radius: 5px;
     background-color: transparent;
-    border-color: #15301a;
-    color: #15301a;
+    border-color: black;
+    color: black;
     font-weight: bold;
 }
 
@@ -45,14 +45,14 @@ body {
     width: 100%;
     height: 40px;
     border-radius: 5px;
-    background-color: #00ff99;
+    background-color: #103D45;
     color: white;
     font-weight: bold;
     border: none;
 }
 
 .greating {
-    margin-top: 60px;
+    margin-top: 120px;
 }
 
 .slogen {
