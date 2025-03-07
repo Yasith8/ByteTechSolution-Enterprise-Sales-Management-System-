@@ -1,22 +1,27 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: "Nunito Sans", sans-serif;
+    /* font-family: "Nunito Sans", sans-serif; */
+    font-family: 'helvetica now display';
 }
 
 body {
-    background-color: #00ff99 !important;
+    background-color: #B9F8CF !important;
+}
+
+.head-title {
+    font-family: 'helvetica now display';
 }
 
 .Btn {
     padding: 5px;
     border-radius: 5px;
-    border: 1px solid #6669b0;
+    border: 1px solid #103D45;
 }
 
 .Btn:hover {
-    background-color: #43456e;
-    border: 1px solid #43456e;
+    background-color: #0D3239;
+    border: 1px solid #0D3239;
 }
 
 .fw-bold {
@@ -24,7 +29,7 @@ body {
 }
 
 .addBtn {
-    background-color: #6669b0;
+    background-color: #103D45;
     color: white;
     padding-inline: 40px;
     padding-block: 7px;
@@ -32,21 +37,21 @@ body {
 }
 
 .printTableBtn {
-    background-color: #c471f5;
+    background-color: #B3C41C;
     margin-right: 10px;
     color: white;
     padding-inline: 30px;
     padding-block: 7px;
-    border: 1px solid #c471f5;
+    border: 1px solid #B3C41C;
 }
 
 .printTableBtn:hover {
-    border: 1px solid #b83dff;
-    background-color: #b83dff;
+    border: 1px solid #687401;
+    background-color: #687401;
 }
 
 .btnDel:hover {
-    color: red;
+    color: #F25454;
 }
 
 .btnEdit:hover {
@@ -54,7 +59,7 @@ body {
 }
 
 .btnView:hover {
-    color: #6669b0;
+    color: #0D3239;
 }
 
 .modal-content {

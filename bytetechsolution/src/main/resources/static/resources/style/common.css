@@ -6,31 +6,31 @@
 .Btn {
     padding: 5px;
     border-radius: 5px;
-    border: 1px solid #6669b0;
+    border: 1px solid #103D45;
 }
 
 .Btn:hover {
-    background-color: #43456e;
-    border: 1px solid #43456e;
+    background-color: #0D3239;
+    border: 1px solid #0D3239;
 }
 
 .addBtn {
-    background-color: #6669b0;
+    background-color: #103D45;
     color: white;
 }
 
 .printTableBtn {
-    background-color: #c471f5;
+    background-color: #B3C41C;
     margin-right: 10px;
     color: white;
     padding-left: 15px;
     padding-right: 15px;
-    border: 1px solid #c471f5;
+    border: 1px solid #B3C41C;
 }
 
 .printTableBtn:hover {
-    border: 1px solid #b83dff;
-    background-color: #b83dff;
+    border: 1px solid #687401;
+    background-color: #687401;
 }
 
 .modal-button {
@@ -42,15 +42,15 @@
 }
 
 .modal-btn-submit {
-    background-color: #6669b0;
+    background-color: #103D45;
     color: white;
-    border: 2px solid #6669b0;
+    border: 2px solid #103D45;
 }
 
 .modal-btn-update {
-    background-color: #267fbf;
+    background-color: #008080;
     color: white;
-    border: 2px solid #267fbf;
+    border: 2px solid #008080;
 }
 
 .model-btn-disable {
@@ -65,27 +65,27 @@
 }
 
 .modal-btn-delete {
-    background-color: red;
+    background-color: #F25454;
     color: white;
-    border: 2px solid red;
+    border: 2px solid #F25454;
 }
 
 .modal-btn-print {
-    background-color: black;
+    background-color: #B3C41C;
     color: white;
-    border: 2px solid black;
+    border: 2px solid #B3C41C;
 }
 
 .modal-btn-submit:hover {
-    background-color: #8689e3;
+    background-color: #0D3239;
     color: white;
-    border: 2px solid #8689e3;
+    border: 2px solid #0D3239;
 }
 
 .modal-btn-update:hover {
-    background-color: #0094fd;
+    background-color: #00b7b7;
     color: white;
-    border: 2px solid #0094fd;
+    border: 2px solid #00b7b7;
 }
 
 .modal-btn-clear:hover {
@@ -95,15 +95,15 @@
 }
 
 .modal-btn-delete:hover {
-    background-color: rgb(255, 58, 58);
+    background-color: #FF2E2E;
     color: white;
-    border: 2px solid rgb(255, 58, 58);
+    border: 2px solid #FF2E2E;
 }
 
 .modal-btn-print:hover {
-    background-color: rgb(70, 70, 70);
+    background-color: #89A118;
     color: white;
-    border: 2px solid rgb(70, 70, 70);
+    border: 2px solid #89A118;
 }
 
 
