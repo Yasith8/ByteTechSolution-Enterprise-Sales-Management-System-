@@ -152,3 +152,124 @@ body {
 .profileImgBtn {
     margin-left: 20px;
 }
+
+
+/* printing section */
+
+.document {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #103D45;
+}
+
+.company-logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #103D45;
+    margin-bottom: 5px;
+}
+
+.company-logo-img {
+    height: 50px;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin: 10px 0;
+    color: #103D45;
+}
+
+.employee-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #103D45;
+    float: right;
+    margin-left: 20px;
+}
+
+.employee-info {
+    margin-bottom: 25px;
+}
+
+.info-group {
+    margin-bottom: 20px;
+}
+
+.info-title {
+    font-size: 1.3rem;
+    color: #B3C41C;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.info-label {
+    font-weight: bold;
+    width: 200px;
+    color: #555;
+}
+
+.info-value {
+    flex: 1;
+}
+
+.footer {
+    margin-top: 40px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    text-align: center;
+}
+
+.signature-area {
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.signature-box {
+    width: 45%;
+}
+
+.signature-line {
+    border-top: 1px solid #555;
+    margin-top: 40px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+
+/* Print-specific styles */
+
+@media print {
+    body {
+        background: none;
+    }
+    .document {
+        box-shadow: none;
+        border: none;
+        margin: 0;
+        padding: 15px;
+    }
+    /* Ensure page breaks don't happen in the middle of sections */
+    .info-group {
+        page-break-inside: avoid;
+    }
+}

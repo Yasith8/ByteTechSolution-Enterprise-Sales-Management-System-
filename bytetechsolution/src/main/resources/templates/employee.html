@@ -285,130 +285,83 @@
 
 
     <!--PrintUser-->
-    <div class="print-container" style="display: none;" id="printEmployeeDetails">
-        <div class="d-flex gap-3 p-3">
-            <img src="/resources/image/logo/logo.png" width="50px" height="50px">
-            <div>
-                <p class="label-logo">
-                    <b>ByteTech Solution</b>
-                    <br> No 32A, Galle Road, Panadura <br> 0382291010/ 0773881010
-                </p>
+    <div class="print-container document" style="display: none;" id="printEmployeeDetails">
+        <div class="header">
+            <div class="company-logo"><img src="resources/image/logo/one-line.png" class="company-logo-img" /></div>
+            <h1>Employee Details</h1>
+        </div>
 
+        <div class="employee-info">
+            <img src="/resources/images/initialprofile.jpg" alt="Employee Photo" class="employee-photo" id="printPhotoEmployeeProfile">
+
+            <div class="info-group ">
+                <div class="info-title ">Personal Information</div>
+                <div class="info-row ">
+                    <div class="info-label ">Employee ID:</div>
+                    <div class="info-value " id="printTextId"></div>
+                </div>
+                <div class="info-row ">
+                    <div class="info-label ">Full Name:</div>
+                    <div class="info-value " id="printTextFullName"></div>
+                </div>
+                <div class="info-row ">
+                    <div class="info-label ">Date of Birth:</div>
+                    <div class="info-value " id="printDateDob">January 15, 1985</div>
+                </div>
+                <div class="info-row ">
+                    <div class="info-label ">NIC:</div>
+                    <div class="info-value " id="printTextNIC">January 15, 1985</div>
+                </div>
+                <div class="info-row ">
+                    <div class="info-label ">Calling Name:</div>
+                    <div class="info-value " id="printTextCallingName"></div>
+                </div>
+                <div class="info-row ">
+                    <div class="info-label ">Gender:</div>
+                    <div class="info-value " id="printRadioGender"></div>
+                </div>
+            </div>
+
+            <div class="info-group ">
+                <div class="info-title ">Contact Information</div>
+                <div class="info-row ">
+                    <div class="info-label ">Email Address:</div>
+                    <div class="info-value " id="printTextEmail"></div>
+                </div>
+                <div class="info-row ">
+                    <div class="info-label ">Phone Number:</div>
+                    <div class="info-value " id="printTextMobile"></div>
+                </div>
+                <div class="info-row ">
+                    <div class="info-label ">Address:</div>
+                    <div class="info-value " id="printTextAddress"></div>
+                </div>
+                <div class="info-row ">
+                    <div class="info-label ">Landline Number:</div>
+                    <div class="info-value " id="printTextLand"></div>
+                </div>
+            </div>
+
+            <div class="info-group ">
+                <div class="info-title ">Employment Details</div>
+                <div class="info-row ">
+                    <div class="info-label ">Position:</div>
+                    <div class="info-value " id="printSelectDesignation"></div>
+                </div>
+                <div class="info-row ">
+                    <div class="info-label ">Joining Date:</div>
+                    <div class="info-value " id="printDateAddedDate"></div>
+                </div>
+                <div class="info-row ">
+                    <div class="info-label ">Status:</div>
+                    <div class="info-value " id="printSelectStatus"></div>
+                </div>
             </div>
 
         </div>
 
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-8">
-
-
-
-                <div class="bg-white print-window">
-                    <img src="/resources/image/initialprofile.jpg" style="margin-left: 20px;margin-top: 20px;border-radius: 50px;" width="100px" height="100px" id="printPhotoEmployeeProfile">
-                    <h2 class="text-center">Employee Details</h2>
-
-                    <div class="row mt-4">
-                        <div class="col-3"></div>
-                        <div class="col-3">Employee ID</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printTextId"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">Employee Name</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printTextFullName"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">National ID No</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printTextNIC"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-
-                    <div class="row mt-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">Email</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printTextEmail"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">Calling Name</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printTextCallingName"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">Address</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printTextAddress"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">Gender</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printRadioGender"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">Mobile No</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printTextMobile"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">Land No</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printTextLand"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">Date of Birth</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printDateDob"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-                    <div class="row mt-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">Designation</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printSelectDesignation"></div>
-                        <div class="col-2"></div>
-                    </div>
-
-                    <div class="row mt-2 mb-2">
-                        <div class="col-3"></div>
-                        <div class="col-3">Employee Status</div>
-                        <div class="col-1">:</div>
-                        <div class="col-3" id="printSelectStatus"></div>
-                        <div class="col-2"></div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-2"></div>
-
+        <div class="footer ">
+            This document was generated on March 8, 2025. The information contained is confidential and for official use only.
         </div>
     </div>
 

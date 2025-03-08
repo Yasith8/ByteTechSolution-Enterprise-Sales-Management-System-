@@ -230,6 +230,7 @@ const printEmployee = (ob, rowIndex) => {
     printTextMobile.textContent = ob.mobile;
     printTextLand.textContent = ob.landno;
     printTextAddress.textContent = ob.address;
+    printDateAddedDate.textContent = ob.addeddate;
     printDateDob.textContent = ob.dob;
     printSelectDesignation.textContent = ob.designation_id.name;
     printSelectStatus.textContent = ob.employeestatus_id.name;
