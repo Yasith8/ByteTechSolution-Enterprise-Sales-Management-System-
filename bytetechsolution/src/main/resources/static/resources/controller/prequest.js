@@ -39,13 +39,17 @@ const refreshPurchaseRequestForm = () => {
     purchaseStatuses = getServiceAjaxRequest("/purchasestatus/alldata")
     fillDataIntoSelect(selectPurchaseStatus, "Select Purchase Status", purchaseStatuses, "name", purchaseStatuses[1].name);
 
-    supplierNames = getServiceAjaxRequest("/supplier/alldata")
-    fillDataIntoSelect(selectSupplierName, "Select Supplier Name", supplierNames, "name");
+    supplierQuotations = getServiceAjaxRequest("/supplierquotation/quotationbyvaliddate")
+    fillMultipleItemOfDataIntoSingleSelect(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name"); //bug fix the issue
+
+
+
 
     decimalTotalAmount.disabled = true;
     decimalTotalAmount.value = 0;
 
-    removeValidationColor([decimalTtoalAmount, dateRequiredDate, textNote, selectSupplierName, selectPurchaseStatus, selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal, selectCategory])
+
+    removeValidationColor([decimalTotalAmount, dateRequiredDate, textNote, selectSupplierQuotation, selectPurchaseStatus, selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal])
 
 
     //made security privilages
@@ -55,7 +59,7 @@ const refreshPurchaseRequestForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([decimalTtoalAmount, dateRequiredDate, textNote, selectSupplierName, selectPurchaseStatus, selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal, selectCategory], true);
+        inputFieldsHandler([decimalTtoalAmount, dateRequiredDate, textNote, selectSupplierQuotation, selectPurchaseStatus, selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 
@@ -67,8 +71,8 @@ const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
     purchaseRequestItem = new Object();
     oldPurchaseRequestItem = null;
 
-    inputFieldsHandler([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal, selectCategory], false)
-    removeValidationColor([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal, selectCategory])
+    inputFieldsHandler([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal], false)
+    removeValidationColor([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal])
 
     buttonInnerSubmit.disabled = false;
     buttonInnerSubmit.classList.add('inner-add-btn');
@@ -76,19 +80,34 @@ const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
     buttonInnerUpdate.disabled = true;
     buttonInnerUpdate.classList.remove('inner-update-btn');
 
-    //get category
-    categories = getServiceAjaxRequest('/category/alldata')
-    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name");
+    decimalLineTotal.disabled = true;
+    decimalItemPrice.disabled = true;
 
-    //item name
-    fillDataIntoSelect(selectItemName, "Please Select Category First", [], "name");
 
     //auto add item code when item select
+    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", [], "", "");
+    selectSupplierQuotation.addEventListener('change', () => {
+        const selectedSupplierQuotation = selectValueHandler(selectSupplierQuotation);
+        fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", selectedSupplierQuotation.quotation_item, "itemcode", "itemname");
 
-    //item price need to get from grn list
+        selectItemName.addEventListener('change', () => {
+            const selectedItemName = selectValueHandler(selectItemName);
+            numberQuantity.value = selectedItemName.quantity;
+            decimalItemPrice.value = selectedItemName.unitprice;
 
-    //when adding the quantity line total need to auto calculate, also total amount
+            decimalLineTotal.value = selectedItemName.lineprice
+            numberQuantity.addEventListener('keyup', () => {
+                const newQuantity = numberQuantity.value;
+                decimalLineTotal.value = newQuantity * selectedItemName.unitprice
+            })
+        })
+
+
+
+    })
+
     //inner table
+
 }
 
 
@@ -115,9 +134,16 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
 
 }
 
-const innerPurchaseRequestItemUpdate = () => {
+const checkInnerItemFormErrors = () => {
+    let errors = ""
 
+
+    return errors;
 }
 const innerPurchaseRequestItemAdd = () => {
+
+}
+
+const innerPurchaseRequestItemUpdate = () => {
 
 }

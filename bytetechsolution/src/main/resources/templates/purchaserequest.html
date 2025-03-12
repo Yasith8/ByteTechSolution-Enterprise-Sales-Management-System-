@@ -20,7 +20,7 @@
         <div class="row m-2">
             <div class="col-12 text-center 
             title-header-div">
-                <h2> Purchase Request Management </h2>
+                <h2 class="fw-bold"> Purchase Request Management </h2>
             </div>
         </div>
         <!-- title area End -->
@@ -123,8 +123,8 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-floating mb-3">
-                                                    <select name="suppliername" id="selectSupplierName" class="form-select" onchange="selectDynamicValidator(this,'','prequest','supplier_id')">
-                                                        <option value=""  selected disabled>Select Supplier Name</option>
+                                                    <select name="suppliername" id="selectSupplierQuotation" class="form-select" onchange="selectDynamicValidator(this,'','prequest','supplier_quotation_id')">
+                                                        <option value=""  selected disabled>Select Supplier Quotation</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -189,37 +189,30 @@
                                         <div class="card-body">
                                             <form>
                                                 <div class="row">
-                                                    <div class="col-4">
-                                                        <div class="mb-3 form-floating">
-                                                            <select name="category" id="selectInnerCategory" class="form-select" onchange="selectDynamicValidator(this,'','purchaserequestitem','category_id')">
-                                                                <option value=""  selected disabled>Select Category Name</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="mb-3 form-floating">
                                                             <select name="itemname" id="selectItemName" class="form-select" onchange="selectDynamicValidator(this,'','purchaserequestitem','itemname_id')">
                                                                 <option value=""  selected disabled>Select Item Name</option>
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="mb-3 form-floating">
-                                                            <input type="number" class="form-control" id="decimalItemPrice" onchange="textValidator(this,'^[0-9]+(\\.[0-9]{1,2})?$','purchaserequestitem','itemprice')" placeholder="" required>
-                                                            <label for="decimalItemPrice">Item Price<span class="requiredIcon">*</span></label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                        <div class="mb-3 form-floating">
-                                                            <input type="number" class="form-control" id="numberQuantity" onchange="textValidator(this,'^(100|[1-9][0-9]?)$','purchaserequestitem','quantity')" placeholder="" required>
+                                                            <input type="number" class="form-control" id="numberQuantity" onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$','purchaserequestitem','quantity')" placeholder="" required>
                                                             <label for="numberQuantity">Quantity<span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="mb-3 form-floating">
-                                                            <input type="number" class="form-control" id="decimalLineTotal" onchange="textValidator(this,'^[0-9]+(\\.[0-9]{1,2})?$','purchaserequestitem','linetotal')" placeholder="" required>
+                                                            <input type="number" class="form-control" id="decimalItemPrice" placeholder="" required>
+                                                            <label for="decimalItemPrice">Item Price<span class="requiredIcon">*</span></label>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-3">
+                                                        <div class="mb-3 form-floating">
+                                                            <input type="number" class="form-control" id="decimalLineTotal" placeholder="" required>
                                                             <label for="decimalLineTotal">Line Total<span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>

@@ -1,3 +1,11 @@
+* {
+    font-family: 'helvetica now display';
+}
+
+body {
+    background-color: #B9F8CF !important;
+}
+
 .requiredIcon {
     color: red;
     font-weight: 900;
