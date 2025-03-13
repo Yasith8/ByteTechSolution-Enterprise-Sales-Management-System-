@@ -140,3 +140,29 @@
     color: white;
     text-align: center;
 }
+
+
+/* ////////////////////inner form styles */
+
+#tableInnerPrequestItem {
+    border: 1px solid #103D45;
+    border-radius: 5px;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#tableInnerPrequestItem thead {
+    background-color: #00B69B;
+}
+
+#tableInnerPrequestItem thead tr th:first-child {
+    border-top-left-radius: 5px;
+}
+
+#tableInnerPrequestItem thead tr th:last-child {
+    border-top-right-radius: 5px;
+}
+
+
+/* ////////////////////inner form styles */
