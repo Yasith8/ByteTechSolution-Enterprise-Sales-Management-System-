@@ -92,24 +92,47 @@ const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
 
         selectItemName.addEventListener('change', () => {
             const selectedItemName = selectValueHandler(selectItemName);
+
             numberQuantity.value = selectedItemName.quantity;
             decimalItemPrice.value = selectedItemName.unitprice;
+            textValidator(numberQuantity, '^(100|[1-9][0-9]?)$', 'purchaseRequestItem', 'quantity');
+            textValidator(decimalItemPrice, '', 'purchaseRequestItem', 'unitprice');
+
 
             decimalLineTotal.value = selectedItemName.lineprice
             numberQuantity.addEventListener('keyup', () => {
                 const newQuantity = numberQuantity.value;
                 decimalLineTotal.value = newQuantity * selectedItemName.unitprice
             })
+            textValidator(decimalLineTotal, '', 'purchaseRequestItem', 'linetotal');
         })
 
 
 
     })
 
+    console.log(purchaseRequestItem);
+
     //inner table
+    let displayPropertyList = [
+        { dataType: 'function', propertyName: getItemCode },
+        { dataType: 'function', propertyName: getItemName },
+        { dataType: 'text', propertyName: "unitprice" },
+        { dataType: 'text', propertyName: "quantity" },
+        { dataType: 'text', propertyName: "linetotal" },
+    ]
+
+    fillDataIntoInnerTable(tableInnerPrequestItem, prequest.purchase_request_item, displayPropertyList, refillInnerPurchaseItemForm, deleteInnerPurchaseItemForm)
 
 }
 
+const getItemCode = (ob) => {
+    return ob.itemname_id.itemcode;
+}
+
+const getItemName = (ob) => {
+    return ob.itemname_id.itemname;
+}
 
 const getPurchaseRequestStatus = (ob) => {
     if (ob.purchasestatus.name == 'Recived') {
@@ -134,15 +157,70 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
 
 }
 
+const refillInnerPurchaseItemForm = () => {
+
+}
+
+const deleteInnerPurchaseItemForm = () => {
+
+}
+
 const checkInnerItemFormErrors = () => {
     let errors = ""
 
+    if (purchaseRequestItem.itemname_id == null) {
+        errors += "Item selection is required.\n"
+    }
+    if (purchaseRequestItem.quantity == null) {
+        errors += "Quantity is required.\n"
+    }
 
     return errors;
 }
 const innerPurchaseRequestItemAdd = () => {
+    let errors = checkInnerItemFormErrors();
 
-}
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to assign this product to the purchase request?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, assign it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                prequest.purchase_request_item.push(purchaseRequestItem);
+                console.log(prequest.purchase_request_item);
+
+                Swal.fire({
+                    title: "Success!",
+                    text: "Items assigned to the purchase request successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    refreshPurchaseRequestHasItemInnerFormAndTable();
+                    purchaseItemForm.reset();
+                });
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "Error!",
+            html: "Item assignment failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
+    }
+};
+
 
 const innerPurchaseRequestItemUpdate = () => {
 

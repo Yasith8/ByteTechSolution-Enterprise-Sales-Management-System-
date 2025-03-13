@@ -49,6 +49,18 @@ const selectDynamicValidator = (selectElement, pattern, object, property) => {
     }
 }
 
+const selectElementConvertIntoMultipleDynamicValueValidator = (selectElement, object, properties) => {
+    properties.forEach(property => {
+        if (selectElement.value != '') {
+            selectElement.classList.add('is-valid')
+            window[object][property] = JSON.parse(selectElement.value);
+        } else {
+            selectElement.classList.add('is-invalid')
+            window[object][property] = null;
+        }
+    });
+}
+
 //define function for radio validator
 
 const radioValidator = (radioElement, pattern, object, property, label1Id, label2Id) => {
