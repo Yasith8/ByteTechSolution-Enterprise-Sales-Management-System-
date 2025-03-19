@@ -154,6 +154,7 @@
 
 #tableInnerPrequestItem thead {
     background-color: #00B69B;
+    color: white;
 }
 
 #tableInnerPrequestItem thead tr th:first-child {

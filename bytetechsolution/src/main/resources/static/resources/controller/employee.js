@@ -84,31 +84,7 @@ window.addEventListener('load', () => {
 const refreshEmployeeTable = () => {
 
     //for store the all data from database
-    employees = []
-
-    //get request using jquery
-    //jquery ajax get all data function
-    //$.ajax("URL,OPTION");
-    $.ajax("/employee/alldata", {
-        contentType: 'application/json', //this will display data by json format
-        type: 'GET', //get request
-        async: false,
-
-        //if requested data  recieved successfully then this function called
-        //assign response data to employees array
-        success: function(data) {
-            console.log("Success " + data);
-            employees = data;
-        },
-
-        //if requested data has error then this function called
-        //assign empty array to employees 
-        error: function(resData) {
-            console.log("Error " + resData)
-            employees = [];
-        }
-
-    })
+    employees = getServiceAjaxRequest("/employee/alldata")
 
 
 
@@ -500,39 +476,59 @@ const employeeFormRefill = (ob, rowIndex) => {
 
 //delete function for  deleting record from table
 const deleteEmployee = (ob, rowIndex) => {
-    //user conformation
-    let userConform = confirm("Are you sure  to delete following employee? " + ob.fullname);
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to delete following employee? "  ${ob.fullname}`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let deleteServiceResponse;
+            //ajax request fot delete data
+            $.ajax("/employee", {
+                type: "DELETE",
+                contentType: "application/json",
+                data: JSON.stringify(ob),
+                async: false,
 
-    //if ok
-    if (userConform) {
-        let deleteServiceResponse;
+                success: function(data) {
+                    deleteServiceResponse = data
+                },
 
-        //ajax request fot delete data
-        $.ajax("/employee", {
-            type: "DELETE",
-            contentType: "application/json",
-            data: JSON.stringify(ob),
-            async: false,
+                error: function(errData) {
+                    deleteServiceResponse = errData;
+                }
+            })
 
-            success: function(data) {
-                deleteServiceResponse = data
-            },
-
-            error: function(errData) {
-                deleteServiceResponse = errData;
+            if (deleteServiceResponse == "OK") {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Employee Deleted Successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    $('#employeeAddModal').modal('hide');
+                    refreshEmployeeTable()
+                })
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    html: "Employee Deletion failed due to the following errors:<br>" + deleteServiceResponse,
+                    icon: "error",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: "#F25454"
+                });
             }
-        })
-
-        //if delete response ok alert the success message and close the modal and refreash employee table
-        //so because of that we can see realtime update
-        if (deleteServiceResponse == "OK") {
-            alert("Delete Successfullly");
-            $('#employeeAddModal').modal('hide');
-            refreshEmployeeTable()
-        } else {
-            console.log("system has following errors:\n" + deleteServiceResponse);
         }
-    }
+    })
 }
 
 //create function for validate full name name generate callingname data list
@@ -609,36 +605,36 @@ const textFullNameValidator = (feildId) => {
 const checkEmployeeInputError = () => {
     let errors = '';
     if (employee.fullname == null) {
-        errors = errors + 'Full Name can not be null..! \n';
+        errors = errors + 'Full Name can not be null..! <br>';
         textFullName.classList.add("is-invalid")
     }
     if (employee.callingname == null) {
-        errors = errors + 'Please enter calling name..! \n';
+        errors = errors + 'Please enter calling name..! <br>';
         textCallingName.classList.add('is-invalid')
     }
     if (employee.designation_id == null) {
         selectDesignation.classList.add('is-invalid')
-        errors = errors + 'designation can not be null..! \n';
+        errors = errors + 'designation can not be null..! <br>';
     }
     if (employee.employeestatus_id == null) {
         selectEmployeeStatus.classList.add('is-invalid')
-        errors = errors + 'please select employee status..! \n';
+        errors = errors + 'please select employee status..! <br>';
     }
     if (employee.mobile == null) {
         textMobileNo.classList.add('is-invalid')
-        errors = errors + 'please enter mobile number..! \n';
+        errors = errors + 'please enter mobile number..! <br>';
     }
     if (employee.email == null) {
         textEmail.classList.add('is-invalid')
-        errors = errors + 'please enter your email..! \n';
+        errors = errors + 'please enter your email..! <br>';
     }
     if (employee.address == null) {
         textAddress.classList.add('is-invalid')
-        errors = errors + 'please enter your Address..! \n';
+        errors = errors + 'please enter your Address..! <br>';
     }
     if (employee.dob == null) {
         dateDateOfBirth.classList.add('is-invalid')
-        errors = errors + 'please enter your Date of Birth..! \n';
+        errors = errors + 'please enter your Date of Birth..! <br>';
     }
 
 
@@ -653,55 +649,78 @@ const buttonEmployeeSubmit = () => {
 
     //can check optional field
     const errors = checkEmployeeInputError();
-    if (errors == '') {
-        //not ext need to get user confirmation
-        //call post servise
-        //check post service responce
-        const userSubmitResponse = confirm('Are you sure to submit...?\n');
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to create a New Employee?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let postServiceResponce;
 
+                $.ajax("/employee", {
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(employee),
+                    async: false,
 
-        if (userSubmitResponse) {
-            //call post service
+                    success: function(data) {
+                        console.log("success", data);
+                        postServiceResponce = data;
+                    },
 
-            let postServiceResponce;
+                    error: function(resData) {
+                        console.log("Fail", resData);
+                        postServiceResponce = resData;
+                    }
 
-            $.ajax("/employee", {
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(employee),
-                async: false,
+                });
 
-                success: function(data) {
-                    console.log("success", data);
-                    postServiceResponce = data;
-                },
-
-                error: function(resData) {
-                    console.log("Fail", resData);
-                    postServiceResponce = resData;
+                if (postServiceResponce == "OK") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Employee Registration Complete Successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        //hide the model
+                        $('#employeeAddModal').modal('hide');
+                        //reset the employee form
+                        formEmployee.reset();
+                        //refreash employee form
+                        refreshEmployeeForm();
+                        //refreash employee table
+                        refreshEmployeeTable();
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        html: "Adding Employee failed due to the following errors:<br>" + postServiceResponce,
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: "#F25454"
+                    });
                 }
-
-            });
-
-            //if response is success
-            if (postServiceResponce == "OK") {
-                alert("Save successfully...!");
-                //hide the model
-                $('#employeeAddModal').modal('hide');
-                //reset the employee form
-                formEmployee.reset();
-                //refreash employee form
-                refreshEmployeeForm();
-                //refreash employee table
-                refreshEmployeeTable();
-            } else {
-                alert("Fail to submit employee form \n" + postServiceResponce);
             }
-
-        }
+        });
     } else {
-        //if error ext then set alert
-        alert('form has following error...\n' + errors);
+        Swal.fire({
+            title: "Error!",
+            html: "Adding Employee failed due to the following errors:<br>" + errors,
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
     }
 }
 
@@ -710,52 +729,52 @@ const checkEmployeeFormUpdates = () => {
     let updates = "";
 
     if (employee.fullname != oldemployee.fullname) {
-        updates = updates + " Employee Fullname is Changed \n";
+        updates = updates + " Employee Fullname is Changed <br>";
     }
 
     if (employee.callingname != oldemployee.callingname) {
-        updates = updates + " Employee callingname is Changed \n";
+        updates = updates + " Employee callingname is Changed <br>";
     }
 
     if (employee.dob != oldemployee.dob) {
-        updates = updates + " Employee Date of Birth is Changed \n";
+        updates = updates + " Employee Date of Birth is Changed <br>";
     }
 
     if (employee.address != oldemployee.address) {
-        updates = updates + " Employee Address is Changed \n";
+        updates = updates + " Employee Address is Changed <br>";
     }
 
     if (employee.email != oldemployee.email) {
-        updates = updates + " Employee Email is Changed \n";
+        updates = updates + " Employee Email is Changed <br>";
     }
 
 
     if (employee.nic != oldemployee.nic) {
-        updates = updates + " Employee nic is Changed \n";
+        updates = updates + " Employee nic is Changed <br>";
     }
 
     if (employee.gender != oldemployee.gender) {
-        updates = updates + " Employee gender is Changed \n";
+        updates = updates + " Employee gender is Changed <br>";
     }
 
     if (employee.mobile != oldemployee.mobile) {
-        updates = updates + " Employee mobile is Changed \n";
+        updates = updates + " Employee mobile is Changed <br>";
     }
 
     if (employee.landno != oldemployee.landno) {
-        updates = updates + " Employee Land No is Changed \n";
+        updates = updates + " Employee Land No is Changed <br>";
     }
 
     if ((employee.photo != employee.photo) || (employee.photoname != employee.photoname)) {
-        updates = updates + " Employee Profile Photo is Changed \n";
+        updates = updates + " Employee Profile Photo is Changed <br>";
     }
 
     if (employee.designation_id.name != oldemployee.designation_id.name) {
-        updates = updates + " Employee Designation is Changed \n";
+        updates = updates + " Employee Designation is Changed <br>";
     }
 
     if (employee.employeestatus_id.name != oldemployee.employeestatus_id.name) {
-        updates = updates + " Employee Status is Changed \n";
+        updates = updates + " Employee Status is Changed <br>";
     }
 
 
@@ -774,91 +793,100 @@ const buttonEmployeeUpdate = () => {
         //check form error
         let errors = checkEmployeeInputError();
 
-        //check code has error, if code doesn't have  any errors
-        if (errors == "") {
-
-            //check form update
+        if (errors === "") {
 
             let updates = checkEmployeeFormUpdates();
 
             //check there is no updates or any updations
             if (updates == "") {
-                alert("Nothing Updates")
-                    /* document.body.insertAdjacentHTML('beforeend',
-                        '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
-                        '<strong>Nothing Updates</strong>' +
-                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                        '</div>'
-                    ); */
+                Swal.fire({
+                    title: "Nothing Updated",
+                    text: "There are no any updates in employee form",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#103D45",
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                })
             } else {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Do you want to update employee details?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#103D45",
+                    cancelButtonColor: "#F25454",
+                    confirmButtonText: "Yes",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //call put service requestd  -this use for updations
+                        let putServiceResponse;
 
-                //get conformation from user to made updation
-                let userConfirm = confirm("Are You Sure to Update this Changes? \n" + updates);
-
-                //if user conform
-                if (userConfirm) {
-                    //call put service requestd  -this use for updations
-                    let putServiceResponse;
-
-                    $.ajax("/employee", {
-                        type: "PUT",
-                        async: false,
-                        contentType: "application/json",
-                        data: JSON.stringify(employee),
+                        $.ajax("/employee", {
+                            type: "PUT",
+                            async: false,
+                            contentType: "application/json",
+                            data: JSON.stringify(employee),
 
 
-                        success: function(successResponseOb) {
-                            putServiceResponse = successResponseOb;
-                        },
+                            success: function(successResponseOb) {
+                                putServiceResponse = successResponseOb;
+                            },
 
-                        error: function(failedResponseOb) {
-                            putServiceResponse = failedResponseOb;
+                            error: function(failedResponseOb) {
+                                putServiceResponse = failedResponseOb;
+                            }
+
+                        });
+
+                        if (putServiceResponse == "OK") {
+                            Swal.fire({
+                                title: "Success!",
+                                text: "Items assigned to the purchase request successfully!",
+                                icon: "success",
+                                confirmButtonColor: "#B3C41C",
+                                allowOutsideClick: false,
+                                allowEscapeKey: false
+                            }).then(() => {
+                                //hide the moadel
+                                $('#employeeAddModal').modal('hide');
+                                //refreash employee table for realtime updation
+                                refreshEmployeeTable();
+                                //reset the employee form
+                                formEmployee.reset();
+                                //employee form refresh
+                                refreshEmployeeForm();
+                            })
+                        } else {
+                            Swal.fire({
+                                title: "Error!",
+                                html: "Employee Details updation failed due to the following errors:<br>" + putServiceResponse,
+                                icon: "error",
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                confirmButtonColor: "#F25454"
+                            });
                         }
 
-                    });
-                    //check put service response
-                    if (putServiceResponse == "OK") {
-                        alert("Updated Successfully");
-                        /*  document.body.insertAdjacentHTML('beforeend',
-                             '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                             '<strong>Updated Successfully</strong>' +
-                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                             '</div>'
-                         ); */
-
-                        //hide the moadel
-                        $('#employeeAddModal').modal('hide');
-                        //refreash employee table for realtime updation
-                        refreshEmployeeTable();
-                        //reset the employee form
-                        formEmployee.reset();
-                        //employee form refresh
-                        refreshEmployeeForm();
-                    } else {
-                        //handling errors
-                        alert("Update not Completed :\n" + putServiceResponse);
-                        /* document.body.insertAdjacentHTML('beforeend',
-                            '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-                            '<strong>Update not Completed: \n</strong>' + putServiceResponse +
-                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                            '</div>'
-                        ); */
-                        //refreash the employee form
-                        refreshEmployeeForm();
                     }
-                }
+                })
             }
-        } else {
-            //show user to what errors happen
-            alert("Employee Form  has Following Errors..\n" + errors)
 
-            /* document.body.insertAdjacentHTML('beforeend',
-                '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-                '<strong>Error!</strong> Your system has the following errors: ' + errors +
-                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                '</div>'
-            ); */
+
+        } else {
+            Swal.fire({
+                title: "Error!",
+                html: "Employee Updation failed due to the following errors:<br>" + errors,
+                icon: "error",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonColor: "#F25454"
+            });
         }
+
 
 
     }
@@ -882,20 +910,32 @@ const textCallingNameValidator = (field) => {
 
 //function for close the modal and refresh the table
 const buttonModalClose = () => {
-    const closeResponse = confirm('Are you sure to close the modal?')
 
-    //check closeResponse is true or false
-    if (closeResponse) {
-        $('#employeeAddModal').modal('hide');
+    Swal.fire({
+        title: "Are you sure to close the form?",
+        text: "If you close this form, filled data will be removed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Close",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+            $('#employeeAddModal').modal('hide');
 
 
-        //formEmployee is id of form
-        //this will reset all data(refreash)
-        formEmployee.reset();
-        divModifyButton.className = 'd-none';
+            //formEmployee is id of form
+            //this will reset all data(refreash)
+            formEmployee.reset();
+            divModifyButton.className = 'd-none';
 
-        refreshEmployeeForm();
-    }
+            refreshEmployeeForm();
+        }
+    });
 }
 
 

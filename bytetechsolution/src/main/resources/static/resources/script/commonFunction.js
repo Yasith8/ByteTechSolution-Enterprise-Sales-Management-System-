@@ -139,6 +139,62 @@ const fillMultipleItemOfDataIntoSingleSelect = (fieldId, message, dataList, prop
     });
 }
 
+const fillMultipleItemOfDataOnSignleSelectRecursion = (fieldId, message, dataList, propertyName, additionalPropertyName, selectedValue1, selectedValue2) => {
+    fieldId.innerHTML = '';
+
+    // Add message option if provided
+    if (message !== "") {
+        const optionMsg = document.createElement('option');
+        optionMsg.innerText = message;
+        optionMsg.selected = true;
+        optionMsg.disabled = true;
+        fieldId.appendChild(optionMsg);
+    }
+
+    dataList.forEach(element => {
+        const option = document.createElement('option');
+        option.value = JSON.stringify(element);
+
+        let propertyValue = propertyRecursion(element, propertyName);
+        let additionalValue = additionalPropertyName ? propertyRecursion(element, additionalPropertyName) : "";
+
+        option.innerText = additionalValue ? `${propertyValue} - ${additionalValue}` : propertyValue;
+
+        // If values match, set selected
+        if (selectedValue1 == propertyValue && selectedValue2 == additionalValue) {
+            option.selected = true;
+        }
+
+        fieldId.appendChild(option);
+    });
+};
+
+
+/* const propertyRecursion = (obj, properties) => { //supplier_id, quotation_id.supplier_id.name
+    const splitedProperties = properties.split("."); //[quotation_id,supplier_id,name]
+
+    if (typeof(obj[splitedProperties[0]]) == Object) {
+        let newProperties = splitedProperties.slice(1).join(".")
+        propertyRecursion(obj[splitedProperties[0]], newProperties)
+    } else {
+        return obj.splitedProperties[0]
+    }
+}
+ */
+
+const propertyRecursion = (obj, properties) => {
+    const splitedProperties = properties.split("."); // Split property path
+
+    if (!obj || typeof obj !== "object") return ""; // Base case: if obj is null or not an object
+
+    const currentProperty = splitedProperties[0]; // Get the first property in the path
+
+    if (splitedProperties.length === 1) {
+        return obj[currentProperty] !== undefined ? obj[currentProperty] : ""; // Base case: return final property
+    }
+
+    return propertyRecursion(obj[currentProperty], splitedProperties.slice(1).join(".")); // Recursive call
+};
 
 const removeValidationColor = (fieldIds) => {
     fieldIds.forEach((fieldId) => {

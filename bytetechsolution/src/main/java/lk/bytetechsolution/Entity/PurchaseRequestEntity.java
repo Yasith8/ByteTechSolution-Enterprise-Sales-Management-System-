@@ -1,9 +1,10 @@
 package lk.bytetechsolution.Entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,7 +49,7 @@ public class PurchaseRequestEntity {
 
     @Column(name = "requireddate")
     @NotNull
-    private LocalDateTime requireddate;
+    private LocalDate requireddate;
     
     @Column(name = "note")
     private String note;
@@ -86,7 +87,6 @@ public class PurchaseRequestEntity {
     @JoinColumn(name="supplier_quotation_id",referencedColumnName="id")
     private SupplierQuotationEntity supplier_quotation_id;
     
-    @OneToMany
-    @JoinColumn(name = "purchase_request_item_id",referencedColumnName = "id")
+    @OneToMany(mappedBy = "purchase_request_id",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<PurchaseRequestItemEntity> purchase_request_item;
 }

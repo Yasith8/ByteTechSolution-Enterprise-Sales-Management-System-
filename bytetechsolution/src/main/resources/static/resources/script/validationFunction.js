@@ -27,6 +27,16 @@ const textValidator = (inputElement, pattern, object, property) => {
     }
 }
 
+const contentValidator = (dataItem, object, property) => {
+    console.log(dataItem);
+    if (dataItem != null) {
+        window[object][property] = dataItem;
+
+    } else {
+        window[object][property] = null;
+    }
+}
+
 //define function for select static element validation
 const selectStaticValidator = (selectElement, pattern, object, property) => {
     if (selectElement.value != '') {

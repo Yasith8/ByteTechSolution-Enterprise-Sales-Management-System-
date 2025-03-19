@@ -116,19 +116,19 @@ public class SupplierQuotationController {
 
             //set AutoGenarated Value
             String nextNumber=daoSupplierQuotation.getNextSupplierQuotationNumber();
-
+            
             //if next employee number is not come then set manualy last number+1
             if(nextNumber==null){
                 supplierquotation.setQuotationid("SQC0001");
             }else{
                 supplierquotation.setQuotationid(nextNumber);
             }
-
+            
             UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
             supplierquotation.setAddeduser(addedUserData.getId());
-
+            
             supplierquotation.setAddeddate(LocalDateTime.now());
-
+            
             for(QuotationItemEntity quotationItem:supplierquotation.getQuotation_item()){
                 quotationItem.setSupplier_quotation_id(supplierquotation);
             }

@@ -36,9 +36,9 @@ public class PurchaseRequestItemEntity {
     @NotNull
     private String itemname;
 
-    @Column(name = "itemprice")
+    @Column(name = "unitprice")
     @NotNull
-    private BigDecimal itemprice;
+    private BigDecimal unitprice;
 
     @Column(name = "quantity")
     @NotNull
@@ -47,10 +47,6 @@ public class PurchaseRequestItemEntity {
     @Column(name = "linetotal")
     @NotNull
     private BigDecimal linetotal;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private CategoryEntity category_id;
 
 
     @ManyToOne

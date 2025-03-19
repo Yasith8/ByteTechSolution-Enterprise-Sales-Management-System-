@@ -23,6 +23,7 @@ import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.PowerSupplyDao;
 import lk.bytetechsolution.Dao.PurchaseRequestDao;
 import lk.bytetechsolution.Dao.PurchaseStatusDao;
+import lk.bytetechsolution.Dao.SupplierDao;
 import lk.bytetechsolution.Dao.SupplierQuotationDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.PowerSupplyEntity;
@@ -59,6 +60,9 @@ public class PurchaseRequestController {
 
     @Autowired
     private EmployeeDao daoEmployee;
+
+    @Autowired
+    private SupplierDao daoSupplier;
 
     @Autowired
     private PrivilageController privilageController;
@@ -104,7 +108,7 @@ public class PurchaseRequestController {
         return daoPurchaseRequest.findAll();
     }
 
-    @PostMapping(value = "/purchaserequst")
+    @PostMapping(value = "/purchaserequest")
     public String AddPurchaseRequest(@RequestBody PurchaseRequestEntity prequest){
         //authentiction and autherzation
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
@@ -121,7 +125,7 @@ public class PurchaseRequestController {
 
             //if next employee number is not come then set manualy last number+1
             if(nextNumber==null){
-                prequest.setRequestcode("SUP0001");
+                prequest.setRequestcode("PRC0001");
             }else{
                 prequest.setRequestcode(nextNumber);
             }
@@ -135,6 +139,9 @@ public class PurchaseRequestController {
             for(PurchaseRequestItemEntity purchaseequestitem:prequest.getPurchase_request_item()){
                 purchaseequestitem.setPurchase_request_id(prequest);
             }
+
+            //supplier id set from supplierquotation
+            prequest.setSupplier_id(prequest.getSupplier_quotation_id().getSupplier_id());
 
             daoPurchaseRequest.save(prequest);
             return "OK";
