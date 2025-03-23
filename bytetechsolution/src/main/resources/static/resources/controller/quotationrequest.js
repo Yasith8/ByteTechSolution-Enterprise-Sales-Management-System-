@@ -185,7 +185,7 @@ const getInnerQuantity = () => {
 const innerQuotationItemFormErrors = () => {
     let errors = "";
 
-    if (quotationRequestItem.quotation_request_item == null) {
+    if (quotationRequestItem.quotation_request_item_id == null) {
         errors += "Quotation Item not Selected"
     }
     if (quotationRequestItem.quantity == null) {
