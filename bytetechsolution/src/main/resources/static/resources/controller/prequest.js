@@ -188,6 +188,8 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
     fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name", prequest.supplier_quotation_id.quotationid, prequest.supplier_id.name);
 
 
+
+    refreshPurchaseRequestHasItemInnerFormAndTable()
 }
 
 const refillInnerPurchaseItemForm = () => {
@@ -330,7 +332,7 @@ const submitPrequest = () => {
                 if (postServiceResponce == "OK") {
                     Swal.fire({
                         title: "Success!",
-                        text: "Items assigned to the purchase request successfully!",
+                        text: "purchase request submit successfully!",
                         icon: "success",
                         confirmButtonColor: "#B3C41C",
                         allowOutsideClick: false,
@@ -366,6 +368,192 @@ const submitPrequest = () => {
             confirmButtonColor: "#F25454"
         });
     }
+}
+
+const checkPrequstUpdates = () => {
+    updates = "";
+
+    if (prequest.supplier_quotation_id != oldPrequest.supplier_quotation_id) {
+        updates = updates + "Supplier Quotation is Changed <br>";
+    }
+    if (prequest.purchasestatus_id != oldPrequest.purchasestatus_id) {
+        updates = updates + "Purchase Status is Changed <br>";
+    }
+    if (prequest.totalamount != oldPrequest.totalamount) {
+        updates = updates + "Total Amount is Changed <br>";
+    }
+    if (prequest.requireddate != oldPrequest.requireddate) {
+        updates = updates + "Required Date is Changed <br>";
+    }
+
+    if (prequest.purchase_request_item.length != oldPrequest.purchase_request_item.length) {
+        updates = updates + "Supplier Inner Form is Changed <br>";
+    } else {
+        for (let newPurchaseItem of supplier.purchase_request_item) {
+            const matchOldPrequest = oldPrequest.purchase_request_item.find(oldPrequestItem => oldPrequestItem.id === newPurchaseItem.id);
+
+            if (!matchOldPrequest) {
+                updates = updates + "Purchase Request Item Inner Form is Changed <br>";
+            }
+        }
+    }
+
+    return updates;
+}
+
+const updatePrequest = () => {
+    //check form error
+    let errors = checkPRequestFormErrors();
+
+    if (errors === "") {
+
+        let updates = checkPrequstUpdates();
+
+        //check there is no updates or any updations
+        if (updates == "") {
+            Swal.fire({
+                title: "Nothing Updated",
+                text: "There are no any updates in Purchase Request Form",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#103D45",
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+        } else {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want to update Purchase Request Details?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#103D45",
+                cancelButtonColor: "#F25454",
+                confirmButtonText: "Yes",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //call put service requestd  -this use for updations
+                    let putServiceResponse;
+
+                    $.ajax("/purchaserequest", {
+                        type: "PUT",
+                        async: false,
+                        contentType: "application/json",
+                        data: JSON.stringify(prequest),
+
+
+                        success: function(successResponseOb) {
+                            putServiceResponse = successResponseOb;
+                        },
+
+                        error: function(failedResponseOb) {
+                            putServiceResponse = failedResponseOb;
+                        }
+
+                    });
+
+                    if (putServiceResponse == "OK") {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "purchase request update successfully!",
+                            icon: "success",
+                            confirmButtonColor: "#B3C41C",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        }).then(() => {
+                            $('#prequestAddModal').modal('hide');
+                            //reset the Item form
+                            formPrequest.reset();
+                            //refreash Item form
+                            refreshPurchaseRequestForm();
+                            //refreash Item table
+                            refreshPurchaseRequestTable();
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            html: "Purchase Request updation failed due to the following errors:<br>" + putServiceResponse,
+                            icon: "error",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            confirmButtonColor: "#F25454"
+                        });
+                    }
+
+                }
+            })
+        }
+
+
+    } else {
+        Swal.fire({
+            title: "Error!",
+            html: "Purchase Request Updation failed due to the following errors:<br>" + errors,
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
+    }
+}
+
+
+const deletePrequest = (ob, rowIndex) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to delete following Purchase Request? "  ${ob.requestcode}`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let deleteServiceResponse;
+            //ajax request fot delete data
+            $.ajax("/purchaserequest", {
+                type: "DELETE",
+                contentType: "application/json",
+                data: JSON.stringify(ob),
+                async: false,
+
+                success: function(data) {
+                    deleteServiceResponse = data
+                },
+
+                error: function(errData) {
+                    deleteServiceResponse = errData;
+                }
+            })
+
+            if (deleteServiceResponse == "OK") {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Purchase Request Deleted Successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    $('#prequestAddModal').modal('hide');
+                    refreshPurchaseRequestTable()
+                })
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    html: "Purchase Request Deletion failed due to the following errors:<br>" + deleteServiceResponse,
+                    icon: "error",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: "#F25454"
+                });
+            }
+        }
+    })
 }
 
 const buttonModalClose = () => {
