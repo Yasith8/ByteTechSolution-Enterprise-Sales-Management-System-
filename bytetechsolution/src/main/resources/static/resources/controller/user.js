@@ -200,8 +200,6 @@ const refillUserForm = (rowOb, rowIndex) => {
     //asign username
     textUsername.value = user.username;
 
-    //asign password
-    textPassword.value = user.password;
 
     //assign profile picture and name
     if (user.photo == null) {
@@ -452,18 +450,33 @@ const passwordRetypeValidator = () => {
 const buttonModalClose = () => {
     const closeResponse = confirm('Are you sure to close the modal?')
 
-    //check closeResponse is true or false
-    if (closeResponse) {
-        $('#userAddModel').modal('hide');
 
 
-        //formEmployee is id of form
-        //this will reset all data(refreash)
-        formUser.reset();
-        divModifyButton.className = 'd-none';
+    Swal.fire({
+        title: "Are you sure to close the form?",
+        text: "If you close this form, filled data will be removed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Close",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
 
-        refreshUserForm();
-    }
+        if (result.isConfirmed) {
+            $('#userAddModel').modal('hide');
+
+
+            //formEmployee is id of form
+            //this will reset all data(refreash)
+            formUser.reset();
+            divModifyButton.className = 'd-none';
+
+            refreshUserForm();
+        }
+    });
 }
 
 const deleteUser = (ob, rowIndex) => {
