@@ -72,7 +72,7 @@ public class PowerSupplyController {
         // Create a new ModelAndView object to hold the model data and view information
         ModelAndView powerSupplyView=new ModelAndView();
         //pass the ui
-        powerSupplyView.setViewName("casing.html");
+        powerSupplyView.setViewName("powersupply.html");
         //attributes set to show titles in web page using theamleaf
         powerSupplyView.addObject("title", "Power Supply Management || Bytetech Solution");
         powerSupplyView.addObject("user", authentication.getName());// passing logged user name

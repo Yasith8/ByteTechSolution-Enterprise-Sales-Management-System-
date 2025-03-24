@@ -2,6 +2,8 @@ package lk.bytetechsolution.Entity;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,7 +52,9 @@ public class GRNItemEntity {
     @JoinColumn(name = "category_id",referencedColumnName = "id")
     private CategoryEntity category_id;
 
+
     @ManyToOne
     @JoinColumn(name = "grn_id",referencedColumnName = "id")
+    @JsonIgnore
     private GRNEntity grn_id;
 }

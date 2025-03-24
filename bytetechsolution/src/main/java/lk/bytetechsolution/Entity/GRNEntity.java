@@ -3,7 +3,9 @@ package lk.bytetechsolution.Entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -66,5 +69,13 @@ public class GRNEntity {
     @ManyToOne
     @JoinColumn(name = "grnstatus_id",referencedColumnName = "id")
     private GRNStatusEntity grnstatus_id;
+
+    @ManyToOne
+    @JoinColumn(name = "purchase_request_id",referencedColumnName = "id")
+    private PurchaseRequestEntity purchase_request_id;
+
+    @OneToMany(mappedBy = "grn_id",cascade = CascadeType.ALL,orphanRemoval=true)
+    private List<GRNItemEntity> grn_item;
+
 
 }
