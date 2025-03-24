@@ -161,8 +161,8 @@ public class PurchaseRequestController {
             return "Permission Denied! Delete not Completed";
         }
 
-       PurchaseRequestEntity extSupplier=daoPurchaseRequest.getReferenceById(prequest.getId());
-       if(extSupplier==null){
+       PurchaseRequestEntity extPurchaseRequest=daoPurchaseRequest.getReferenceById(prequest.getId());
+       if(extPurchaseRequest==null){
         return "Delete not Completed.Purchase Request not exists";
        }
 

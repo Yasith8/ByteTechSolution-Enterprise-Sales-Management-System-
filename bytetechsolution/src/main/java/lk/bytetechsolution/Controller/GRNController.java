@@ -2,26 +2,23 @@ package lk.bytetechsolution.Controller;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
-import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.GRNDao;
+import lk.bytetechsolution.Dao.GRNStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.GRNEntity;
 import lk.bytetechsolution.Entity.GRNItemEntity;
 import lk.bytetechsolution.Entity.UserEntity;
-
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 /* 
@@ -49,7 +46,7 @@ public class GRNController {
     private EmployeeDao daoEmployee;
 
     @Autowired
-    private CategoryDao daoCategory;
+    private GRNStatusDao daoGRNStatus;
 
     @Autowired
     private PrivilageController privilageController;
@@ -121,6 +118,74 @@ public class GRNController {
    }
 
 
+   @DeleteMapping(value = "/grn")
+   public String DeleteGRN(@RequestBody GRNEntity grn){
+       //Autherntication and autherization
+       Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
+       HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "GRN");
+   
+       
+       if(!userPrivilage.get("delete")){
+           return "Permission Denied! Delete not Completed";
+       }
 
+       GRNEntity extGRN=daoGRN.getReferenceById(grn.getId());
+      if(extGRN==null){
+       return "Delete not Completed.GRN not exists";
+      }
+
+      try {
+       UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+       grn.setDeleteuser(deleteUser.getId());
+
+       grn.setDeletedate(LocalDateTime.now());
+
+       grn.setGrnstatus_id(daoGRNStatus.getReferenceById(3));
+
+       daoGRN.save(grn);
+
+       return "OK";
+      } catch (Exception e) {
+       return "Delete not completed. "+e.getMessage();
+      }
+   }
+
+   @PutMapping(value = "/grn")
+    public String updatePurchaseRequest(@RequestBody GRNEntity grn) {
+       
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GRN");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied! Update not Completed";
+        }
+
+        GRNEntity extGRN=daoGRN.getReferenceById(grn.getId());
+        if(extGRN==null){
+         return "Delete not Completed.GRN not exists";
+        }
+      
+
+
+        try {
+            //asign update user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            grn.setModifyuser(modifyUser.getId());
+
+            //assign update date
+            grn.setModifydate(LocalDateTime.now());
+
+            for(GRNItemEntity grnitem:grn.getGrn_item()){
+                grnitem.setGrn_id((grn));
+            }
+
+            //save the data
+            daoGRN.save(grn);
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed."+e.getMessage();
+        }
+    }
 
 }
