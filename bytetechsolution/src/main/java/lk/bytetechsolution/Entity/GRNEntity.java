@@ -66,6 +66,27 @@ public class GRNEntity {
     @Column(name = "reciveddate")
     private LocalDateTime reciveddate;
 
+    @Column(name="addeddate")
+    @NotNull
+    private LocalDateTime addeddate;
+
+    @Column(name="modifydate")
+    private LocalDateTime modifydate;
+
+    @Column(name="deletedate")
+    private LocalDateTime deletedate;
+
+    
+    @Column(name = "addeduser")
+    @NotNull
+    private int addeduser;
+
+    @Column(name = "modifyuser")
+    private int modifyuser;
+    
+    @Column(name = "deleteuser")
+    private int deleteuser;
+
     @ManyToOne
     @JoinColumn(name = "grnstatus_id",referencedColumnName = "id")
     private GRNStatusEntity grnstatus_id;

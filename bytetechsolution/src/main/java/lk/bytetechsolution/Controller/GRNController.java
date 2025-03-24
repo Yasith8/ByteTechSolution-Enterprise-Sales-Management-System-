@@ -1,5 +1,8 @@
 package lk.bytetechsolution.Controller;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,9 +13,13 @@ import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.GRNDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.GRNEntity;
+import lk.bytetechsolution.Entity.GRNItemEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -73,6 +80,45 @@ public class GRNController {
         return grnView;
    }
 
+   @PostMapping(value = "/grn")
+   public String AddGRN(@RequestBody GRNEntity grn){
+    //authentiction and autherzation
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GRN");
+
+        if(!userPrivilage.get("insert")){
+            return "Permission Denied! Save not Completed";
+        }
+
+        try {
+             //set AutoGenarated Value
+             String nextNumber=daoGRN.getNextGRNCode();
+
+             //if next employee number is not come then set manualy last number+1
+             if(nextNumber==null){
+                 grn.setGrncode("GRN0001");
+             }else{
+                 grn.setGrncode(nextNumber);
+             }
+
+            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            grn.setAddeduser(addedUserData.getId());
+
+            grn.setAddeddate(LocalDateTime.now());
+
+            for(GRNItemEntity grnitem:grn.getGrn_item()){
+                grnitem.setGrn_id((grn));
+            }
+
+            daoGRN.save(grn);
+
+            return "OK";
+
+        } catch (Exception e) {
+            return "Save not Completed: "+e.getMessage();
+        }
+
+   }
 
 
 
