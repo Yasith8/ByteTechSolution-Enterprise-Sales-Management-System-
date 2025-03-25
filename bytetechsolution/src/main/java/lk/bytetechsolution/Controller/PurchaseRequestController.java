@@ -3,7 +3,6 @@ package lk.bytetechsolution.Controller;
 
 import java.util.*;
 import java.time.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,23 +13,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.web.servlet.ModelAndView;
-
-import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
-import lk.bytetechsolution.Dao.ItemStatusDao;
-import lk.bytetechsolution.Dao.PowerSupplyDao;
 import lk.bytetechsolution.Dao.PurchaseRequestDao;
 import lk.bytetechsolution.Dao.PurchaseStatusDao;
-import lk.bytetechsolution.Dao.SupplierDao;
 import lk.bytetechsolution.Dao.SupplierQuotationDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.PowerSupplyEntity;
 import lk.bytetechsolution.Entity.PurchaseRequestEntity;
 import lk.bytetechsolution.Entity.PurchaseRequestItemEntity;
-import lk.bytetechsolution.Entity.SupplierEntity;
-import lk.bytetechsolution.Entity.SupplierHasBrandCategoryEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 /*
 * implemented mapping to available for use  
@@ -50,10 +40,6 @@ public class PurchaseRequestController {
 
     @Autowired
     private PurchaseStatusDao daoPurchaseStatus;
-    
-    @Autowired
-    private SupplierQuotationDao daoSupplierQuotation;
-
 
     @Autowired
     private UserDao daoUser;
@@ -61,8 +47,6 @@ public class PurchaseRequestController {
     @Autowired
     private EmployeeDao daoEmployee;
 
-    @Autowired
-    private SupplierDao daoSupplier;
 
     @Autowired
     private PrivilageController privilageController;
@@ -193,8 +177,8 @@ public class PurchaseRequestController {
             return "Permission Denied! Update not Completed";
         }
 
-        PurchaseRequestEntity extSupplier=daoPurchaseRequest.getReferenceById(prequest.getId());
-        if(extSupplier==null){
+        PurchaseRequestEntity extPurchaseRequest=daoPurchaseRequest.getReferenceById(prequest.getId());
+        if(extPurchaseRequest==null){
          return "Delete not Completed.Purchase Request not exists";
         }
       
