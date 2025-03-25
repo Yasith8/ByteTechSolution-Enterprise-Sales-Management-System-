@@ -106,6 +106,10 @@ public class ProcessorEntity {
     private CpuSocketEntity cpusocket_id;
 
     @ManyToOne  
+    @JoinColumn(name="cpusuffix_id",referencedColumnName = "id")
+    private CpuSuffixEntity cpusuffix_id;
+
+    @ManyToOne  
     @JoinColumn(name="brand_id",referencedColumnName = "id")
     private BrandEntity brand_id;
 
