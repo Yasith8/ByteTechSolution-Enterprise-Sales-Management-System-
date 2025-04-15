@@ -32,9 +32,6 @@
 
             </div>
             <div class="col-4 text-end">
-                <button type="button" class="Btn printTableBtn" onclick="printProcessorTable('tableProcessor')">
-                    Print
-                </button>
                 <button type="button" data-bs-toggle="modal" data-bs-target="#processorAddModal" class="btn addBtn">
                     Add New Processor </button>
             </div>
@@ -115,11 +112,26 @@
                 </div>
                 <div class="modal-body">
                     <form id="formProcessor">
+                        <!-- Employee Profile Image Upload Start -->
+                        <div class="row mb-4">
+                            <div class="col-12 d-flex justify-content-center">
+                                <div class="item-img-container">
+                                    <img src="/resources/image/noitem.jpg" alt="no item" id="imgProcessorPhoto" class="item-img" />
+                                    <div class="item-img-overlay">
+                                        <button id="btnSelectImage" type="button" class="btn btn-primary btn-item-select-image" onclick="FileProcessorPhoto.click()">Select Image</button>
+                                        <button id="btnClearImage" type="button" class="btn btn-danger btn-item-remove-image" onclick="processorPictureRemove()">Clear Image</button>
+                                    </div>
+                                    <p id="textProcessorPhoto" class="image-item-status">No Image Selected</p>
+                                    <input type="file" class="d-none" id="FileProcessorPhoto" onchange="validateFileField(this, 'processor', 'photo', 'photoname', 'oldProcessor', imgProcessorPhoto, textProcessorPhoto)">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Employee Profile Image Upload End -->
                         <!-- itemname Input Start -->
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textItemName" placeholder="procesor name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','processor','itemname')">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" id="textItemName" placeholder="procesor name" required>
                                     <label for="textItemName">Processor Name <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -192,7 +204,7 @@
                             <!-- roq start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberTotalCore" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','processor','totalcore')">
+                                    <input type="number" class="form-control" id="numberTotalCore" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','processor','totalcore');generateItemName()">
                                     <label for="numberTotalCore">Total Cores<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -201,6 +213,14 @@
 
 
                         <div class="row">
+                            <!-- roq start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="numberCache" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','processor','cache');generateItemName()">
+                                    <label for="numberCache">L3 Cache<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- roq end -->
                             <!--item status start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
@@ -213,27 +233,28 @@
                             <!-- totalcore start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','processor','brand_id')">
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','processor','brand_id');generateItemName()">
                                         <option value=""  selected disabled>1. Select Brand</option>
                                     </select>
                                 </div>
                             </div>
                             <!-- totalcore end -->
+
+                        </div>
+                        <div class="row">
                             <!-- Description start -->
-                            <div class="col-4">
+                            <div class="col-3">
                                 <div class="form-floating mb-3">
-                                    <select name="cpusocket" id="selectCpuSocket" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpusocket_id')">
+                                    <select name="cpusocket" id="selectCpuSocket" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpusocket_id');generateItemName()">
                                         <option value=""  selected disabled>Select Processor Brand First</option>
                                     </select>
                                 </div>
                             </div>
                             <!-- Description end -->
-                        </div>
-                        <div class="row">
                             <!-- selectBrand start -->
-                            <div class="col-6">
+                            <div class="col-3">
                                 <div class="mb-3 form-floating">
-                                    <select name="cpuseries" id="selectCpuSeries" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpuseries_id')">
+                                    <select name="cpuseries" id="selectCpuSeries" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpuseries_id');generateItemName()">
                                         <option value=""  selected disabled>Select Processor Brand First</option>
                                     </select>
                                 </div>
@@ -241,10 +262,20 @@
                             <!-- selectBrand end -->
 
                             <!--selectCpuSocket start-->
-                            <div class="col-6">
+                            <div class="col-3">
                                 <div class="mb-3 form-floating">
-                                    <select name="cpugeneration" id="selectCpuGeneration" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpugeneration_id')">
+                                    <select name="cpugeneration" id="selectCpuGeneration" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpugeneration_id');generateItemName()">
                                         <option value=""  selected disabled>Select Processor Socket First</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--selectCpuSocket end-->
+
+                            <!--selectCpuSocket start-->
+                            <div class="col-3">
+                                <div class="mb-3 form-floating">
+                                    <select name="cpusuffix" id="selectCpuSuffix" class="form-select" onchange="selectDynamicValidator(this,'','processor','cpusuffix_id');generateItemName()">
+                                        <option value=""  selected disabled>Select Processor Series First</option>
                                     </select>
                                 </div>
                             </div>
