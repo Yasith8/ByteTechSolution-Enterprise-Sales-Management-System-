@@ -42,8 +42,8 @@ const refreshPurchaseRequestForm = () => {
     selectDynamicValidator(selectPurchaseStatus, '', 'prequest', 'purchasestatus_id')
 
     supplierQuotations = getServiceAjaxRequest("/supplierquotation/quotationbyvaliddate")
-    fillMultipleItemOfDataIntoSingleSelect(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name"); //bug fix the issue
-
+        //fillMultipleItemOfDataIntoSingleSelect(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name");
+    fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name");
 
 
 
@@ -183,9 +183,10 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
     purchaseStatuses = getServiceAjaxRequest("/purchasestatus/alldata")
     fillDataIntoSelect(selectPurchaseStatus, "Select Purchase Status", purchaseStatuses, "name", prequest.purchasestatus_id.name);
 
+    //bug issue when valid date issue
     supplierQuotations = getServiceAjaxRequest("/supplierquotation/quotationbyvaliddate")
-        //fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_quotation_id.supplier_id.name", prequest.supplier_quotation_id.quotationid, prequest.supplier_id.name); 
-    fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name", prequest.supplier_quotation_id.quotationid, prequest.supplier_id.name);
+        //fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name");
+    fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_quotation_id.supplier_id.name", prequest.supplier_quotation_id.quotationid, prequest.supplier_id.name);
 
 
 
