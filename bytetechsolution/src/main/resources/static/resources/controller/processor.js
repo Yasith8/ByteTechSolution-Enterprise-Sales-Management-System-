@@ -41,6 +41,8 @@ const refreshProcessorForm = () => {
     staticBackdropLabel.textContent = "Add New Item";
     //decimalSalesPrice.disabled = true;
 
+    textItemName.disabled = true;
+
 
     brands = getServiceAjaxRequest("/brand/brandbycategory/Processor");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
@@ -65,19 +67,27 @@ const refreshProcessorForm = () => {
         cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuBrand.name);
         fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
 
+        fillDataIntoSelect(selectCpuSuffix, "First Select Processor Series", [], "name");
+        fillDataIntoSelect(selectCpuSuffix, "First Select Processor Series", [], "name");
+
         cpuSocket = getServiceAjaxRequest("/cpusocket/cpusocketbybrand/" + cpuBrand.name);
         fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
 
-        selectCpuSocket.addEventListener('change', () => {
-            processor.cpugeneration_id = null;
-            removeValidationColor([selectCpuGeneration]);
-            const cpuGentoSocket = selectValueHandler(selectCpuSocket);
-            cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + cpuGentoSocket.name);
-            fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
-        });
-
     });
 
+    selectCpuSocket.addEventListener('change', () => {
+        processor.cpugeneration_id = null;
+        removeValidationColor([selectCpuGeneration]);
+        const cpuGentoSocket = selectValueHandler(selectCpuSocket);
+        cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + cpuGentoSocket.name);
+        fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
+    });
+
+    selectCpuSeries.addEventListener('change', () => {
+        const cpuSelectedSeries = selectValueHandler(selectCpuSeries);
+        cpuSuffix = getServiceAjaxRequest("/cpusuffix/cpusuffixbycpuseries/" + cpuSelectedSeries.name);
+        fillDataIntoSelect(selectCpuSuffix, "Select Processor Suffix", cpuSuffix, "name");
+    });
     //cpuSeries = getServiceAjaxRequest("/cpuseries/alldata");
     //fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
 
@@ -96,8 +106,14 @@ const refreshProcessorForm = () => {
     //cpuGeneration = getServiceAjaxRequest("/cpugeneration/alldata");
     //fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
 
+    //profile image set to default
+    imgProcessorPhoto.src = "/resources/image/noitem.jpg";
+    textProcessorPhoto.textContent = "No Image Selected";
+    FileProcessorPhoto.value = null;
 
-    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
+
+
+    removeValidationColor([textItemName, numberProfitRate, numberROP, selectCpuSuffix, numberCache, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
@@ -105,14 +121,25 @@ const refreshProcessorForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, selectCpuSuffix, numberCache, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 
-
-
 }
 
+const generateItemName = () => {
+    console.log(selectCpuSuffix.value != "" && numberCache.value != "" && numberTotalCore.value != "" && selectCpuSeries.value != "" && selectCpuGeneration.value != "" && selectCpuSocket.value != "" && selectBrand.value != "")
+    if (selectCpuSuffix.value != "" && numberCache.value != "" && numberTotalCore.value != "" && selectCpuSeries.value != "" && selectCpuGeneration.value != "" && selectCpuSocket.value != "" && selectBrand.value != "") {
+        textItemName.value = `${JSON.parse(selectBrand.value).name} ${JSON.parse(selectCpuSeries.value).name} ${JSON.parse(selectCpuGeneration.value).name} ${JSON.parse(selectCpuSocket.value).name} ${JSON.parse(selectCpuSuffix.value).name} (${numberCache.value}MB L3 Cache ${numberTotalCore.value} Cores)`;
+        processor.itemname = textItemName.value;
+        console.log(processor.itemname)
+        textItemName.classList.add("is-valid");
+    } else {
+        textItemName.classList.add("is-invavlid");
+        processor.itemname = "Need to Select All the Fields";
+    }
+
+}
 
 const getBrandName = (ob) => {
     return ob.brand_id.name;
@@ -149,7 +176,7 @@ const getItemStatus = (ob) => {
 
 const refillProcessorForm = (ob, rowIndex) => {
     $('#processorAddModal').modal('show');
-    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, selectCpuSuffix, numberCache, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus])
 
 
     buttonSubmit.disabled = true;
@@ -178,6 +205,7 @@ const refillProcessorForm = (ob, rowIndex) => {
     textDescription.value = processor.description;
     //assign total core
     numberTotalCore.value = processor.totalcore;
+    numberCache.value = processor.cache;
 
 
 
@@ -201,17 +229,25 @@ const refillProcessorForm = (ob, rowIndex) => {
     cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + ob.cpusocket_id.name);
     fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name", ob.cpugeneration_id.name);
 
+    cpuSuffix = getServiceAjaxRequest("/cpusuffix/cpusuffixbycpuseries/" + ob.cpuseries_id.name);
+    fillDataIntoSelect(selectCpuSuffix, "Select Processor Suffix", cpuSuffix, "name", ob.cpusuffix_id.name);
+
 
 
 
     //when user change brand all the data need to change
     selectBrand.addEventListener('change', () => {
-        processor.cpuseries_id = null;
         removeValidationColor([selectCpuSeries, selectCpuSocket]);
 
         const cpuBrand = selectValueHandler(selectBrand);
         cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuBrand.name);
         fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
+
+        selectCpuSeries.addEventListener('change', () => {
+            const cpuSelectedSeries = selectValueHandler(selectCpuSeries);
+            cpuSuffix = getServiceAjaxRequest("/cpusuffix/cpusuffixbycpuseries/" + cpuSelectedSeries.name);
+            fillDataIntoSelect(selectCpuSuffix, "Select Processor Suffix", cpuSuffix, "name");
+        });
 
         cpuSocket = getServiceAjaxRequest("/cpusocket/cpusocketbybrand/" + cpuBrand.name);
         fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
@@ -228,8 +264,18 @@ const refillProcessorForm = (ob, rowIndex) => {
     });
 
 
+    //assign profile picture and name
+    if (processor.photo == null) {
+        imgProcessorPhoto.src = "/resources/image/noitem.jpg";
+        textProcessorPhoto.textContent = "No Item Image";
+    } else {
+        imgProcessorPhoto.src = atob(processor.photo);
+        textProcessorPhoto.textContent = processor.photoname;
+    }
 
-    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
+
+
+    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, selectCpuSuffix, numberCache, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
     buttonClear.classList.add('modal-btn-clear');
 
 
@@ -242,7 +288,7 @@ const refillProcessorForm = (ob, rowIndex) => {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
 
-        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], true);
+        inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus, selectCpuSuffix, numberCache], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
     if (!userPrivilage.delete) {
@@ -262,26 +308,6 @@ const refillProcessorForm = (ob, rowIndex) => {
     textValidator(decimalSalesPrice, '^[0-9]+(\\.[0-9]{1,2})?$', 'processor', 'salesprice')
 } */
 
-//print table
-const printProcessorTable = () => {
-    const newTab = window.open();
-    newTab.document.write(
-        '<link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">' +
-        '<link rel="stylesheet" href="resources/style/processor.css">' +
-        '<style>#tableProcessor{background-color:white;}</style>' +
-        '<script>document.getElementById("tableEmployee").classList.remove("table-hover")</script>' +
-        tableProcessor.outerHTML
-    );
-
-    setTimeout(
-        function() {
-            newTab.print();
-        }, 1000
-    )
-}
-
-//print processor data
-const printProcessorDetails = (ob, rowIndex) => {}
 
 const checkProcessorInputErrors = () => {
     let errors = "";
@@ -305,6 +331,10 @@ const checkProcessorInputErrors = () => {
         errors = errors + "Total Cores can't be Null...!\n";
         numberTotalCore.classList.add("is-invalid");
     }
+    if (processor.cache == null) {
+        errors = errors + "L3 Cache can't be Null...!\n";
+        numberCache.classList.add("is-invalid");
+    }
     if (processor.itemstatus_id == null) {
         errors = errors + "Item Status can't be Null...!\n";
         selectItemStatus.classList.add("is-invalid");
@@ -324,6 +354,10 @@ const checkProcessorInputErrors = () => {
     if (processor.cpugeneration_id == null) {
         errors = errors + "Processor Generation can't be Null...!\n";
         selectCpuGeneration.classList.add("is-invalid");
+    }
+    if (processor.cpusuffix_id == null) {
+        errors = errors + "Processor Suffix can't be Null...!\n";
+        selectCpuSuffix.classList.add("is-invalid");
     }
 
     return errors;
@@ -422,6 +456,12 @@ const checkProcessorFormUpdates = () => {
     }
     if (processor.itemstatus_id.name != oldProcessor.itemstatus_id.name) {
         updates = updates + "Item Status is Changed \n";
+    }
+    if (processor.cpusuffix_id.name != oldProcessor.cpusuffix_id.name) {
+        updates = updates + "Procesor Suffix is Changed \n";
+    }
+    if ((processor.photo != oldProcessor.photo) || (processor.photoname != oldProcessor.photoname)) {
+        updates = updates + "Item Photo is Changed <br>";
     }
 
     return updates;
@@ -547,4 +587,11 @@ const buttonModalClose = () => {
 
         refreshProcessorForm();
     }
+}
+
+const processorPictureRemove = () => {
+    //profile image set to default
+    imgProcessorPhoto.src = "/resources/image/noitem.jpg";
+    textProcessorPhoto.textContent = "No Image Selected";
+    FileProcesorPhoto.value = null;
 }
