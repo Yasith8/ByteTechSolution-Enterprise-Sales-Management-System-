@@ -78,6 +78,12 @@ public class ProcessorEntity {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "photo")
+    private byte[] photo;
+
+    @Column(name="photoname")
+    private String photoname;
+
     ///////////////////////////////////////////
     //////////////Unique Parts////////////////
     /////////////////////////////////////////
@@ -85,6 +91,9 @@ public class ProcessorEntity {
     @NotNull
     @Column(name = "totalcore")
     private Integer totalcore;
+
+    @Column(name = "cache")
+    private Integer cache;
 
      /* 
      * Map with Forign Keys
