@@ -252,10 +252,10 @@ body {
     align-items: center;
     width: 100%;
     height: 100vh;
-    overflow: hidden;
     color: #4a5568;
     background-color: #f7fafc;
     border-radius: 0.375rem;
+    overflow-y: auto;
 }
 
 
@@ -289,7 +289,6 @@ body {
 .menu-container {
     width: 100%;
     padding: 0 0.5rem;
-    overflow-y: auto;
     flex-grow: 1;
 }
 
@@ -338,7 +337,7 @@ body {
     fill: none;
 }
 
-.menu-icon:hover{
+.menu-icon:hover {
     color: #008080;
 }
 
@@ -525,4 +524,71 @@ body {
 
 .nav-item {
     list-style: none;
+}
+
+
+/* //////////////////////////////////////////////////////////////////// */
+
+
+/* /////////////////////Item Image Add///////////////////////////////// */
+
+
+/* //////////////////////////////////////////////////////////////////// */
+
+.item-img-container {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
+
+.item-img {
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.item-img-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.item-img-container:hover .item-img-overlay {
+    opacity: 1;
+}
+
+.btn-item-select-image,
+.btn-item-remove-image {
+    margin: 5px;
+}
+
+.btn-item-select-image {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-item-remove-image {
+    background-color: #F44336;
+    color: white;
+}
+
+.btn-item-select-image:hover,
+.btn-item-remove-image:hover {
+    opacity: 0.8;
+}
+
+.image-item-status {
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
 }
