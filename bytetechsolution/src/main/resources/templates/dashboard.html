@@ -4,10 +4,179 @@
 <head th:replace="~{component::headerFragment}"></head>
 
 <head>
+    <link rel="stylesheet" href="resources/style/dashboard.css">
+    <script src="resources/controller/dashboard.js"></script>
+</head>
+
+<head>
 </head>
 
 <body>
-    <h1>HI Dashb</h1>
+    <nav th:replace="~{component::navFragment}"></nav>
+    <div th:replace="~{component::offcanvasFragment}"></div>
+
+    <div class="row mt-3 greeting-container">
+        <h2 id="dashboardGreetingMsg">Hi Yasith, Good Morning 👋 </h2>
+    </div>
+
+    <div class="row mt-3 stat-card-container">
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title-box">
+                        <h5 class="card-title" id="statCardOneTitle">Total Sales</h5>
+                        <div class="svg-container" id="statCardOneSvg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>
+                        </div>
+                    </div>
+                    <h1 class="main-card-title" id="statCardOneMainContent">42</h1>
+                    <div class="card-main-footer">
+                        <div class="updown-scaler-container">
+                            <div class="upscale-svg" id="statCardOneFooterBadgeSvg">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                                </svg>
+                            </div>
+                            <h6 class="upscale-text" id="statCardOneFooterBadgeText">+25%</h6>
+                        </div>
+                        <div class="card-main-footer-text" id="statCardOneFooterTimeState">For Last 30 days</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title-box">
+                        <h5 class="card-title" id="statCardTwoTitle">Pending Orders</h5>
+                        <div class="svg-container" id="statCardTwoSvg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>
+                        </div>
+                    </div>
+                    <h1 class="main-card-title" id="statCardTwoMainContent">13</h1>
+                    <div class="card-main-footer">
+                        <div class="updown-scaler-container">
+                            <div class="upscale-svg" id="statCardTwoFooterBadgeSvg">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                                </svg>
+                            </div>
+                            <h6 class="upscale-text" id="statCardTwoFooterBadgeText">+25%</h6>
+                        </div>
+                        <div class="card-main-footer-text" id="statCardTwoFooterTimeState">For Last 30 days</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title-box">
+                        <h5 class="card-title" id="statCardThreeTitle">Total Customers</h5>
+                        <div class="svg-container" id="statCardThreeFooterBadgeSvg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>
+                        </div>
+                    </div>
+                    <h1 class="main-card-title" id="statCardThreeMainContent">27</h1>
+                    <div class="card-main-footer">
+                        <div class="updown-scaler-container">
+                            <div class="upscale-svg" id="statCardThreeFooterBadgeSvg">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                                </svg>
+                            </div>
+                            <h6 class="upscale-text" id="statCardThreeFooterBadgeText">+25%</h6>
+                        </div>
+                        <div class="card-main-footer-text" id="statCardThreeFooterTimeState">For Last 30 days</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title-box">
+                        <h5 class="card-title" id="statCardFourTitle">Total Revenue</h5>
+                        <div class="svg-container" id="statCardFourFooterBadgeSvg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                              </svg>
+                        </div>
+                    </div>
+                    <h1 class="main-card-title" id="statCardFourMainContent">Rs.4575500</h1>
+                    <div class="card-main-footer">
+                        <div class="updown-scaler-container">
+                            <div class="upscale-svg" id="statCardFourFooterBadgeSvg">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                                </svg>
+                            </div>
+                            <h6 class="upscale-text" id="statCardFourFooterBadgeText">+25%</h6>
+                        </div>
+                        <div class="card-main-footer-text" id="statCardFourFooterTimeState">For Last 30 days</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3 chart-table-container">
+        <div class="col-5">
+            <div class="card chart-card">
+                <div class="chart-title" id="mainChartTtile">Sales Trends (Last 7 Days)</div>
+                <canvas id="mainChart" height="250"></canvas>
+            </div>
+        </div>
+        <div class="col-7">
+            <div class="card table-card">
+                <h5 class="table-card-title" id="dashboardTableTitle">Purchase Requests</h5>
+                <div class="card-body">
+                    <table class="table table-hover" id="dashboardTable">
+                        <thead class="table-header">
+                            <tr>
+                                <th> # </th>
+                                <th> Request Code </th>
+                                <th> Quotation Request </th>
+                                <th> Supplier Name </th>
+                                <th> Total Amount (Rs.) </th>
+                                <th> Status </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="table-body">
+                            <tr>
+                                <td> 1 </td>
+                                <td> PRC0001 </td>
+                                <td> QRC0003 </td>
+                                <td> Chama Computers </td>
+                                <td> 645000 </td>
+                                <td>
+                                    Pending
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> 2 </td>
+                                <td> PRC0002 </td>
+                                <td> QRC0001 </td>
+                                <td> MD Part House </td>
+                                <td> 1909000 </td>
+                                <td>
+                                    Approved
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
