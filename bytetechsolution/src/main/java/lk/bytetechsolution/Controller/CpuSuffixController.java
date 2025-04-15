@@ -47,14 +47,14 @@ public class CpuSuffixController {
     }
 
      //get cpu suffix according to brand
-    @GetMapping(value = "/cpusuffix/cpusocketbybrand/{brandname}",produces = "application/json")
+    @GetMapping(value = "/cpusuffix/cpusuffixbybrand/{brandname}",produces = "application/json")
     public List<CpuSuffixEntity> GetSuffixByBrand(@PathVariable("brandname") String brandname){
         return dao.getSuffixByBrand(brandname);
     }
 
      //get cpu suffix according to brand
-     @GetMapping(value = "/cpusuffix/cpusocketbycpuseries/{seriesname}",produces = "application/json")
-     public List<CpuSocketEntity> GetCpuSuffixByCpuSeries(@PathVariable("seriesname") String seriesname){
+     @GetMapping(value = "/cpusuffix/cpusuffixbycpuseries/{seriesname}",produces = "application/json")
+     public List<CpuSuffixEntity> GetCpuSuffixByCpuSeries(@PathVariable("seriesname") String seriesname){
          return dao.getSuffixBySeries(seriesname);
      }
 }
