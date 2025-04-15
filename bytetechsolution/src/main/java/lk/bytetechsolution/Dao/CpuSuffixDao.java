@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import lk.bytetechsolution.Entity.CpuSocketEntity;
 import lk.bytetechsolution.Entity.CpuSuffixEntity;
 
 /* 
@@ -19,7 +17,7 @@ public interface CpuSuffixDao extends JpaRepository<CpuSuffixEntity, Integer> {
     public List<CpuSuffixEntity> getSuffixByBrand(String brandname);
     
     @Query(value = "SELECT * FROM bytetechsolution.cpusuffix cs where cs.id in (select shs.cpusuffix_id from bytetechsolution.cpuseries_has_cpusuffix shs where shs.cpuseries_id in (select cs.id from bytetechsolution.cpuseries cs where cs.name=?1))",nativeQuery = true)
-    public List<CpuSocketEntity> getSuffixBySeries(String seriesname);
+    public List<CpuSuffixEntity> getSuffixBySeries(String seriesname);
 
  
 }
