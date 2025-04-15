@@ -104,6 +104,7 @@ const refreshUserForm = () => {
     //used for select employee image according to the employeeWithoutUserAccount
     selectFullname.addEventListener('change', (event) => {
         const selectedEmployee = JSON.parse(event.target.value);
+        console.log("SELECTED EMPLYEE::::", selectedEmployee)
 
         if (selectedEmployee.photo != null) {
             user.photo = selectedEmployee.photo;
@@ -193,6 +194,7 @@ const refillUserForm = (rowOb, rowIndex) => {
     olduser = rowOb;
 
 
+    console.log("USER::::", user)
 
     //asign email
     textEmail.value = user.email;
@@ -205,7 +207,7 @@ const refillUserForm = (rowOb, rowIndex) => {
     if (user.photo == null) {
         imgUserPhoto.src = "/resources/image/initialprofile.jpg";
         textUserPhoto.textContent = "No Profile Image";
-        FileUserPhoto.value = null;
+        //FileUserPhoto.value = null;
     } else {
         imgUserPhoto.src = atob(user.photo);
         textUserPhoto.textContent = user.photoname;
@@ -448,10 +450,6 @@ const passwordRetypeValidator = () => {
 
 //function for close the modal and refresh the table
 const buttonModalClose = () => {
-    const closeResponse = confirm('Are you sure to close the modal?')
-
-
-
     Swal.fire({
         title: "Are you sure to close the form?",
         text: "If you close this form, filled data will be removed.",
@@ -466,7 +464,7 @@ const buttonModalClose = () => {
     }).then((result) => {
 
         if (result.isConfirmed) {
-            $('#userAddModel').modal('hide');
+            $('#userAddModal').modal('hide');
 
 
             //formEmployee is id of form
@@ -541,6 +539,15 @@ const checkUserformUpdates = () => {
 
     if (user.email != olduser.email) {
         updates = updates + " email is changed \n";
+
+    }
+    if (user.photo != olduser.photo) {
+        updates = updates + " Photo is changed \n";
+
+    }
+
+    if (user.photoname != olduser.photoname) {
+        updates = updates + " photoname is changed \n";
 
     }
 
