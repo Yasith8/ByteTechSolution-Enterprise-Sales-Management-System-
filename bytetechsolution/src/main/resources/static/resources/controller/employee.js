@@ -211,149 +211,36 @@ const printEmployee = (ob, rowIndex) => {
     printSelectDesignation.textContent = ob.designation_id.name;
     printSelectStatus.textContent = ob.employeestatus_id.name;
 
+    let today = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    })
+    printEmployeeFooter.textContent = `This document was generated on ${today}. The information contained is confidential and for official use only.`
+
     if (ob.photo != null) {
         printPhotoEmployeeProfile.src = atob(ob.photo);
     }
-
+    // Open a new tab
     const newTab = window.open();
+
+    // Write content to the new tab
     newTab.document.write(
-        ///////////////////////////////////////////////////////////
+        '<html><head>' +
         '<link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">' +
         '<link rel="stylesheet" href="resources/style/employee.css">' +
         '<link rel="stylesheet" href="resources/style/common.css">' +
-        /* 
-        '<div class="print-container" style="display: none;" id="printEmployeeContent">' +
-         '<div class="d-flex gap-3 p-3">' +
-         '<img src="/resources/image/logo/logo.png" width="50px" height="50px">' +
-         '<div>' +
-         '<p class="label-logo">' +
-         '<b>ByteTech Solution</b>' +
-         '<br> No 32A, Galle Road, Panadura <br> 0382291010/ 0773881010' +
-         '</p>' +
-
-         '</div>' +
-
-         '</div>' +
-
-         '<div class="row">' +
-         '<div class="col-2"></div>' +
-         '<div class="col-8">' +
-
-
-
-         '<div class="bg-white print-window">' +
-         '<img src="/resources/images/initialprofile.jpg" style="margin-left: 20px;margin-top: 20px;border-radius: 50px;" width="100px" height="100px" id="photoEmployeeProfile">' +
-         '<h2 class="text-center" style="margin-top: -50px;">Employee Details</h2>' +
-
-         '<div class="row mt-4">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Employee ID</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="employeeID"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-         '<div class="row mt-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Employee Name</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="textFullName"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-         '<div class="row mt-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">National ID No</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="textNIC"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-
-         '<div class="row mt-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Email</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="textEmail"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-         '<div class="row mt-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Calling Name</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="textCallingName"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-         '<div class="row mt-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Gender</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="gender"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-         '<div class="row mt-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Mobile No</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="textMobile"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-         '<div class="row mt-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Land No</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="textLand"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-         '<div class="row mt-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Land No</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="textAddress"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-         '<div class="row mt-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Date of Birth</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="dateDob"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-         '<div class="row mt-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Designation</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="selectDesignation"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-
-         '<div class="row mt-2 mb-2">' +
-         '<div class="col-3"></div>' +
-         '<div class="col-3">Employee Status</div>' +
-         '<div class="col-1">:</div>' +
-         '<div class="col-3" id="selectStatus"></div>' +
-         '<div class="col-2"></div>' +
-         '</div>' +
-         '</div>' +
-
-         '</div>' +
-         '<div class="col-2"></div>' +
-
-         '</div>' +
-         '</div>'
-         ///////////////////////////////////////////////////////////
-         */
-
+        '</head><body>' +
         printEmployeeDetails.outerHTML +
-        '<script>printEmployeeDetails.removeAttribute("style")</script>'
+        '<script>' +
+        'document.getElementById("printEmployeeDetails").removeAttribute("style");' +
+        'window.onload = function() { window.print(); };' +
+        '</script>' +
+        '</body></html>'
     );
+
+    // Close the document to finish loading
+    newTab.document.close();
 }
 
 //print whole
