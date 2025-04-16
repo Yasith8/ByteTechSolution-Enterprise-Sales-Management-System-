@@ -28,9 +28,20 @@ const refreshGrnTable = () => {
 
 const refreshGrnForm = () => {
 
+    grn = new Object();
     serialNumbersVisible = false;
 
-    numberQuantity.addEventListener('change', updateSerialNumberInputs);
+
+    purchaseRequests = getServiceAjaxRequest("/purchaserequests/prequestbyrequireddate")
+    fillMultipleItemOfDataOnSignleSelectRecursion(selectPurchaseRequest, "Select Puchase Request", purchaseRequests, "requestcode", "supplier_id.name");
+
+
+    checkAndToggleButton()
+    numberQuantity.addEventListener('keyup', () => {
+        checkAndToggleButton()
+        updateSerialNumberInputs()
+    });
+
     selectItemName.addEventListener('input', () => {
         updateItemNameDisplay()
     });
@@ -38,6 +49,12 @@ const refreshGrnForm = () => {
 
 const refillGrnForm = () => {
 
+}
+
+// Function to check and toggle the button
+const checkAndToggleButton = () => {
+    const value = numberQuantity.value.trim();
+    toggleSerialBtn.disabled = value === '' || Number(value) === 0;
 }
 
 
@@ -62,7 +79,7 @@ const updateItemNameDisplay = () => {
 
 const updateSerialNumberInputs = () => {
     serialNumbersContainer.innerHTML = '';
-    const quantity = parseInt(numberQuantity.value) || 1;
+    const quantity = parseInt(numberQuantity.value) || 0;
 
     for (let i = 0; i < quantity; i++) {
         // Create a new row for every two inputs

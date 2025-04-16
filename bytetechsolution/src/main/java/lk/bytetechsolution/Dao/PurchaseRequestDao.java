@@ -11,5 +11,8 @@ public interface PurchaseRequestDao extends JpaRepository<PurchaseRequestEntity,
 
      @Query(value = "select concat('PRQ',lpad(substring(max(prq.requestcode),4)+1,4,'0')) as requestcode from bytetechsolution.purchase_request as prq",nativeQuery = true)
     String getNextPrequestCode();
+
+    @Query(value = "select * from bytetechsolution.purchase_request pr where pr.requireddate>=current_time()",nativeQuery = true)
+    public List<PurchaseRequestEntity> findPrequestByRequiredDate();
     
 }

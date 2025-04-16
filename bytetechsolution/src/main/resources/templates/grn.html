@@ -143,7 +143,7 @@
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
 
-                                                            <input type="number" class="form-control" id="decimalTtoalAmount" placeholder="" required onkeyup="textValidator(this,'^[0][7][01245678][0-9]{7}$', 'grn', 'totalamount')">
+                                                            <input type="number" class="form-control" id="decimalTtoalAmount" placeholder="" required onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'grn', 'totalamount')">
                                                             <label for="decimalTtoalAmount">Total Amount <span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
@@ -151,7 +151,7 @@
                                                     <!-- discount rate start -->
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="numberDiscountRate" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'grn','discountrate')">
+                                                            <input type="number" class="form-control" id="numberDiscountRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$', 'grn','discountrate')">
                                                             <label for="numberDiscountRate">Discount Rate<span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
@@ -159,7 +159,7 @@
                                                     <!-- final amount start -->
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="decimalFinalAmount" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'grn','finalamount')">
+                                                            <input type="number" class="form-control" id="decimalFinalAmount" placeholder="" required onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'grn','finalamount')">
                                                             <label for="decimalFinalAmount">Final Amount<span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
@@ -170,7 +170,7 @@
                                                     <!-- payed amount start -->
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="decimalPaidAmount" placeholder="" onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'grn','paidamount')">
+                                                            <input type="number" class="form-control" id="decimalPaidAmount" placeholder="" onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'grn','paidamount')">
                                                             <label for="decimalPaidAmount">Paid Amount</label>
                                                         </div>
                                                     </div>
@@ -214,7 +214,7 @@
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3 form-floating">
-                                                            <input type="number" class="form-control" id="numberQuantity" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'grn','quantity')">
+                                                            <input type="number" class="form-control" id="numberQuantity" placeholder="" required onkeyup="textValidator(this,'^[1-9]\d*$', 'grn','quantity')">
                                                             <label for="numberQuantity">Quantity<span class="requiredIcon">*</span></label>
                                                             </select>
                                                         </div>
@@ -223,14 +223,14 @@
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <div class="mb-3 form-floating">
-                                                            <input type="number" class="form-control" id="decimalPurchasePrice" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'grn','purchaseprice')">
+                                                            <input type="number" class="form-control" id="decimalPurchasePrice" placeholder="" required onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'grn','purchaseprice')">
                                                             <label for="decimalPurchasePrice">Purchase Price<span class="requiredIcon">*</span></label>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3 form-floating">
-                                                            <input type="number" class="form-control" id="decimalLinePrice" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'grn','lineprice')">
+                                                            <input type="number" class="form-control" id="decimalLinePrice" placeholder="" required onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'grn','lineprice')">
                                                             <label for="decimalLinePrice">LinePrice<span class="requiredIcon">*</span></label>
                                                             </select>
                                                         </div>

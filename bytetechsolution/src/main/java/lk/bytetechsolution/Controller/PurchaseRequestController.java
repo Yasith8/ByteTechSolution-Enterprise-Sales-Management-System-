@@ -203,5 +203,20 @@ public class PurchaseRequestController {
             return "Update not Completed."+e.getMessage();
         }
     }
+    
+    @GetMapping(value = "/purchaserequest/prequestbyrequireddate",produces = "application/json")
+    public List<PurchaseRequestEntity> GetPurchaseRequestByRequiredDate() {
+        //Authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PREQUEST");
+
+
+        //if current logged user doesnt have privilages show empty list
+        if(!userPrivilage.get("select")){
+            return new ArrayList<PurchaseRequestEntity>();
+        }
+
+        return daoPurchaseRequest.findPrequestByRequiredDate();
+    }
 
 }
