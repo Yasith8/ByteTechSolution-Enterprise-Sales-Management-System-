@@ -35,7 +35,7 @@ public class WebConfiguration {
         //allow all request to access
         .requestMatchers("/resources/**").permitAll()
         //allow only for admin Manager and user to dash  board
-        .requestMatchers("/dashboard/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/dashboard/**").hasAnyAuthority("Admin","Manager","Technician","Store Manager")
         //allow only for admin Manager
         .requestMatchers("/employee/**").hasAnyAuthority("Admin","Manager","Technician")
         //allow only for admin Manager
@@ -55,12 +55,16 @@ public class WebConfiguration {
         .requestMatchers("/casing/**").hasAnyAuthority("Admin","Manager","Technician")
         .requestMatchers("/monitor/**").hasAnyAuthority("Admin","Manager","Technician")
         
-        //allow for quotations
-        .requestMatchers("/quotationrequest/**").hasAnyAuthority("Admin","Manager") 
-        .requestMatchers("/supplierquotation/**").hasAnyAuthority("Admin","Manager") 
+        //allow for supplier portal
+        .requestMatchers("/quotationrequest/**").hasAnyAuthority("Admin","Manager","Store Manager") 
+        .requestMatchers("/supplierquotation/**").hasAnyAuthority("Admin","Manager","Store Manager") 
+        .requestMatchers("/grn/**").hasAnyAuthority("Admin","Manager","Store Manager") 
         .requestMatchers("/suppliersubmitquotation/**").permitAll()
         .requestMatchers("/quotationrequestsubmit/**").permitAll()
         .requestMatchers("/suppliersubmit/**").permitAll()
+
+        //allow for the  customer and sales portal
+        .requestMatchers("/grn/**").hasAnyAuthority("Admin","Manager","Cashier") 
         .anyRequest().authenticated();// any other requst need authenticate
         
         
