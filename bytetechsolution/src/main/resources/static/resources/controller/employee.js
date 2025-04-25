@@ -277,6 +277,9 @@ const employeeFormRefill = (ob, rowIndex) => {
     employee = JSON.parse(JSON.stringify(ob))
     oldemployee = JSON.parse(JSON.stringify(ob)) //for checking updates
 
+    console.log("EMPLOYEE::::", employee)
+    console.log("OLDY OLDY EMPLOYEE::::", oldemployee)
+
 
     //bind input fields with ob.properties
     textFullName.value = ob.fullname;
@@ -294,6 +297,7 @@ const employeeFormRefill = (ob, rowIndex) => {
     textMobileNo.value = ob.mobile;
     textLandNo.value = ob.landno;
     dateDateOfBirth.value = ob.dob;
+    textNote.value = ob.note;
 
     //assign profile picture and name
     if (employee.photo == null) {
@@ -650,6 +654,10 @@ const checkEmployeeFormUpdates = () => {
 
     if (employee.landno != oldemployee.landno) {
         updates = updates + " Employee Land No is Changed <br>";
+    }
+
+    if (employee.note != oldemployee.note) {
+        updates = updates + " Note is Changed <br>";
     }
 
     if ((employee.photo != employee.photo) || (employee.photoname != employee.photoname)) {

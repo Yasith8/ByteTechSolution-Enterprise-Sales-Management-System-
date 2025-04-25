@@ -47,6 +47,15 @@ public class EmployeeEntity {
     @NotNull
     private String callingname;
 
+    //its give automatically from lombok Data
+  /*   public void setCallingName(String callingName){
+        this.callingname=callingName;
+    }
+
+    public String getCallingName(){
+        return this.callingname;
+    } */
+
     @Column(name="nic",unique = true) //map with nic column and set as unique
     @NotNull
     private String nic;
@@ -95,4 +104,6 @@ public class EmployeeEntity {
     @ManyToOne
     @JoinColumn(name="employeestatus_id",referencedColumnName = "id")
     private EmployeeStatusEntity employeestatus_id;
+
+    
 }

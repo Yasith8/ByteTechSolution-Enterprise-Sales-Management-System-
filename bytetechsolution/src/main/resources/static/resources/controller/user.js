@@ -204,11 +204,10 @@ const refillUserForm = (rowOb, rowIndex) => {
 
 
     //assign profile picture and name
-    if (user.photo == null) {
-        imgUserPhoto.src = "/resources/image/initialprofile.jpg";
-        textUserPhoto.textContent = "No Profile Image";
-        //FileUserPhoto.value = null;
-    } else {
+    imgUserPhoto.src = "/resources/image/initialprofile.jpg";
+    textUserPhoto.textContent = "No Profile Image";
+    if (user.photo != null) {
+
         imgUserPhoto.src = atob(user.photo);
         textUserPhoto.textContent = user.photoname;
     }

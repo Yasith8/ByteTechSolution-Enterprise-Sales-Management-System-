@@ -50,8 +50,6 @@ const refreshProcessorForm = () => {
     itemStatuses = getServiceAjaxRequest("/itemstatus/alldata");
     fillDataIntoSelect(selectItemStatus, "Select Item Status", itemStatuses, "name");
 
-
-    fillDataIntoSelect(selectCpuSeries, "Select Processor Brand First", [], "name")
     fillDataIntoSelect(selectCpuSocket, "Select Processor Brand First", [], "name")
     fillDataIntoSelect(selectCpuGeneration, "Select Processor Socket First", [], "name");
 
@@ -67,23 +65,24 @@ const refreshProcessorForm = () => {
         cpuSeries = getServiceAjaxRequest("/cpuseries/cpuseriesbybrand/" + cpuBrand.name);
         fillDataIntoSelect(selectCpuSeries, "Select Processor Series", cpuSeries, "name");
 
-        fillDataIntoSelect(selectCpuSuffix, "First Select Processor Series", [], "name");
-        fillDataIntoSelect(selectCpuSuffix, "First Select Processor Series", [], "name");
-
         cpuSocket = getServiceAjaxRequest("/cpusocket/cpusocketbybrand/" + cpuBrand.name);
         fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
 
     });
 
     selectCpuSocket.addEventListener('change', () => {
+        console.log("cpu function work")
         processor.cpugeneration_id = null;
         removeValidationColor([selectCpuGeneration]);
         const cpuGentoSocket = selectValueHandler(selectCpuSocket);
+        console.log("cpu function", cpuGentoSocket)
         cpuGeneration = getServiceAjaxRequest("/cpugeneration/cpugenerationbycpusocket/" + cpuGentoSocket.name);
         fillDataIntoSelect(selectCpuGeneration, "Select Processor Generation", cpuGeneration, "name");
     });
 
     selectCpuSeries.addEventListener('change', () => {
+        processor.cpusuffix_id = null;
+        removeValidationColor([selectCpuSuffix]);
         const cpuSelectedSeries = selectValueHandler(selectCpuSeries);
         cpuSuffix = getServiceAjaxRequest("/cpusuffix/cpusuffixbycpuseries/" + cpuSelectedSeries.name);
         fillDataIntoSelect(selectCpuSuffix, "Select Processor Suffix", cpuSuffix, "name");

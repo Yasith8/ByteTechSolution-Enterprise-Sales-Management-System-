@@ -116,7 +116,8 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
         const tdButton = document.createElement('td'); // button column
 
         const editButton = document.createElement('button');
-        editButton.className = 'btn btn-edit fw-bold';
+        editButton.className = 'btn btn-edit fw-bold inner-edit-button';
+        editButton.id = "innerEditButton";
         editButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i>';
         editButton.type = "button";
 
@@ -127,6 +128,7 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
 
         const deleteButton = document.createElement('button');
         deleteButton.className = 'btn btn-outline-danger fw-bold ms-1 me-1';
+        deleteButton.id = "innerDeleteButton";
         deleteButton.innerHTML = '<i class="fa-regular fa-circle-xmark"></i>';
         deleteButton.type = "button";
 

@@ -190,10 +190,10 @@ const propertyRecursion = (obj, properties) => {
     const currentProperty = splitedProperties[0]; // Get the first property in the path
 
     if (splitedProperties.length === 1) {
-        return obj[currentProperty] !== undefined ? obj[currentProperty] : ""; // Base case: return final property
+        return obj[currentProperty] !== undefined ? obj[currentProperty] : ""; // return final property
     }
 
-    return propertyRecursion(obj[currentProperty], splitedProperties.slice(1).join(".")); // Recursive call
+    return propertyRecursion(obj[currentProperty], splitedProperties.slice(1).join(".")); // Recursive call the function
 };
 
 const removeValidationColor = (fieldIds) => {

@@ -35,6 +35,8 @@ const refreshPurchaseRequestForm = () => {
 
     staticBackdropLabel.textContent = "Add New Purchase Request";
 
+    selectSupplierQuotation.disabled = false;
+
     prequest.purchase_request_item = new Array();
 
     purchaseStatuses = getServiceAjaxRequest("/purchasestatus/alldata")
@@ -177,28 +179,65 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
     textNote.value = prequest.note
 
 
-    selectSupplierQuotation.value
-    selectPurchaseStatus.value
-
     purchaseStatuses = getServiceAjaxRequest("/purchasestatus/alldata")
     fillDataIntoSelect(selectPurchaseStatus, "Select Purchase Status", purchaseStatuses, "name", prequest.purchasestatus_id.name);
 
-    //bug issue when valid date issue
-    supplierQuotations = getServiceAjaxRequest("/supplierquotation/quotationbyvaliddate")
-        //fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name");
-    fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_quotation_id.supplier_id.name", prequest.supplier_quotation_id.quotationid, prequest.supplier_id.name);
+    selectSupplierQuotation.disabled = true;
+    supplierQuotations = getServiceAjaxRequest("/supplierquotation/alldata")
+    fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name", prequest.supplier_quotation_id.quotationid, prequest.supplier_quotation_id.supplier_id.name);
 
 
 
     refreshPurchaseRequestHasItemInnerFormAndTable()
 }
 
-const refillInnerPurchaseItemForm = () => {
+const refillInnerPurchaseItemForm = (ob, rowIndex) => {
+    console.log("Refill Inner", ob)
+
+    const quotationItemArray = new Array();
+    quotationItemArray.push(ob);
+    console.log("qir", quotationItemArray)
+    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", quotationItemArray, "itemcode", "itemname", ob.itemcode, ob.itemname);
+    selectItemName.disabled = true;
+
+    numberQuantity.value = ob.quantity;
+    decimalItemPrice.value = ob.unitprice;
+    decimalLineTotal.value = ob.linetotal;
+
+    innerEditButton.disabled = true;
+    innerDeleteButton.disabled = true;
+
 
 }
 
-const deleteInnerPurchaseItemForm = () => {
+const deleteInnerPurchaseItemForm = (ob, rowIndex) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to remove item from the Purchase Request? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            prequest.purchase_request_item.splice(rowIndex, 1);
+            refreshPurchaseRequestHasItemInnerFormAndTable();
 
+            Swal.fire({
+                title: "Success!",
+                text: "Item Removed Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+
+
+        }
+    })
 }
 
 const checkInnerItemFormErrors = () => {
