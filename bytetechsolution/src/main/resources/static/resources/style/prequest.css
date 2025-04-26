@@ -10,11 +10,6 @@
     font-weight: 600;
 }
 
-.addBtn {
-    background-color: #6669b0;
-    color: white;
-}
-
 .btnDel:hover {
     color: red;
 }
@@ -110,7 +105,7 @@
     color: #ff9d48;
 }
 
-.supplier-status-reject {
+.supplier-status-delete {
     padding: 5px;
     border-radius: 8px;
     border: none;
@@ -121,15 +116,15 @@
     color: #EF3826;
 }
 
-.supplier-status-delete {
+.supplier-status-reject {
     padding: 5px;
     border-radius: 8px;
     border: none;
-    background-color: #ff1100;
+    background-color: #454545;
     text-align: center;
     padding-inline: 30px;
     padding-block: 8px;
-    color: #ffffff;
+    color: #EF3826;
 }
 
 .supplier-status-other {

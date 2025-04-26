@@ -218,9 +218,9 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-2"><button type="reset" class="btn inner-cancel-btn modal-button">Clear</button></div>
-                                                    <div class="col-6"></div>
-                                                    <div class="col-2"><button id="buttonInnerUpdate" type="button" class="btn inner-update-btn modal-button" onclick="innerPurchaseRequestItemUpdate()">Update</button></div>
-                                                    <div class="col-2"><button id="buttonInnerSubmit" type="button" class="btn inner-add-btn modal-button" onclick="innerPurchaseRequestItemAdd()">Add</button></div>
+                                                    <div class="col-8"></div>
+                                                    <div class="col-2"><button id="buttonInnerUpdate" type="button" class="btn inner-update-btn modal-button" onclick="innerPurchaseRequestItemUpdate()">Update</button><button id="buttonInnerSubmit" type="button" class="btn inner-add-btn modal-button"
+                                                            onclick="innerPurchaseRequestItemAdd()">Add</button></div>
 
                                                 </div>
                                             </form>
@@ -286,7 +286,7 @@
                             <div class="row">
                                 <div class="col-4" style="display: flex; justify-content: center;gap: 5px;">
                                     <button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printPrequestDetails(window['editOb'], window['editRow'])">Print</button>
-                                    <button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deletePrequest(window['editOb'], window['editRow'])">Delete</button>
+                                    <button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" id="buttonDelete" onclick="deletePrequest(window['editOb'], window['editRow'])">Delete</button>
                                 </div>
                                 <div class="col-8"></div>
                             </div>

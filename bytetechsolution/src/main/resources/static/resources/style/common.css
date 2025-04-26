@@ -41,6 +41,20 @@ body {
     background-color: #687401;
 }
 
+.btnView:hover {
+    color: #0D3239;
+}
+
+
+/* ////////////////////////// SOME IMPORTANT ONES START//////////////////////////// */
+
+.elementHide {
+    display: none;
+}
+
+
+/* ////////////////////////// SOME IMPORTANT ONES END //////////////////////////// */
+
 .modal-button {
     width: 5rem;
     padding: 5px;

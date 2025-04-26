@@ -39,6 +39,7 @@ const refreshPurchaseRequestForm = () => {
 
     prequest.purchase_request_item = new Array();
 
+    selectPurchaseStatus.disabled = true;
     purchaseStatuses = getServiceAjaxRequest("/purchasestatus/alldata")
     fillDataIntoSelect(selectPurchaseStatus, "Select Purchase Status", purchaseStatuses, "name", purchaseStatuses[1].name);
     selectDynamicValidator(selectPurchaseStatus, '', 'prequest', 'purchasestatus_id')
@@ -79,14 +80,15 @@ const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
     purchaseRequestItem = new Object();
     oldPurchaseRequestItem = null;
 
+    buttonInnerSubmit.classList.remove('elementHide')
+    buttonInnerUpdate.classList.add('elementHide')
+
     inputFieldsHandler([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal], false)
     removeValidationColor([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal])
 
     buttonInnerSubmit.disabled = false;
     buttonInnerSubmit.classList.add('inner-add-btn');
 
-    buttonInnerUpdate.disabled = true;
-    buttonInnerUpdate.classList.remove('inner-update-btn');
 
     decimalLineTotal.disabled = true;
     decimalItemPrice.disabled = true;
@@ -112,8 +114,8 @@ const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
 
 
             decimalLineTotal.value = selectedItemName.lineprice
-            numberQuantity.addEventListener('keyup', () => {
-                const newQuantity = numberQuantity.value;
+            numberQuantity.addEventListener('input', () => {
+                const newQuantity = parseFloat(numberQuantity.value);
                 decimalLineTotal.value = newQuantity * selectedItemName.unitprice
             })
             textValidator(decimalLineTotal, '', 'purchaseRequestItem', 'linetotal');
@@ -164,6 +166,7 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
     $('#prequestAddModal').modal('show');
     removeValidationColor([decimalTotalAmount, dateRequiredDate, textNote, selectSupplierQuotation, selectPurchaseStatus, selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal])
 
+    staticBackdropLabel.textContent = ob.requestcode;
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
@@ -178,34 +181,93 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
     dateRequiredDate.value = prequest.requireddate
     textNote.value = prequest.note
 
+    inputFieldsHandler([dateRequiredDate, textNote, selectItemName, selectPurchaseStatus, numberQuantity, buttonDelete], false);
 
+    selectPurchaseStatus.disabled = false;
     purchaseStatuses = getServiceAjaxRequest("/purchasestatus/alldata")
     fillDataIntoSelect(selectPurchaseStatus, "Select Purchase Status", purchaseStatuses, "name", prequest.purchasestatus_id.name);
+
+    if (prequest.purchasestatus_id.name == "Recived") {
+        inputFieldsHandler([decimalTotalAmount, dateRequiredDate, textNote, selectSupplierQuotation, selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal], true);
+    }
+
+    if (prequest.purchasestatus_id.name == "Deleted") {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
+
+    selectPurchaseStatus.addEventListener('change', () => {
+        if (prequest.purchasestatus_id.name == "Recived") {
+            inputFieldsHandler([decimalTotalAmount, dateRequiredDate, textNote, selectSupplierQuotation, selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal], true);
+        }
+    })
+
+    selectPurchaseStatus.addEventListener('change', () => {
+        if (prequest.purchasestatus_id.name == "Deleted") {
+            buttonDelete.disabled = true;
+            buttonDelete.classList.remove('modal-btn-delete');
+        } else {
+            buttonDelete.disabled = false;
+            buttonDelete.classList.add('modal-btn-delete');
+        }
+    })
 
     selectSupplierQuotation.disabled = true;
     supplierQuotations = getServiceAjaxRequest("/supplierquotation/alldata")
     fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name", prequest.supplier_quotation_id.quotationid, prequest.supplier_quotation_id.supplier_id.name);
 
+    let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/PREQUEST");
+    if (!userPrivilages.update) {
+        buttonSubmit.disabled = true;
+        buttonSubmit.classList.remove('modal-btn-submit');
+
+        inputFieldsHandler([decimalTotalAmount, dateRequiredDate, textNote, selectSupplierQuotation, selectPurchaseStatus, selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
 
 
     refreshPurchaseRequestHasItemInnerFormAndTable()
 }
 
 const refillInnerPurchaseItemForm = (ob, rowIndex) => {
-    console.log("Refill Inner", ob)
+    innerEditButton.disabled = true;
+    innerDeleteButton.disabled = true;
 
+    buttonInnerSubmit.classList.add('elementHide')
+    buttonInnerUpdate.classList.remove('elementHide')
+
+    //bcuz of come the single obj, it stored in the array
     const quotationItemArray = new Array();
     quotationItemArray.push(ob);
-    console.log("qir", quotationItemArray)
+    //fill the select and assign the values and disabled
     fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", quotationItemArray, "itemcode", "itemname", ob.itemcode, ob.itemname);
+    purchaseRequestItem.itemname_id = ob
+    purchaseRequestItem.itemname = ob.itemname
+    purchaseRequestItem.itemcode = ob.itemcode
+    console.log("itnm", ob)
     selectItemName.disabled = true;
 
     numberQuantity.value = ob.quantity;
     decimalItemPrice.value = ob.unitprice;
     decimalLineTotal.value = ob.linetotal;
 
-    innerEditButton.disabled = true;
-    innerDeleteButton.disabled = true;
+    textValidator(numberQuantity, '^(100|[1-9][0-9]?)$', 'purchaseRequestItem', 'quantity');
+    textValidator(decimalItemPrice, '', 'purchaseRequestItem', 'unitprice');
+
+
+    numberQuantity.addEventListener('input', () => {
+        const newQuantity = parseFloat(numberQuantity.value);
+        decimalLineTotal.value = newQuantity * ob.unitprice;
+
+        purchaseRequestItem.quantity = numberQuantity.value;
+        purchaseRequestItem.unitprice = decimalItemPrice.value;
+        purchaseRequestItem.linetotal = decimalLineTotal.value;
+        console.log("pri", purchaseRequestItem)
+    })
+    textValidator(decimalLineTotal, '', 'purchaseRequestItem', 'linetotal')
+
+
+
 
 
 }
@@ -253,6 +315,7 @@ const checkInnerItemFormErrors = () => {
     return errors;
 }
 const innerPurchaseRequestItemAdd = () => {
+    //destructure the pr irem code for remove itemname_id
     const { itemname_id, ...rest } = purchaseRequestItem;
     updatedPurchaseRequestItem = rest;
     let errors = checkInnerItemFormErrors();
@@ -308,7 +371,80 @@ const innerPurchaseRequestItemAdd = () => {
 
 
 const innerPurchaseRequestItemUpdate = () => {
+    //destructure the pr irem code for remove itemname_id
+    const { itemname_id, ...rest } = purchaseRequestItem;
+    updatedPurchaseRequestItem = rest;
+    let errors = checkInnerItemFormErrors();
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to assign this product to the purchase request?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, assign it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log(updatedPurchaseRequestItem);
 
+                //purchase reqyest item obj eke hv the look
+                const purchaseItemIndex = prequest.purchase_request_item.findIndex((prItem) => prItem.itemcode === updatedPurchaseRequestItem.itemcode);
+
+                //validate karanawa exist or not 
+                if (purchaseItemIndex !== -1) {
+                    prequest.purchase_request_item[purchaseItemIndex] = updatedPurchaseRequestItem;
+
+                    let totalAmount = 0;
+                    prequest.purchase_request_item.forEach(item => {
+                        totalAmount += parseFloat(item.linetotal);
+                    });
+                    decimalTotalAmount.value = totalAmount;
+                    prequest.totalamount = totalAmount;
+
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Items assigned to the purchase request successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        refreshPurchaseRequestHasItemInnerFormAndTable();
+                        purchaseItemForm.reset();
+                    });
+
+                } else {
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "The Item you try to adding is not in the Item List. Sure to add as a New Item?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#103D45",
+                        cancelButtonColor: "#F25454",
+                        confirmButtonText: "Yes, Add it!",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            prequest.purchase_request_item.push(updatedPurchaseRequestItem);
+                        }
+                    })
+                }
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "Error!",
+            html: "Item assignment failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
+    }
 }
 
 const checkPRequestFormErrors = () => {
@@ -429,7 +565,7 @@ const checkPrequstUpdates = () => {
     if (prequest.purchase_request_item.length != oldPrequest.purchase_request_item.length) {
         updates = updates + "Supplier Inner Form is Changed <br>";
     } else {
-        for (let newPurchaseItem of supplier.purchase_request_item) {
+        for (let newPurchaseItem of prequest.purchase_request_item) {
             const matchOldPrequest = oldPrequest.purchase_request_item.find(oldPrequestItem => oldPrequestItem.id === newPurchaseItem.id);
 
             if (!matchOldPrequest) {
