@@ -278,7 +278,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-2"><button type="reset" class="btn inner-cancel-btn modal-button">Clear</button></div>
+                                                    <div class="col-2"><button id="buttonInnerClear" class="btn inner-cancel-btn modal-button" onclick="innerSupplierProductClear()">Clear</button></div>
                                                     <div class="col-6"></div>
                                                     <div class="col-2"><button id="buttonInnerUpdate" type="button" class="btn inner-update-btn modal-button" onclick="innerSupplierProductUpdate()">Update</button></div>
                                                     <div class="col-2"><button id="buttonInnerSubmit" type="button" class="btn inner-add-btn modal-button" onclick="innerSupplierProductAdd()">Add</button></div>
@@ -304,10 +304,10 @@
                                             <table class="table table-hover table-striped" id="innerSupplierTable">
                                                 <thead class="table-header">
                                                     <tr align="center">
-                                                        <th style="background-color: #009d27 !important"> # </th>
-                                                        <th style="background-color: #009d27 !important"> Category </th>
-                                                        <th style="background-color: #009d27 !important"> Brand </th>
-                                                        <th style="background-color: #009d27 !important"> </th>
+                                                        <th> # </th>
+                                                        <th> Category </th>
+                                                        <th> Brand </th>
+                                                        <th> </th>
                                                     </tr>
                                                 </thead>
 

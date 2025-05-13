@@ -143,8 +143,8 @@
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
 
-                                                            <input type="number" class="form-control" id="decimalTtoalAmount" placeholder="" required onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'grn', 'totalamount')">
-                                                            <label for="decimalTtoalAmount">Total Amount <span class="requiredIcon">*</span></label>
+                                                            <input type="number" class="form-control" id="decimalTotalAmount" placeholder="" required>
+                                                            <label for="decimalTotalAmount">Total Amount <span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
                                                     <!-- total amount end -->
@@ -203,36 +203,33 @@
                                     <div class="card">
                                         <div class="card-header">GRN Item Selection</div>
                                         <div class="card-body">
-                                            <form>
+                                            <form id="grnItemForm">
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <div class="mb-3 form-floating">
-                                                            <select name="brand" id="selectItemName" class="form-select">
+                                                            <select name="itemname" id="selectPRItemName" class="form-select" onchange="selectDynamicValidator(this,'','grn','itemname_id')">
                                                             <option value=""  selected disabled>Select Item Name</option>
                                                         </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3 form-floating">
-                                                            <input type="number" class="form-control" id="numberQuantity" placeholder="" required onkeyup="textValidator(this,'^[1-9]\d*$', 'grn','quantity')">
+                                                            <input type="number" class="form-control" id="numberQuantity" placeholder="" required>
                                                             <label for="numberQuantity">Quantity<span class="requiredIcon">*</span></label>
-                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <div class="mb-3 form-floating">
-                                                            <input type="number" class="form-control" id="decimalPurchasePrice" placeholder="" required onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'grn','purchaseprice')">
+                                                            <input type="number" class="form-control" id="decimalPurchasePrice" placeholder="" required>
                                                             <label for="decimalPurchasePrice">Purchase Price<span class="requiredIcon">*</span></label>
-                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3 form-floating">
-                                                            <input type="number" class="form-control" id="decimalLinePrice" placeholder="" required onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'grn','lineprice')">
-                                                            <label for="decimalLinePrice">LinePrice<span class="requiredIcon">*</span></label>
-                                                            </select>
+                                                            <input type="number" class="form-control" id="decimalLinePrice" placeholder="" required>
+                                                            <label for="decimalLinePrice">Line Price<span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
                                                 </div>

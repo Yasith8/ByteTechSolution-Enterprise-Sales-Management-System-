@@ -23,3 +23,103 @@ public class PrivilageController {
      @postmapping
      @deletemapping
 }
+
+
+
+<div class="row mt-5 ">
+                                <div class="col-1 "></div>
+                                <div class="col-4 ">
+                                    <select class="form-select" multiple id="selectAvailableSupplier">
+                    
+                </select>
+                                </div>
+                                <div class="col-2 ">
+                                    <div class="item ">
+                                        <button class="move-btn" id="buttonAddOne" type="button" onclick="btnAddOneSupplier() "><i class="fa-solid fa-caret-right "></i> </button>
+                                        <button class="move-btn" id="buttonAddAll" type="button" onclick="btnAddAllSupplier() "> <i class="fa-solid fa-forward double-arrow "></i> </button>
+                                        <button class="move-btn" id="buttonRemoveOne" type="button" onclick="btnRemoveOneSupplier() "> <i class="fa-solid fa-caret-left "></i> </button>
+                                        <button class="move-btn" id="buttonRemoveAll" type="button" onclick="btnRemoveAllSupplier() "> <i class="fa-solid fa-backward double-arrow "></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-4 ">
+                                    <select class="form-select" id="selectSelectedSupplier" multiple>
+                </select>
+                                </div>
+                                <div class="col-1 "></div>
+                            </div>
+
+
+
+
+
+                            
+const btnAddOneSupplier = () => {
+    console.log("aasw", quotationrequest.quotation_request_has_supplier)
+    let selectedSupplier = JSON.parse(selectAvailableSupplier.value);
+
+    quotationrequest.itemSuppliers.push(selectedSupplier);
+
+    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name");
+
+    let extIdx = suppliers.map((supplier) => supplier.id).indexOf(selectedSupplier.id);
+
+    //check if index is existed
+    if (extIdx != -1) {
+        //remove supplier from avablelist
+        suppliers.splice(extIdx, 1);
+    }
+
+    //refill Available Supplier
+    fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
+}
+
+const btnAddAllSupplier = () => {
+
+    for (const supplier of suppliers) {
+        quotationrequest.itemSuppliers.push(supplier);
+    }
+
+
+    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name");
+
+    suppliers = [];
+    fillDataIntoSelect(selectAvailableSupplier, suppliers, "", "name")
+
+
+}
+
+const btnRemoveOneSupplier = () => {
+    let selectedPullSupplier = JSON.parse(selectSelectedSupplier.value);
+
+
+    suppliers.push(selectedPullSupplier);
+
+
+    fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
+
+    let extIdx = quotationrequest.itemSuppliers.map((supplier) => supplier.id).indexOf(selectedPullSupplier.id);
+
+
+    //check if index is existed
+    if (extIdx != -1) {
+        //remove supplier from avablelist
+        quotationrequest.itemSuppliers.splice(extIdx, 1);
+    }
+
+    //refill Available Supplier
+
+    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name");
+}
+
+
+const btnRemoveAllSupplier = () => {
+    for (const itemSupplier of quotationrequest.itemSuppliers) {
+        suppliers.push(itemSupplier)
+    }
+
+    fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name")
+
+    quotationrequest.itemSuppliers = [];
+    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name")
+
+}

@@ -112,7 +112,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-3">
                             <div class="card">
                                 <div class="card-header">Genaral Purchase Request Details</div>
                                 <div class="card-body">
@@ -178,7 +178,7 @@
 
                             <!-- supplier Basic Details -->
                         </div>
-                        <div class="col-8">
+                        <div class="col-9">
                             <!-- supplier products -->
                             <!-- supplier baic product form -->
                             <div class="row">
@@ -217,9 +217,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-2"><button type="reset" class="btn inner-cancel-btn modal-button">Clear</button></div>
+                                                    <div class="col-2"><button type="reset" class="btn inner-cancel-btn modal-button" onclick="innerClearButton()">Clear</button></div>
                                                     <div class="col-8"></div>
-                                                    <div class="col-2"><button id="buttonInnerUpdate" type="button" class="btn inner-update-btn modal-button" onclick="innerPurchaseRequestItemUpdate()">Update</button><button id="buttonInnerSubmit" type="button" class="btn inner-add-btn modal-button"
+                                                    <div class="col-2 inner-model-button-div"><button id="buttonInnerUpdate" type="button" class="btn inner-update-btn modal-button" onclick="innerPurchaseRequestItemUpdate()">Update</button><button id="buttonInnerSubmit" type="button" class="btn inner-add-btn modal-button"
                                                             onclick="innerPurchaseRequestItemAdd()">Add</button></div>
 
                                                 </div>
@@ -295,14 +295,135 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5"></div>
-                            <div class="col-7" style="display: flex; justify-content: center;gap: 12px;">
-                                <button type="reset" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button>
+                            <div class="col-7" style="display: flex; justify-content: end;gap: 12px; padding-right: 30px;">
+                                <button type="reset" class="modal-button modal-btn-clear" onclick="refreshPrequest()">Clear</button>
                                 <button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="updatePrequest()">Update</button>
                                 <button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="submitPrequest()">Submit</button>
                             </div>
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+
+            <!-- Printing the purchase request -->
+            <div class="invoice-container document" style="display: none;" id="printPurchaseRequestDetails">
+                <!-- Header Section -->
+                <div class="invoice-header">
+                    <div class="company-info">
+                        <div class="logo-container">
+                            <div class="logo">
+                                <div class="logo-icon"><img src="resources/image/logo/two-line-logo.png" class="company-logo" /></div>
+                            </div>
+                        </div>
+                        <div class="company-details">
+                            <div>No 72, Peoples Road</div>
+                            <div>Panadura, 12560</div>
+                            <div>Phone: (038) 229-5555</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="invoice-title">PURCHASE ORDER</div>
+                        <div class="invoice-details">
+                            <div><span>PO NO</span><span id="printPONO">INV-12345</span></div>
+                            <div><span>DATE</span><span id="printPODate">16-07-2024</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Billing Info Section -->
+                <!-- <div class="billing-info">
+                    <div class="info-box">
+                        <div class="info-header">BILL TO</div>
+                        <div class="info-content">
+                            <div id="client-name">[Client Name]</div>
+                            <div id="client-company">[Company Name]</div>
+                            <div id="client-address">[Street Address]</div>
+                            <div id="client-city">[City, ST ZIP]</div>
+                            <div id="client-phone">Phone: [Phone]</div>
+                            <div id="client-email">Email: [Email]</div>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-header">SHIP TO</div>
+                        <div class="info-content">
+                            <div id="shipping-name">[Name]</div>
+                            <div id="shipping-company">[Company Name]</div>
+                            <div id="shipping-address">[Street Address]</div>
+                            <div id="shipping-city">[City, ST ZIP]</div>
+                            <div id="shipping-phone">Phone: [Phone]</div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Shipping Details -->
+                <div class="shipping-details">
+                    <div class="shipping-box">
+                        <div class="shipping-label">SUPPLIER</div>
+                        <div id="printSupplier">Net 30</div>
+                    </div>
+                    <div class="shipping-box">
+                        <div class="shipping-label">SHIPPING METHOD</div>
+                        <div id="shipping-method">Standard Delivery</div>
+                    </div>
+                    <div class="shipping-box">
+                        <div class="shipping-label">QUOTATION NO</div>
+                        <div id="printQuotation">ORD-5678</div>
+                    </div>
+                    <div class="shipping-box">
+                        <div class="shipping-label">REQUIRED DATE</div>
+                        <div id="printRequiredDate">25-07-2024</div>
+                    </div>
+                </div>
+
+                <!-- Items Table -->
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">ITEM #</th>
+                            <th style="width: 45%;">DESCRIPTION</th>
+                            <th style="width: 10%;">QTY</th>
+                            <th style="width: 15%;">UNIT PRICE</th>
+                            <th style="width: 15%;">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsContainer">
+                        <!-- Items will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+
+                <!-- Totals Section -->
+                <div class="totals-section">
+                    <div class="totals-table">
+                        <!-- <div class="totals-row">
+                            <div class="totals-label">SUBTOTAL</div>
+                            <div id="subtotal">$0.00</div>
+                        </div> -->
+                        <!--  <div class="totals-row">
+                            <div class="totals-label">DISCOUNT</div>
+                            <div id="discount">$0.00</div>
+                        </div> -->
+                        <div class="grand-total">
+                            <div>TOTAL</div>
+                            <div id="printTotalAmount">$0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="notes-section">
+                    <div class="notes-header">NOTES & TERMS</div>
+                    <div class="notes-content">
+                        <p>Thank you for your business. Payment is due within 30 days of invoice date. Please make checks payable to YourCompany or use the payment methods listed on our website.</p>
+                        <p>For questions concerning this invoice, please contact our accounting department at accounting@yourcompany.com.</p>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="invoice-footer">
+                    <p>If you have any questions about this Purchase Order, please contact</p>
+                    <p>spinfo@bytetechsolution@gmail.com</p>
                 </div>
             </div>
 </body>
