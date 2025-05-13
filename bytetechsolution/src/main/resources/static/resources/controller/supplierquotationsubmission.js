@@ -16,6 +16,8 @@ const refreshSubmissionSupplierQuotationForm = () => {
     currentQuotationRequest = getServiceAjaxRequest("/quotationrequestsubmit/requestbyid?id=" + quotationReqest)
     currentSupplier = getServiceAjaxRequest("/suppliersubmit/supplierbyid?id=" + supplier)
 
+    selectedCategory = currentQuotationRequest.category_id;
+
     textQuotationReqest.value = currentQuotationRequest.quotationrequestcode;
     textSupplier.value = currentSupplier.name;
 
@@ -84,7 +86,7 @@ function updateTotals() {
 }
 
 // Handle form submission
-function supplierSubmitQuotationQuotationHandler() {
+/* function supplierSubmitQuotationQuotationHandler() {
     const quotationItems = [];
 
     document.querySelectorAll('.item-row').forEach(row => {
@@ -98,7 +100,8 @@ function supplierSubmitQuotationQuotationHandler() {
             itemName: requestedItems.find(item => item.itemCode === itemCode).itemName,
             unitPrice: parseFloat(unitPrice),
             quantity: parseInt(quantity),
-            lineTotal: parseFloat(lineTotal)
+            lineTotal: parseFloat(lineTotal),
+            category_id: selectedCategory
         });
     });
 
@@ -120,7 +123,7 @@ function supplierSubmitQuotationQuotationHandler() {
 
     console.log('Quotation Data:', quotationData);
     // Here you would typically send this data to your server
-}
+} */
 
 // Initialize the form
 /* document.addEventListener('DOMContentLoaded', () => {
@@ -163,7 +166,8 @@ const submitSupplierQuotation = () => {
             itemname: currentQuotationRequest.quotation_request_item.find(item => item.itemcode === itemcode).itemname,
             unitprice: parseFloat(unitprice),
             quantity: parseInt(quantity),
-            lineprice: parseFloat(lineprice)
+            lineprice: parseFloat(lineprice),
+            category_id: selectedCategory
         });
     });
 

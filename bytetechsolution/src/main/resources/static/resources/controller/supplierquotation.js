@@ -35,6 +35,8 @@ const refreshSupplierQuotationForm = () => {
 
     supplierQuotationItemList = new Array();
 
+    selectedCategory = new Object();
+
     totalAmount.innerHTML = 'Rs.0.00';
     dateValidDate.disabled = false;
     selectQuotationRequest.disabled = false;
@@ -57,6 +59,8 @@ const refreshSupplierQuotationForm = () => {
         let selectedRequest = JSON.parse(selectQuotationRequest.value)
 
         editableTableHandler(selectedRequest.quotation_request_item)
+
+        selectedCategory = selectedRequest.category_id;
 
         document.querySelectorAll('.unit-price').forEach(input => {
             input.addEventListener('input', updateTotals);
@@ -208,7 +212,8 @@ const submitSupplierQuotation = () => {
             itemname: selectedRequest.quotation_request_item.find(item => item.itemcode === itemcode).itemname,
             unitprice: parseFloat(unitprice),
             quantity: parseInt(quantity),
-            lineprice: parseFloat(lineprice)
+            lineprice: parseFloat(lineprice),
+            category_id: selectedCategory
         });
     });
 

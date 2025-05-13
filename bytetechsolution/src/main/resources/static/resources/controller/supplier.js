@@ -197,8 +197,23 @@ const getSupplierStatus = (ob) => {
     }
 }
 
-//optimize update eka hadala na.meka hadanna one
-const refillInnerSupplierForm = (ob, rowIndex) => {}
+
+const refillInnerSupplierForm = (ob, rowIndex) => {
+    categories = getServiceAjaxRequest('/category/alldata')
+    fillDataIntoSelect(selectInnerCategory, "Please Select Category", categories, "name", ob.category_id.name);
+
+    obBrand = getServiceAjaxRequest("/brand/brandbycategory/" + ob.category_id.name);
+    fillDataIntoSelect(selectInnerBrand, "Please Select Category First", obBrand, "name", ob.brand_id.name);
+
+    selectInnerCategory.addEventListener('change', () => {
+        let category = selectValueHandler(selectInnerCategory);
+
+        brands = getServiceAjaxRequest("/brand/brandbycategory/" + category.name);
+        fillDataIntoSelect(selectInnerBrand, "Please Select Brand", brands, "name");
+    })
+
+
+}
 
 const deleteInnerSupplierForm = (ob, rowIndex) => {
     let userConfirm = confirm(`Are you sure to remove the ${ob.brand_id.name} ${ob.category_id.name} from this supplier?`);
@@ -209,6 +224,35 @@ const deleteInnerSupplierForm = (ob, rowIndex) => {
         refreshSupplierInnerFormAndTable()
         alert("Removed Successfully!")
     }
+}
+
+const innerSupplierProductClear = () => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to reset theProduct Selection? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Reset",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            refreshSupplierInnerFormAndTable();
+
+            Swal.fire({
+                title: "Success!",
+                text: "Product Selection Reset Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+
+
+        }
+    })
 }
 
 const checkInnerItemFormErrors = () => {
@@ -469,54 +513,84 @@ const updateSupplier = () => {
 }
 
 const deleteSupplier = (ob, rowIndex) => {
-    //user conformation
-    let userConform = confirm("Are you sure  to delete following Supplier? " + ob.name);
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to delete following Supplier? "  ${ob.name}`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let deleteServiceResponse;
 
-    //if ok
-    if (userConform) {
-        let deleteServiceResponse;
+            //ajax request fot delete data
+            $.ajax("/supplier", {
+                type: "DELETE",
+                contentType: "application/json",
+                data: JSON.stringify(ob),
+                async: false,
 
-        //ajax request fot delete data
-        $.ajax("/supplier", {
-            type: "DELETE",
-            contentType: "application/json",
-            data: JSON.stringify(ob),
-            async: false,
+                success: function(data) {
+                    deleteServiceResponse = data
+                },
 
-            success: function(data) {
-                deleteServiceResponse = data
-            },
+                error: function(errData) {
+                    deleteServiceResponse = errData;
+                }
+            })
 
-            error: function(errData) {
-                deleteServiceResponse = errData;
+
+            if (deleteServiceResponse == "OK") {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Supplier Deleted Successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    $('#supplierAddModal').modal('hide');
+                    refreshSupplierTable()
+                })
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    html: "Supplier Deletion failed due to the following errors:<br>" + deleteServiceResponse,
+                    icon: "error",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: "#F25454"
+                });
             }
-        })
-
-        //if delete response ok alert the success message and close the modal and refreash item table
-        //so because of that we can see realtime update
-        if (deleteServiceResponse == "OK") {
-            alert("Delete Successfullly");
-            $('#supplierAddModal').modal('hide');
-            refreshSupplierTable()
-        } else {
-            console.log("system has following errors:\n" + deleteServiceResponse);
         }
-    }
+    })
+
+
 }
 
 const buttonModalClose = () => {
-    const closeResponse = confirm('Are you sure to close the modal?')
+    Swal.fire({
+        title: "Are you sure to close the form?",
+        text: "If you close this form, filled data will be removed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Close",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
 
-    //check closeResponse is true or false
-    if (closeResponse) {
-        $('#supplierAddModal').modal('hide');
-
-
-        //formItem is id of form
-        //this will reset all data(refreash)
-        formSupplier.reset();
-        divModifyButton.className = 'd-none';
-
-        refreshSupplierForm();
-    }
+        if (result.isConfirmed) {
+            $('#supplierAddModal').modal('hide');
+            formSupplier.reset();
+            divModifyButton.className = 'd-none';
+            refreshSupplierForm();
+        }
+    });
 }

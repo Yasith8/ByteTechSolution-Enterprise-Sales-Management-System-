@@ -25,14 +25,21 @@ const refreshQuotationRequestTable = () => {
 const refreshQuotationRequestForm = () => {
     quotationrequest = new Object();
 
-    quotationrequest.itemSuppliers = [];
+    supplierWarningContainer.classList.add('elementHide')
+    supplierErrorContainer.classList.remove('elementHide');
+
+    buttonInnerSubmit.classList.remove('elementHide')
+    buttonInnerUpdate.classList.add('elementHide')
 
     quotationrequest.quotation_request_item = new Array();
+    quotationrequest.quotation_request_has_supplier = new Array();
 
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
 
     staticBackdropLabel.textContent = "Add New Quotation Request";
+
+
 
     //load category
     const categories = getServiceAjaxRequest("/category/alldata");
@@ -40,11 +47,16 @@ const refreshQuotationRequestForm = () => {
 
     //pass instruction to user for select category first
     fillDataIntoSelect(selectBrand, "Please Select Category First", [], "name");
-    fillDataIntoSelect(selectAvailableSupplier, "", [], "name");
-    fillDataIntoSelect(selectAvailableSupplier, "", [], "name");
     fillDataIntoSelect(selectItemName, "Please Category and Brand First", [], "name");
 
+    supplierCheckboxContainer.innerHTML = "";
     selectCategory.addEventListener('change', () => {
+        quotationrequest.brand_id = null;
+        removeValidationColor([selectBrand])
+        supplierCheckboxContainer.innerHTML = "";
+        supplierErrorContainer.classList.remove('elementHide');
+        //refreshInnerQuotationRequestItemFormAndTable();
+
 
         const itemCategory = selectValueHandler(selectCategory);
         brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
@@ -54,19 +66,110 @@ const refreshQuotationRequestForm = () => {
 
         selectBrand.addEventListener('change', () => {
             const itemBrand = selectValueHandler(selectBrand);
-            suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
-            fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
+            //refreshInnerQuotationRequestItemFormAndTable();
 
-            //all item list array
-            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
-            const availableItems = innerItemList.filter(innerItem =>
-                !quotationrequest.quotation_request_item.some(quotationItem =>
-                    quotationItem.itemcode === innerItem.itemcode
-                )
-            );
+            const suppliers = getServiceAjaxRequest(`/supplier/suppliergetbybrandcategory?categoryid=${itemCategory.id}&brandid=${itemBrand.id}`);
 
-            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
-        })
+            //BUG THIS NOT WORK TO SHOW
+            console.log(suppliers.length)
+            if (suppliers.length === 0) {
+                console.log("THIS WORK........................")
+                supplierCheckboxContainer.innerHTML = "";
+                supplierErrorContainer.classList.remove('elementHide');
+
+            }
+
+            supplierErrorContainer.classList.add('elementHide')
+
+            console.log("Suppliers for Category", suppliers)
+
+            supplierCheckboxContainer.innerHTML = "";
+
+            suppliers.forEach((supplier, index) => {
+                const colDiv = document.createElement('div');
+                colDiv.className = "col-6";
+
+                const supplierCard = document.createElement('div');
+                supplierCard.className = "supplier-card";
+
+                // Label with left checkbox and text
+                const customCheckBox = document.createElement('label');
+                customCheckBox.className = "custom-checkbox";
+
+                const inputLeftCHK = document.createElement('input');
+                inputLeftCHK.type = "checkbox";
+                inputLeftCHK.className = "left-checkbox";
+
+                const checkSpan = document.createElement('span');
+                checkSpan.className = "checkmark";
+
+                const contentSpan = document.createElement('span');
+                contentSpan.className = "supplier-text";
+                contentSpan.innerText = `${supplier.supplierid} - ${supplier.name}`;
+
+                inputLeftCHK.onchange = function() {
+                    if (this.checked) {
+                        let updatedQRequestSupplier = {
+                            supplier_id: supplier,
+                            status: true
+                        }
+                        quotationrequest.quotation_request_has_supplier.push(updatedQRequestSupplier);
+                    } else {
+                        let extIndex = quotationrequest.quotation_request_has_supplier.map(element => element.supplier_id.id);
+
+                        if (extIndex != -1) {
+                            quotationrequest.quotation_request_has_supplier.splice(extIndex, 1)
+                        }
+                    }
+                }
+
+                // Append left checkbox and text to label
+                customCheckBox.appendChild(inputLeftCHK);
+                customCheckBox.appendChild(checkSpan);
+                customCheckBox.appendChild(contentSpan);
+
+                // Right hidden checkbox
+                //const inputRightCHK = document.createElement('input');
+                //inputRightCHK.type = "checkbox";
+                //inputRightCHK.className = "hidden right-checkbox";
+                //inputRightCHK.id = `rightCheck${index}`;
+                //inputRightCHK.setAttribute("data-bs-toggle", "tooltip");
+                //inputRightCHK.setAttribute("data-bs-placement", "top");
+                //inputRightCHK.setAttribute("data-bs-title", "Checked for the Sending Email to Supplier");
+
+                //SVG icon with onclick event
+                //const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                //svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                //svgIcon.setAttribute("fill", "none");
+                //svgIcon.setAttribute("viewBox", "0 0 24 24");
+                //svgIcon.setAttribute("stroke-width", "1.5");
+                //svgIcon.setAttribute("stroke", "currentColor");
+                //svgIcon.setAttribute("class", "right-svg");
+                //svgIcon.setAttribute("onclick", "toggleRightCheckbox(this)");
+
+                //const svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                //svgPath.setAttribute("stroke-linecap", "round");
+                //svgPath.setAttribute("stroke-linejoin", "round");
+                //svgPath.setAttribute("d", "M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z");
+
+                //svgIcon.appendChild(svgPath);
+
+                // Append everything into supplierCard
+                supplierCard.appendChild(customCheckBox);
+                //supplierCard.appendChild(inputRightCHK);
+                //supplierCard.appendChild(svgIcon);
+
+                // Append supplierCard to colDiv
+                colDiv.appendChild(supplierCard);
+
+                // Append colDiv to container
+                supplierCheckboxContainer.appendChild(colDiv);
+            });
+
+            // (Re)initialize Bootstrap tooltip
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+        });
     });
 
     //load request status
@@ -96,26 +199,30 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
     quotationRequestItem = new Object();
     oldQuotationRequestItem = null;
 
+    numberQuantity.value = null;
+    removeValidationColor([numberQuantity, selectItemName])
 
-    /*  selectCategory.addEventListener('change', () => {
 
-         const itemCategory = selectValueHandler(selectCategory);
 
-         selectBrand.addEventListener('change', () => {
-             const itemBrand = selectValueHandler(selectBrand);
-             console.log(itemBrand, itemCategory);
+    selectCategory.addEventListener('change', () => {
 
-             //all item list array
-             innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
-             const availableItems = innerItemList.filter(innerItem =>
-                 !quotationrequest.quotation_request_item.some(quotationItem =>
-                     quotationItem.itemcode === innerItem.itemcode
-                 )
-             );
+        const itemCategory = selectValueHandler(selectCategory);
 
-             fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
-         })
-     }); */
+        selectBrand.addEventListener('change', () => {
+            const itemBrand = selectValueHandler(selectBrand);
+            console.log(itemBrand, itemCategory);
+
+            //all item list array
+            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+            const availableItems = innerItemList.filter(innerItem =>
+                !quotationrequest.quotation_request_item.some(quotationItem =>
+                    quotationItem.itemcode === innerItem.itemcode
+                )
+            )
+
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
+        })
+    });
 
 
     inputFieldsHandler([selectItemName, numberQuantity], false)
@@ -140,8 +247,16 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
     console.log("QREQUEST", quotationrequest.quotation_request_item);
 
     fillDataIntoInnerTable(innerItemTable, quotationrequest.quotation_request_item, displayPropertyList, refillInnerQuotationRequestForm, deleteInnerQuotationRequestForm)
+        //when the table refresh availble item show
     updateAvailableItems()
 
+}
+
+const toggleRightCheckbox = (svgEl) => {
+    const container = svgEl.closest('.supplier-card');
+    const rightCheckbox = container.querySelector('.right-checkbox');
+    rightCheckbox.checked = !rightCheckbox.checked;
+    svgEl.classList.toggle('checked', rightCheckbox.checked);
 }
 
 const updateAvailableItems = () => {
@@ -149,7 +264,9 @@ const updateAvailableItems = () => {
     const itemCategory = selectValueHandler(selectCategory);
     const itemBrand = selectValueHandler(selectBrand);
 
+    //ajax request to get data aout itrems
     innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+        //fiter items that not in the tagbke
     const availableItems = innerItemList.filter(innerItem =>
         !quotationrequest.quotation_request_item.some(quotationItem =>
             quotationItem.itemcode === innerItem.itemcode
@@ -200,19 +317,48 @@ const innerQuotationRequestProductAdd = () => {
     let formattedQuotationRequestItem = { itemcode, itemname, quantity: quotationRequestItem.quantity }
 
     errors = innerQuotationItemFormErrors();
-    if (errors == "") {
-        let userConfirm = confirm("Are you sure for add this product to Quotation Request?")
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to Assign this product to the Quotation Request?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, assign it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                quotationrequest.quotation_request_item.push(formattedQuotationRequestItem);
+                console.log("Passed Item: ", quotationrequest.quotation_request_item);
 
-        if (userConfirm) {
-            quotationrequest.quotation_request_item.push(formattedQuotationRequestItem);
-            console.log("Passed Item: ", quotationrequest.quotation_request_item);
-            alert("Item Added Successfully");
-            refreshInnerQuotationRequestItemFormAndTable();
-            //quotationRequestInnerItemForm.reset();
-        }
+                Swal.fire({
+                    title: "Success!",
+                    text: "Item assigned to the Quotation request successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    refreshInnerQuotationRequestItemFormAndTable();
+                });
+            }
+        });
     } else {
-        alert("Item add fail because of following errors!\n", errors)
+        Swal.fire({
+            title: "Error!",
+            html: "Item assignment failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
     }
+
+
+
+
 }
 
 
@@ -254,76 +400,6 @@ const getQRequestStatus = (ob) => {
 }
 
 
-const btnAddOneSupplier = () => {
-    let selectedSupplier = JSON.parse(selectAvailableSupplier.value);
-
-    quotationrequest.itemSuppliers.push(selectedSupplier);
-
-    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name");
-
-    let extIdx = suppliers.map((supplier) => supplier.id).indexOf(selectedSupplier.id);
-
-    //check if index is existed
-    if (extIdx != -1) {
-        //remove supplier from avablelist
-        suppliers.splice(extIdx, 1);
-    }
-
-    //refill Available Supplier
-    fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
-}
-
-const btnAddAllSupplier = () => {
-
-    for (const supplier of suppliers) {
-        quotationrequest.itemSuppliers.push(supplier);
-    }
-
-
-    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name");
-
-    suppliers = [];
-    fillDataIntoSelect(selectAvailableSupplier, suppliers, "", "name")
-
-
-}
-
-const btnRemoveOneSupplier = () => {
-    let selectedPullSupplier = JSON.parse(selectSelectedSupplier.value);
-
-
-    suppliers.push(selectedPullSupplier);
-
-
-    fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
-
-    let extIdx = quotationrequest.itemSuppliers.map((supplier) => supplier.id).indexOf(selectedPullSupplier.id);
-
-
-    //check if index is existed
-    if (extIdx != -1) {
-        //remove supplier from avablelist
-        quotationrequest.itemSuppliers.splice(extIdx, 1);
-    }
-
-    //refill Available Supplier
-
-    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name");
-}
-
-
-const btnRemoveAllSupplier = () => {
-    for (const itemSupplier of quotationrequest.itemSuppliers) {
-        suppliers.push(itemSupplier)
-    }
-
-    fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name")
-
-    quotationrequest.itemSuppliers = [];
-    fillDataIntoSelect(selectSelectedSupplier, "", quotationrequest.itemSuppliers, "name")
-
-}
-
 const refillQuotationRequestForm = (ob, rowIndex) => {
     $('#qRequestAddModal').modal('show');
     removeValidationColor([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate])
@@ -362,7 +438,7 @@ const refillQuotationRequestForm = (ob, rowIndex) => {
     //fillDataIntoSelect(selectAvailableSupplier, "Can't Update a Request. Create a New One", [], "name");
 
     selectCategory.addEventListener('change', () => {
-        const itemCategory = selectValueHandler(selectCategory);
+        const itemCategory = selectValueHandler(selectCategory); //selectCategory.value
         brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
         fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationrequest.brand_id.name);
 
@@ -437,6 +513,7 @@ const checkQuotationRequestInputErrors = () => {
 }
 
 const QuotationRequestHandler = () => {
+    console.log("Supplier Details", quotationrequest.quotation_request_has_supplier)
     console.log(quotationrequest);
     let errors = checkQuotationRequestInputErrors();
 
@@ -472,7 +549,7 @@ const QuotationRequestHandler = () => {
                 formQuotationRequest.reset();
                 //refreash Item form
                 refreshQuotationRequestForm();
-                //refreash Item table
+                //refreash Item table 
                 refreshQuotationRequestTable()
             } else {
                 alert("Failed to send Quotation Request\n" + postServiceResponce);

@@ -28,10 +28,9 @@ const refreshPurchaseRequestForm = () => {
     oldPrequest = null;
 
     buttonSubmit.disabled = false;
-    buttonSubmit.classList.add('modal-btn-submit');
-
     buttonUpdate.disabled = true;
-    buttonUpdate.classList.remove('modal-btn-update');
+    buttonSubmit.classList.remove('elementHide')
+    buttonUpdate.classList.add('elementHide')
 
     staticBackdropLabel.textContent = "Add New Purchase Request";
 
@@ -47,6 +46,12 @@ const refreshPurchaseRequestForm = () => {
     supplierQuotations = getServiceAjaxRequest("/supplierquotation/quotationbyvaliddate")
         //fillMultipleItemOfDataIntoSingleSelect(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name");
     fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name");
+
+    selectSupplierQuotation.addEventListener('change', () => {
+        console.log(selectSupplierQuotation.value)
+        prequest.purchase_request_item = [];
+        refreshPurchaseRequestHasItemInnerFormAndTable()
+    })
 
 
 
@@ -93,35 +98,70 @@ const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
     decimalLineTotal.disabled = true;
     decimalItemPrice.disabled = true;
 
+    //if supplier quotation eka fill nam
+    if (selectSupplierQuotation.value == "Select Supplier Quotation") {
+        console.log("EMPTY");
+        //auto add item code when item select
+        fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Purchase Request First", [], "", "");
+        selectSupplierQuotation.addEventListener('change', () => {
+            prequest.selectItemName_id = null;
+            removeValidationColor([selectItemName]);
+            const selectedSupplierQuotation = selectValueHandler(selectSupplierQuotation);
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", selectedSupplierQuotation.quotation_item, "itemcode", "itemname");
+            console.log("pr some array", selectedSupplierQuotation.quotation_item)
 
-    //auto add item code when item select
-    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", [], "", "");
-    selectSupplierQuotation.addEventListener('change', () => {
-        const selectedSupplierQuotation = selectValueHandler(selectSupplierQuotation);
-        fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", selectedSupplierQuotation.quotation_item, "itemcode", "itemname");
-
-        selectItemName.addEventListener('change', () => {
-            const selectedItemName = selectValueHandler(selectItemName);
-            //contentValidator(selectedItemName.itemname, '', 'purchaseRequestItem', 'itemname');
-            //contentValidator(selectedItemName.itemcode, '', 'purchaseRequestItem', 'itemcode');
-            purchaseRequestItem.itemname = selectedItemName.itemname
-            purchaseRequestItem.itemcode = selectedItemName.itemcode
-
-            numberQuantity.value = selectedItemName.quantity;
-            decimalItemPrice.value = selectedItemName.unitprice;
-            textValidator(numberQuantity, '^(100|[1-9][0-9]?)$', 'purchaseRequestItem', 'quantity');
-            textValidator(decimalItemPrice, '', 'purchaseRequestItem', 'unitprice');
-
-
-            decimalLineTotal.value = selectedItemName.lineprice
-            numberQuantity.addEventListener('input', () => {
-                const newQuantity = parseFloat(numberQuantity.value);
-                decimalLineTotal.value = newQuantity * selectedItemName.unitprice
-            })
-            textValidator(decimalLineTotal, '', 'purchaseRequestItem', 'linetotal');
         })
 
+    } else {
+        console.log("NOT EMPTY");
+
+        const selectedSupplierQuotation = selectValueHandler(selectSupplierQuotation);
+        console.log("quotation item", selectedSupplierQuotation);
+        console.log("quotation item main array", prequest.purchase_request_item);
+
+        // Extract all itemcodes from the purchase request items
+        const prItemCodes = prequest.purchase_request_item.map(item => item.itemcode);
+
+        // Filter out quotation items that already exist in the purchase request items
+        const remainPRItem = selectedSupplierQuotation.quotation_item.filter(
+            (qItem) => !prItemCodes.includes(qItem.itemcode)
+        );
+
+        console.log("Filtered quotation items not in purchase request:", remainPRItem);
+
+        decimalItemPrice.value = null;
+        decimalLineTotal.value = null;
+        numberQuantity.value = null;
+
+
+        fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", remainPRItem, "itemcode", "itemname");
+        selectSupplierQuotation.addEventListener('change', () => {
+            prequest.selectItemName_id = null;
+            removeValidationColor([selectItemName]);
+            console.log("pr some array", selectedSupplierQuotation.quotation_item)
+        })
+    }
+
+
+    selectItemName.addEventListener('change', () => {
+        const selectedItemName = selectValueHandler(selectItemName);
+        purchaseRequestItem.itemname = selectedItemName.itemname
+        purchaseRequestItem.itemcode = selectedItemName.itemcode
+
+        numberQuantity.value = selectedItemName.quantity;
+        decimalItemPrice.value = selectedItemName.unitprice;
+        textValidator(numberQuantity, '^(100|[1-9][0-9]?)$', 'purchaseRequestItem', 'quantity');
+        textValidator(decimalItemPrice, '', 'purchaseRequestItem', 'unitprice');
+
+
+        decimalLineTotal.value = selectedItemName.lineprice
+        numberQuantity.addEventListener('input', () => {
+            const newQuantity = parseFloat(numberQuantity.value);
+            decimalLineTotal.value = newQuantity * selectedItemName.unitprice
+        })
+        textValidator(decimalLineTotal, '', 'purchaseRequestItem', 'linetotal');
     })
+
 
 
     console.log(purchaseRequestItem);
@@ -138,6 +178,7 @@ const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
     fillDataIntoInnerTable(tableInnerPrequestItem, prequest.purchase_request_item, displayPropertyList, refillInnerPurchaseItemForm, deleteInnerPurchaseItemForm)
 
 }
+
 
 const getSupplierName = (ob) => {
     return ob.supplier_id.name;
@@ -169,10 +210,9 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
     staticBackdropLabel.textContent = ob.requestcode;
 
     buttonSubmit.disabled = true;
-    buttonSubmit.classList.remove('modal-btn-submit');
-
     buttonUpdate.disabled = false;
-    buttonUpdate.classList.add('modal-btn-update');
+    buttonSubmit.classList.add('elementHide')
+    buttonUpdate.classList.remove('elementHide')
 
     prequest = JSON.parse(JSON.stringify(ob));
     oldPrequest = ob;
@@ -230,8 +270,13 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
 }
 
 const refillInnerPurchaseItemForm = (ob, rowIndex) => {
-    innerEditButton.disabled = true;
-    innerDeleteButton.disabled = true;
+    document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
+        btn.classList.add('custom-disabled');
+    });
+
+    document.querySelectorAll('.inner-edit-button').forEach((btn) => {
+        btn.classList.add('custom-disabled');
+    });
 
     buttonInnerSubmit.classList.add('elementHide')
     buttonInnerUpdate.classList.remove('elementHide')
@@ -353,7 +398,14 @@ const innerPurchaseRequestItemAdd = () => {
                     allowEscapeKey: false
                 }).then(() => {
                     refreshPurchaseRequestHasItemInnerFormAndTable();
-                    purchaseItemForm.reset();
+                    //purchaseItemForm.reset();
+                    document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
+                        btn.classList.remove('custom-disabled');
+                    });
+
+                    document.querySelectorAll('.inner-edit-button').forEach((btn) => {
+                        btn.classList.remove('custom-disabled');
+                    });
                 });
             }
         });
@@ -413,7 +465,13 @@ const innerPurchaseRequestItemUpdate = () => {
                         allowEscapeKey: false
                     }).then(() => {
                         refreshPurchaseRequestHasItemInnerFormAndTable();
-                        purchaseItemForm.reset();
+                        document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
+                            btn.classList.remove('custom-disabled');
+                        });
+
+                        document.querySelectorAll('.inner-edit-button').forEach((btn) => {
+                            btn.classList.remove('custom-disabled');
+                        });
                     });
 
                 } else {
@@ -548,11 +606,8 @@ const submitPrequest = () => {
 
 const checkPrequstUpdates = () => {
     updates = "";
-
-    if (prequest.supplier_quotation_id != oldPrequest.supplier_quotation_id) {
-        updates = updates + "Supplier Quotation is Changed <br>";
-    }
-    if (prequest.purchasestatus_id != oldPrequest.purchasestatus_id) {
+    if (prequest.purchasestatus_id.id != oldPrequest.purchasestatus_id.id) {
+        console.log("new:---", prequest.purchasestatus_id, "--old---", oldPrequest.purchasestatus_id)
         updates = updates + "Purchase Status is Changed <br>";
     }
     if (prequest.totalamount != oldPrequest.totalamount) {
@@ -586,6 +641,7 @@ const updatePrequest = () => {
         let updates = checkPrequstUpdates();
 
         //check there is no updates or any updations
+        console.log("any updates", updates)
         if (updates == "") {
             Swal.fire({
                 title: "Nothing Updated",
@@ -753,4 +809,108 @@ const buttonModalClose = () => {
             refreshPurchaseRequestForm();
         }
     });
+}
+
+const innerClearButton = () => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to refresh the Item Form? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Refresh",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            refreshPurchaseRequestHasItemInnerFormAndTable();
+
+            Swal.fire({
+                title: "Success!",
+                text: "Item Form Refreshed Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+
+
+        }
+    })
+}
+
+const refreshPrequest = () => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to refresh the Purchase Request Form? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Refresh",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            refreshPurchaseRequestHasItemInnerFormAndTable();
+            refreshPurchaseRequestForm();
+
+            Swal.fire({
+                title: "Success!",
+                text: "Item Form Refreshed Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+
+
+        }
+    })
+}
+
+const printPrequestDetails = (ob, rowIndex) => {
+
+    // Open a new tab
+    const newTab = window.open();
+
+    printPONO.textContent = ob.requestcode;
+    printPODate.textContent = ob.addeddate;
+    printSupplier.textContent = ob.supplier_id.name;
+    printQuotation.textContent = ob.supplier_quotation_id.quotationid;
+    printRequiredDate.textContent = ob.requireddate;
+    printTotalAmount.textContent = ob.totalamount;
+
+
+
+    ob.purchase_request_item.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+        <td>${item.itemcode}</td>
+        <td>${item.itemname}</td>
+        <td>${item.quantity}</td>
+        <td>${item.unitprice.toFixed(2)}</td>
+        <td>${item.linetotal}</td>
+      `;
+        itemsContainer.appendChild(row);
+    });
+
+    // Write content to the new tab
+    newTab.document.write(
+        '<html><head>' +
+        '<link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">' +
+        '<link rel="stylesheet" href="resources/style/prequest.css">' +
+        '<link rel="stylesheet" href="resources/style/common.css">' +
+        '</head><body>' +
+        printPurchaseRequestDetails.outerHTML +
+        '<script>' +
+        'document.getElementById("printPurchaseRequestDetails").removeAttribute("style");' +
+        'window.onload = function() { window.print(); };' +
+        '</script>' +
+        '</body></html>'
+    );
+
+    // Close the document to finish loading
+    newTab.document.close();
 }

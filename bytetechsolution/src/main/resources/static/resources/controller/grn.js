@@ -30,17 +30,46 @@ const refreshGrnForm = () => {
 
     grn = new Object();
     serialNumbersVisible = false;
-    serialNumbersData = new Array();
+    grn.grn_item = new Array();
+    grn.serial_no_list = new Array();
 
+
+
+    //gatta all the pr that required date not expired
     purchaseRequests = getServiceAjaxRequest("/purchaserequest/prequestbyrequireddate")
     fillMultipleItemOfDataOnSignleSelectRecursion(selectPurchaseRequest, "Select Puchase Request", purchaseRequests, "requestcode", "supplier_id.name");
 
+    //grn eka
     grnstatus = getServiceAjaxRequest("/grnstatus/alldata")
     fillDataIntoSelect(selectGRNStatus, "Select GRN Status", grnstatus, "name")
 
 
-    checkAndToggleButton()
-    numberQuantity.addEventListener('keyup', () => {
+    //auto generate karanawa total amount eka
+    decimalTotalAmount.disabled = true;
+    let totalAmount = 0
+    grn.grn_item.forEach(item => {
+        totalAmount += item.linetotal
+    });
+    decimalTotalAmount.value = totalAmount;
+    textValidator(decimalTotalAmount, '', 'grn', 'totalamount')
+
+    decimalTotalAmount.add
+
+
+
+
+
+    refeshInnerGrnFormAndTable();
+}
+
+const refeshInnerGrnFormAndTable = () => {
+    //form
+
+    grnItem = new Object();
+    oldGrnItem = null;
+    serialNumbersData = new Array();
+
+    numberQuantity.addEventListener('input', () => {
         const newQty = parseInt(numberQuantity.value);
         console.log(newQty)
 
@@ -56,45 +85,60 @@ const refreshGrnForm = () => {
         updateSerialNumberInputs();
     });
 
-    selectItemName.addEventListener('input', () => {
-        updateItemNameDisplay()
-    });
-
-    refeshInnerGrnFormAndTable();
-}
-
-const refeshInnerGrnFormAndTable = () => {
-    //form
-
-    grnItem = new Object();
-    oldGrnItem = null;
-
-    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Purchase Request First", [], "itemcode", "itemname")
+    fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Purchase Request First", [], "itemcode", "itemname")
     selectPurchaseRequest.addEventListener('change', () => {
+        //grn.selectItemName_id = null;
+        removeValidationColor([selectPRItemName]);
         const purchaseRequestedItem = selectValueHandler(selectPurchaseRequest);
         console.log("grn", purchaseRequestedItem)
-        fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", purchaseRequestedItem.purchase_request_item, "itemcode", "itemname")
+        fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", purchaseRequestedItem.purchase_request_item, "itemcode", "itemname")
+        console.log("selected   Irem name", purchaseRequestedItem.purchase_request_item)
 
     })
-    selectItemName.addEventListener('change', () => {
-        const selectedItemName = selectValueHandler(selectItemName);
+
+    selectPRItemName.addEventListener('change', () => {
+        const selectedItemName = selectValueHandler(selectPRItemName);
         grnItem.itemname = selectedItemName.itemname
         grnItem.itemcode = selectedItemName.itemcode
 
         numberQuantity.value = selectedItemName.quantity;
-        decimalItemPrice.value = selectedItemName.unitprice;
-        textValidator(numberQuantity, '^(100|[1-9][0-9]?)$', 'grnItem', 'quantity');
-        textValidator(decimalItemPrice, '', 'grnItems', 'unitprice');
+        const maxQty = selectedItemName.quantity;
+        const qtyPattern = generateRangeRegex(maxQty);
+        console.log(qtyPattern.source)
+        textValidator(numberQuantity, qtyPattern.source, 'grnItem', 'quantity');
+
+        decimalPurchasePrice.disabled = true;
+        decimalPurchasePrice.value = selectedItemName.unitprice;
+        textValidator(decimalPurchasePrice, '', 'grnItem', 'purchaseprice');
 
 
-        decimalLineTotal.value = selectedItemName.lineprice
-        numberQuantity.addEventListener('keyup', () => {
-            const newQuantity = numberQuantity.value;
-            decimalLineTotal.value = newQuantity * selectedItemName.unitprice
-        })
+        decimalLinePrice.value = selectedItemName.linetotal
+        decimalLinePrice.disabled = true;
         textValidator(decimalPurchasePrice, '', 'grnItem', 'lineprice');
+        numberQuantity.addEventListener('keyup', () => {
+            grnItem.quantity = null;
+            numberQuantity.classList.remove('is-valid')
+            const newQuantity = numberQuantity.value;
+            //code eka validate karanawa pr eke quantity ekata wada ba kiyala
+            if (newQuantity > selectedItemName.quantity || newQuantity < 1) {
+                numberQuantity.classList.remove('is-valid')
+                numberQuantity.classList.add('is-invalid')
+                decimalLinePrice.value = 0
+                toggleSerialBtn.disabled = true;
+
+            } else {
+                numberQuantity.classList.remove('is-invalid')
+                numberQuantity.classList.add('is-valid');
+                decimalLinePrice.value = newQuantity * selectedItemName.unitprice
+                textValidator(decimalLinePrice, '', 'grnItem', 'lineprice');
+                toggleSerialBtn.disabled = false;
+                grnItem.quantity = newQuantity;
+
+            }
+        })
 
     });
+
     //table
 }
 
@@ -119,14 +163,9 @@ const toggleSerialNoContent = () => {
 
     if (serialNumbersVisible) {
         updateSerialNumberInputs();
-        updateItemNameDisplay();
     }
 }
 
-const updateItemNameDisplay = () => {
-    const name = selectItemName.value.trim() || 'Item';
-    selectItemName.textContent = name;
-}
 
 const updateSerialNumberInputs = () => {
     serialNumbersContainer.innerHTML = '';
@@ -164,4 +203,23 @@ const getPurchaseRequest = (ob) => {
 
 const getGRNStatus = (ob) => {
 
+}
+
+const checkInnerItemFormErrors = () => {
+    let errors = ""
+
+    if (grnItem.itemname_id == null) {
+        errors += "Item selection is required.\n"
+    }
+    if (grnItem.quantity == null) {
+        errors += "Quantity is required.\n"
+    }
+
+    return errors;
+}
+
+const innerSupplierProductAdd = () => {
+    console.log("GRN", grn)
+    console.log("GRN ITEM", grnItem)
+    console.log("SERIAL NO LIST", serialNumbersData)
 }
