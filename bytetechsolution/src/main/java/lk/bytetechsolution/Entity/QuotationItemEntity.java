@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -48,6 +49,10 @@ public class QuotationItemEntity {
     @NotNull
     @Column(name = "lineprice")
     private BigDecimal lineprice;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    private CategoryEntity category_id;
 
     @ManyToOne
     @JoinColumn(name = "supplier_quotation_id",referencedColumnName = "id")

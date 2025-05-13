@@ -1,10 +1,16 @@
 package lk.bytetechsolution.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,12 +22,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor//NoArgsConstructor generates a no-argument constructor for a class
 public class QuotationRequestHasSupplierEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //set Auto Increment
+    @Column(name = "id",unique = true)
+    private int id;
+
     @ManyToOne
     @JoinColumn(name="quotation_request_id;",referencedColumnName = "id")
     private QuotationRequestEntity quotation_request_id;
 
-    @Id
     @ManyToOne
     @JoinColumn(name="supplier_id;",referencedColumnName = "id")
     private SupplierEntity supplier_id;
+
+    @NotNull
+    @Column(name = "status")
+    private Boolean status;
+
+    @ManyToOne
+    @JoinColumn(name = "supplier_quotation_id",referencedColumnName = "id")
+    @JsonIgnore
+    private SupplierQuotationEntity supplier_quotation_id;
 }

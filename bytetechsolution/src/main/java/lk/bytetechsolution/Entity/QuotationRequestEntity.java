@@ -79,4 +79,7 @@ public class QuotationRequestEntity {
 
     @OneToMany(mappedBy = "quotation_request_id",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<QuotationRequestItemEntitiy> quotation_request_item;
+
+    @OneToMany(mappedBy = "quotation_request_id",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<QuotationRequestHasSupplierEntity> quotation_request_has_supplier;
 }
