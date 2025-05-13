@@ -60,26 +60,6 @@
     color: black;
 }
 
-.inner-update-btn {
-    background-color: #00ff04;
-    color: white;
-}
-
-.inner-add-btn {
-    background-color: #00ff04;
-    color: white;
-}
-
-.inner-add-btn:hover {
-    color: white;
-    background-color: #00ff5e;
-}
-
-.inner-update-btn:hover {
-    color: white;
-    background-color: #00ff5e;
-}
-
 
 /* Inner Form Button end */
 
@@ -162,3 +142,324 @@
 
 
 /* ////////////////////inner form styles */
+
+
+/*/////////////////////////////////////////////PR PRINTING FEATURE////////////////////////////////////////////////////////////////////// */
+
+
+/* Invoice container */
+
+.invoice-container {
+    margin: 0 auto;
+    padding: 30px;
+    position: relative;
+    background-color: white;
+}
+
+
+/* Header section */
+
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.company-info {
+    max-width: 50%;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.company-name {
+    color: #00a651;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.company-details {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.invoice-title {
+    text-align: right;
+    color: #103D45;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.invoice-details {
+    text-align: right;
+    font-size: 14px;
+}
+
+.invoice-details div {
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.invoice-details span:first-child {
+    font-weight: bold;
+    width: 100px;
+    text-align: left;
+    margin-right: 10px;
+}
+
+
+/* Client and billing info */
+
+.billing-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.info-box {
+    width: 48%;
+}
+
+.info-header {
+    background-color: #0D3239;
+    color: white;
+    padding: 8px 15px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.info-content {
+    padding: 0 15px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* Shipping details */
+
+.shipping-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.shipping-box {
+    flex: 1;
+    padding: 0 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.shipping-box:not(:last-child) {
+    border-right: 1px solid #ddd;
+}
+
+.shipping-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #00a651;
+}
+
+
+/* Items table */
+
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.items-table th {
+    background-color: #0D3239;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+.items-table th:last-child,
+.items-table td:last-child {
+    text-align: right;
+}
+
+.items-table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.items-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+
+/* Totals section */
+
+.totals-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+}
+
+.totals-table {
+    width: 300px;
+}
+
+.totals-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.totals-label {
+    font-weight: bold;
+}
+
+.grand-total {
+    background-color: #98FB98;
+    padding: 10px;
+    font-weight: bold;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* Notes section */
+
+.notes-section {
+    margin-bottom: 30px;
+}
+
+.notes-header {
+    background-color: #0D3239;
+    color: white;
+    padding: 8px 15px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.notes-content {
+    padding: 0 15px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* Footer */
+
+.invoice-footer {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+
+
+/* printing section */
+
+.document {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #103D45;
+}
+
+.company-logo {
+    margin-bottom: 5px;
+    width: 300px;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin: 10px 0;
+    color: #103D45;
+}
+
+
+
+.info-group {
+    margin-bottom: 20px;
+}
+
+.info-title {
+    font-size: 1.3rem;
+    color: #B3C41C;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.info-label {
+    font-weight: bold;
+    width: 200px;
+    color: #555;
+}
+
+.info-value {
+    flex: 1;
+}
+
+.footer {
+    margin-top: 40px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    text-align: center;
+}
+
+.signature-area {
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.signature-box {
+    width: 45%;
+}
+
+.signature-line {
+    border-top: 1px solid #555;
+    margin-top: 40px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+
+/* Print-specific styles */
+
+@media print {
+    body {
+        background: none;
+    }
+    .document {
+        box-shadow: none;
+        border: none;
+        margin: 0;
+        padding: 15px;
+    }
+    /* Ensure page breaks don't happen in the middle of sections */
+    .info-group {
+        page-break-inside: avoid;
+    }
+}

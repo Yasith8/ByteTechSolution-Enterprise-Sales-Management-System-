@@ -80,6 +80,18 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
     const tableBody = tableId.children[1];
     tableBody.innerHTML = '';
 
+    if (dataList.length == 0) {
+        const tr = document.createElement('tr');
+        const tdEmpty = document.createElement('td');
+        tdEmpty.innerText = "There is No Data in this Table.";
+        tdEmpty.style.textAlign = "center";
+        const columnCount = displayPropertyList.length + 2;
+        tdEmpty.colSpan = columnCount;
+        tr.appendChild(tdEmpty);
+        tableBody.appendChild(tr);
+
+    }
+
     dataList.forEach((element, index) => {
         const tr = document.createElement('tr');
 
@@ -117,7 +129,6 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
 
         const editButton = document.createElement('button');
         editButton.className = 'btn btn-edit fw-bold inner-edit-button';
-        editButton.id = "innerEditButton";
         editButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i>';
         editButton.type = "button";
 
@@ -127,8 +138,7 @@ const fillDataIntoInnerTable = (tableId, dataList, displayPropertyList, editButt
         }
 
         const deleteButton = document.createElement('button');
-        deleteButton.className = 'btn btn-outline-danger fw-bold ms-1 me-1';
-        deleteButton.id = "innerDeleteButton";
+        deleteButton.className = 'btn btn-outline-danger fw-bold ms-1 me-1 inner-delete-btn';
         deleteButton.innerHTML = '<i class="fa-regular fa-circle-xmark"></i>';
         deleteButton.type = "button";
 

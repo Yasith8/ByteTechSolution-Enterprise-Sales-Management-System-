@@ -52,6 +52,15 @@ body {
     display: none;
 }
 
+.custom-disabled {
+    /* Prevents clicks */
+    pointer-events: none;
+    /* Makes it look disabled */
+    opacity: 0.5;
+    /* Shows the disabled cursor */
+    cursor: not-allowed;
+}
+
 
 /* ////////////////////////// SOME IMPORTANT ONES END //////////////////////////// */
 
@@ -70,9 +79,9 @@ body {
 }
 
 .modal-btn-update {
-    background-color: #008080;
+    background-color: #103D45;
     color: white;
-    border: 2px solid #008080;
+    border: 2px solid #103D45;
 }
 
 .model-btn-disable {
@@ -105,9 +114,9 @@ body {
 }
 
 .modal-btn-update:hover {
-    background-color: #00b7b7;
+    background-color: #0D3239;
     color: white;
-    border: 2px solid #00b7b7;
+    border: 2px solid #0D3239;
 }
 
 .modal-btn-clear:hover {
@@ -605,4 +614,35 @@ body {
     font-size: 14px;
     color: #777;
     margin-top: 5px;
+}
+
+
+/* inner common model button */
+
+.inner-model-button-div {
+    display: flex;
+    justify-content: end;
+}
+
+
+/* inner form button */
+
+.inner-update-btn {
+    background-color: #008080;
+    color: white;
+}
+
+.inner-add-btn {
+    background-color: #008080;
+    color: white;
+}
+
+.inner-add-btn:hover {
+    color: white;
+    background-color: #00b7b7;
+}
+
+.inner-update-btn:hover {
+    color: white;
+    background-color: #00b7b7;
 }

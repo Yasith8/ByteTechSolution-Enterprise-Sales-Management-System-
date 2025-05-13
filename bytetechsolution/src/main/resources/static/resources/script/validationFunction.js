@@ -119,3 +119,23 @@ const validateFileField = (fieldId, object, photo, photoname, oldObject, display
         return;
     }
 }
+
+const generateRangeRegex = (max) => {
+    //0 or ota wada adu unoth
+    //^(?!.*)$ - negetive lockhead
+    //.* mean not contain any character 
+    //not validate the reqex -? not validate - abc,"""," "","123" fail bcuz ot wada adu nisa 
+    if (max <= 0) return /^(?!.*)$/;
+    if (max === 1) return /^1$/; //max number eka 1 unoth 
+
+    //1ta wada wadi unoth loop karala pattern eka hadaganna yanawa
+    //pattern string eka start kala
+    let pattern = '^(';
+    //loop kala anthima number eka wenakan
+    //if max=5 ---> meka yanawa ^(1|2|3|4|5)$
+    for (let i = 1; i <= max; i++) {
+        //i eka max number nam finish karanwa finish string eka dala nattam aye loop
+        pattern += i + (i === max ? ')$' : '|');
+    }
+    return new RegExp(pattern);
+}

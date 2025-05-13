@@ -195,3 +195,134 @@
 
 
 /* fix issue */
+
+.supplier-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px;
+    padding-inline: 20px;
+    border: 1px solid #103d4541;
+    border-radius: 10px;
+    margin-right: 1px;
+}
+
+.supplier-card:hover {
+    background-color: #98fb98;
+}
+
+.supplier-text {
+    margin: 0 !important;
+    font-weight: 600;
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-checkbox input {
+    display: none;
+}
+
+.custom-checkbox .checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #103d45;
+    border-radius: 4px;
+    position: relative;
+}
+
+.custom-checkbox input:checked+.checkmark {
+    background-color: green;
+    border-color: green;
+}
+
+.custom-checkbox input:checked+.checkmark::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.hidden {
+    display: none;
+}
+
+.right-svg {
+    width: 24px;
+    height: 24px;
+    stroke: gray;
+    cursor: pointer;
+    transition: stroke 0.2s;
+}
+
+.right-svg.checked {
+    stroke: white;
+    background-color: #103d45;
+    border-radius: 50px;
+}
+
+.warn-alert {
+    height: 25px;
+}
+
+.warning-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.warn-text {
+    margin-bottom: 0 !important;
+    font-size: 15px;
+}
+
+.error-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.error-text {
+    margin-bottom: 0 !important;
+    font-size: 15px;
+}
+
+
+/* ////////////////////inner form styles */
+
+#innerItemTable {
+    border: 1px solid #103D45;
+    border-radius: 5px;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#innerItemTable thead {
+    background-color: #00B69B;
+    color: white;
+}
+
+#innerItemTable thead tr th:first-child {
+    border-top-left-radius: 5px;
+}
+
+#innerItemTable thead tr th:last-child {
+    border-top-right-radius: 5px;
+}
+
+#buttonInnerSubmit {
+    margin: -32px;
+    ;
+}
