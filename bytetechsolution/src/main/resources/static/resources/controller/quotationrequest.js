@@ -39,6 +39,8 @@ const refreshQuotationRequestForm = () => {
 
     staticBackdropLabel.textContent = "Add New Quotation Request";
 
+    selectCategory.disabled = false;
+    selectBrand.disabled = false;
 
 
     //load category
@@ -77,98 +79,105 @@ const refreshQuotationRequestForm = () => {
                 supplierCheckboxContainer.innerHTML = "";
                 supplierErrorContainer.classList.remove('elementHide');
 
-            }
+            } else {
+                supplierErrorContainer.classList.add('elementHide')
 
-            supplierErrorContainer.classList.add('elementHide')
+                console.log("Suppliers for Category", suppliers)
 
-            console.log("Suppliers for Category", suppliers)
+                supplierCheckboxContainer.innerHTML = "";
 
-            supplierCheckboxContainer.innerHTML = "";
+                suppliers.forEach((supplier, index) => {
+                    const colDiv = document.createElement('div');
+                    colDiv.className = "col-6";
 
-            suppliers.forEach((supplier, index) => {
-                const colDiv = document.createElement('div');
-                colDiv.className = "col-6";
+                    const supplierCard = document.createElement('div');
+                    supplierCard.className = "supplier-card";
 
-                const supplierCard = document.createElement('div');
-                supplierCard.className = "supplier-card";
+                    // Label with left checkbox and text
+                    const customCheckBox = document.createElement('label');
+                    customCheckBox.className = "custom-checkbox";
 
-                // Label with left checkbox and text
-                const customCheckBox = document.createElement('label');
-                customCheckBox.className = "custom-checkbox";
+                    const inputLeftCHK = document.createElement('input');
+                    inputLeftCHK.type = "checkbox";
+                    inputLeftCHK.className = "left-checkbox";
 
-                const inputLeftCHK = document.createElement('input');
-                inputLeftCHK.type = "checkbox";
-                inputLeftCHK.className = "left-checkbox";
+                    const checkSpan = document.createElement('span');
+                    checkSpan.className = "checkmark";
 
-                const checkSpan = document.createElement('span');
-                checkSpan.className = "checkmark";
+                    const contentSpan = document.createElement('span');
+                    contentSpan.className = "supplier-text";
+                    contentSpan.innerText = `${supplier.supplierid} - ${supplier.name}`;
 
-                const contentSpan = document.createElement('span');
-                contentSpan.className = "supplier-text";
-                contentSpan.innerText = `${supplier.supplierid} - ${supplier.name}`;
+                    inputLeftCHK.onchange = function() {
+                        if (this.checked) {
+                            let updatedQRequestSupplier = {
+                                supplier_id: supplier,
+                                status: true
+                            }
+                            quotationrequest.quotation_request_has_supplier.push(updatedQRequestSupplier);
+                        } else {
+                            let extIndex = quotationrequest.quotation_request_has_supplier.map(element => element.supplier_id.id);
 
-                inputLeftCHK.onchange = function() {
-                    if (this.checked) {
-                        let updatedQRequestSupplier = {
-                            supplier_id: supplier,
-                            status: true
-                        }
-                        quotationrequest.quotation_request_has_supplier.push(updatedQRequestSupplier);
-                    } else {
-                        let extIndex = quotationrequest.quotation_request_has_supplier.map(element => element.supplier_id.id);
-
-                        if (extIndex != -1) {
-                            quotationrequest.quotation_request_has_supplier.splice(extIndex, 1)
+                            if (extIndex != -1) {
+                                quotationrequest.quotation_request_has_supplier.splice(extIndex, 1)
+                            }
                         }
                     }
-                }
 
-                // Append left checkbox and text to label
-                customCheckBox.appendChild(inputLeftCHK);
-                customCheckBox.appendChild(checkSpan);
-                customCheckBox.appendChild(contentSpan);
+                    // Append left checkbox and text to label
+                    customCheckBox.appendChild(inputLeftCHK);
+                    customCheckBox.appendChild(checkSpan);
+                    customCheckBox.appendChild(contentSpan);
 
-                // Right hidden checkbox
-                //const inputRightCHK = document.createElement('input');
-                //inputRightCHK.type = "checkbox";
-                //inputRightCHK.className = "hidden right-checkbox";
-                //inputRightCHK.id = `rightCheck${index}`;
-                //inputRightCHK.setAttribute("data-bs-toggle", "tooltip");
-                //inputRightCHK.setAttribute("data-bs-placement", "top");
-                //inputRightCHK.setAttribute("data-bs-title", "Checked for the Sending Email to Supplier");
+                    // Right hidden checkbox
+                    //const inputRightCHK = document.createElement('input');
+                    //inputRightCHK.type = "checkbox";
+                    //inputRightCHK.className = "hidden right-checkbox";
+                    //inputRightCHK.id = `rightCheck${index}`;
+                    //inputRightCHK.setAttribute("data-bs-toggle", "tooltip");
+                    //inputRightCHK.setAttribute("data-bs-placement", "top");
+                    //inputRightCHK.setAttribute("data-bs-title", "Checked for the Sending Email to Supplier");
 
-                //SVG icon with onclick event
-                //const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                //svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-                //svgIcon.setAttribute("fill", "none");
-                //svgIcon.setAttribute("viewBox", "0 0 24 24");
-                //svgIcon.setAttribute("stroke-width", "1.5");
-                //svgIcon.setAttribute("stroke", "currentColor");
-                //svgIcon.setAttribute("class", "right-svg");
-                //svgIcon.setAttribute("onclick", "toggleRightCheckbox(this)");
+                    //SVG icon with onclick event
+                    //const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    //svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                    //svgIcon.setAttribute("fill", "none");
+                    //svgIcon.setAttribute("viewBox", "0 0 24 24");
+                    //svgIcon.setAttribute("stroke-width", "1.5");
+                    //svgIcon.setAttribute("stroke", "currentColor");
+                    //svgIcon.setAttribute("class", "right-svg");
+                    //svgIcon.setAttribute("onclick", "toggleRightCheckbox(this)");
 
-                //const svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                //svgPath.setAttribute("stroke-linecap", "round");
-                //svgPath.setAttribute("stroke-linejoin", "round");
-                //svgPath.setAttribute("d", "M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z");
+                    //const svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    //svgPath.setAttribute("stroke-linecap", "round");
+                    //svgPath.setAttribute("stroke-linejoin", "round");
+                    //svgPath.setAttribute("d", "M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z");
 
-                //svgIcon.appendChild(svgPath);
+                    //svgIcon.appendChild(svgPath);
 
-                // Append everything into supplierCard
-                supplierCard.appendChild(customCheckBox);
-                //supplierCard.appendChild(inputRightCHK);
-                //supplierCard.appendChild(svgIcon);
+                    // Append everything into supplierCard
+                    supplierCard.appendChild(customCheckBox);
+                    //supplierCard.appendChild(inputRightCHK);
+                    //supplierCard.appendChild(svgIcon);
 
-                // Append supplierCard to colDiv
-                colDiv.appendChild(supplierCard);
+                    // Append supplierCard to colDiv
+                    colDiv.appendChild(supplierCard);
 
-                // Append colDiv to container
-                supplierCheckboxContainer.appendChild(colDiv);
-            });
+                    // Append colDiv to container
+                    supplierCheckboxContainer.appendChild(colDiv);
+                });
 
-            // (Re)initialize Bootstrap tooltip
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-            tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+                // (Re)initialize Bootstrap tooltip
+                const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+                tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+            }
+
+
+
+
+
+
+
         });
     });
 
@@ -199,30 +208,49 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
     quotationRequestItem = new Object();
     oldQuotationRequestItem = null;
 
+    quotationRequestItem.quotation_request_item_id = null;
     numberQuantity.value = null;
     removeValidationColor([numberQuantity, selectItemName])
 
+    // if(selectBrand.value==""||selectCategory.value=="Please Select Category"||selectBrand.value==""){
+    if (quotationrequest.brand_id == null || quotationrequest.category_id == null) {
+        selectCategory.addEventListener('change', () => {
 
+            const itemCategory = selectValueHandler(selectCategory);
 
-    selectCategory.addEventListener('change', () => {
+            selectBrand.addEventListener('change', () => {
+                const itemBrand = selectValueHandler(selectBrand);
+                console.log(itemBrand, itemCategory);
 
-        const itemCategory = selectValueHandler(selectCategory);
-
-        selectBrand.addEventListener('change', () => {
-            const itemBrand = selectValueHandler(selectBrand);
-            console.log(itemBrand, itemCategory);
-
-            //all item list array
-            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
-            const availableItems = innerItemList.filter(innerItem =>
-                !quotationrequest.quotation_request_item.some(quotationItem =>
-                    quotationItem.itemcode === innerItem.itemcode
+                //all item list array
+                innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+                const availableItems = innerItemList.filter(innerItem =>
+                    !quotationrequest.quotation_request_item.some(quotationItem =>
+                        quotationItem.itemcode === innerItem.itemcode
+                    )
                 )
-            )
 
-            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
-        })
-    });
+                fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
+            })
+        });
+    } else {
+        const itemCategory = selectValueHandler(selectCategory);
+        const itemBrand = selectValueHandler(selectBrand);
+
+        //all item list array
+        innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+        const availableItems = innerItemList.filter(innerItem =>
+            !quotationrequest.quotation_request_item.some(quotationItem =>
+                quotationItem.itemcode === innerItem.itemcode
+            )
+        )
+
+        fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
+    }
+
+
+
+
 
 
     inputFieldsHandler([selectItemName, numberQuantity], false)
@@ -312,11 +340,11 @@ const innerQuotationItemFormErrors = () => {
 }
 
 const innerQuotationRequestProductAdd = () => {
-    console.log(quotationRequestItem);
     let { itemcode, itemname } = quotationRequestItem.quotation_request_item_id
     let formattedQuotationRequestItem = { itemcode, itemname, quantity: quotationRequestItem.quantity }
 
     errors = innerQuotationItemFormErrors();
+    console.log("Inner Form Errors", errors);
     if (errors === "") {
         Swal.fire({
             title: "Are you sure?",
@@ -363,11 +391,49 @@ const innerQuotationRequestProductAdd = () => {
 
 
 const refillInnerQuotationRequestForm = (ob, rowIndex) => {
+    document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
+        btn.classList.add('custom-disabled');
+    });
 
+    document.querySelectorAll('.inner-edit-button').forEach((btn) => {
+        btn.classList.add('custom-disabled');
+    });
+
+    buttonInnerSubmit.classList.add('elementHide')
+    buttonInnerUpdate.classList.remove('elementHide')
+
+    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname', ob.itemcode, ob.itemname);
+    numberQuantity.value = ob.quantity;
 }
 
 const deleteInnerQuotationRequestForm = (ob, rowIndex) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to remove item from the Purchase Request? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            quotationrequest.quotation_request_item.splice(rowIndex, 1);
+            refreshInnerQuotationRequestItemFormAndTable();
 
+            Swal.fire({
+                title: "Success!",
+                text: "Item Removed Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+
+
+        }
+    })
 }
 
 
@@ -408,60 +474,174 @@ const refillQuotationRequestForm = (ob, rowIndex) => {
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
 
+    supplierWarningContainer.classList.remove('elementHide')
+    supplierErrorContainer.classList.add('elementHide');
+
     //buttonUpdate.disabled = false;
     //buttonUpdate.classList.add('modal-btn-update');
 
-    quotationRequest = JSON.parse(JSON.stringify(ob));
-    oldQuotationRequest = ob;
+    quotationrequest = JSON.parse(JSON.stringify(ob));
+    oldQuotationrequest = ob;
 
-    staticBackdropLabel.textContent = quotationRequest.quotationrequestcode;
+    staticBackdropLabel.textContent = quotationrequest.quotationrequestcode;
 
-    numberQuantity.value = quotationRequest.quantity;
+    numberQuantity.value = quotationrequest.quantity;
 
-    dateRequiredDate.value = quotationRequest.requireddate;
+    dateRequiredDate.value = quotationrequest.requireddate;
 
     requestStatuses = getServiceAjaxRequest("/quotationstatus/alldata");
-    fillDataIntoSelect(selectRequestStatus, "Please Select Quotation Status", requestStatuses, "name", quotationRequest.quotationstatus_id.name);
+    fillDataIntoSelect(selectRequestStatus, "Please Select Quotation Status", requestStatuses, "name", quotationrequest.quotationstatus_id.name);
     selectRequestStatus.disabled = false;
 
+    selectCategory.disabled = true;
+    selectBrand.disabled = true;
     categories = getServiceAjaxRequest("/category/alldata");
-    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", quotationRequest.category_id.name);
+    fillDataIntoSelect(selectCategory, "Please Select Category", categories, "name", quotationrequest.category_id.name);
     brands = getServiceAjaxRequest("/brand/alldata");
-    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationRequest.brand_id.name);
+    fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationrequest.brand_id.name);
 
     //fill quotation request items
-    console.log(quotationRequest);
-    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", quotationRequest.quotation_request_item, "itemcode", 'itemname', ob.quotation_request_item.itemcode, ob.quotation_request_item.itemname);
-    fillDataIntoInnerTable()
-
-    fillDataIntoSelect(selectSelectedSupplier, "Please Select Item", quotationRequest.itemSuppliers, "name");
-    //fillDataIntoSelect(selectAvailableSupplier, "Can't Update a Request. Create a New One", [], "name");
-
-    selectCategory.addEventListener('change', () => {
-        const itemCategory = selectValueHandler(selectCategory); //selectCategory.value
-        brands = getServiceAjaxRequest("/brand/brandbycategory/" + itemCategory.name);
-        fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name", quotationrequest.brand_id.name);
-
-        selectBrand.addEventListener('change', () => {
-            const itemBrand = selectValueHandler(selectBrand);
-            suppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + itemCategory.id + "&brandid=" + itemBrand.id);
-            fillDataIntoSelect(selectAvailableSupplier, "", suppliers, "name");
-
-            //all item list array
-            innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
-            const availableItems = innerItemList.filter(innerItem =>
-                !quotationrequest.quotation_request_item.some(quotationItem =>
-                    quotationItem.itemcode === innerItem.itemcode
-                )
-            );
-
-            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
-        })
-    })
+    console.log("hey", quotationrequest);
+    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", quotationrequest.quotation_request_item, "itemcode", 'itemname', ob.quotation_request_item.itemcode, ob.quotation_request_item.itemname);
 
 
-    inputFieldsHandler([selectCategory, selectRequestStatus, selectBrand, numberQuantity, dateRequiredDate], false);
+    //all item list array
+    innerItemList = getServiceAjaxRequest(`/${(quotationrequest.category_id.name).toLowerCase()}/${quotationrequest.brand_id.id}/itemlist`)
+    const availableItems = innerItemList.filter(innerItem =>
+        !quotationrequest.quotation_request_item.some(quotationItem =>
+            quotationItem.itemcode === innerItem.itemcode
+        )
+    );
+
+    fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
+
+
+
+
+    inputFieldsHandler([selectRequestStatus, numberQuantity, dateRequiredDate], false);
     buttonClear.classList.add('modal-btn-clear');
+
+    const allSuppliers = getServiceAjaxRequest("/supplier/suppliergetbybrandcategory?categoryid=" + quotationrequest.category_id.id + "&brandid=" + quotationrequest.brand_id.id);
+
+
+    console.log("All Suppliers", allSuppliers)
+
+    supplierCheckboxContainer.innerHTML = "";
+
+    allSuppliers.forEach((supplier, index) => {
+        const colDiv = document.createElement('div');
+        colDiv.className = "col-6";
+
+        const supplierCard = document.createElement('div');
+        supplierCard.className = "supplier-card";
+
+        // Label with left checkbox and text
+        const customCheckBox = document.createElement('label');
+        customCheckBox.className = "custom-checkbox";
+
+        const inputLeftCHK = document.createElement('input');
+        inputLeftCHK.type = "checkbox";
+        inputLeftCHK.className = "left-checkbox";
+
+        const checkSpan = document.createElement('span');
+        checkSpan.className = "checkmark";
+
+        const contentSpan = document.createElement('span');
+        contentSpan.className = "supplier-text";
+        contentSpan.innerText = `${supplier.supplierid} - ${supplier.name}`;
+
+        // Determine if this supplier is already selected
+        const existingIndex = quotationrequest.quotation_request_has_supplier
+            .map(item => item.supplier_id.id)
+            .indexOf(supplier.id);
+
+        if (existingIndex !== -1) {
+            // Already selected (already sent)
+            inputLeftCHK.checked = true;
+            inputLeftCHK.disabled = true; // Disable the checkbox
+        } else {
+            // Not yet selected (can be selected now)
+            inputLeftCHK.onchange = function() {
+                if (this.checked) {
+                    quotationrequest.quotation_request_has_supplier.push({
+                        supplier_id: supplier,
+                        status: true
+                    });
+                } else {
+                    const indexToRemove = quotationrequest.quotation_request_has_supplier
+                        .map(item => item.supplier_id.id)
+                        .indexOf(supplier.id);
+                    if (indexToRemove !== -1) {
+                        quotationrequest.quotation_request_has_supplier.splice(indexToRemove, 1);
+                    }
+                }
+            }
+        }
+        // Append left checkbox and text to label
+        customCheckBox.appendChild(inputLeftCHK);
+        customCheckBox.appendChild(checkSpan);
+        customCheckBox.appendChild(contentSpan);
+
+        // Right hidden checkbox
+        const inputRightCHK = document.createElement('input');
+        inputRightCHK.type = "checkbox";
+        inputRightCHK.className = "hidden right-checkbox";
+        inputRightCHK.id = `rightCheck${index}`;
+        inputRightCHK.setAttribute("data-bs-toggle", "tooltip");
+        inputRightCHK.setAttribute("data-bs-placement", "top");
+        inputRightCHK.setAttribute("data-bs-title", "Checked for the Sending Email to Supplier");
+
+        // If already sent and status is 1, check it
+        if (existingIndex !== -1 && quotationrequest.quotation_request_has_supplier[existingIndex].status === 1) {
+            inputRightCHK.checked = true;
+        }
+
+        //SVG icon with onclick event
+        const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        svgIcon.setAttribute("fill", "none");
+        svgIcon.setAttribute("viewBox", "0 0 24 24");
+        svgIcon.setAttribute("stroke-width", "1.5");
+        svgIcon.setAttribute("stroke", "currentColor");
+        svgIcon.setAttribute("class", "right-svg");
+        svgIcon.setAttribute("onclick", "toggleRightCheckbox(this)");
+
+        const svgPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        svgPath.setAttribute("stroke-linecap", "round");
+        svgPath.setAttribute("stroke-linejoin", "round");
+        svgPath.setAttribute("d", "M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z");
+
+        svgIcon.appendChild(svgPath);
+
+        // Only allow toggling if supplier was already selected
+        svgIcon.onclick = () => {
+            if (existingIndex !== -1) {
+                const targetSupplier = quotationrequest.quotation_request_has_supplier[existingIndex];
+                if (targetSupplier.status === 0) {
+                    targetSupplier.status = 1;
+                    inputRightCHK.checked = true;
+                } else {
+                    targetSupplier.status = 0;
+                    inputRightCHK.checked = false;
+                }
+            }
+        }
+
+        // Append everything into supplierCard
+        supplierCard.appendChild(customCheckBox);
+        supplierCard.appendChild(inputRightCHK);
+        supplierCard.appendChild(svgIcon);
+
+        // Append supplierCard to colDiv
+        colDiv.appendChild(supplierCard);
+
+        // Append colDiv to container
+        supplierCheckboxContainer.appendChild(colDiv);
+    });
+
+    // (Re)initialize Bootstrap tooltip
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
 
 
 
@@ -499,14 +679,14 @@ const checkQuotationRequestInputErrors = () => {
     if (quotationrequest.requireddate == null) {
         errors += "Required Date is empty\n";
     }
-    if (quotationrequest.itemSuppliers.length == 0) {
-        errors += "At leaset one supplier is required\n"
-    }
     if (quotationrequest.quotationstatus_id == null) {
         errors += "Quotation Status is empty\n";
     }
     if (quotationrequest.quotation_request_item.length == 0) {
         errors += "At least one item need to assign into the quotation request\n";
+    }
+    if (quotationrequest.quotation_request_has_supplier.length == 0) {
+        errors += "At least one Supplier need to assign into the quotation request\n";
     }
 
     return errors;
@@ -517,46 +697,77 @@ const QuotationRequestHandler = () => {
     console.log(quotationrequest);
     let errors = checkQuotationRequestInputErrors();
 
+
+
     if (errors == "") {
-        const userConfirm = confirm("Are you sure to send request to suppliers?");
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to send the Quotation request?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, send it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let postServiceResponce;
 
-        if (userConfirm) {
-            let postServiceResponce;
+                $.ajax('/quotationrequest', {
+                    type: 'POST',
+                    data: JSON.stringify(quotationrequest),
+                    contentType: 'application/json',
+                    async: false,
 
-            $.ajax('/quotationrequest', {
-                type: 'POST',
-                data: JSON.stringify(quotationrequest),
-                contentType: 'application/json',
-                async: false,
+                    success: function(data) {
+                        console.log("success ", data);
+                        postServiceResponce = data;
+                    },
 
-                success: function(data) {
-                    console.log("success ", data);
-                    postServiceResponce = data;
-                },
+                    error: function(resData) {
+                        console.log("Fail ", resData);
+                        postServiceResponce = resData;
+                    }
+                });
 
-                error: function(resData) {
-                    console.log("Fail ", resData);
-                    postServiceResponce = resData;
+                if (postServiceResponce == "OK") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Quotation Request submit successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        //hide the model
+                        $('#qRequestAddModal').modal('hide');
+                        //refreash Item form
+                        refreshQuotationRequestForm();
+                        //refreash Item table 
+                        refreshQuotationRequestTable()
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        html: "Sending Quotation Request failed due to the following errors:<br>" + postServiceResponce,
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: "#F25454"
+                    });
                 }
-            });
-
-            //if service is success
-            if (postServiceResponce == "OK") {
-                alert("Quotation Request Sent Successfully");
-                //hide the model
-                $('#qRequestAddModal').modal('hide');
-                //reset the Item form
-                formQuotationRequest.reset();
-                //refreash Item form
-                refreshQuotationRequestForm();
-                //refreash Item table 
-                refreshQuotationRequestTable()
-            } else {
-                alert("Failed to send Quotation Request\n" + postServiceResponce);
             }
-        }
+        })
     } else {
-        alert("Form has following errors...\n" + errors);
+        Swal.fire({
+            title: "Error!",
+            html: "Sending Quotation Request failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
     }
 }
 
@@ -597,18 +808,30 @@ const deleteQuotationRequest = (ob, rowIndex) => {
 }
 
 const closeQRequestModal = () => {
-    const closeResponse = confirm('Are you sure to close the modal?')
 
-    //check closeResponse is true or false
-    if (closeResponse) {
-        $('#qRequestAddModal').modal('hide');
+    Swal.fire({
+        title: "Are you sure to close the form?",
+        text: "If you close this form, filled data will be removed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Close",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+            $('#qRequestAddModal').modal('hide');
 
 
-        //formItem is id of form
-        //this will reset all data(refreash)
-        formQuotationRequest.reset();
-        divModifyButton.className = 'd-none';
+            //formItem is id of form
+            //this will reset all data(refreash)
+            formQuotationRequest.reset();
+            divModifyButton.className = 'd-none';
 
-        refreshQuotationRequestForm();
-    }
+            refreshQuotationRequestForm();
+        }
+    });
 }

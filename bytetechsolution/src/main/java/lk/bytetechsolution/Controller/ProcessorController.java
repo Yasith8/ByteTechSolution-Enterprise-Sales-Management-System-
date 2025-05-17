@@ -133,9 +133,10 @@ public class ProcessorController {
 
             //if next employee number is not come then set manualy last number+1
             if(nextNumber==null){
-                processor.setItemcode("CPU0004");
+                processor.setItemcode("CPU0001");
+            }else{
+                processor.setItemcode(nextNumber);
             }
-            processor.setItemcode(nextNumber);
 
             //assign added user id
             UserEntity addedUserData=daoUser.getByUsername(authentication.getName());

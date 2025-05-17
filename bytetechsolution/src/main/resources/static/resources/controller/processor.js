@@ -167,6 +167,9 @@ const getItemStatus = (ob) => {
 
 
     if (ob.itemstatus_id.name == 'Unavailable') {
+        return '<p class="item-status-unavailble">' + ob.itemstatus_id.name + '</p>'
+    }
+    if (ob.itemstatus_id.name == 'Deleted') {
         return '<p class="item-status-delete">' + ob.itemstatus_id.name + '</p>'
     } else {
         return '<p class="item-status-other">' + ob.itemstatus_id.name + '</p>'
@@ -272,9 +275,23 @@ const refillProcessorForm = (ob, rowIndex) => {
         textProcessorPhoto.textContent = processor.photoname;
     }
 
+    if (processor.itemstatus_id.name == 'Deleted') {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
+
+    selectItemStatus.addEventListener('change', () => {
+        if (prequest.purchasestatus_id.name == "Deleted") {
+            buttonDelete.disabled = true;
+            buttonDelete.classList.remove('modal-btn-delete');
+        } else {
+            buttonDelete.disabled = false;
+            buttonDelete.classList.add('modal-btn-delete');
+        }
+    })
 
 
-    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberTotalCore, numberWarranty, selectCpuSuffix, numberCache, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
+    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, buttonDelete, numberTotalCore, numberWarranty, selectCpuSuffix, numberCache, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
     buttonClear.classList.add('modal-btn-clear');
 
 
@@ -366,53 +383,80 @@ const checkProcessorInputErrors = () => {
 const buttonProcessorSubmit = () => {
     let errors = checkProcessorInputErrors();
 
-    if (errors == "") {
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to Add this Processor?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, Add it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
 
-        //check user response error
-        const userSubmitResponse = confirm('Are you sure to submit...?\n');
+                let postServiceResponce;
+
+                $.ajax("/processor", {
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(processor),
+                    async: false,
+
+                    success: function(data) {
+                        console.log("success", data);
+                        postServiceResponce = data;
+                    },
+
+                    error: function(resData) {
+                        console.log("Fail", resData);
+                        postServiceResponce = resData;
+                    }
+
+                });
 
 
-        if (userSubmitResponse) {
-            //call post service
-
-            let postServiceResponce;
-
-            $.ajax("/processor", {
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(processor),
-                async: false,
-
-                success: function(data) {
-                    console.log("success", data);
-                    postServiceResponce = data;
-                },
-
-                error: function(resData) {
-                    console.log("Fail", resData);
-                    postServiceResponce = resData;
+                if (postServiceResponce == "OK") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "processor Add Successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        //hide the model
+                        $('#processorAddModal').modal('hide');
+                        //reset the Item form
+                        formProcessor.reset();
+                        //refreash Item form
+                        refreshProcessorForm();
+                        //refreash Item table
+                        refreshProcessorTable();
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        html: "Adding Processor to the system failed due to the following errors:<br>" + postServiceResponce,
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: "#F25454"
+                    });
                 }
-
-            });
-
-            //if response is success
-            if (postServiceResponce == "OK") {
-                alert("Save successfully...!");
-                //hide the model
-                $('#processorAddModal').modal('hide');
-                //reset the Item form
-                formProcessor.reset();
-                //refreash Item form
-                refreshProcessorForm();
-                //refreash Item table
-                refreshProcessorTable();
-            } else {
-                alert("Fail to submit Processor form \n" + postServiceResponce);
             }
-        }
+        });
     } else {
-        //if error ext then set alert
-        alert('form has following error...\n' + errors);
+        Swal.fire({
+            title: "Error!",
+            html: "Adding Processor to the system failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
     }
 
 }
@@ -479,56 +523,96 @@ const buttonProcessorUpdate = () => {
 
         //check there is no updates or any updations
         if (updates == "") {
-            alert("Nothing Updates")
+            Swal.fire({
+                title: "Nothing Updated",
+                text: "There are no any updates in Processor Form",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#103D45",
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
         } else {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want to update Processor Details?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#103D45",
+                cancelButtonColor: "#F25454",
+                confirmButtonText: "Yes",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //call put service requestd  -this use for updations
+                    //call put service requestd  -this use for updations
+                    let putServiceResponse;
 
-            //get conformation from user to made updation
-            let userConfirm = confirm("Are You Sure to Update this Changes? \n" + updates);
-
-            //if user conform
-            if (userConfirm) {
-                //call put service requestd  -this use for updations
-                let putServiceResponse;
-
-                $.ajax("/processor", {
-                    type: "PUT",
-                    async: false,
-                    contentType: "application/json",
-                    data: JSON.stringify(processor),
+                    $.ajax("/processor", {
+                        type: "PUT",
+                        async: false,
+                        contentType: "application/json",
+                        data: JSON.stringify(processor),
 
 
-                    success: function(successResponseOb) {
-                        putServiceResponse = successResponseOb;
-                    },
+                        success: function(successResponseOb) {
+                            putServiceResponse = successResponseOb;
+                        },
 
-                    error: function(failedResponseOb) {
-                        putServiceResponse = failedResponseOb;
+                        error: function(failedResponseOb) {
+                            putServiceResponse = failedResponseOb;
+                        }
+
+                    });
+
+                    if (putServiceResponse == "OK") {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "purchase request update successfully!",
+                            icon: "success",
+                            confirmButtonColor: "#B3C41C",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        }).then(() => {
+                            //hide the moadel
+                            $('#processorAddModal').modal('hide');
+                            //refreash Item table for realtime updation
+                            refreshProcessorTable();
+                            //reset the Item form
+                            formProcessor.reset();
+                            //Item form refresh
+                            refreshProcessorForm();
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            html: "Processor Information updation failed due to the following errors:<br>" + putServiceResponse,
+                            icon: "error",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            confirmButtonColor: "#F25454"
+                        });
+                        //refreash the employee form
+                        refreshProcessorForm();
+
                     }
 
-                });
-                //check put service response
-                if (putServiceResponse == "OK") {
-                    alert("Updated Successfully");
-
-                    //hide the moadel
-                    $('#processorAddModal').modal('hide');
-                    //refreash Item table for realtime updation
-                    refreshProcessorTable();
-                    //reset the Item form
-                    formProcessor.reset();
-                    //Item form refresh
-                    refreshProcessorForm();
-                } else {
-                    //handling errors
-                    alert("Update not Completed :\n" + putServiceResponse);
-                    //refreash the employee form
-                    refreshProcessorForm();
                 }
-            }
+            })
+
         }
     } else {
         //show user to what errors happen
-        alert("Processor Form  has Following Errors..\n" + errors)
+        Swal.fire({
+            title: "Error!",
+            html: "Purchase Request Updation failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
     }
 
 
@@ -536,56 +620,87 @@ const buttonProcessorUpdate = () => {
 
 
 const deletePocessor = (ob, rowIndex) => {
-    //user conformation
-    let userConform = confirm("Are you sure  to delete following Prcessor? " + ob.itemname);
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to delete following Processor? "  ${ob.itemcode}`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let deleteServiceResponse;
+            //ajax request fot delete data
+            $.ajax("/processor", {
+                type: "DELETE",
+                contentType: "application/json",
+                data: JSON.stringify(ob),
+                async: false,
 
-    //if ok
-    if (userConform) {
-        let deleteServiceResponse;
+                success: function(data) {
+                    deleteServiceResponse = data
+                },
 
-        //ajax request fot delete data
-        $.ajax("/processor", {
-            type: "DELETE",
-            contentType: "application/json",
-            data: JSON.stringify(ob),
-            async: false,
+                error: function(errData) {
+                    deleteServiceResponse = errData;
+                }
+            })
 
-            success: function(data) {
-                deleteServiceResponse = data
-            },
-
-            error: function(errData) {
-                deleteServiceResponse = errData;
+            if (deleteServiceResponse == "OK") {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Processor Information Deleted Successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    $('#processorAddModal').modal('hide');
+                    refreshProcessorTable()
+                })
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    html: "Processor Deletion failed due to the following errors:<br>" + deleteServiceResponse,
+                    icon: "error",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: "#F25454"
+                });
             }
-        })
-
-        //if delete response ok alert the success message and close the modal and refreash item table
-        //so because of that we can see realtime update
-        if (deleteServiceResponse == "OK") {
-            alert("Delete Successfullly");
-            $('#processorAddModal').modal('hide');
-            refreshProcessorTable()
-        } else {
-            console.log("system has following errors:\n" + deleteServiceResponse);
         }
-    }
+    })
 }
 
 const buttonModalClose = () => {
-    const closeResponse = confirm('Are you sure to close the modal?')
+    Swal.fire({
+        title: "Are you sure to close the form?",
+        text: "If you close this form, filled data will be removed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Close",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
 
-    //check closeResponse is true or false
-    if (closeResponse) {
-        $('#processorAddModal').modal('hide');
+        if (result.isConfirmed) {
+            $('#processorAddModal').modal('hide');
 
 
-        //formItem is id of form
-        //this will reset all data(refreash)
-        formProcessor.reset();
-        divModifyButton.className = 'd-none';
+            //formItem is id of form
+            //this will reset all data(refreash)
+            formProcessor.reset();
+            divModifyButton.className = 'd-none';
 
-        refreshProcessorForm();
-    }
+            refreshProcessorForm();
+        }
+    });
 }
 
 const processorPictureRemove = () => {
@@ -593,4 +708,33 @@ const processorPictureRemove = () => {
     imgProcessorPhoto.src = "/resources/image/noitem.jpg";
     textProcessorPhoto.textContent = "No Image Selected";
     FileProcesorPhoto.value = null;
+}
+
+const refreshProcessor = () => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to refresh the Processor Form? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Refresh",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            refreshProcessorForm()
+
+            Swal.fire({
+                title: "Success!",
+                text: "Processor Form Refreshed Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+
+
+        }
+    })
 }

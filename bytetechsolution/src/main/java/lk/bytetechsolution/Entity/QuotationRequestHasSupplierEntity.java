@@ -27,19 +27,16 @@ public class QuotationRequestHasSupplierEntity {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="quotation_request_id;",referencedColumnName = "id")
+    @JoinColumn(name = "quotation_request_id",referencedColumnName = "id")
+    @JsonIgnore
     private QuotationRequestEntity quotation_request_id;
 
     @ManyToOne
-    @JoinColumn(name="supplier_id;",referencedColumnName = "id")
+    @JoinColumn(name="supplier_id",referencedColumnName = "id")
     private SupplierEntity supplier_id;
 
     @NotNull
     @Column(name = "status")
     private Boolean status;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_quotation_id",referencedColumnName = "id")
-    @JsonIgnore
-    private SupplierQuotationEntity supplier_quotation_id;
 }

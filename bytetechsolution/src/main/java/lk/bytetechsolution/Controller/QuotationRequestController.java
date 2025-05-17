@@ -23,6 +23,7 @@ import lk.bytetechsolution.Dao.QuotationRequestDao;
 import lk.bytetechsolution.Dao.QuotationStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.QuotationRequestEntity;
+import lk.bytetechsolution.Entity.QuotationRequestHasSupplierEntity;
 import lk.bytetechsolution.Entity.QuotationRequestItemEntitiy;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -123,6 +124,10 @@ public class QuotationRequestController {
 
             for(QuotationRequestItemEntitiy quotationRequestItem:quotationrequest.getQuotation_request_item()){
                 quotationRequestItem.setQuotation_request_id(quotationrequest);
+            }
+
+            for (QuotationRequestHasSupplierEntity quotationRequestSupplier:quotationrequest.getQuotation_request_has_supplier()){
+                quotationRequestSupplier.setQuotation_request_id(quotationrequest);
             }
 
             

@@ -102,6 +102,17 @@ body {
     color: #EF3826;
 }
 
+.item-status-unavailble {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #ffada8;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #6f0900;
+}
+
 .item-status-other {
     padding: 5px;
     border-radius: 8px;

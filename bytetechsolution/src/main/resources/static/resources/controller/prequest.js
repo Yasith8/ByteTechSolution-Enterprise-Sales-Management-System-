@@ -858,7 +858,7 @@ const refreshPrequest = () => {
 
             Swal.fire({
                 title: "Success!",
-                text: "Item Form Refreshed Successfully!",
+                text: "Purchase Request Form Refreshed Successfully!",
                 icon: "success",
                 confirmButtonColor: "#B3C41C",
                 allowOutsideClick: false,
