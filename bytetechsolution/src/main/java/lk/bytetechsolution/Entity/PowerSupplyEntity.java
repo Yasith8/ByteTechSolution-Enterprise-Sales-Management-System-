@@ -82,6 +82,12 @@ public class PowerSupplyEntity {
     @Column(name = "wattage")
     private Integer wattage;
 
+    @Column(name = "photo")
+    private byte[] photo;
+
+    @Column(name="photoname")
+    private String photoname;
+
      /* 
      * Map with Forign Keys
      * Relationship type : OneToOne, ManyToMany, OneToMany , ManyToOne

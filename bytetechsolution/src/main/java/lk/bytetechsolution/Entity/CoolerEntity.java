@@ -79,6 +79,12 @@ public class CoolerEntity {
     @Column(name = "description")
     private String description;
 
+     @Column(name = "photo")
+    private byte[] photo;
+
+    @Column(name="photoname")
+    private String photoname;
+
      /* 
      * Map with Forign Keys
      * Relationship type : OneToOne, ManyToMany, OneToMany , ManyToOne

@@ -189,6 +189,7 @@ const refillProcessorForm = (ob, rowIndex) => {
 
     processor = JSON.parse(JSON.stringify(ob));
     oldProcessor = ob;
+    textItemName.disabled = true;
 
     //asign itemcode
     staticBackdropLabel.textContent = processor.itemcode;
@@ -291,7 +292,7 @@ const refillProcessorForm = (ob, rowIndex) => {
     })
 
 
-    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, buttonDelete, numberTotalCore, numberWarranty, selectCpuSuffix, numberCache, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
+    inputFieldsHandler([numberProfitRate, numberROP, numberROQ, buttonDelete, numberTotalCore, numberWarranty, selectCpuSuffix, numberCache, textDescription, selectCpuSeries, selectCpuGeneration, selectCpuSocket, selectBrand, selectItemStatus], false);
     buttonClear.classList.add('modal-btn-clear');
 
 

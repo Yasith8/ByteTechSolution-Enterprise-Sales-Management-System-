@@ -149,7 +149,7 @@ public class ProcessorController {
             //assign category
             processor.setCategory_id(daoCategory.getReferenceById(1));
             
-            //saving operation
+            //saving operation 
             daoProcessor.save(processor);
             //return the message about success
             return "OK";

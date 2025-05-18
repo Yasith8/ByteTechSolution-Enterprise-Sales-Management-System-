@@ -87,6 +87,12 @@ public class LaptopEntity {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "photo")
+    private byte[] photo;
+
+    @Column(name="photoname")
+    private String photoname;
      
     @ManyToOne  
     @JoinColumn(name="brand_id",referencedColumnName = "id")

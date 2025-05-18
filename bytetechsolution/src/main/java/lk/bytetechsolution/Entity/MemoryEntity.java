@@ -78,6 +78,12 @@ public class MemoryEntity {
     @Column(name = "description")
     private String description;
 
+   @Column(name = "photo")
+    private byte[] photo;
+
+    @Column(name="photoname")
+    private String photoname;
+
 
     //#################################
     //#############Unique entities#####

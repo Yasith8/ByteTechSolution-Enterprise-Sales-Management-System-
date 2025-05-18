@@ -93,7 +93,11 @@ public class CasingEntity {
     @Column(name = "height")
     private Integer height;
 
-   
+    @Column(name = "photo")
+    private byte[] photo;
+
+    @Column(name="photoname")
+    private String photoname;
 
      /* 
      * Map with Forign Keys
