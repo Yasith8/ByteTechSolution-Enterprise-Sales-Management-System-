@@ -38,6 +38,8 @@ const refreshMotherboardForm = () => {
 
     staticBackdropLabel.textContent = "Add New Item";
 
+    textItemName.disabled = true;
+
     //get brands of motherboard
     brands = getServiceAjaxRequest("/brand/brandbycategory/Motherboard");
     fillDataIntoSelect(selectBrand, "Please Select Brand", brands, "name");
@@ -53,6 +55,9 @@ const refreshMotherboardForm = () => {
 
     cpuSocket = getServiceAjaxRequest("/cpusocket/alldata");
     fillDataIntoSelect(selectCpuSocket, "Select Processor Socket", cpuSocket, "name");
+
+    interfaces = getServiceAjaxRequest("/interface/alldata");
+    fillDataIntoSelect(selectInterface, "Select Supported Interfaces", interfaces, "name");
 
     fillDataIntoSelect(selectMotherboardSeries, "Select Processor Socket First", [], "name")
     fillDataIntoSelect(selectMotherboardType, "Select Motherboard Series First", [], "name")
@@ -78,6 +83,11 @@ const refreshMotherboardForm = () => {
 
 
     removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType])
+
+    imgMotherboardPhoto.src = "/resources/image/noitem.jpg";
+    textMotherboardPhoto.textContent = "No Image Selected";
+    FileMotherboardPhoto.value = null;
+
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/ITEM");
 
@@ -149,6 +159,8 @@ const refillMotherboardForm = (ob, rowIndex) => {
     buttonUpdate.disabled = false;
     buttonUpdate.classList.add('modal-btn-update');
 
+    textItemName.disabled = true;
+
     motherboard = JSON.parse(JSON.stringify(ob));
     oldMotherboard = ob;
 
@@ -195,6 +207,9 @@ const refillMotherboardForm = (ob, rowIndex) => {
     motherboardTypes = getServiceAjaxRequest("/motherboardtype/alldata");
     fillDataIntoSelect(selectMotherboardType, "Select Motherboard Type", motherboardTypes, "name", ob.motherboardtype_id.name)
 
+    interfaces = getServiceAjaxRequest("/interface/alldata");
+    fillDataIntoSelect(selectInterface, "Select Supported Interfaces", interfaces, "name", ob.interface_id.name);
+
 
 
     selectCpuSocket.addEventListener('change', () => {
@@ -213,6 +228,15 @@ const refillMotherboardForm = (ob, rowIndex) => {
         })
 
     })
+
+    //assign profile picture and name
+    if (motherboard.photo == null) {
+        imgMotherboardPhoto.src = "/resources/image/noitem.jpg";
+        textMotherboardPhoto.textContent = "No Item Image";
+    } else {
+        imgMotherboardPhoto.src = atob(motherboard.photo);
+        textMotherboardPhoto.textContent = motherboard.photoname;
+    }
 
 
     inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType], false);
@@ -289,6 +313,10 @@ const checkMotherboardInputErrors = () => {
     if (motherboard.memorytype_id == null) {
         errors = errors + "Memory Type can't be Null...!\n";
         selectMemoryType.classList.add("is-invalid");
+    }
+    if (motherboard.interface_id == null) {
+        errors = errors + "Interface can't be Null...!\n";
+        selectInterface.classList.add("is-invalid");
     }
 
     return errors;
@@ -392,6 +420,9 @@ const checkMotherboardFormUpdates = () => {
     }
     if (motherboard.itemstatus_id.name != oldMotherboard.itemstatus_id.name) {
         updates = updates + "Item Status is Changed \n";
+    }
+    if (motherboard.interface_id.name != oldMotherboard.interface_id.name) {
+        updates = updates + "Interface is Changed \n";
     }
 
     return updates;
@@ -518,4 +549,24 @@ const buttonModalClose = () => {
 
         refreshMotherboardForm();
     }
+}
+
+const processorPictureRemove = () => {
+    //profile image set to default
+    imgMotherboardPhoto.src = "/resources/image/noitem.jpg";
+    textMotherboardPhoto.textContent = "No Image Selected";
+    FileMotherboardPhoto.value = null;
+}
+
+const generateItemName = () => {
+    if (selectBrand.value != "" && numberMaxCapacity.value != "" && selectCpuSocket.value != "" && selectMotherboardSeries.value != "" && selectMotherboardType.value != "" && selectMotherboardFormFactor.value != "" && selectMemoryType.value != "" && selectInterface.value != "") {
+        textItemName.value = `${JSON.parse(selectBrand.value).name} ${JSON.parse(selectMotherboardType.value).name} ${JSON.parse(selectMotherboardFormFactor.value).name} (Socket ${JSON.parse(selectCpuSocket.value).name}) ${JSON.parse(selectMemoryType.value).name} ${JSON.parse(selectMotherboardSeries.value).name} ${numberMaxCapacity.value}GB ${JSON.parse(selectInterface.value).name}`;
+        motherboard.itemname = textItemName.value;
+        console.log(motherboard.itemname)
+        textItemName.classList.add("is-valid");
+    } else {
+        textItemName.classList.add("is-invavlid");
+        motherboard.itemname = "Need to Select All the Fields";
+    }
+
 }

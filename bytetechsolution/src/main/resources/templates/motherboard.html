@@ -117,11 +117,24 @@
                 </div>
                 <div class="modal-body">
                     <form id="formMotherboard">
+                        <div class="row mb-4">
+                            <div class="col-12 d-flex justify-content-center">
+                                <div class="item-img-container">
+                                    <img src="/resources/image/noitem.jpg" alt="no item" id="imgMotherboardPhoto" class="item-img" />
+                                    <div class="item-img-overlay">
+                                        <button id="btnSelectImage" type="button" class="btn btn-primary btn-item-select-image" onclick="FileMotherboardPhoto.click()">Select Image</button>
+                                        <button id="btnClearImage" type="button" class="btn btn-danger btn-item-remove-image" onclick="motherboardPictureRemove()">Clear Image</button>
+                                    </div>
+                                    <p id="textMotherboardPhoto" class="image-item-status">No Image Selected</p>
+                                    <input type="file" class="d-none" id="FileMotherboardPhoto" onchange="validateFileField(this, 'motherboard', 'photo', 'photoname', 'oldMotherboard', imgMotherboardPhoto, textMotherboardPhoto)">
+                                </div>
+                            </div>
+                        </div>
                         <!-- itemname Input Start -->
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="textItemName" placeholder="procesor name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','motherboard','itemname')">
+                                    <input type="text" class="form-control" id="textItemName" placeholder="procesor name" required>
                                     <label for="textItemName">Motherboard Name <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -194,8 +207,8 @@
                             <!-- roq start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberMaxCapacity" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','motherboard','maxcapacity')">
-                                    <label for="numberMaxCapacity">Max Capacity<span class="requiredIcon">*</span></label>
+                                    <input type="number" class="form-control" id="numberMaxCapacity" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','motherboard','maxcapacity');generateItemName()">
+                                    <label for="numberMaxCapacity">Supported Max Memory Capacity (GB)<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <!-- roq end -->
@@ -215,7 +228,7 @@
                             <!-- totalcore start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','brand_id')">
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','brand_id');generateItemName()">
                                         <option value=""  selected disabled>Select Brand</option>
                                     </select>
                                 </div>
@@ -224,7 +237,7 @@
                             <!-- Description start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <select name="cpusocket" id="selectCpuSocket" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','cpusocket_id')">
+                                    <select name="cpusocket" id="selectCpuSocket" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','cpusocket_id');generateItemName()">
                                         <option value=""  selected disabled>Select Processor Socket</option>
                                     </select>
                                 </div>
@@ -235,7 +248,7 @@
                             <!-- selectBrand start -->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="motherboardseries" id="selectMotherboardSeries" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardseries_id')">
+                                    <select name="motherboardseries" id="selectMotherboardSeries" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardseries_id');generateItemName()">
                                         <option value=""  selected disabled>Select Motherboard series</option>
                                     </select>
                                 </div>
@@ -245,7 +258,7 @@
                             <!--selectCpuSocket start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="motherboardtype" id="selectMotherboardType" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardtype_id')">
+                                    <select name="motherboardtype" id="selectMotherboardType" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardtype_id');generateItemName()">
                                         <option value=""  selected disabled>Select Motherboard type</option>
                                     </select>
                                 </div>
@@ -254,7 +267,7 @@
                             <!-- selectMotherboardSeries start -->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="mbordformfactor" id="selectMotherboardFormFactor" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardformfactor_id')">
+                                    <select name="mbordformfactor" id="selectMotherboardFormFactor" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','motherboardformfactor_id');generateItemName()">
                                         <option value=""  selected disabled>Select Motherboard Form Factor</option>
                                     </select>
                                 </div>
@@ -266,7 +279,7 @@
                             <!-- selectMotherboardSeries start -->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="mbordmemtype" id="selectMemoryType" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','memorytype_id')">
+                                    <select name="mbordmemtype" id="selectMemoryType" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','memorytype_id');generateItemName()">
                                         <option value=""  selected disabled>Select Memorytype</option>
                                     </select>
                                 </div>
@@ -274,45 +287,48 @@
                             <!-- selectMotherboardType end -->
                             <!--selectmotherboardformfactor start-->
                             <div class="col-4">
+                                <div class="mb-3 form-floating">
+                                    <select name="mbordmemtype" id="selectInterface" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','interface_id');generateItemName()">
+                                        <option value=""  selected disabled>Select Interface</option>
+                                    </select>
+                                </div>
+                                <!--selectmotherboardformfactor end-->
+                                <!--selectMemoryType start-->
+                                <div class="col-4">
 
+                                </div>
+                                <!--selectMemoryType end-->
                             </div>
-                            <!--selectmotherboardformfactor end-->
-                            <!--selectMemoryType start-->
-                            <div class="col-4">
-
-                            </div>
-                            <!--selectMemoryType end-->
-                        </div>
                     </form>
-                </div>
+                    </div>
 
-                <div class="row mt-3 mb-3">
-                    <div class="col-6">
-                        <div id="divModifyButton">
-                            <div class="row" id="">
-                                <div class="col-1"></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printMotherboardDetails(window['editOb'], window['editRow'])">Print</button></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteMotherboard(window['editOb'], window['editRow'])">Delete</button></div>
-                                <div class="col-7"></div>
+                    <div class="row mt-3 mb-3">
+                        <div class="col-6">
+                            <div id="divModifyButton">
+                                <div class="row" id="">
+                                    <div class="col-1"></div>
+                                    <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printMotherboardDetails(window['editOb'], window['editRow'])">Print</button></div>
+                                    <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteMotherboard(window['editOb'], window['editRow'])">Delete</button></div>
+                                    <div class="col-7"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-5"></div>
-                            <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonMotherboardUpdate()">Update</button></div>
-                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonMotherboardSubmit()">Submit</button></div>
-                            <div class="col-1"></div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
+                                <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonMotherboardUpdate()">Update</button></div>
+                                <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonMotherboardSubmit()">Submit</button></div>
+                                <div class="col-1"></div>
+                            </div>
                         </div>
+
                     </div>
+
 
                 </div>
-
-
             </div>
         </div>
-    </div>
 </body>
 
 </html>
