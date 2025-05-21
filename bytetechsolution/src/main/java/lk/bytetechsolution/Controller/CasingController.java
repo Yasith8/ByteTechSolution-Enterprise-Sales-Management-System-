@@ -28,6 +28,7 @@ import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.CasingEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -101,7 +102,7 @@ public class CasingController {
     }
 
     @GetMapping(value="/casing/{brandId}/itemlist",produces="application/json")
-    public List<CasingEntity> GetCasingLists(@PathVariable("brandId") String brandId) {
+    public List<CasingEntity> GetCasingLists(@PathVariable("brandId") BrandEntity brandId) {
 
         return daoCasing.CasingItemList(brandId);
     }

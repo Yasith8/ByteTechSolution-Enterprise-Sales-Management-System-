@@ -28,6 +28,7 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.MotherboardDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.MotherboardEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -102,7 +103,7 @@ public class MotherboardController {
     }
 
     @GetMapping(value = "/motherboard/{brandId}/itemlist", produces ="application/json" ) 
-    public List<MotherboardEntity> MotherboardItemList(@PathVariable("brandId") String brandId) {
+    public List<MotherboardEntity> MotherboardItemList(@PathVariable("brandId") BrandEntity brandId) {
 
         return daoMotherboard.motherboardItemList(brandId);
     }

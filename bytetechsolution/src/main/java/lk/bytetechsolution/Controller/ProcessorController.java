@@ -29,6 +29,9 @@ import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.ProcessorDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.BrandEntity;
+import lk.bytetechsolution.Entity.CpuGenerationEntity;
+import lk.bytetechsolution.Entity.CpuSeriesEntity;
+import lk.bytetechsolution.Entity.CpuSocketEntity;
 import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 @RestController
@@ -104,6 +107,11 @@ public class ProcessorController {
     public List<ProcessorEntity> ProcessorItemList(@PathVariable("brandId") BrandEntity brandId) {
         return daoProcessor.processorItemList(brandId);
     }
+
+  /*    @GetMapping(value = "/processor/{brandId}/{cpusocketId}/{cpuseriesId}/{cpugenerationId}/{cpusuffixId}/{cache}/{core}", produces ="application/json" ) 
+    public List<ProcessorEntity> ProcessorItemFilter(@PathVariable("brandId") BrandEntity brandId,@PathVariable("cpusocketId") CpuSocketEntity cpusocketId,@PathVariable("cpuseriesId") CpuSeriesEntity cpuseriesId,@PathVariable("cpugenerationId") CpuGenerationEntity cpugenerationId,@PathVariable("cpusuffixId") CpuGenerationEntity cpusuffixId,@PathVariable("cache") Integer cache,@PathVariable("core") Integer core) {
+        return daoProcessor.processorInventoryItemList(brandId,cpusocketId,cpuseriesId,cpugenerationId,cpusuffixId,cache,core);
+    } */
 
 
     @PostMapping(value = "/processor")

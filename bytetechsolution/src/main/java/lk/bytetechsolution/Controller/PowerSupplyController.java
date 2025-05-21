@@ -28,6 +28,7 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.PowerSupplyDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.PowerSupplyEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -102,7 +103,7 @@ public class PowerSupplyController {
     }
 
     @GetMapping(value = "/powersupply/{brandId}/itemlist", produces ="application/json" ) 
-    public List<PowerSupplyEntity> PowerSupplyItemList(@PathVariable("brandId") String brandId) {
+    public List<PowerSupplyEntity> PowerSupplyItemList(@PathVariable("brandId") BrandEntity brandId) {
         return daoPowerSupply.powersupplyItemList(brandId);
     }
 

@@ -28,6 +28,7 @@ import lk.bytetechsolution.Dao.CoolerDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.CoolerEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -101,7 +102,7 @@ public class CoolerController {
     }
 
     @GetMapping(value = "/cooler/brandId/itemlist", produces ="application/json" ) 
-    public List<CoolerEntity> CoolerItemList(@PathVariable("brandId") String brandId) {
+    public List<CoolerEntity> CoolerItemList(@PathVariable("brandId") BrandEntity brandId) {
 
         return daoCooler.coolerItemList(brandId);
     }

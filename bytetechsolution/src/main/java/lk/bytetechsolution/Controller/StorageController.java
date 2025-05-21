@@ -28,6 +28,7 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.StorageDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.StorageEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -102,7 +103,7 @@ public class StorageController {
     }
 
     @GetMapping(value = "/storage/{brandId}/itemlist", produces ="application/json" ) 
-    public List<StorageEntity> StorageItemList(@PathVariable("brandId") String brandId) {
+    public List<StorageEntity> StorageItemList(@PathVariable("brandId") BrandEntity brandId) {
 
         return daoStorage.storageItemList(brandId);
     }

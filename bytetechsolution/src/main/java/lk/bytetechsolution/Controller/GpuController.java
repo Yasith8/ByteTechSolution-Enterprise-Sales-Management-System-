@@ -28,6 +28,7 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.GpuDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.GpuEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -102,7 +103,7 @@ public class GpuController {
     }
 
     @GetMapping(value = "/gpu/{brandId}/itemlist",produces = "application/json")
-    public List<GpuEntity> gpuItemList(@PathVariable("brandId") String brandId) {
+    public List<GpuEntity> gpuItemList(@PathVariable("brandId") BrandEntity brandId) {
         return daoGpu.GpuItemList(brandId);
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.GpuEntity;
 
 /* 
@@ -21,7 +22,7 @@ public interface GpuDao extends JpaRepository<GpuEntity,Integer>{
     public String getNextGPUNumber();
 
     @Query("select new GpuEntity(gpu.id,gpu.itemcode,gpu.itemname,gpu.category_id) from GpuEntity gpu where gpu.brand_id=?1")
-    public List<GpuEntity> GpuItemList(String brandId);
+    public List<GpuEntity> GpuItemList(BrandEntity brandId);
     
     
 }

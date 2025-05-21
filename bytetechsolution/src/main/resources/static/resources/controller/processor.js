@@ -282,7 +282,7 @@ const refillProcessorForm = (ob, rowIndex) => {
     }
 
     selectItemStatus.addEventListener('change', () => {
-        if (prequest.purchasestatus_id.name == "Deleted") {
+        if (processor.itemstatus_id.name == "Deleted") {
             buttonDelete.disabled = true;
             buttonDelete.classList.remove('modal-btn-delete');
         } else {
@@ -571,7 +571,7 @@ const buttonProcessorUpdate = () => {
                     if (putServiceResponse == "OK") {
                         Swal.fire({
                             title: "Success!",
-                            text: "purchase request update successfully!",
+                            text: "Processor update successfully!",
                             icon: "success",
                             confirmButtonColor: "#B3C41C",
                             allowOutsideClick: false,
@@ -608,7 +608,7 @@ const buttonProcessorUpdate = () => {
         //show user to what errors happen
         Swal.fire({
             title: "Error!",
-            html: "Purchase Request Updation failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            html: "Processor Details Updation failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
             icon: "error",
             allowOutsideClick: false,
             allowEscapeKey: false,
@@ -623,7 +623,7 @@ const buttonProcessorUpdate = () => {
 const deletePocessor = (ob, rowIndex) => {
     Swal.fire({
         title: "Are you sure?",
-        text: `Do you want to delete following Processor? "  ${ob.itemcode}`,
+        html: `Do you want to delete following Processor? <br><br>  <b>${ob.itemname}<b>`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#103D45",

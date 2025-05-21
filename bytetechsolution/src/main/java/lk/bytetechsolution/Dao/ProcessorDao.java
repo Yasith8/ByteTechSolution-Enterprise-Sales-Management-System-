@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import lk.bytetechsolution.Entity.BrandEntity;
+import lk.bytetechsolution.Entity.CpuGenerationEntity;
+import lk.bytetechsolution.Entity.CpuSeriesEntity;
+import lk.bytetechsolution.Entity.CpuSocketEntity;
 import lk.bytetechsolution.Entity.ProcessorEntity;
 
 
@@ -25,5 +28,6 @@ public interface ProcessorDao extends JpaRepository<ProcessorEntity,Integer>{
 
     @Query(value="select new ProcessorEntity(p.id,p.itemcode,p.itemname,p.category_id,p.brand_id) from ProcessorEntity p where p.brand_id=?1")
     public List<ProcessorEntity> processorItemList(BrandEntity brandId);
+
     
 }

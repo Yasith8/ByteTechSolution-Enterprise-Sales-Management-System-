@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,7 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.MonitorDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.MonitorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -100,6 +102,12 @@ public class MonitorController {
 
         return daoMonitor.findAll();
     }
+
+    @GetMapping(value = "/monitor/{brandId}/itemlist", produces ="application/json" ) 
+    public List<MonitorEntity> MonitorItemList(@PathVariable("brandId") BrandEntity barndId) {
+        return daoMonitor.monitorItemList(barndId);
+    }
+
 
 
     @PostMapping(value = "/monitor")

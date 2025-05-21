@@ -184,7 +184,7 @@ public class QuotationRequestController {
         QuotationRequestEntity extQuotationRequest=daoQuotationRequest.getReferenceById(quotationrequest.getId());
 
         if(extQuotationRequest==null){
-            return "Delete not Completed.Supplier not exists";
+            return "Update not Completed.Supplier not exists";
         }
 
         //bug ask about duplicate thing that need to be unique
@@ -208,5 +208,50 @@ public class QuotationRequestController {
             return "Update not Completed."+e.getMessage();
         }
     }
+
+    //bug ask about the status cahnfin issue
+    /*    @PutMapping(value = "/quotationrequest/changestatus")
+    public String UpdateTheStatusOfQRequest(@RequestBody QuotationRequestEntity quotationrequest) {
+       
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"QUOTATION");
+
+        if(!userPrivilage.get("update")){
+            return "Permission Denied! Update not Completed";
+        }
+
+        //check existance
+        QuotationRequestEntity extQuotationRequest=daoQuotationRequest.getReferenceById(quotationrequest.getId());
+
+        if(extQuotationRequest==null){
+            return "Delete not Completed.Supplier not exists";
+        }
+
+       
+        try {
+            //asign update user
+            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            quotationrequest.setModifyuser(modifyUser.getId());
+
+            //assign update date
+            quotationrequest.setModifydate(LocalDateTime.now());
+
+            for(QuotationRequestItemEntitiy quotationRequestItem:quotationrequest.getQuotation_request_item()){
+                quotationRequestItem.setQuotation_request_id(quotationrequest);
+            }
+
+            for (QuotationRequestHasSupplierEntity quotationRequestSupplier:quotationrequest.getQuotation_request_has_supplier()){
+                quotationRequestSupplier.setQuotation_request_id(quotationrequest);
+                quotationRequestSupplier.setStatus(false);
+            }
+
+            //save the data
+            daoQuotationRequest.save(quotationrequest);
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed."+e.getMessage();
+        }
+    } */
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.PowerSupplyEntity;
 
 public interface PowerSupplyDao extends JpaRepository<PowerSupplyEntity,Integer>{
@@ -15,5 +16,5 @@ public interface PowerSupplyDao extends JpaRepository<PowerSupplyEntity,Integer>
     public String getNextPowerSupplyNumber();
 
     @Query(value="select new PowerSupplyEntity(p.id,p.itemcode,p.itemname,p.category_id) from PowerSupplyEntity p where p.brand_id=?1")
-    public List<PowerSupplyEntity> powersupplyItemList(String brandId);
+    public List<PowerSupplyEntity> powersupplyItemList(BrandEntity brandId);
 }

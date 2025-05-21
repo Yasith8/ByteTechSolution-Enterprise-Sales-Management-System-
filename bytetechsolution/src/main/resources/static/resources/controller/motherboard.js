@@ -151,7 +151,7 @@ const getItemStatus = (ob) => {
  */
 const refillMotherboardForm = (ob, rowIndex) => {
     $('#motherboardAddModal').modal('show');
-    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType])
+    removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType, selectInterface, selectMotherboardType, numberMaxCapacity])
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
@@ -238,8 +238,23 @@ const refillMotherboardForm = (ob, rowIndex) => {
         textMotherboardPhoto.textContent = motherboard.photoname;
     }
 
+    if (motherboard.itemstatus_id.name == 'Deleted') {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
 
-    inputFieldsHandler([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType], false);
+    selectItemStatus.addEventListener('change', () => {
+        if (motherboard.itemstatus_id.name == "Deleted") {
+            buttonDelete.disabled = true;
+            buttonDelete.classList.remove('modal-btn-delete');
+        } else {
+            buttonDelete.disabled = false;
+            buttonDelete.classList.add('modal-btn-delete');
+        }
+    })
+
+
+    inputFieldsHandler([numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType], false);
     buttonClear.classList.add('modal-btn-clear');
 
 
@@ -326,52 +341,79 @@ const buttonMotherboardSubmit = () => {
     let errors = checkMotherboardInputErrors();
 
     if (errors == "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to Add this Motherboard?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, Add it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
 
-        //check user response error
-        const userSubmitResponse = confirm('Are you sure to submit...?\n');
+                let postServiceResponce;
+
+                $.ajax("/motherboard", {
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(motherboard),
+                    async: false,
+
+                    success: function(data) {
+                        console.log("success", data);
+                        postServiceResponce = data;
+                    },
+
+                    error: function(resData) {
+                        console.log("Fail", resData);
+                        postServiceResponce = resData;
+                    }
+
+                });
 
 
-        if (userSubmitResponse) {
-            //call post service
-
-            let postServiceResponce;
-
-            $.ajax("/motherboard", {
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(motherboard),
-                async: false,
-
-                success: function(data) {
-                    console.log("success", data);
-                    postServiceResponce = data;
-                },
-
-                error: function(resData) {
-                    console.log("Fail", resData);
-                    postServiceResponce = resData;
+                if (postServiceResponce == "OK") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Motherboard Add Successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        //hide the model
+                        $('#motherboardAddModal').modal('hide');
+                        //reset the Item form
+                        formMotherboard.reset();
+                        //refreash Item form
+                        refreshMotherboardForm();
+                        //refreash Item table
+                        refreshMotherboardTable();
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        html: "Adding Motherboard to the system failed due to the following errors:<br>" + postServiceResponce,
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: "#F25454"
+                    });
                 }
-
-            });
-
-            //if response is success
-            if (postServiceResponce == "OK") {
-                alert("Save successfully...!");
-                //hide the model
-                $('#motherboardAddModal').modal('hide');
-                //reset the Item form
-                formMotherboard.reset();
-                //refreash Item form
-                refreshMotherboardForm();
-                //refreash Item table
-                refreshMotherboardTable();
-            } else {
-                alert("Fail to submit Motherboard form \n" + postServiceResponce);
             }
-        }
+        });
     } else {
-        //if error ext then set alert
-        alert('form has following error...\n' + errors);
+        Swal.fire({
+            title: "Error!",
+            html: "Adding Motherboard to the system failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
     }
 
 }
@@ -424,6 +466,12 @@ const checkMotherboardFormUpdates = () => {
     if (motherboard.interface_id.name != oldMotherboard.interface_id.name) {
         updates = updates + "Interface is Changed \n";
     }
+    if (motherboard.photo != oldMotherboard.photo) {
+        updates = updates + "Photo is Changed \n";
+    }
+    if (motherboard.photoname != oldMotherboard.photoname) {
+        updates = updates + "Photo Name is Changed \n";
+    }
 
     return updates;
 }
@@ -441,56 +489,95 @@ const buttonMotherboardUpdate = () => {
 
         //check there is no updates or any updations
         if (updates == "") {
-            alert("Nothing Updates")
+            Swal.fire({
+                title: "Nothing Updated",
+                text: "There are no any updates in Processor Form",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#103D45",
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
         } else {
 
-            //get conformation from user to made updation
-            let userConfirm = confirm("Are You Sure to Update this Changes? \n" + updates);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want to update Processor Details?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#103D45",
+                cancelButtonColor: "#F25454",
+                confirmButtonText: "Yes",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //call put service requestd  -this use for updations
+                    let putServiceResponse;
 
-            //if user conform
-            if (userConfirm) {
-                //call put service requestd  -this use for updations
-                let putServiceResponse;
-
-                $.ajax("/motherboard", {
-                    type: "PUT",
-                    async: false,
-                    contentType: "application/json",
-                    data: JSON.stringify(motherboard),
+                    $.ajax("/motherboard", {
+                        type: "PUT",
+                        async: false,
+                        contentType: "application/json",
+                        data: JSON.stringify(motherboard),
 
 
-                    success: function(successResponseOb) {
-                        putServiceResponse = successResponseOb;
-                    },
+                        success: function(successResponseOb) {
+                            putServiceResponse = successResponseOb;
+                        },
 
-                    error: function(failedResponseOb) {
-                        putServiceResponse = failedResponseOb;
+                        error: function(failedResponseOb) {
+                            putServiceResponse = failedResponseOb;
+                        }
+
+                    });
+
+                    if (putServiceResponse == "OK") {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Motherboard update successfully!",
+                            icon: "success",
+                            confirmButtonColor: "#B3C41C",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        }).then(() => {
+                            //hide the moadel
+                            $('#motherboardAddModal').modal('hide');
+                            //refreash Item table for realtime updation
+                            refreshMotherboardTable();
+                            //reset the Item form
+                            formMotherboard.reset();
+                            //Item form refresh
+                            refreshMotherboardForm();
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            html: "Motherboard Information updation failed due to the following errors:<br>" + putServiceResponse,
+                            icon: "error",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            confirmButtonColor: "#F25454"
+                        });
+                        //refreash the employee form
+                        refreshMotherboardForm();
+
                     }
 
-                });
-                //check put service response
-                if (putServiceResponse == "OK") {
-                    alert("Updated Successfully");
-
-                    //hide the moadel
-                    $('#motherboardAddModal').modal('hide');
-                    //refreash Item table for realtime updation
-                    refreshMotherboardTable();
-                    //reset the Item form
-                    formMotherboard.reset();
-                    //Item form refresh
-                    refreshMotherboardForm();
-                } else {
-                    //handling errors
-                    alert("Update not Completed :\n" + putServiceResponse);
-                    //refreash the employee form
-                    refreshMotherboardForm();
                 }
-            }
+            })
         }
     } else {
         //show user to what errors happen
-        alert("Motherboard Form  has Following Errors..\n" + errors)
+        Swal.fire({
+            title: "Error!",
+            html: "Motherboard Details Updation failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
     }
 
 
@@ -498,57 +585,90 @@ const buttonMotherboardUpdate = () => {
 
 
 const deleteMotherboard = (ob, rowIndex) => {
-    //user conformation
-    let userConform = confirm("Are you sure  to delete following Motherboard? " + ob.itemname);
+    Swal.fire({
+        title: "Are you sure?",
+        html: `Do you want to delete following Motherboard? <br><br>  <b>${ob.itemname}</b>`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let deleteServiceResponse;
 
-    //if ok
-    if (userConform) {
-        let deleteServiceResponse;
+            //ajax request fot delete data
+            $.ajax("/mmotherboard", {
+                type: "DELETE",
+                contentType: "application/json",
+                data: JSON.stringify(ob),
+                async: false,
 
-        //ajax request fot delete data
-        $.ajax("/mmotherboard", {
-            type: "DELETE",
-            contentType: "application/json",
-            data: JSON.stringify(ob),
-            async: false,
+                success: function(data) {
+                    deleteServiceResponse = data
+                },
 
-            success: function(data) {
-                deleteServiceResponse = data
-            },
+                error: function(errData) {
+                    deleteServiceResponse = errData;
+                }
+            })
 
-            error: function(errData) {
-                deleteServiceResponse = errData;
+            if (deleteServiceResponse == "OK") {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Motherboard Information Deleted Successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    $('#motherboardAddModal').modal('hide');
+                    refreshMotherboardTable()
+                })
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    html: "Motherboard Deletion failed due to the following errors:<br>" + deleteServiceResponse,
+                    icon: "error",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: "#F25454"
+                });
             }
-        })
-
-        //if delete response ok alert the success message and close the modal and refreash item table
-        //so because of that we can see realtime update
-        if (deleteServiceResponse == "OK") {
-            alert("Delete Successfullly");
-            $('#motherboardAddModal').modal('hide');
-            refreshMotherboardTable()
-        } else {
-            console.log("system has following errors:\n" + deleteServiceResponse);
         }
-    }
+    })
 }
 
 
 const buttonModalClose = () => {
-    const closeResponse = confirm('Are you sure to close the modal?')
 
-    //check closeResponse is true or false
-    if (closeResponse) {
-        $('#motherboardAddModal').modal('hide');
+    Swal.fire({
+        title: "Are you sure to close the form?",
+        text: "If you close this form, filled data will be removed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Close",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+            $('#motherboardAddModal').modal('hide');
 
 
-        //formItem is id of form
-        //this will reset all data(refreash)
-        formMotherboard.reset();
-        divModifyButton.className = 'd-none';
+            //formItem is id of form
+            //this will reset all data(refreash)
+            formMotherboard.reset();
+            divModifyButton.className = 'd-none';
 
-        refreshMotherboardForm();
-    }
+            refreshMotherboardForm();
+        }
+    });
 }
 
 const processorPictureRemove = () => {

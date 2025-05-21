@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.StorageEntity;
 
 
@@ -23,6 +24,6 @@ public interface StorageDao extends JpaRepository<StorageEntity,Integer>{
 
     
     @Query(value="select new StorageEntity(s.id,s.itemcode,s.itemname,s.category_id) from StorageEntity s where s.brand_id=?1")
-    public List<StorageEntity> storageItemList(String brandId);
+    public List<StorageEntity> storageItemList(BrandEntity brandId);
     
 }

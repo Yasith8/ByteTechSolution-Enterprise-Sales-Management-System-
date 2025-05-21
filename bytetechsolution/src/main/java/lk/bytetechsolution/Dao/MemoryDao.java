@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.MemoryEntity;
 
 public interface MemoryDao extends JpaRepository<MemoryEntity, Integer> {
@@ -16,6 +17,6 @@ public interface MemoryDao extends JpaRepository<MemoryEntity, Integer> {
     public String getNextMemNumber();
 
     @Query(value="select new MemoryEntity(m.id,m.itemcode,m.itemname,m.category_id) from MemoryEntity m where m.brand_id=?1")
-    public List<MemoryEntity> memoryItemList(String brandId);
+    public List<MemoryEntity> memoryItemList(BrandEntity brandId);
 
 }

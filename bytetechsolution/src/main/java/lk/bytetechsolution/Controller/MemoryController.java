@@ -29,7 +29,7 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.MemoryDao;
 import lk.bytetechsolution.Dao.UserDao;
-
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.MemoryEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -103,7 +103,7 @@ public class MemoryController {
     }
 
     @GetMapping(value = "/memory/{brandId}/itemlist", produces ="application/json" ) 
-    public List<MemoryEntity> MemoryItemList(@PathVariable("brandId") String barndId) {
+    public List<MemoryEntity> MemoryItemList(@PathVariable("brandId") BrandEntity barndId) {
         return daoMemory.memoryItemList(barndId);
     }
 

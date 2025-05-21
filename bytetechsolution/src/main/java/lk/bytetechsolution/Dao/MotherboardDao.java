@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.MotherboardEntity;
 
 public interface MotherboardDao extends JpaRepository<MotherboardEntity,Integer>{
@@ -16,6 +17,6 @@ public interface MotherboardDao extends JpaRepository<MotherboardEntity,Integer>
     String getNextMotherboardNumber();
 
     @Query(value="select new MotherboardEntity(m.id,m.itemcode,m.itemname,m.category_id) from MotherboardEntity m where m.brand_id=?1")
-    List<MotherboardEntity> motherboardItemList(String brandId);
+    List<MotherboardEntity> motherboardItemList(BrandEntity brandId);
     
 }
