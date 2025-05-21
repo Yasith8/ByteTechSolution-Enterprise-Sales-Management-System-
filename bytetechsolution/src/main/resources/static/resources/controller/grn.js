@@ -68,6 +68,8 @@ const refeshInnerGrnFormAndTable = () => {
     grnItem = new Object();
     oldGrnItem = null;
     serialNumbersData = new Array();
+    serialNoWithDetails = new Object();
+    serialNoList = new Array();
 
     numberQuantity.addEventListener('input', () => {
         const newQty = parseInt(numberQuantity.value);
@@ -90,9 +92,8 @@ const refeshInnerGrnFormAndTable = () => {
         //grn.selectItemName_id = null;
         removeValidationColor([selectPRItemName]);
         const purchaseRequestedItem = selectValueHandler(selectPurchaseRequest);
-        console.log("grn", purchaseRequestedItem)
         fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", purchaseRequestedItem.purchase_request_item, "itemcode", "itemname")
-        console.log("selected   Irem name", purchaseRequestedItem.purchase_request_item)
+
 
     })
 
@@ -101,6 +102,8 @@ const refeshInnerGrnFormAndTable = () => {
         grnItem.itemname = selectedItemName.itemname
         grnItem.itemcode = selectedItemName.itemcode
 
+
+        grnItem.category_id = selectedItemName.category_id;
         numberQuantity.value = selectedItemName.quantity;
         const maxQty = selectedItemName.quantity;
         const qtyPattern = generateRangeRegex(maxQty);
@@ -219,7 +222,15 @@ const checkInnerItemFormErrors = () => {
 }
 
 const innerSupplierProductAdd = () => {
+    //destructure the pr irem code for remove itemname_id
+    const { itemname_id, ...rest } = grnItem;
+    updatedGRNItem = rest;
+    serialNumbersData.forEach(seialNo => {
+        const { category_id, itemcode, itemname, purchaseprice, ...rest } = updatedGRNItem;
+        serialNoWithDetails = { category_id: category_id, itemcode: itemcode, itemname: itemname, status: true, serialno: seialNo }
+        serialNoList.push(serialNoWithDetails)
+    })
     console.log("GRN", grn)
-    console.log("GRN ITEM", grnItem)
-    console.log("SERIAL NO LIST", serialNumbersData)
+    console.log("GRN ITEM", updatedGRNItem)
+    console.log("SERIAL NO LIST", serialNoList)
 }

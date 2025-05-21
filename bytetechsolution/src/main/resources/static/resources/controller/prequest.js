@@ -148,6 +148,9 @@ const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
         purchaseRequestItem.itemname = selectedItemName.itemname
         purchaseRequestItem.itemcode = selectedItemName.itemcode
 
+        console.log("Selected urem", selectedItemName)
+
+        purchaseRequestItem.category_id = selectedItemName.category_id
         numberQuantity.value = selectedItemName.quantity;
         decimalItemPrice.value = selectedItemName.unitprice;
         textValidator(numberQuantity, '^(100|[1-9][0-9]?)$', 'purchaseRequestItem', 'quantity');
