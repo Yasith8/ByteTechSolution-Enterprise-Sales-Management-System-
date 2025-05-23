@@ -143,6 +143,16 @@ const refeshInnerGrnFormAndTable = () => {
     });
 
     //table
+    //inner table
+    let displayPropertyList = [
+        { dataType: 'text', propertyName: "itemcode" },
+        { dataType: 'text', propertyName: "itemname" },
+        { dataType: 'text', propertyName: "purchaseprice" },
+        { dataType: 'text', propertyName: "quantity" },
+        { dataType: 'text', propertyName: "lineprice" },
+    ]
+
+    fillDataIntoInnerTable(innerSupplierTable, grn.grn_item, displayPropertyList, refillInnerGRNItemForm, deleteInnerGRNItemForm)
 }
 
 const refillGrnForm = () => {
@@ -208,6 +218,13 @@ const getGRNStatus = (ob) => {
 
 }
 
+const refillInnerGRNItemForm = (ob, rowIndex) => {
+
+}
+const deleteInnerGRNItemForm = (ob, rowIndex) => {
+
+}
+
 const checkInnerItemFormErrors = () => {
     let errors = ""
 
@@ -217,20 +234,86 @@ const checkInnerItemFormErrors = () => {
     if (grnItem.quantity == null) {
         errors += "Quantity is required.\n"
     }
+    if (serialNoList.length != grnItem.quantity) {
+        errors += "All the Serial Numbers filling is required.\n"
+    }
 
     return errors;
 }
 
 const innerSupplierProductAdd = () => {
+    //itemdata
     //destructure the pr irem code for remove itemname_id
     const { itemname_id, ...rest } = grnItem;
     updatedGRNItem = rest;
     serialNumbersData.forEach(seialNo => {
         const { category_id, itemcode, itemname, purchaseprice, ...rest } = updatedGRNItem;
+        let items = getServiceAjaxRequest(`/${(category_id.name).toLowerCase()}/alldata`);
+        let profitRate = items.filter((item) => itemcode == item.itemcode).profitrate;
+        console.log("Category DATA", profitRate)
         serialNoWithDetails = { category_id: category_id, itemcode: itemcode, itemname: itemname, status: true, serialno: seialNo }
         serialNoList.push(serialNoWithDetails)
     })
     console.log("GRN", grn)
     console.log("GRN ITEM", updatedGRNItem)
     console.log("SERIAL NO LIST", serialNoList)
+
+    let errors = checkInnerItemFormErrors();
+
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to assign this product to the GRN?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, assign it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                grn.grn_item.push(updatedGRNItem);
+                console.log("GRN--->GRN Items", grn.grn_item);
+                grn.serial_no_list.push(serialNoList);
+                console.log("GRN--->sERIAL NO List", grn.serial_no_list);
+
+                /* let totalAmount = 0;
+                prequest.purchase_request_item.forEach(item => {
+                    totalAmount += parseFloat(item.linetotal);
+                });
+                decimalTotalAmount.value = totalAmount;
+                prequest.totalamount = totalAmount; */
+
+                Swal.fire({
+                    title: "Success!",
+                    text: "Items assigned to the GRN successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    refeshInnerGrnFormAndTable();
+                    //purchaseItemForm.reset();
+                    /*  document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
+                         btn.classList.remove('custom-disabled');
+                     });
+
+                     document.querySelectorAll('.inner-edit-button').forEach((btn) => {
+                         btn.classList.remove('custom-disabled');
+                     }); */
+                });
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "Error!",
+            html: "Item assignment failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
+    }
+
 }

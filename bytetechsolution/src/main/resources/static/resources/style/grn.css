@@ -111,3 +111,24 @@ body {
     max-height: 300px;
     overflow-y: auto;
 }
+
+#innerSupplierTable {
+    border: 1px solid #103D45;
+    border-radius: 5px;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#innerSupplierTable thead {
+    background-color: #00B69B;
+    color: white;
+}
+
+#innerSupplierTable thead tr th:first-child {
+    border-top-left-radius: 5px;
+}
+
+#innerSupplierTable thead tr th:last-child {
+    border-top-right-radius: 5px;
+}
