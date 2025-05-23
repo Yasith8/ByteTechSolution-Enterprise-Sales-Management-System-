@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 /*
 * implemented mapping to available for use  
@@ -99,6 +100,23 @@ public class CasingController {
 
 
         return daoCasing.findAll();
+    }
+
+      @GetMapping(value = "/casing/filteritem", produces = "application/json")
+    public List<CasingEntity> allFilterCasingData(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "itemcode", required = false) String itemcode,
+            @RequestParam(value = "warranty", required = false) Integer warranty,
+            @RequestParam(value = "casematerial_id", required = false) Integer casematerialId,
+            @RequestParam(value = "casecolor_id", required = false) Integer casecolorId,
+            @RequestParam(value = "motherboardformfactor_id", required = false) Integer motherboardformfactorId,
+            @RequestParam(value = "width", required = false) Integer width,
+            @RequestParam(value = "width", required = false) Integer depth,
+            @RequestParam(value = "width", required = false) Integer height,
+            @RequestParam(value = "brand_id", required = false) Integer BrandId
+            ) {
+
+        return daoCasing.filterItemList(id, itemcode, warranty,casematerialId,casecolorId,motherboardformfactorId,width,depth,height,BrandId);
     }
 
     @GetMapping(value="/casing/{brandId}/itemlist",produces="application/json")

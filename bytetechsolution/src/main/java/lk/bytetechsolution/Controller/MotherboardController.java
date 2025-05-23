@@ -103,7 +103,7 @@ public class MotherboardController {
     }
 
     @GetMapping(value = "/motherboard/filteritem", produces = "application/json")
-    public List<MotherboardEntity> allFilterProcessorData(
+    public List<MotherboardEntity> allFilterMotherboardData(
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam(value = "itemcode", required = false) String itemcode,
             @RequestParam(value = "warranty", required = false) Integer warranty,
