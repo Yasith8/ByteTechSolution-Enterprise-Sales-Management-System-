@@ -11,8 +11,10 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.GRNDao;
 import lk.bytetechsolution.Dao.GRNStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.CategoryEntity;
 import lk.bytetechsolution.Entity.GRNEntity;
 import lk.bytetechsolution.Entity.GRNItemEntity;
+import lk.bytetechsolution.Entity.SerialNoListEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,6 +107,14 @@ public class GRNController {
 
             for(GRNItemEntity grnitem:grn.getGrn_item()){
                 grnitem.setGrn_id((grn));
+            }
+
+            for(SerialNoListEntity serialNoList:grn.getSerial_no_list()){
+                serialNoList.setGrn_id((grn));
+                //category value get
+                serialNoList.getCategory_id();
+                //itemid
+                serialNoList.getItemcode();
             }
 
             daoGRN.save(grn);

@@ -98,5 +98,8 @@ public class GRNEntity {
     @OneToMany(mappedBy = "grn_id",cascade = CascadeType.ALL,orphanRemoval=true)
     private List<GRNItemEntity> grn_item;
 
+     @OneToMany(mappedBy = "grn_id",cascade = CascadeType.ALL,orphanRemoval=true)
+    private List<SerialNoListEntity> serial_no_list;
+
 
 }

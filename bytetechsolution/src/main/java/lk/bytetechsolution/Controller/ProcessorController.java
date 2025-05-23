@@ -1,6 +1,5 @@
 package lk.bytetechsolution.Controller;
 
-
 import java.util.*;
 import java.time.*;
 
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 /*
 * implemented mapping to available for use  
@@ -32,11 +32,13 @@ import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.CpuGenerationEntity;
 import lk.bytetechsolution.Entity.CpuSeriesEntity;
 import lk.bytetechsolution.Entity.CpuSocketEntity;
+import lk.bytetechsolution.Entity.CpuSuffixEntity;
 import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
+
 @RestController
 public class ProcessorController {
- /* 
+    /*
      * AutoWired used for automatic dependency injection
      * inject memorytype Instance into dao variable
      * the method can use dao for save,retrive,maipulate motherboardformfactor data
@@ -60,194 +62,219 @@ public class ProcessorController {
     private PrivilageController privilageController;
 
     @RequestMapping(value = "/processor")
-    public ModelAndView processorUI(){
-         //get logged user authentication object using security
-        // this help to retrieve the current authentication object which holds the user detail
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+    public ModelAndView processorUI() {
+        // get logged user authentication object using security
+        // this help to retrieve the current authentication object which holds the user
+        // detail
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        //get current log user
-        UserEntity loggedUser=daoUser.getByUsername(authentication.getName());
+        // get current log user
+        UserEntity loggedUser = daoUser.getByUsername(authentication.getName());
 
-        //current loggedemployee
-        String loggedEmployee=daoEmployee.getFullnameById(loggedUser.getId());
+        // current loggedemployee
+        String loggedEmployee = daoEmployee.getFullnameById(loggedUser.getId());
 
         // Create a new ModelAndView object to hold the model data and view information
-        ModelAndView processorView=new ModelAndView();
-        //pass the ui
+        ModelAndView processorView = new ModelAndView();
+        // pass the ui
         processorView.setViewName("processor.html");
-        //attributes set to show titles in web page using theamleaf
+        // attributes set to show titles in web page using theamleaf
         processorView.addObject("title", "Processor Management || Bytetech Solution");
         processorView.addObject("user", authentication.getName());// passing logged user name
         processorView.addObject("EmpName", loggedEmployee);
-        processorView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
+        processorView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());// get the first role
         processorView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
 
         return processorView;
 
     }
-    
-    @GetMapping(value = "/processor/alldata", produces ="application/json" ) 
+
+    @GetMapping(value = "/processor/alldata", produces = "application/json")
     public List<ProcessorEntity> allProcessorData() {
 
-        //authentication and autherization
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
+        // authentication and autherization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "ITEM");
 
-
-        //if current logged user doesnt have privilages show empty list
-        if(!userPrivilage.get("select")){
+        // if current logged user doesnt have privilages show empty list
+        if (!userPrivilage.get("select")) {
             return new ArrayList<ProcessorEntity>();
         }
-
 
         return daoProcessor.findAll();
     }
 
-    @GetMapping(value = "/processor/{brandId}/itemlist", produces ="application/json" ) 
+    @GetMapping(value = "/processor/filteritem", produces = "application/json")
+    public List<ProcessorEntity> allFilterProcessorData(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "itemcode", required = false) String itemcode,
+            @RequestParam(value = "warranty", required = false) Integer warranty,
+            @RequestParam(value = "totalcore", required = false) Integer totalcore,
+            @RequestParam(value = "cache", required = false) Integer cache,
+            @RequestParam(value = "cpuseries_id", required = false) Integer cpuseriesId,
+            @RequestParam(value = "cpugeneration_id", required = false) Integer cpugenerationId,
+            @RequestParam(value = "cpusocket_id", required = false) Integer cpusocketId,
+            @RequestParam(value = "cpusuffix_id", required = false) Integer cpusuffixId,
+            @RequestParam(value = "brand_id", required = false) Integer BrandId
+            ) {
+
+        return daoProcessor.filterItemList(id, itemcode, warranty, totalcore, cache,
+                cpuseriesId, cpugenerationId, cpusocketId, cpusuffixId,BrandId);
+    }
+
+    @GetMapping(value = "/processor/{brandId}/itemlist", produces = "application/json")
     public List<ProcessorEntity> ProcessorItemList(@PathVariable("brandId") BrandEntity brandId) {
         return daoProcessor.processorItemList(brandId);
     }
 
-  /*    @GetMapping(value = "/processor/{brandId}/{cpusocketId}/{cpuseriesId}/{cpugenerationId}/{cpusuffixId}/{cache}/{core}", produces ="application/json" ) 
-    public List<ProcessorEntity> ProcessorItemFilter(@PathVariable("brandId") BrandEntity brandId,@PathVariable("cpusocketId") CpuSocketEntity cpusocketId,@PathVariable("cpuseriesId") CpuSeriesEntity cpuseriesId,@PathVariable("cpugenerationId") CpuGenerationEntity cpugenerationId,@PathVariable("cpusuffixId") CpuGenerationEntity cpusuffixId,@PathVariable("cache") Integer cache,@PathVariable("core") Integer core) {
-        return daoProcessor.processorInventoryItemList(brandId,cpusocketId,cpuseriesId,cpugenerationId,cpusuffixId,cache,core);
-    } */
-
+    /*
+     * @GetMapping(value =
+     * "/processor/{brandId}/{cpusocketId}/{cpuseriesId}/{cpugenerationId}/{cpusuffixId}/{cache}/{core}",
+     * produces ="application/json" )
+     * public List<ProcessorEntity> ProcessorItemFilter(@PathVariable("brandId")
+     * BrandEntity brandId,@PathVariable("cpusocketId") CpuSocketEntity
+     * cpusocketId,@PathVariable("cpuseriesId") CpuSeriesEntity
+     * cpuseriesId,@PathVariable("cpugenerationId") CpuGenerationEntity
+     * cpugenerationId,@PathVariable("cpusuffixId") CpuGenerationEntity
+     * cpusuffixId,@PathVariable("cache") Integer cache,@PathVariable("core")
+     * Integer core) {
+     * return
+     * daoProcessor.processorInventoryItemList(brandId,cpusocketId,cpuseriesId,
+     * cpugenerationId,cpusuffixId,cache,core);
+     * }
+     */
 
     @PostMapping(value = "/processor")
-    public String addProcessorData(@RequestBody ProcessorEntity processor){
+    public String addProcessorData(@RequestBody ProcessorEntity processor) {
 
-        //Authentication and Autherization
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
+        // Authentication and Autherization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "ITEM");
 
-        if(!userPrivilage.get("insert")){
+        if (!userPrivilage.get("insert")) {
             return "Permission Denied! Save not Completed";
         }
 
-        //Check any Duplications
-        ProcessorEntity extProcessorName=daoProcessor.getByProcessorName(processor.getItemname());
+        // Check any Duplications
+        ProcessorEntity extProcessorName = daoProcessor.getByProcessorName(processor.getItemname());
 
-        if(extProcessorName!=null){
-            return "Save not Completed : given Name - "+processor.getItemname()+" Already Exist...!";
+        if (extProcessorName != null) {
+            return "Save not Completed : given Name - " + processor.getItemname() + " Already Exist...!";
         }
 
-
-
-
         try {
-            //set AutoGenarated Value
-            String nextNumber=daoProcessor.getNextProcessorNumber();
+            // set AutoGenarated Value
+            String nextNumber = daoProcessor.getNextProcessorNumber();
 
-            //if next employee number is not come then set manualy last number+1
-            if(nextNumber==null){
+            // if next employee number is not come then set manualy last number+1
+            if (nextNumber == null) {
                 processor.setItemcode("CPU0001");
-            }else{
+            } else {
                 processor.setItemcode(nextNumber);
             }
 
-            //assign added user id
-            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
-            //because of security reason only add user id
+            // assign added user id
+            UserEntity addedUserData = daoUser.getByUsername(authentication.getName());
+            // because of security reason only add user id
             processor.setAddeduser(addedUserData.getId());
 
-            //assign added date
+            // assign added date
             processor.setAddeddate(LocalDateTime.now());
 
-            //assign category
+            // assign category
             processor.setCategory_id(daoCategory.getReferenceById(1));
-            
-            //saving operation 
+
+            // saving operation
             daoProcessor.save(processor);
-            //return the message about success
+            // return the message about success
             return "OK";
         } catch (Exception e) {
-            return "Save not Completed : "+e.getMessage();
+            return "Save not Completed : " + e.getMessage();
         }
     }
 
-
     @DeleteMapping(value = "/processor")
-    public String deleteProcessorData(@RequestBody ProcessorEntity processor){
-        //Authentication and Autherization
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
+    public String deleteProcessorData(@RequestBody ProcessorEntity processor) {
+        // Authentication and Autherization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "ITEM");
 
-        if(!userPrivilage.get("delete")){
+        if (!userPrivilage.get("delete")) {
             return "Permission Denied! Delete not Completed";
         }
 
-        //existance check
-        ProcessorEntity extProcessor=daoProcessor.getReferenceById(processor.getId());
+        // existance check
+        ProcessorEntity extProcessor = daoProcessor.getReferenceById(processor.getId());
 
-        if(extProcessor==null){
+        if (extProcessor == null) {
             return "Delete not Completed. Processor not existed";
         }
-        
+
         try {
 
-            //assign modify user
-            UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
+            // assign modify user
+            UserEntity deleteUser = daoUser.getByUsername(authentication.getName());
             processor.setDeleteuser(deleteUser.getId());
 
-            //asign modify time
+            // asign modify time
             processor.setDeletedate(LocalDateTime.now());
 
-            //processor status change as soft delete
+            // processor status change as soft delete
             processor.setItemstatus_id(daoItemStatus.getReferenceById(3));
 
-            //save operation
+            // save operation
             daoProcessor.save(processor);
-            
+
             return "OK";
         } catch (Exception e) {
-            return "Update not Completed : "+e.getMessage();
+            return "Update not Completed : " + e.getMessage();
         }
-
 
     }
 
-
-    
     @PutMapping(value = "/processor")
-    public String updateProcessorData(@RequestBody ProcessorEntity processor){
-        //authentication and autherization
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "ITEM");
+    public String updateProcessorData(@RequestBody ProcessorEntity processor) {
+        // authentication and autherization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "ITEM");
 
-        if(!userPrivilage.get("update")){
+        if (!userPrivilage.get("update")) {
             return "Permission Denied. Update not completed.";
         }
 
-        //existance check
-        ProcessorEntity extProcessor=daoProcessor.getReferenceById(processor.getId());
+        // existance check
+        ProcessorEntity extProcessor = daoProcessor.getReferenceById(processor.getId());
 
-        if(extProcessor==null){
+        if (extProcessor == null) {
             return "Update not Completed. Processor not existed";
         }
-        
-        //check duplicate
-        ProcessorEntity extProcessorName=daoProcessor.getByProcessorName(processor.getItemname());
 
-        if(extProcessorName==null && extProcessorName.getId()!=processor.getId()){
-            return "Update is not Completed : this "+processor.getItemname()+" Item Name is already existed.";
+        // check duplicate
+        ProcessorEntity extProcessorName = daoProcessor.getByProcessorName(processor.getItemname());
+
+        if (extProcessorName == null && extProcessorName.getId() != processor.getId()) {
+            return "Update is not Completed : this " + processor.getItemname() + " Item Name is already existed.";
         }
-        
+
         try {
 
-            //assign modify user
-            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            // assign modify user
+            UserEntity modifyUser = daoUser.getByUsername(authentication.getName());
             processor.setModifyuser(modifyUser.getId());
 
-            //asign modify time
+            // asign modify time
             processor.setModifydate(LocalDateTime.now());
 
-            //save operation
+            // save operation
             daoProcessor.save(processor);
-            
+
             return "OK";
         } catch (Exception e) {
-            return "Update not Completed : "+e.getMessage();
+            return "Update not Completed : " + e.getMessage();
         }
     }
 }
