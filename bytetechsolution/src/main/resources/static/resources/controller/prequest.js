@@ -598,7 +598,7 @@ const submitPrequest = () => {
     } else {
         Swal.fire({
             title: "Error!",
-            html: "Sending Purchase Request failed due to the following errors:<br>" + errors,
+            html: "Sending Purchase Request failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
             icon: "error",
             allowOutsideClick: false,
             allowEscapeKey: false,
@@ -725,7 +725,7 @@ const updatePrequest = () => {
     } else {
         Swal.fire({
             title: "Error!",
-            html: "Purchase Request Updation failed due to the following errors:<br>" + errors,
+            html: "Purchase Request Updation failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
             icon: "error",
             allowOutsideClick: false,
             allowEscapeKey: false,

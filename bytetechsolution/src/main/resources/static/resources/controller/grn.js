@@ -155,7 +155,7 @@ const refeshInnerGrnFormAndTable = () => {
     fillDataIntoInnerTable(innerSupplierTable, grn.grn_item, displayPropertyList, refillInnerGRNItemForm, deleteInnerGRNItemForm)
 }
 
-const refillGrnForm = () => {
+const refillGrnForm = (ob, rowIndex) => {
 
 }
 
@@ -248,10 +248,12 @@ const innerSupplierProductAdd = () => {
     updatedGRNItem = rest;
     serialNumbersData.forEach(seialNo => {
         const { category_id, itemcode, itemname, purchaseprice, ...rest } = updatedGRNItem;
-        let items = getServiceAjaxRequest(`/${(category_id.name).toLowerCase()}/alldata`);
-        let profitRate = items.filter((item) => itemcode == item.itemcode).profitrate;
-        console.log("Category DATA", profitRate)
-        serialNoWithDetails = { category_id: category_id, itemcode: itemcode, itemname: itemname, status: true, serialno: seialNo }
+        let currentItem = getServiceAjaxRequest(`/${(category_id.name).toLowerCase()}/filteritem?itemcode=${itemcode}`);
+        console.log("Current Item DATA", currentItem[0].profitrate)
+        let purchasePrice = parseFloat(purchaseprice);
+        let profitRate = currentItem[0].profitrate;
+        let salesprice = (profitRate / 100) * purchasePrice + purchasePrice;
+        serialNoWithDetails = { category_id: category_id, itemcode: itemcode, itemname: itemname, status: true, serialno: seialNo, salesprice: salesprice }
         serialNoList.push(serialNoWithDetails)
     })
     console.log("GRN", grn)
@@ -317,3 +319,105 @@ const innerSupplierProductAdd = () => {
     }
 
 }
+
+const formGrnInputErrors = () => {
+    let errors = "";
+    if (grn.purchaserequest_id == null) {
+        errors += "Purchase Request need to be selected.\n";
+        selectPurchaseRequest.classList.add("is-invalid");
+    }
+    if (grn.grnstatus_id == null) {
+        errors += "GRN Status need to be selected.\n";
+        selectGRNStatus.classList.add("is-invalid");
+    }
+    if (grn.discountrate == null) {
+        errors += "Discount Rate should be filled.\n";
+        numberDiscountRate.classList.add("is-invalid");
+    }
+    if (grn.reciveddate == null) {
+        errors += "Recived Date should be filled.\n";
+        dateRecivedDate.classList.add("is-invalid");
+    }
+    if (grn.grn_item.length == 0) {
+        errors += "Atleaset add one item to table.\n";
+    }
+
+    return errors;
+}
+
+const submitGRN = () => {
+    console.log(grn);
+    let errors = formGrnInputErrors();
+
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to Add this GRN?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, Add it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let postServiceResponce;
+
+                $.ajax("/grn", {
+                    type: "POST",
+                    data: JSON.stringify(grn),
+                    contentType: "application/json",
+                    async: false,
+
+                    success: function(data) {
+                        console.log("success", data);
+                        postServiceResponce = data;
+                    },
+
+                    error: function(resData) {
+                        console.log("Fail", resData);
+                        postServiceResponce = resData;
+                    }
+                })
+
+                if (postServiceResponce == "OK") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "GRN Added Successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        $('#grnAddModal').modal('hide');
+                        //reset the Item form
+                        formGRN.reset();
+                        refreshGrnForm();
+                        refreshGrnTable();
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        html: "Adding GRN failed due to the following errors:<br>" + postServiceResponce,
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: "#F25454"
+                    });
+                }
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "Error!",
+            html: "Adding GRN failed due to the following errors:<br>" + errors,
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
+    }
+}
+const updateGRN = () => {}
+const clearGRN = () => {}
