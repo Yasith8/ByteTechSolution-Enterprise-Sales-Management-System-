@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 /*
 * implemented mapping to available for use  
@@ -100,6 +101,23 @@ public class GpuController {
 
 
         return daoGpu.findAll();
+    }
+
+        @GetMapping(value = "/gpu/filteritem", produces = "application/json")
+    public List<GpuEntity> allFilterProcessorData(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "itemcode", required = false) String itemcode,
+            @RequestParam(value = "warranty", required = false) Integer warranty,
+            @RequestParam(value = "motherboardformfactor_id", required = false) Integer motherboardformfactorId,
+            @RequestParam(value = "interface_id", required = false) Integer interfaceId,
+            @RequestParam(value = "gpuchipset_id", required = false) Integer gpuchipsetId,
+            @RequestParam(value = "gpuseries_id", required = false) Integer gpuseriesId,
+            @RequestParam(value = "gputype_id", required = false) Integer gputypeId,
+            @RequestParam(value = "capacity_id", required = false) Integer capacityId,
+            @RequestParam(value = "brand_id", required = false) Integer BrandId
+            ) {
+
+        return daoGpu.filterItemList(id, itemcode, warranty,motherboardformfactorId,interfaceId,gpuchipsetId,gpuseriesId,gputypeId,capacityId,BrandId);
     }
 
     @GetMapping(value = "/gpu/{brandId}/itemlist",produces = "application/json")
@@ -200,6 +218,7 @@ public class GpuController {
 
     }
 
+ 
     @PutMapping(value = "/gpu")
     public String updateGpuData(@RequestBody GpuEntity gpu){
         //authentication and autherization

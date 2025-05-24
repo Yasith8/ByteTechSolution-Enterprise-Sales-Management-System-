@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.CoolerEntity;
+import lk.bytetechsolution.Entity.ProcessorEntity;
 
 /* 
  * CoolerDao extended from jparepository
@@ -22,4 +23,7 @@ public interface CoolerDao extends JpaRepository<CoolerEntity,Integer>{
 
     @Query("select new CoolerEntity(c.id,c.itemcode,c.itemname,c.category_id) from CoolerEntity c where c.brand_id=?1")
     public List<CoolerEntity> coolerItemList(BrandEntity brandId);
+
+     @Query(value="SELECT * FROM bytetechsolution.cooler clr WHERE " +"(?1 IS NULL OR clr.id = ?1) AND " +"(?2 IS NULL OR clr.itemcode = ?2) AND " +"(?3 IS NULL OR clr.warranty = ?3) AND " +"(?4 IS NULL OR clr.cpusocket_id = ?4) AND " +"(?5 IS NULL OR clr.coolertype_id = ?5) AND "  +"(?6 IS NULL OR clr.brand_id = ?6)",nativeQuery=true)
+    public List<CoolerEntity> filterItemList(Integer id, String itemcode, Integer warranty,Integer cpusocketId,Integer coolertypeId,Integer brandId);
 }

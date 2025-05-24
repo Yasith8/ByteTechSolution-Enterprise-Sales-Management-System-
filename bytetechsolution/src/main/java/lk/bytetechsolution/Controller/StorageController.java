@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 /*
 * implemented mapping to available for use  
@@ -29,6 +30,7 @@ import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.StorageDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.BrandEntity;
+import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.StorageEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -100,6 +102,20 @@ public class StorageController {
 
 
         return daoStorage.findAll();
+    }
+
+     @GetMapping(value = "/storage/filteritem", produces = "application/json")
+    public List<StorageEntity> allFilterStorageData(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "itemcode", required = false) String itemcode,
+            @RequestParam(value = "warranty", required = false) Integer warranty,
+            @RequestParam(value = "storageinterface_id", required = false) Integer storageinterfaceId,
+            @RequestParam(value = "storagetype_id", required = false) Integer storagetypeId,
+            @RequestParam(value = "capacity_id", required = false) Integer capacityId,
+            @RequestParam(value = "brand_id", required = false) Integer BrandId
+            ) {
+
+        return daoStorage.filterItemList(id, itemcode, warranty,storageinterfaceId,storagetypeId,capacityId,BrandId);
     }
 
     @GetMapping(value = "/storage/{brandId}/itemlist", produces ="application/json" ) 

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+
 /*
 * implemented mapping to available for use  
 * add implemented mapping to servelet container for use
@@ -99,6 +101,19 @@ public class CoolerController {
 
 
         return daoCooler.findAll();
+    }
+
+       @GetMapping(value = "/cooler/filteritem", produces = "application/json")
+    public List<CoolerEntity> allFilterProcessorData(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "itemcode", required = false) String itemcode,
+            @RequestParam(value = "warranty", required = false) Integer warranty,
+            @RequestParam(value = "cpusocket_id", required = false) Integer cpusocketId,
+            @RequestParam(value = "coolertype_id", required = false) Integer coolerTypeId,
+            @RequestParam(value = "brand_id", required = false) Integer BrandId
+            ) {
+
+        return daoCooler.filterItemList(id, itemcode, warranty,cpusocketId,coolerTypeId,BrandId);
     }
 
     @GetMapping(value = "/cooler/brandId/itemlist", produces ="application/json" ) 

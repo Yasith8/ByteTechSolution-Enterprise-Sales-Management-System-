@@ -6,10 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import lk.bytetechsolution.Entity.BrandEntity;
-import lk.bytetechsolution.Entity.CpuGenerationEntity;
-import lk.bytetechsolution.Entity.CpuSeriesEntity;
-import lk.bytetechsolution.Entity.CpuSocketEntity;
-import lk.bytetechsolution.Entity.CpuSuffixEntity;
 import lk.bytetechsolution.Entity.ProcessorEntity;
 
 

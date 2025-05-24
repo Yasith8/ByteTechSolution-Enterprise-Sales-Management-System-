@@ -29,10 +29,6 @@ import lk.bytetechsolution.Dao.ItemStatusDao;
 import lk.bytetechsolution.Dao.ProcessorDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.BrandEntity;
-import lk.bytetechsolution.Entity.CpuGenerationEntity;
-import lk.bytetechsolution.Entity.CpuSeriesEntity;
-import lk.bytetechsolution.Entity.CpuSocketEntity;
-import lk.bytetechsolution.Entity.CpuSuffixEntity;
 import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 

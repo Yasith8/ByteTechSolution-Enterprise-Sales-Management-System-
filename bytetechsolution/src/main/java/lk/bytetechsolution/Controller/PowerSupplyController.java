@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 /*
 * implemented mapping to available for use  
@@ -100,6 +101,21 @@ public class PowerSupplyController {
 
 
         return daoPowerSupply.findAll();
+    }
+
+     @GetMapping(value = "/powersupply/filteritem", produces = "application/json")
+    public List<PowerSupplyEntity> allFilterProcessorData(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "itemcode", required = false) String itemcode,
+            @RequestParam(value = "warranty", required = false) Integer warranty,
+            @RequestParam(value = "wattage", required = false) Integer wattage,
+            @RequestParam(value = "efficiency_id", required = false) Integer efficiencyId,
+            @RequestParam(value = "modularity_id", required = false) Integer modulerityId,
+            @RequestParam(value = "powersupplyformfactor_id", required = false) Integer powersupplyformfactorID,
+            @RequestParam(value = "brand_id", required = false) Integer BrandId
+            ) {
+
+        return daoPowerSupply.filterItemList(id, itemcode,wattage,efficiencyId,modulerityId,powersupplyformfactorID, warranty,BrandId);
     }
 
     @GetMapping(value = "/powersupply/{brandId}/itemlist", produces ="application/json" ) 

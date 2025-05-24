@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 /*
 * implemented mapping to available for use  
@@ -30,6 +31,7 @@ import lk.bytetechsolution.Dao.MonitorDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.MonitorEntity;
+import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -101,6 +103,22 @@ public class MonitorController {
 
 
         return daoMonitor.findAll();
+    }
+
+    @GetMapping(value = "/monitor/filteritem", produces = "application/json")
+    public List<MonitorEntity> allFilterProcessorData(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "itemcode", required = false) String itemcode,
+            @RequestParam(value = "warranty", required = false) Integer warranty,
+            @RequestParam(value = "screensize", required = false) Integer screensize,
+            @RequestParam(value = "resolution", required = false) Integer resolution,
+            @RequestParam(value = "refreshrate", required = false) Integer refreshrate,
+            @RequestParam(value = "aspectratio", required = false) Integer aspectratio,
+            @RequestParam(value = "panaltype_id", required = false) Integer panaltypeId,
+            @RequestParam(value = "brand_id", required = false) Integer BrandId
+            ) {
+
+        return daoMonitor.filterItemList(id, itemcode, warranty,screensize,resolution,refreshrate,aspectratio,panaltypeId,BrandId);
     }
 
     @GetMapping(value = "/monitor/{brandId}/itemlist", produces ="application/json" ) 

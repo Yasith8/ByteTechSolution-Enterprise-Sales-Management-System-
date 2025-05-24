@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 /*
 * implemented mapping to available for use  
@@ -31,6 +32,7 @@ import lk.bytetechsolution.Dao.MemoryDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.MemoryEntity;
+import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -100,6 +102,21 @@ public class MemoryController {
 
 
         return daoMemory.findAll();
+    }
+
+    @GetMapping(value = "/memory/filteritem", produces = "application/json")
+    public List<MemoryEntity> allFilterProcessorData(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "itemcode", required = false) String itemcode,
+            @RequestParam(value = "warranty", required = false) Integer warranty,
+            @RequestParam(value = "speed", required = false) Integer speed,
+            @RequestParam(value = "capacity_id", required = false) Integer capacityId,
+            @RequestParam(value = "memoryformfactor_id", required = false) Integer memoryformfactorId,
+            @RequestParam(value = "memorytype_id", required = false) Integer memorytypeId,
+            @RequestParam(value = "brand_id", required = false) Integer BrandId
+            ) {
+
+        return daoMemory.filterItemList(id, itemcode, warranty,speed,capacityId,memoryformfactorId,memorytypeId,BrandId);
     }
 
     @GetMapping(value = "/memory/{brandId}/itemlist", produces ="application/json" ) 
