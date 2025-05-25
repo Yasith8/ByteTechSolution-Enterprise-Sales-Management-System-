@@ -1,6 +1,8 @@
 package lk.bytetechsolution.Entity;
 
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +41,11 @@ public class SerialNoListEntity {
     @NotNull
     @Column(name = "status")
     private Boolean status;
+
+    @NotNull
+    @Column(name = "salesprice")
+    private BigDecimal salesprice;
+
 
     @NotNull
     @Column(name = "itemcode")

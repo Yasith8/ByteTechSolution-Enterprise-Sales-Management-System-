@@ -2,6 +2,7 @@ package lk.bytetechsolution.Entity;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -55,7 +56,6 @@ public class GRNEntity {
     @Column(name = "finalamount")
     private BigDecimal finalamount;
 
-    @NotNull
     @Column(name = "paidamount")
     private BigDecimal paidamount;
     
@@ -64,7 +64,7 @@ public class GRNEntity {
 
     @NotNull
     @Column(name = "reciveddate")
-    private LocalDateTime reciveddate;
+    private LocalDate reciveddate;
 
     @Column(name="addeddate")
     @NotNull

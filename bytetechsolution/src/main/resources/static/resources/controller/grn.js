@@ -44,19 +44,32 @@ const refreshGrnForm = () => {
     fillDataIntoSelect(selectGRNStatus, "Select GRN Status", grnstatus, "name")
 
 
-    //auto generate karanawa total amount eka
     decimalTotalAmount.disabled = true;
-    let totalAmount = 0
+    let totalAmount = 0;
+
+    // Calculate totalAmount from items
     grn.grn_item.forEach(item => {
-        totalAmount += item.linetotal
+        totalAmount += item.lineprice;
     });
     decimalTotalAmount.value = totalAmount;
-    textValidator(decimalTotalAmount, '', 'grn', 'totalamount')
+    textValidator(decimalTotalAmount, '', 'grn', 'totalamount');
 
-    decimalTotalAmount.add
+    // Disable final amount field initially
+    decimalFinalAmount.disabled = true;
 
+    // Initialize discount rate input handler
+    numberDiscountRate.addEventListener('input', () => {
+        let discountRate = parseFloat(numberDiscountRate.value);
+        if (isNaN(discountRate)) discountRate = 0;
 
+        let finalAmount = totalAmount * (1 - discountRate / 100);
+        finalAmount = parseFloat(finalAmount.toFixed(2));
 
+        decimalFinalAmount.value = finalAmount.toFixed(2);
+        textValidator(decimalFinalAmount, '', 'grn', 'finalamount');
+        console.log("FINAL AMOUNT H", finalAmount);
+
+    });
 
 
     refeshInnerGrnFormAndTable();
@@ -254,11 +267,11 @@ const innerSupplierProductAdd = () => {
         let profitRate = currentItem[0].profitrate;
         let salesprice = (profitRate / 100) * purchasePrice + purchasePrice;
         serialNoWithDetails = { category_id: category_id, itemcode: itemcode, itemname: itemname, status: true, serialno: seialNo, salesprice: salesprice }
-        serialNoList.push(serialNoWithDetails)
+        serialNoList.push(serialNoWithDetails);
     })
     console.log("GRN", grn)
     console.log("GRN ITEM", updatedGRNItem)
-    console.log("SERIAL NO LIST", serialNoList)
+    console.log("SERIAL NO LIST", grn.serial_no_list)
 
     let errors = checkInnerItemFormErrors();
 
@@ -277,15 +290,27 @@ const innerSupplierProductAdd = () => {
             if (result.isConfirmed) {
                 grn.grn_item.push(updatedGRNItem);
                 console.log("GRN--->GRN Items", grn.grn_item);
-                grn.serial_no_list.push(serialNoList);
+
+                serialNoList.forEach(item => {
+                    grn.serial_no_list.push(item);
+                })
                 console.log("GRN--->sERIAL NO List", grn.serial_no_list);
 
-                /* let totalAmount = 0;
-                prequest.purchase_request_item.forEach(item => {
-                    totalAmount += parseFloat(item.linetotal);
+                let totalAmount = 0;
+                grn.grn_item.forEach(item => {
+                    totalAmount += parseFloat(item.lineprice);
                 });
                 decimalTotalAmount.value = totalAmount;
-                prequest.totalamount = totalAmount; */
+                grn.totalamount = totalAmount;
+
+                let discountRate = parseFloat(numberDiscountRate.value);
+                if (isNaN(discountRate)) discountRate = 0;
+
+                let finalAmount = totalAmount * (1 - discountRate / 100);
+                finalAmount = parseFloat(finalAmount.toFixed(2));
+
+                decimalFinalAmount.value = finalAmount.toFixed(2);
+                textValidator(decimalFinalAmount, '', 'grn', 'finalamount');
 
                 Swal.fire({
                     title: "Success!",
@@ -296,6 +321,14 @@ const innerSupplierProductAdd = () => {
                     allowEscapeKey: false
                 }).then(() => {
                     refeshInnerGrnFormAndTable();
+
+                    let totalAmount = 0;
+                    grn.grn_item.forEach(item => {
+                        totalAmount += parseFloat(item.lineprice);
+                    });
+
+                    decimalTotalAmount.value = totalAmount;
+                    grn.totalamount = totalAmount;
                     //purchaseItemForm.reset();
                     /*  document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
                          btn.classList.remove('custom-disabled');
@@ -322,7 +355,7 @@ const innerSupplierProductAdd = () => {
 
 const formGrnInputErrors = () => {
     let errors = "";
-    if (grn.purchaserequest_id == null) {
+    if (grn.purchase_request_id == null) {
         errors += "Purchase Request need to be selected.\n";
         selectPurchaseRequest.classList.add("is-invalid");
     }
@@ -411,7 +444,7 @@ const submitGRN = () => {
     } else {
         Swal.fire({
             title: "Error!",
-            html: "Adding GRN failed due to the following errors:<br>" + errors,
+            html: "Adding GRN failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
             icon: "error",
             allowOutsideClick: false,
             allowEscapeKey: false,

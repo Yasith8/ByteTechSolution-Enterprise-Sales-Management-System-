@@ -111,10 +111,6 @@ public class GRNController {
 
             for(SerialNoListEntity serialNoList:grn.getSerial_no_list()){
                 serialNoList.setGrn_id((grn));
-                //category value get
-                serialNoList.getCategory_id();
-                //itemid
-                serialNoList.getItemcode();
             }
 
             daoGRN.save(grn);
