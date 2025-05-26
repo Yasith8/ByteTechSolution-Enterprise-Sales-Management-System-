@@ -35,9 +35,17 @@ const refreshGrnForm = () => {
 
 
 
+    currentGrns = getServiceAjaxRequest("/grn/alldata");
     //gatta all the pr that required date not expired
     purchaseRequests = getServiceAjaxRequest("/purchaserequest/prequestbyrequireddate")
-    fillMultipleItemOfDataOnSignleSelectRecursion(selectPurchaseRequest, "Select Puchase Request", purchaseRequests, "requestcode", "supplier_id.name");
+    const availablePurchaseRequest = purchaseRequests.filter(innerpr =>
+        !currentGrns.some(grn =>
+            grn.purchase_request_id.requestcode === innerpr.requestcode
+        )
+    );
+
+    console.log("FILTERED GRN", availablePurchaseRequest)
+    fillMultipleItemOfDataOnSignleSelectRecursion(selectPurchaseRequest, "Select Purchase Request", availablePurchaseRequest, "requestcode", "supplier_id.name");
 
     //grn eka
     grnstatus = getServiceAjaxRequest("/grnstatus/alldata")
@@ -100,15 +108,43 @@ const refeshInnerGrnFormAndTable = () => {
         updateSerialNumberInputs();
     });
 
-    fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Purchase Request First", [], "itemcode", "itemname")
-    selectPurchaseRequest.addEventListener('change', () => {
-        //grn.selectItemName_id = null;
-        removeValidationColor([selectPRItemName]);
-        const purchaseRequestedItem = selectValueHandler(selectPurchaseRequest);
-        fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", purchaseRequestedItem.purchase_request_item, "itemcode", "itemname")
+    if (selectPurchaseRequest.value == "Select Purchase Request") {
+
+        fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Purchase Request First", [], "itemcode", "itemname")
+
+        selectPurchaseRequest.addEventListener('change', () => {
+            //grn.selectItemName_id = null;
+            removeValidationColor([selectPRItemName]);
+            const purchaseRequestedItem = selectValueHandler(selectPurchaseRequest);
+            fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", purchaseRequestedItem.purchase_request_item, "itemcode", "itemname")
 
 
-    })
+        })
+
+    } else {
+
+        const selectedPR = selectValueHandler(selectPurchaseRequest);
+
+        const grnItemCodes = grn.grn_item.map(item => item.itemcode);
+
+
+        const remainGRNItem = selectedPR.purchase_request_item.filter(
+            (qItem) => !grnItemCodes.includes(qItem.itemcode)
+        );
+        numberQuantity.value = null;
+        decimalPurchasePrice.value = null;
+        decimalLinePrice.value = null;
+        serialNumbersData = null;
+        serialNoWithDetails = null;
+
+
+        fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", remainGRNItem, "itemcode", "itemname")
+
+        selectPurchaseRequest.addEventListener('change', () => {
+            grn.selectItemName_id = null;
+            removeValidationColor([selectPRItemName]);
+        })
+    }
 
     selectPRItemName.addEventListener('change', () => {
         const selectedItemName = selectValueHandler(selectPRItemName);
@@ -166,6 +202,35 @@ const refeshInnerGrnFormAndTable = () => {
     ]
 
     fillDataIntoInnerTable(innerSupplierTable, grn.grn_item, displayPropertyList, refillInnerGRNItemForm, deleteInnerGRNItemForm)
+        // updateAvailableItems()
+}
+
+const updateAvailableItems = () => {
+    // Filter out items that are already in the pr request
+    const selectedPR = selectValueHandler(selectPurchaseRequest);
+
+
+    //ajax request to get data aout itrems
+    fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", selectedPR.purchase_request_item, "itemcode", "itemname")
+
+    //fiter items that not in the tagbke
+    const availableItems = selectedPR.filter(innerItem =>
+        !grn.grn_item.some(grn =>
+            grn.itemcode === innerItem.itemcode
+        )
+    );
+
+    console.log(availableItems);
+    console.log(purchaserequest.purchase_request_item);
+
+    // Update the select dropdown with available items
+    fillMultipleItemOfDataIntoSingleSelect(
+        selectItemName,
+        "Please Select Item",
+        availableItems,
+        "itemcode",
+        'itemname'
+    );
 }
 
 const refillGrnForm = (ob, rowIndex) => {
@@ -224,11 +289,26 @@ const updateSerialNumberInputs = () => {
 }
 
 const getPurchaseRequest = (ob) => {
-
+    return ob.purchase_request_id.requestcode;
 }
 
 const getGRNStatus = (ob) => {
+    if (ob.grnstatus_id.name == 'Approved') {
+        return '<p class="common-status-available">' + ob.grnstatus_id.name + '</p>';
+    }
 
+    if (ob.grnstatus_id.name == 'Pending Approval') {
+        return '<p class="common-status-resign">' + ob.grnstatus_id.name + '</p>'
+    }
+
+    if (ob.grnstatus_id.name == 'Rejected') {
+        return '<p class="common-status-reject">' + ob.grnstatus_id.name + '</p>'
+    }
+    if (ob.grnstatus_id.name == 'Deleted') {
+        return '<p class="common-status-delete">' + ob.grnstatus_id.name + '</p>'
+    } else {
+        return '<p class="common-status-other">' + ob.grnstatus_id.name + '</p>'
+    }
 }
 
 const refillInnerGRNItemForm = (ob, rowIndex) => {

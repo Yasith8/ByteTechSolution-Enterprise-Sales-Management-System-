@@ -646,3 +646,59 @@ body {
     color: white;
     background-color: #00b7b7;
 }
+
+
+/* status pattern style for common */
+
+.common-status-available {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #CCF0EB;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #00B69B;
+}
+
+.common-status-resign {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #FFEDDD;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #ff9d48;
+}
+
+.common-status-delete {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #FCD7D4;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #EF3826;
+}
+
+.common-status-reject {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: #454545;
+    text-align: center;
+    padding-inline: 30px;
+    padding-block: 8px;
+    color: #EF3826;
+}
+
+.common-status-other {
+    padding: 5px;
+    border-radius: 8px;
+    border: none;
+    background-color: grey;
+    color: white;
+    text-align: center;
+}

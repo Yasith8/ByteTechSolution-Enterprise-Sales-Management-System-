@@ -15,23 +15,6 @@ body {
     font-weight: 600;
 }
 
-.addBtn {
-    background-color: #6669b0;
-    color: white;
-}
-
-.btnDel:hover {
-    color: red;
-}
-
-.btnEdit:hover {
-    color: rgb(0, 255, 0);
-}
-
-.btnView:hover {
-    color: #6669b0;
-}
-
 .modal-content {
     position: relative;
     top: 50%;
@@ -41,13 +24,18 @@ body {
 }
 
 .serial-no-button {
-    background-color: #00ff5e;
+    background-color: #00dcbb;
     padding: 15px;
     padding-inline: 22px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1px;
+    color: white;
+}
+
+.serial-no-button:hover {
+    background-color: #00b69a;
 }
 
 .success-status-btn {
@@ -81,23 +69,23 @@ body {
 }
 
 .inner-update-btn {
-    background-color: #00ff04;
+    background-color: #008080;
     color: white;
 }
 
 .inner-add-btn {
-    background-color: #00ff04;
+    background-color: #008080;
     color: white;
 }
 
 .inner-add-btn:hover {
     color: white;
-    background-color: #00ff5e;
+    background-color: #005c5c;
 }
 
 .inner-update-btn:hover {
     color: white;
-    background-color: #00ff5e;
+    background-color: #005c5c;
 }
 
 #grnSerialNoInnerModel {
