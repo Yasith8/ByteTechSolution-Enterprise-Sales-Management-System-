@@ -92,6 +92,50 @@ const refeshInnerGrnFormAndTable = () => {
     serialNoWithDetails = new Object();
     serialNoList = new Array();
 
+    numberQuantity.value = null;
+    decimalPurchasePrice.value = null;
+    decimalLinePrice.value = null;
+    removeValidationColor([numberQuantity, decimalPurchasePrice, decimalLinePrice])
+        //checkAndToggleButton();
+    updateSerialNumberInputs();
+
+
+    if (selectPurchaseRequest.value == "Select Purchase Request") {
+
+        fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Purchase Request First", [], "itemcode", "itemname")
+
+        selectPurchaseRequest.addEventListener('change', () => {
+            grn.selectItemName_id = null;
+
+            removeValidationColor([selectPRItemName]);
+            const purchaseRequestedItem = selectValueHandler(selectPurchaseRequest);
+            fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", purchaseRequestedItem.purchase_request_item, "itemcode", "itemname")
+
+
+        })
+
+    } else {
+
+
+        const selectedPR = selectValueHandler(selectPurchaseRequest);
+
+        const grnItemCodes = grn.grn_item.map(item => item.itemcode);
+
+
+        const remainGRNItem = selectedPR.purchase_request_item.filter(
+            (qItem) => !grnItemCodes.includes(qItem.itemcode)
+        );
+
+
+
+        fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", remainGRNItem, "itemcode", "itemname")
+
+        selectPurchaseRequest.addEventListener('change', () => {
+            grn.selectItemName_id = null;
+            removeValidationColor([selectPRItemName]);
+        })
+    }
+
     numberQuantity.addEventListener('input', () => {
         const newQty = parseInt(numberQuantity.value);
         console.log(newQty)
@@ -107,44 +151,6 @@ const refeshInnerGrnFormAndTable = () => {
         checkAndToggleButton();
         updateSerialNumberInputs();
     });
-
-    if (selectPurchaseRequest.value == "Select Purchase Request") {
-
-        fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Purchase Request First", [], "itemcode", "itemname")
-
-        selectPurchaseRequest.addEventListener('change', () => {
-            //grn.selectItemName_id = null;
-            removeValidationColor([selectPRItemName]);
-            const purchaseRequestedItem = selectValueHandler(selectPurchaseRequest);
-            fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", purchaseRequestedItem.purchase_request_item, "itemcode", "itemname")
-
-
-        })
-
-    } else {
-
-        const selectedPR = selectValueHandler(selectPurchaseRequest);
-
-        const grnItemCodes = grn.grn_item.map(item => item.itemcode);
-
-
-        const remainGRNItem = selectedPR.purchase_request_item.filter(
-            (qItem) => !grnItemCodes.includes(qItem.itemcode)
-        );
-        numberQuantity.value = null;
-        decimalPurchasePrice.value = null;
-        decimalLinePrice.value = null;
-        serialNumbersData = null;
-        serialNoWithDetails = null;
-
-
-        fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", remainGRNItem, "itemcode", "itemname")
-
-        selectPurchaseRequest.addEventListener('change', () => {
-            grn.selectItemName_id = null;
-            removeValidationColor([selectPRItemName]);
-        })
-    }
 
     selectPRItemName.addEventListener('change', () => {
         const selectedItemName = selectValueHandler(selectPRItemName);
@@ -167,7 +173,7 @@ const refeshInnerGrnFormAndTable = () => {
         decimalLinePrice.value = selectedItemName.linetotal
         decimalLinePrice.disabled = true;
         textValidator(decimalPurchasePrice, '', 'grnItem', 'lineprice');
-        numberQuantity.addEventListener('keyup', () => {
+        numberQuantity.addEventListener('input', () => {
             grnItem.quantity = null;
             numberQuantity.classList.remove('is-valid')
             const newQuantity = numberQuantity.value;
@@ -232,6 +238,8 @@ const updateAvailableItems = () => {
         'itemname'
     );
 }
+
+
 
 const refillGrnForm = (ob, rowIndex) => {
 
@@ -409,6 +417,7 @@ const innerSupplierProductAdd = () => {
 
                     decimalTotalAmount.value = totalAmount;
                     grn.totalamount = totalAmount;
+                    toggleSerialNoContent();
                     //purchaseItemForm.reset();
                     /*  document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
                          btn.classList.remove('custom-disabled');
