@@ -188,7 +188,7 @@ public class GRNController {
 
         GRNEntity extGRN=daoGRN.getReferenceById(grn.getId());
         if(extGRN==null){
-         return "Delete not Completed.GRN not exists";
+         return "Update not Completed.GRN not exists";
         }
       
 
