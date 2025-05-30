@@ -42,190 +42,192 @@
                 <div class="card card-body">
                     <div class="card-header">Filter the items</div>
                     <div class="card-text">
-                        <div class="row mt-4">
-                            <div class="col-2">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectCategory" class="form-select">
+                        <form id="filterForm">
+                            <div class="row mt-4">
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="textItemcode" placeholder="">
+                                        <label for="textItemcode">Itemcode</label>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectCategory" class="form-select">
                                     <option value=""  selected disabled>Select Category</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectCategory" class="form-select">
-                                    <option value=""  selected disabled>Select Category</option>
-                                </select>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectBrand" class="form-select">
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectBrand" class="form-select">
                                     <option value=""  selected disabled>Select Brand</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectWarranty" class="form-select">
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectWarranty" class="form-select">
                                     <option value=""  selected disabled>Select Warranty</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- //todo casing filter start -->
-                            <div class="col-2" id="colCasingWidth">
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberCasingWidth" placeholder="">
-                                    <label for="numberCasingWidth">Width</label>
+                                <!-- //todo casing filter start -->
+                                <div class="col-2" id="colCasingWidth">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="numberCasingWidth" placeholder="">
+                                        <label for="numberCasingWidth">Width</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colCasingHeight">
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberCasingHeight" placeholder="">
-                                    <label for="numberCasingHeight">Height</label>
-                                    </select>
+                                <div class="col-2" id="colCasingHeight">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="numberCasingHeight" placeholder="">
+                                        <label for="numberCasingHeight">Height</label>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colCasingDepth">
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberCasingDepth" placeholder="">
-                                    <label for="numberCasingDepth">Depth</label>
-                                    </select>
+                                <div class="col-2" id="colCasingDepth">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="numberCasingDepth" placeholder="">
+                                        <label for="numberCasingDepth">Depth</label>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colCasingMotherboardFormFactor">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectCasingMotherboardFormFactor" class="form-select">
+                                <div class="col-2" id="colCasingMotherboardFormFactor">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectCasingMotherboardFormFactor" class="form-select">
                                     <option value=""  selected disabled>Select Motherboard Form Factor</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colCasingColor">
-                                <div class="form-floating mb-3">
-                                    <select name="" id="selectCasingColor" class="form-select">
+                                <div class="col-2" id="colCasingColor">
+                                    <div class="form-floating mb-3">
+                                        <select name="" id="selectCasingColor" class="form-select">
                                     <option value=""  selected disabled>Select Case Color</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colCasingMaterial">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectCasingMaterial" class="form-select">
+                                <div class="col-2" id="colCasingMaterial">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectCasingMaterial" class="form-select">
                                     <option value=""  selected disabled>Select Case Material</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <!--todo casing filter end -->
+                                <!--todo casing filter end -->
 
-                            <!--bug processor filter start -->
-                            <div class="col-2" id="colCpuTotalCore">
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberCpuTotalCore" placeholder="">
-                                    <label for="numberCpuTotalCore">Total Cores</label>
+                                <!--bug processor filter start -->
+                                <div class="col-2" id="colCpuTotalCore">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="numberCpuTotalCore" placeholder="">
+                                        <label for="numberCpuTotalCore">Total Cores</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colCpuCache">
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberCpuCache" placeholder="">
-                                    <label for="numberCpuCache">L3 Cache</label>
-                                    </select>
+                                <div class="col-2" id="colCpuCache">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="numberCpuCache" placeholder="">
+                                        <label for="numberCpuCache">L3 Cache</label>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colCpuSocket">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectCpuSocket" class="form-select">
+                                <div class="col-2" id="colCpuSocket">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectCpuSocket" class="form-select">
                                     <option value=""  selected disabled>Select Processor Socket</option>
                                     </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colCpuSeries">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectCpuSeries" class="form-select">
+                                <div class="col-2" id="colCpuSeries">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectCpuSeries" class="form-select">
                                     <option value=""  selected disabled>Select Processor Series</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colCpuGeneration">
-                                <div class="form-floating mb-3">
-                                    <select name="" id="selectCpuGeneration" class="form-select">
+                                <div class="col-2" id="colCpuGeneration">
+                                    <div class="form-floating mb-3">
+                                        <select name="" id="selectCpuGeneration" class="form-select">
                                     <option value=""  selected disabled>Select Processor Generation</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colCpuSuffix">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectCpuSuffix" class="form-select">
+                                <div class="col-2" id="colCpuSuffix">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectCpuSuffix" class="form-select">
                                     <option value=""  selected disabled>Select Processor Suffix</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <!--bug processor filter end -->
+                                <!--bug processor filter end -->
 
-                            <!--optimize Motherboard filter start -->
-                            <div class="col-2" id="colMboardMaxCapacity">
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberMboardMaxCapacity" placeholder="">
-                                    <label for="numberMboardMaxCapacity">Max Mem Capacity(GB)</label>
+                                <!--optimize Motherboard filter start -->
+                                <div class="col-2" id="colMboardMaxCapacity">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="numberMboardMaxCapacity" placeholder="">
+                                        <label for="numberMboardMaxCapacity">Max Mem Capacity(GB)</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colMboardCpuSocket">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectMboardCpuSocket" class="form-select">
+                                <div class="col-2" id="colMboardCpuSocket">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectMboardCpuSocket" class="form-select">
                                     <option value=""  selected disabled>Select Processor Socket</option>
                                     </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colMotherboardSeries">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectMotherboardSeries" class="form-select">
+                                <div class="col-2" id="colMotherboardSeries">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectMotherboardSeries" class="form-select">
                                     <option value=""  selected disabled>Select Motherboard Series</option>
                                     </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colotherboardType">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectotherboardType" class="form-select">
+                                <div class="col-2" id="colotherboardType">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectotherboardType" class="form-select">
                                     <option value=""  selected disabled>Select Motherboard Type</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colMotherboardFormFactor">
-                                <div class="form-floating mb-3">
-                                    <select name="" id="selectMotherboardFormFactor" class="form-select">
+                                <div class="col-2" id="colMotherboardFormFactor">
+                                    <div class="form-floating mb-3">
+                                        <select name="" id="selectMotherboardFormFactor" class="form-select">
                                     <option value=""  selected disabled>Select Motherboard Form Factor</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colMotherboardMemoryType">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectMotherboardMemoryType" class="form-select">
+                                <div class="col-2" id="colMotherboardMemoryType">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectMotherboardMemoryType" class="form-select">
                                     <option value=""  selected disabled>Select Memory Type</option>
                                 </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2" id="colMBoardInterface">
-                                <div class="form-floating mb-3">
-                                    <select name="category" id="selectMBoardInterface" class="form-select">
+                                <div class="col-2" id="colMBoardInterface">
+                                    <div class="form-floating mb-3">
+                                        <select name="category" id="selectMBoardInterface" class="form-select">
                                     <option value=""  selected disabled>Select Interface</option>
                                 </select>
+                                    </div>
+                                </div>
+                                <!--optimize Motherboard filter end -->
+
+
+
+
+
+
+
+                                <!-- end of end -->
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-10"></div>
+                                <div class="col-2 text-end">
+                                    <button class="btn addBtn">Cancel</button>
+                                    <button class="btn addBtn" type="button" onclick="applyFilterHandler()">Filter</button>
                                 </div>
                             </div>
-                            <!--optimize Motherboard filter end -->
-
-
-
-
-
-
-
-                            <!-- end of end -->
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-10"></div>
-                            <div class="col-2 text-end">
-                                <button class="btn addBtn">Cancel</button>
-                                <button class="btn addBtn">Filter</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -245,11 +247,92 @@
                         <div class="card-text">
                             <div class="category-item">
                                 <div class="d-flex align-items-center">
-                                    <div class="category-icon ${data.class}">
-                                        <i class="${data.icon}"></i>
-                                    </div>
                                     <div>
                                         <div class="fw-bold">Processor</div>
+                                        <small class="text-muted">5 products</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold">20</div>
+                                    <small class="text-muted">units</small>
+                                </div>
+                            </div>
+                            <div class="category-item">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <div class="fw-bold">Motherboard</div>
+                                        <small class="text-muted">5 products</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold">20</div>
+                                    <small class="text-muted">units</small>
+                                </div>
+                            </div>
+                            <div class="category-item">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <div class="fw-bold">Memory & NAS</div>
+                                        <small class="text-muted">5 products</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold">20</div>
+                                    <small class="text-muted">units</small>
+                                </div>
+                            </div>
+                            <div class="category-item">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <div class="fw-bold">GPU</div>
+                                        <small class="text-muted">5 products</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold">20</div>
+                                    <small class="text-muted">units</small>
+                                </div>
+                            </div>
+                            <div class="category-item">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <div class="fw-bold">Power Supply</div>
+                                        <small class="text-muted">5 products</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold">20</div>
+                                    <small class="text-muted">units</small>
+                                </div>
+                            </div>
+                            <div class="category-item">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <div class="fw-bold">Cooler</div>
+                                        <small class="text-muted">5 products</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold">20</div>
+                                    <small class="text-muted">units</small>
+                                </div>
+                            </div>
+                            <div class="category-item">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <div class="fw-bold">Storage</div>
+                                        <small class="text-muted">5 products</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold">20</div>
+                                    <small class="text-muted">units</small>
+                                </div>
+                            </div>
+                            <div class="category-item">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <div class="fw-bold">Casing</div>
                                         <small class="text-muted">5 products</small>
                                     </div>
                                 </div>

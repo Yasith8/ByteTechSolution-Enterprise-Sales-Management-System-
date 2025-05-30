@@ -1,5 +1,6 @@
 window.addEventListener('load', () => {
-    refreshInventoryTable()
+    refreshInventoryTable();
+    refreshFilterForm();
 })
 
 const refreshInventoryTable = () => {
@@ -16,10 +17,59 @@ const refreshInventoryTable = () => {
 
     //call fillDataIntoTable Function
     //(tableid,dataArray variable name, displayproperty list, refill function,button)
-    fillDataIntoTable(tableInventory, inventories, displayPropertyList, refillGrnForm)
+    fillDataIntoTable(tableInventory, inventories, displayPropertyList, refillFilterForm)
         //table show with dataTable
     $('#tableInventory').dataTable();
 }
+
+const refreshFilterForm = () => {
+    route = "";
+
+    categories = getServiceAjaxRequest("/category/alldata");
+    fillDataIntoSelect(selectCategory, "Select Item Category", categories, "name")
+
+    brands = getServiceAjaxRequest("/brand/alldata");
+    fillDataIntoSelect(selectBrand, "Select Item Brand", brands, "name")
+
+
+    selectCategory.addEventListener('change', () => {
+        let selectedCategory = selectValueHandler(selectCategory);
+        let selectedBrand = selectValueHandler(selectBrand);
+
+        cpusockets = getServiceAjaxRequest("/cpusocket/alldata");
+        fillDataIntoSelect(selectCpuSocket, "Select CPU Socket", cpusockets, "name")
+
+        cpuseries = getServiceAjaxRequest("/cpuseries/alldata");
+        fillDataIntoSelect(selectCpuSeries, "Select CPU Series", cpuseries, "name")
+
+        cpugenerations = getServiceAjaxRequest("/cpugeneration/alldata");
+        fillDataIntoSelect(selectCpuGeneration, "Select CPU Socket", cpusockets, "name")
+
+        cpusuffixs = getServiceAjaxRequest("/cpusuffix/alldata");
+        fillDataIntoSelect(selectCpuSuffix, "Select CPU Suffix", cpusuffixs, "name")
+
+        route = `/${(selectedCategory.name).toLowerCase()}/filteritem?brand_id=${selectedBrand.id}`
+
+        if (selectedCategory.name == "Processor") {
+            console.log("Processor Selected");
+            //show/hide fields
+            elementHide([colCpuTotalCore, colCpuCache, colCpuSocket, colCpuSeries, colCpuGeneration, colCpuSuffix], true)
+            elementHide([colCasingWidth, colCasingHeight, colCasingDepth, colCasingMotherboardFormFactor, colCasingColor, colCasingMaterial, colMboardMaxCapacity, colMboardCpuSocket, colMotherboardSeries, colotherboardType, colMotherboardFormFactor, colMotherboardMemoryType, colMBoardInterface], false)
+
+            route = `/${(selectedCategory.name).toLowerCase()}/filteritem?brand_id=${selectedBrand.id}&totalcore=${numberCpuTotalCore?.value}&cache=${numbercache?.value}`
+
+            console.log("Route being set:", route);
+
+        }
+        if (selectedCategory.name == "Motherboard") {
+            console.log("Motherboard Selected")
+            elementHide([colMboardMaxCapacity, colMboardCpuSocket, colMotherboardSeries, colotherboardType, colMotherboardFormFactor, colMotherboardMemoryType, colMBoardInterface], true)
+            elementHide([colCasingWidth, colCasingHeight, colCasingDepth, colCasingMotherboardFormFactor, colCasingColor, colCasingMaterial, colCpuTotalCore, colCpuCache, colCpuSocket, colCpuSeries, colCpuGeneration, colCpuSuffix], false)
+
+        }
+    })
+}
+
 
 const getCategoryId = (ob) => {
     return ob.category_id.name;
@@ -33,6 +83,11 @@ const getStatus = (ob) => {
     }
 }
 
-const refillGrnForm = () => {
+const refillFilterForm = () => {
 
+}
+
+const applyFilterHandler = () => {
+    console.log("ROUTE>>>>>", route)
+    filteredItems = getServiceAjaxRequest(route)
 }

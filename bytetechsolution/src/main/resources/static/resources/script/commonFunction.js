@@ -229,6 +229,17 @@ const selectValueHandler = (filedId) => {
     }
 }
 
+const elementHide = (elements, need) => {
+    elements.forEach((element) => {
+        if (need) {
+            element.classList.remove("elementHide");
+        } else {
+            element.classList.add("elementHide");
+        }
+    })
+
+}
+
 
 const salePriceCalculator = (object) => {
     decimalSalesPrice.disabled = true;
