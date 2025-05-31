@@ -42,14 +42,7 @@ public class InvoiceItemEntity {
     @NotNull
     @Column(name = "itemprice")
     private BigDecimal itemprice;
-    
-    @NotNull
-    @Column(name = "quantity")
-    private Integer quantity;
-    
-    @NotNull
-     @Column(name = "linetotal")
-    private BigDecimal linetotal;
+
 
     @Column(name = "warranty")
     private Integer warranty;

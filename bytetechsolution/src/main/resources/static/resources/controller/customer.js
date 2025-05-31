@@ -5,7 +5,7 @@ window.addEventListener('load', () => {
 
 
 const refreshCustomerTable = () => {
-    customers = getServiceAjaxRequest('/gpu/alldata');
+    customers = getServiceAjaxRequest('/customer/alldata');
 
     const displayPropertyList = [
         { dataType: 'text', propertyName: 'name' },
@@ -54,5 +54,48 @@ const getCustomerStatus = (ob) => {
         return '<p class="common-status-available">Available</p>';
     } else {
         return '<p class="common-status-delete">Not Available</p>'
+    }
+}
+
+const refillCustomerForm = (ob, rowIndex) => {
+    $('#customerAddModal').modal('show');
+
+    removeValidationColor([textName, textMobile, decimalTotalPurchase, textEmail, textAddress, selectCustomerStatus])
+
+    buttonSubmit.disabled = true;
+    buttonSubmit.classList.remove('modal-btn-submit');
+
+    buttonUpdate.disabled = false;
+    buttonUpdate.classList.add('modal-btn-update');
+
+    customer = JSON.parse(JSON.stringify(ob));
+    oldCustomer = ob;
+
+    //asign itemcode
+    staticBackdropLabel.textContent = customer.customerid;
+    textName.value = customer.name;
+    textMobile.value = customer.mobile;
+    decimalTotalPurchase.value = customer.totalpurchase;
+    textEmail.value = customer.email;
+    textAddress.value = customer.address;
+
+    customerstatuses = getServiceAjaxRequest("/customerstatus/alldata");
+    fillDataIntoSelect(selectCustomerStatus, "Please Select Customer Status", customerstatuses, "name", ob.customerstatus_id.name);
+
+
+    let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/CUSTOMER");
+    //console.log(userPrivilage);
+
+
+    if (!userPrivilage.update) {
+        buttonUpdate.disabled = true;
+        buttonUpdate.classList.remove('modal-btn-update');
+
+        inputFieldsHandler([textName, textMobile, decimalTotalPurchase, textEmail, textAddress, selectCustomerStatus], true);
+        buttonClear.classList.remove('modal-btn-clear');
+    }
+    if (!userPrivilage.delete) {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
     }
 }
