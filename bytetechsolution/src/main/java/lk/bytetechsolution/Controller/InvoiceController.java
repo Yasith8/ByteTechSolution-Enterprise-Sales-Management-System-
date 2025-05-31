@@ -100,7 +100,7 @@ public class InvoiceController {
 
             // if next employee number is not come then set manualy last number+1
             if (nextNumber == null) {
-                invoice.setInvoiceno("INV0001");
+                invoice.setInvoiceno("CUS0001");
             } else {
                 invoice.setInvoiceno(nextNumber);
             }
@@ -137,7 +137,7 @@ public class InvoiceController {
 
        InvoiceEntity extInvoice=daoInvoice.getReferenceById(invoice.getId());
       if(extInvoice==null){
-       return "Delete not Completed.GRN not exists";
+       return "Delete not Completed.Invoice not exists";
       }
 
       try {
@@ -146,7 +146,7 @@ public class InvoiceController {
 
        invoice.setDeletedate(LocalDateTime.now());
 
-       invoice.setInvoicestatus(daoInvoiceStatus.getReferenceById(3));
+       invoice.setInvoicestatus_id(daoInvoiceStatus.getReferenceById(3));
 
        daoInvoice.save(invoice);
 
@@ -169,7 +169,7 @@ public class InvoiceController {
 
         InvoiceEntity extInvoice=daoInvoice.getReferenceById(invoice.getId());
         if(extInvoice==null){
-         return "Update not Completed.GRN not exists";
+         return "Update not Completed.Invoice not exists";
         }
       
 

@@ -74,13 +74,17 @@ public class InvoiceEntity {
     private int deleteuser;
 
     @ManyToOne
-    @JoinColumn(name = "invoicestatus",referencedColumnName = "id")
-    private InvoiceStatusEntity invoicestatus;
+    @JoinColumn(name = "invoicestatus_id",referencedColumnName = "id")
+    private InvoiceStatusEntity invoicestatus_id;
 
     @ManyToOne
-    @JoinColumn(name = "seasonaldiscount",referencedColumnName = "id")
-    private SeasonalDiscountEntity seasonaldiscount;
+    @JoinColumn(name = "seasonaldiscount_id",referencedColumnName = "id")
+    private SeasonalDiscountEntity seasonaldiscount_id;
 
-     @OneToMany(mappedBy = "invoice_id",cascade = CascadeType.ALL,orphanRemoval=true)
+    @ManyToOne
+    @JoinColumn(name = "customer_id",referencedColumnName = "id")
+    private CustomerEntity customer_id;
+
+    @OneToMany(mappedBy = "invoice_id",cascade = CascadeType.ALL,orphanRemoval=true)
     private List<InvoiceItemEntity> invoice_item;
 }
