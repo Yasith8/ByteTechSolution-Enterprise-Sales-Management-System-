@@ -36,6 +36,10 @@ public class CustomerEntity {
     @Column(name = "id",unique = true)
     private int id;
 
+    @Column(name = "customerid",unique = true)
+    @NotNull
+    private String customerid;
+
     @Column(name = "name",unique = true)
     @NotNull
     private String name;

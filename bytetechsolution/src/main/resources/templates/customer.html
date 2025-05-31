@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{component::headerFragment}"></head>
+
+<head>
+    <link rel="stylesheet" href="resources/style/customer.css">
+    <script src="resources/controller/customer.js"></script>
+</head>
+
+
+<body>
+
+    <nav th:replace="~{component::navFragment}"></nav>
+    <div th:replace="~{component::offcanvasFragment}"></div>
+    <div class="container-fluid mt-2">
+
+        <!-- title area start -->
+        <div class="row m-2">
+            <div class="col-12 text-center 
+            title-header-div">
+                <h2> Customer Management </h2>
+            </div>
+        </div>
+        <!-- title area End -->
+
+        <!-- Card area start  -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-6">
+
+            </div>
+            <div class="col-4 text-end">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#customerAddModal" class="btn addBtn">
+                    Add New Customer </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- Card area end  -->
+
+        <!-- table Area Start-->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="card employee-card">
+                    <div class="card-body employee-cardbody">
+
+                        <table class="table table-hover" id="tableCustomer">
+                            <thead class="table-header">
+                                <tr>
+                                    <th> # </th>
+                                    <th> Full Name </th>
+                                    <th> NIC </th>
+                                    <th> Mobile </th>
+                                    <th> Email </th>
+                                    <th> Status </th>
+                                    <th> Designation </th>
+                                    <th> Modify </th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="table-body">
+
+                                <!-- create static values for table -->
+                                <!-- used for initial designs -->
+                                <!-- probebly this appear when data not loading to table from db -->
+                                <tr>
+                                    <td> 1 </td>
+                                    <td> Initial User </td>
+                                    <td> 00000000000V </td>
+                                    <td> 0000000000 </td>
+                                    <td> inituser@gmail.com </td>
+                                    <td> Doctor </td>
+                                    <td>
+                                        <button class="success-status-btn"><div class="status-dot"></div><span>Active</span></button>
+                                    </td>
+
+                                    <td>
+                                        <button type="button" class="btn btnEdit">
+                                            <i class="fa-solid fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn ms-1 me-1 btnDel">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                        <button type="button" class="btn btnView">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+
+        </div>
+        <!-- table Area End-->
+
+    </div>
+
+    <!-- employee Add Modal -->
+    <div class="modal fade" id="customerAddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Customer</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Full Name Input Start -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="textName" placeholder="your fullname" required>
+                                <label for="fullname">Name <span class="requiredIcon">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Full Name Input end -->
+
+                    <!-- nic Input Start -->
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="textMobile" placeholder="" required>
+                                <label for="nic">Mobile No<span class="requiredIcon">*</span></label>
+                            </div>
+                        </div>
+                        <!-- callingname Input end -->
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="decimalTotalPurchase" placeholder="" required list="calllist">
+                                <label for="decimalTotalPurchase">Total Purchase</label>
+                            </div>
+                        </div>
+                        <!-- callingname Input end -->
+                    </div>
+
+                    <div class="row">
+                        <!-- email start -->
+                        <div class="col-4">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="textEmail" placeholder="" required>
+                                <label for="email">Email<span class="requiredIcon">*</span></label>
+                            </div>
+                        </div>
+                        <!-- email end -->
+                        <!-- radio gender start -->
+                        <div class="col-4">
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" id="textAddress" placeholder=""></textarea>
+                                <label for="address">Address</label>
+                            </div>
+                        </div>
+                        <!-- radio gender end -->
+                        <!-- dob start -->
+                        <div class="col-4">
+                            <div class="form-floating mb-3">
+                                <select name="designation" id="selectCustomerStatus" class="form-select">
+                                    <option value=""  selected disabled>Select Customer Status</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- dob end -->
+                    </div>
+                </div>
+
+                <div class="row mt-3 mb-3">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal">Print</button></div>
+                            <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal">Delete</button></div>
+                            <div class="col-7"></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-5"></div>
+                            <div class="col-2"><button type="button" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
+                            <div class="col-2"><button type="button" class="modal-button modal-btn-update" data-bs-dismiss="modal">Update</button></div>
+                            <div class="col-2"><button type="button" class="modal-button modal-btn-submit">Submit</button></div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
