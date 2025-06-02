@@ -75,7 +75,7 @@ public class CustomerController {
     @GetMapping(value = "/customer/alldata", produces = "application/json")
     public List<CustomerEntity> GetGCustomerDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),"INVOICE");
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),"CUSTOMER");
 
         if (!userPrivilage.get("select")) {
             return new ArrayList<CustomerEntity>();
@@ -85,7 +85,7 @@ public class CustomerController {
     }
 
     @PostMapping(value = "/customer")
-    public String AddInvoice(@RequestBody CustomerEntity customer) {
+    public String AddCustomer(@RequestBody CustomerEntity customer) {
         // authentiction and autherzation
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
@@ -122,7 +122,7 @@ public class CustomerController {
     }
 
      @DeleteMapping(value = "/customer")
-   public String DeleteInvoice(@RequestBody CustomerEntity customer){
+   public String DeleteCustomer(@RequestBody CustomerEntity customer){
        //Autherntication and autherization
        Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "CUSTOMER");
@@ -153,8 +153,8 @@ public class CustomerController {
       }
    }
 
-    @PutMapping(value = "/invoice")
-    public String updateInvoice(@RequestBody CustomerEntity customer) {
+    @PutMapping(value = "/customer")
+    public String updateCustomer(@RequestBody CustomerEntity customer) {
        
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();

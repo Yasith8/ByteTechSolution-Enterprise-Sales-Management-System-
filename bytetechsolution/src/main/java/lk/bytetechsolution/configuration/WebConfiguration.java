@@ -65,6 +65,7 @@ public class WebConfiguration {
 
         //allow for the  customer and sales portal
         .requestMatchers("/grn/**").hasAnyAuthority("Admin","Manager","Cashier") 
+        .requestMatchers("/customer/**").hasAnyAuthority("Admin","Manager","Cashier") 
         .anyRequest().authenticated();// any other requst need authenticate
         
         
