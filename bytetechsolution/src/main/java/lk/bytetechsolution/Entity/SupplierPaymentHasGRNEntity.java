@@ -15,6 +15,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /* 
  * ------------Entity-----------
  * convert into entity class
@@ -37,10 +39,6 @@ public class SupplierPaymentHasGRNEntity {
     @JoinColumn(name = "grn_id",referencedColumnName = "id")
     private GRNEntity grn_id;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_payment_id",referencedColumnName = "id")
-    private SupplierPaymentEntity supplier_payment_id;
-
     @NotNull
     @Column(name = "grnamount")
     private BigDecimal grnamount;
@@ -52,4 +50,9 @@ public class SupplierPaymentHasGRNEntity {
     @NotNull
     @Column(name = "dueamount")
     private BigDecimal dueamount;
+
+    @ManyToOne
+    @JoinColumn(name = "supplier_payment_id",referencedColumnName = "id")
+    @JsonIgnore
+    private SupplierPaymentEntity supplier_payment_id;
 }

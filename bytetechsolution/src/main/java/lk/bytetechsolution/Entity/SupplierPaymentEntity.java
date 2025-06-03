@@ -2,7 +2,9 @@ package lk.bytetechsolution.Entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -73,4 +76,7 @@ public class SupplierPaymentEntity {
     @ManyToOne
     @JoinColumn(name = "payment_type_id",referencedColumnName = "id")
     private PaymentTypeEntity payment_type_id;
+
+    @OneToMany(mappedBy = "supplier_payment_id",cascade = CascadeType.ALL,orphanRemoval=true)
+    private List<SupplierPaymentHasGRNEntity> supplier_payment_has_gen;
 }
