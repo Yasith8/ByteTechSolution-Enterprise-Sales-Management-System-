@@ -85,6 +85,7 @@ public class SupplierPaymentController {
         HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
                 "SUPPLIERPAYMENT");
 
+                //check logged user have privileges or not
         if (!userPrivilage.get("insert")) {
             return "Permission Denied! Save not Completed";
         }
@@ -100,15 +101,18 @@ public class SupplierPaymentController {
                 supplierpayment.setPaymentno(nextNumber);
             }
 
+            //asigning the supplier_payment_id to each and every items in supplier payment grn
             for (SupplierPaymentHasGRNEntity supplierpaymentgrn : supplierpayment.getSupplier_payment_has_gen()) {
                 supplierpaymentgrn.setSupplier_payment_id((supplierpayment));
             }
 
+            //save in db
             dao.save(supplierpayment);
-
+            //pass success msg
             return "OK";
 
         } catch (Exception e) {
+            //if there is error
             return "Save not Completed: " + e.getMessage();
         }
 

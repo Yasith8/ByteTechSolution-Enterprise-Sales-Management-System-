@@ -161,7 +161,7 @@ public class InvoiceController {
        
         //Authentication and Autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"Invoice");
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"INVOICE");
 
         if(!userPrivilage.get("update")){
             return "Permission Denied! Update not Completed";

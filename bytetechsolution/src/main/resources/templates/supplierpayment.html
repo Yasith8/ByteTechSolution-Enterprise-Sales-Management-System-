@@ -32,7 +32,7 @@
 
             </div>
             <div class="col-4 text-end">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#supplierAddModal" class="btn addBtn">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#supplierPaymentAddModal" class="btn addBtn">
                     Add New Supplier Payment</button>
             </div>
             <div class="col-1"></div>
@@ -121,16 +121,19 @@
                                             <div class="col-6">
                                                 <div class="form-floating mb-3">
                                                     <select name="brand" id="selectSupplier" class="form-select" onchange="selectDynamicValidator(this,'','supplierpayment','supplier_id')">
-                                                <option value=""  selected disabled>Select Supplier Name</option>
-                                            </select>
+                                                        <option value=""  selected disabled>Select Supplier Name</option>
+                                                    </select>
                                                 </div>
-                                                <div class="col-6">
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-floating mb-3">
                                                     <select name="brand" id="selectGRN" class="form-select" onchange="selectDynamicValidator(this,'','supplier_payment_has_grn','grn_id')">
-                                                <option value=""  selected disabled>Select Supplier Name</option>
-                                            </select>
+                                                     <option value=""  selected disabled>Select Supplier Name</option>
+                                                  </select>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <!-- supplier Input end -->
 
                                         <!-- supplier phone Start -->
