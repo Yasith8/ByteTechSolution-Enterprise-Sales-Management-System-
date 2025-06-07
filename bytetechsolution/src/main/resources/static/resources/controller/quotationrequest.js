@@ -205,35 +205,46 @@ const refreshQuotationRequestForm = () => {
 }
 
 const refreshInnerQuotationRequestItemFormAndTable = () => {
+    //create new object for quotation request items
     quotationRequestItem = new Object();
     oldQuotationRequestItem = null;
 
+    //empty the assigned values in 
     quotationRequestItem.quotation_request_item_id = null;
     numberQuantity.value = null;
+    //color remove in inner form
     removeValidationColor([numberQuantity, selectItemName])
 
-    // if(selectBrand.value==""||selectCategory.value=="Please Select Category"||selectBrand.value==""){
+    // if brand and category is empty
     if (quotationrequest.brand_id == null || quotationrequest.category_id == null) {
+        // when category changed 
         selectCategory.addEventListener('change', () => {
 
+            //selected category values
             const itemCategory = selectValueHandler(selectCategory);
 
+            // when brand changed 
             selectBrand.addEventListener('change', () => {
+                //selected category values
                 const itemBrand = selectValueHandler(selectBrand);
                 console.log(itemBrand, itemCategory);
 
                 //all item list array
                 innerItemList = getServiceAjaxRequest(`/${(itemCategory.name).toLowerCase()}/${itemBrand.id}/itemlist`)
+                    //get avaible items
                 const availableItems = innerItemList.filter(innerItem =>
-                    !quotationrequest.quotation_request_item.some(quotationItem =>
-                        quotationItem.itemcode === innerItem.itemcode
+                        !quotationrequest.quotation_request_item.some(quotationItem =>
+                            quotationItem.itemcode === innerItem.itemcode
+                        )
                     )
-                )
-
+                    //fill it into dropdown
                 fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Please Select Item", availableItems, "itemcode", 'itemname');
             })
         });
+
     } else {
+        //in this loop case, user still not submitted main form..he just added a new item
+        //get brand and category selected values
         const itemCategory = selectValueHandler(selectCategory);
         const itemBrand = selectValueHandler(selectBrand);
 
@@ -252,13 +263,15 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
 
 
 
-
+    //ensable and color remving and enable input fields
     inputFieldsHandler([selectItemName, numberQuantity], false)
     removeValidationColor([selectItemName, numberQuantity])
 
+    //enable submit button
     buttonInnerSubmit.disabled = false;
     buttonInnerSubmit.classList.add('inner-add-btn');
 
+    //disable update button
     buttonInnerUpdate.disabled = true;
     buttonInnerUpdate.classList.remove('inner-update-btn');
 
@@ -274,6 +287,7 @@ const refreshInnerQuotationRequestItemFormAndTable = () => {
 
     console.log("QREQUEST", quotationrequest.quotation_request_item);
 
+    //fill current item data to table
     fillDataIntoInnerTable(innerItemTable, quotationrequest.quotation_request_item, displayPropertyList, refillInnerQuotationRequestForm, deleteInnerQuotationRequestForm)
         //when the table refresh availble item show
     updateAvailableItems()

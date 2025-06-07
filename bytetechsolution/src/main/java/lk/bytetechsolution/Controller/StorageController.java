@@ -184,6 +184,7 @@ public class StorageController {
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"ITEM");
 
+        //is user have privileges to delete or not
         if(!userPrivilage.get("delete")){
             return "Permission Denied! Delete not Completed";
         }
@@ -191,6 +192,7 @@ public class StorageController {
         //existance check
         StorageEntity extStorage=daoStorage.getReferenceById(storage.getId());
 
+        //see there is any data exist or not
         if(extStorage==null){
             return "Delete not Completed. Processor not existed";
         }

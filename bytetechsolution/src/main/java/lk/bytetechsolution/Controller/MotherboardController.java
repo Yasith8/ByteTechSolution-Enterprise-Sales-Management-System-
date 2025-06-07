@@ -30,7 +30,6 @@ import lk.bytetechsolution.Dao.MotherboardDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.BrandEntity;
 import lk.bytetechsolution.Entity.MotherboardEntity;
-import lk.bytetechsolution.Entity.ProcessorEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -121,6 +120,7 @@ public class MotherboardController {
                 motherboardseriesId, motherboardtypeId, cpusocketId, memorytypeId, interfaceid,brandId);
     }
 
+    //get motherboard items according to item brand
     @GetMapping(value = "/motherboard/{brandId}/itemlist", produces = "application/json")
     public List<MotherboardEntity> MotherboardItemList(@PathVariable("brandId") BrandEntity brandId) {
 

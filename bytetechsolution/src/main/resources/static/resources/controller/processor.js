@@ -32,9 +32,11 @@ const refreshProcessorTable = () => {
 const refreshProcessorForm = () => {
     processor = new Object();
 
+    //active submit button
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
 
+    //disable update button
     buttonUpdate.disabled = true;
     buttonUpdate.classList.remove('modal-btn-update');
 
@@ -382,8 +384,10 @@ const checkProcessorInputErrors = () => {
 
 
 const buttonProcessorSubmit = () => {
+    //check errors in user inputs
     let errors = checkProcessorInputErrors();
 
+    //if there is no errors open sweet alert to get a confomation
     if (errors === "") {
         Swal.fire({
             title: "Are you sure?",
@@ -396,21 +400,24 @@ const buttonProcessorSubmit = () => {
             allowOutsideClick: false,
             allowEscapeKey: false
         }).then((result) => {
+            //if user conformed called post request
             if (result.isConfirmed) {
 
                 let postServiceResponce;
-
+                //ajax request
                 $.ajax("/processor", {
-                    type: "POST",
+                    type: "POST", //method
                     contentType: "application/json",
                     data: JSON.stringify(processor),
                     async: false,
 
+                    //if success
                     success: function(data) {
                         console.log("success", data);
                         postServiceResponce = data;
                     },
 
+                    //if not success
                     error: function(resData) {
                         console.log("Fail", resData);
                         postServiceResponce = resData;

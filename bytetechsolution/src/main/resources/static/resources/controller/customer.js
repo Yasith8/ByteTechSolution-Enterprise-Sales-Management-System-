@@ -34,6 +34,7 @@ const refreshCustomerForm = () => {
     staticBackdropLabel.textContent = "Add New Customer";
 
     customerstatuses = getServiceAjaxRequest("/customerstatus/alldata");
+    console.log("cs", customerstatuses)
     fillDataIntoSelect(selectCustomerStatus, "Please Select Customer Status", customerstatuses, "name");
 
     removeValidationColor([textName, textMobile, decimalTotalPurchase, textEmail, textAddress, selectCustomerStatus])

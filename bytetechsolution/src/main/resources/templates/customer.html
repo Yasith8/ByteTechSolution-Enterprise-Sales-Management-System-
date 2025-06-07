@@ -106,88 +106,91 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Customer</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Full Name Input Start -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="textName" placeholder="your fullname" required>
-                                <label for="fullname">Name <span class="requiredIcon">*</span></label>
+                    <form id="formCustomer">
+                        <!-- Full Name Input Start -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="textName" placeholder="your fullname" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','customer','name')">
+                                    <label for="fullname">Name <span class="requiredIcon">*</span></label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Full Name Input end -->
+                        <!-- Full Name Input end -->
 
-                    <!-- nic Input Start -->
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="textMobile" placeholder="" required>
-                                <label for="nic">Mobile No<span class="requiredIcon">*</span></label>
+                        <!-- nic Input Start -->
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="textMobile" placeholder="" onkeyup="textValidator(this,'^[0][7][01245678][0-9]{7}$', 'customer', 'mobile')" required>
+                                    <label for="nic">Mobile No<span class="requiredIcon">*</span></label>
+                                </div>
                             </div>
-                        </div>
-                        <!-- callingname Input end -->
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="decimalTotalPurchase" placeholder="" required list="calllist">
-                                <label for="decimalTotalPurchase">Total Purchase</label>
+                            <!-- callingname Input end -->
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="decimalTotalPurchase" placeholder="" required list="calllist" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$', 'customer','totalpurchase')">
+                                    <label for="decimalTotalPurchase">Total Purchase</label>
+                                </div>
                             </div>
+                            <!-- callingname Input end -->
                         </div>
-                        <!-- callingname Input end -->
-                    </div>
 
-                    <div class="row">
-                        <!-- email start -->
-                        <div class="col-4">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="textEmail" placeholder="" required>
-                                <label for="email">Email<span class="requiredIcon">*</span></label>
+                        <div class="row">
+                            <!-- email start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="textEmail" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'customer','email')">
+                                    <label for="email">Email<span class="requiredIcon">*</span></label>
+                                </div>
                             </div>
-                        </div>
-                        <!-- email end -->
-                        <!-- radio gender start -->
-                        <div class="col-4">
-                            <div class="form-floating mb-3">
-                                <textarea class="form-control" id="textAddress" placeholder=""></textarea>
-                                <label for="address">Address</label>
+                            <!-- email end -->
+                            <!-- radio gender start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" id="textAddress" placeholder="" onkeyup="textValidator(this,'^(([0-9\\/\\-\\sA-Za-z]{1,20}[\\,][\\s])+([A-Z][a-z0-9\\-]{1,20}[.]))$','customer','address')"></textarea>
+                                    <label for="address">Address</label>
+                                </div>
                             </div>
-                        </div>
-                        <!-- radio gender end -->
-                        <!-- dob start -->
-                        <div class="col-4">
-                            <div class="form-floating mb-3">
-                                <select name="designation" id="selectCustomerStatus" class="form-select">
+                            <!-- radio gender end -->
+                            <!-- dob start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <select name="designation" id="selectCustomerStatus" class="form-select" onchange="selectDynamicValidator(this,'','customer','customerstatus_id')">
                                     <option value=""  selected disabled>Select Customer Status</option>
                                 </select>
+                                </div>
                             </div>
+                            <!-- dob end -->
                         </div>
-                        <!-- dob end -->
-                    </div>
+                    </form>
                 </div>
 
                 <div class="row mt-3 mb-3">
                     <div class="col-6">
-                        <div class="row">
-                            <div class="col-1"></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal">Print</button></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal">Delete</button></div>
-                            <div class="col-7"></div>
+                        <div id="divModifyButton">
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col-2"><button type="button" id="buttonPrint" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printCustomer(window['editOb'], window['editRow'])">Print</button></div>
+                                <div class="col-2"><button type="button" id="buttonDelete" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteCustomer(window['editOb'], window['editRow'])">Delete</button></div>
+                                <div class="col-7"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5"></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-update" data-bs-dismiss="modal">Update</button></div>
-                            <div class="col-2"><button type="button" class="modal-button modal-btn-submit">Submit</button></div>
+                            <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
+                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="updatecustomer()">Update</button></div>
+                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="submitCustomer()">Submit</button></div>
                             <div class="col-1"></div>
                         </div>
                     </div>
 
                 </div>
-
 
             </div>
         </div>

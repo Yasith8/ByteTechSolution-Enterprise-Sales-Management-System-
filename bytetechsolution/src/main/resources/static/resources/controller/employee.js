@@ -1,13 +1,3 @@
-//define browser's onload event
-//way1
-/* 
-window.onload = ()=>{
-      
-}
-*/
-//way2
-/* 
- */
 window.addEventListener('load', () => {
     console.log("Employee Page Loaded...!")
 
@@ -138,6 +128,39 @@ const refreshEmployeeForm = () => {
 
     //pass designation data to common function to create dynamic dropdown
     fillDataIntoSelect(selectDesignation, "Select Designation", designations, "name")
+
+
+    // let currentdateForMin = new Date();
+    //currentdateForMin.setFullYear(currentdateForMin.getFullYear() - 60);
+
+    //dateDOB.min = currentdateForMin.getFullYear() + getDateAndMonth(currentdateForMin, "monthdate");
+
+
+    // createdate object for generate max dob
+    //let currentDateForMax = new Date();
+    //currentDateForMax.setFullYear(currentDateForMax.getFullYear() - 18);
+
+    //1 - 11 ena nisa month ekta 1 k ekathu krna oni
+    /*let month = currentDateForMax.getMonth() + 1;
+    if(month < 10 ) month = "0"+ month;
+
+    let date = currentDateForMax.getDate();
+    if(date < 10 ) date = "0" + date; */
+    ////dateDOB.max = "2004-01-01";
+    //dateDOB.max = currentDateForMax.getFullYear() + getDateAndMonth(currentDateForMax, "monthdate");
+
+
+    let currentDateMin = new Date();
+    let minDate = currentDateMin.setFullYear(currentDateMin.getFullYear() - 60)
+    let currentDateMax = new Date();
+    let maxDate = currentDateMax.setFullYear(currentDateMax.getFullYear() - 18)
+
+    console.log("MIN===========>", getCurrentDate(minDate), "||||||| max=======>", getCurrentDate(maxDate))
+        //getCurrentDate()
+    setDateLimits(dateDateOfBirth, getCurrentDate(minDate), getCurrentDate(maxDate))
+
+
+
 
 
     //profile image set to default

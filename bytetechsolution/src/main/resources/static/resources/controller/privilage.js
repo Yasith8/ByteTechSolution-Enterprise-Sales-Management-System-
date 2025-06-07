@@ -434,6 +434,7 @@ const updatePrivilage = () => {
 }
 
 const btnCloseHandler = () => {
+    //user conformation
     const closeResponse = confirm('Are you sure to close the modal?')
 
     //check closeResponse is true or false

@@ -247,3 +247,123 @@ const salePriceCalculator = (object) => {
     decimalSalesPrice.value = salesPrice;
     textValidator(decimalSalesPrice, '^[0-9]+(\\.[0-9]{1,2})?$', object, 'salesprice')
 }
+
+
+/* const textFullNameValidator = (feildId) => {
+    //assign fullname inputField value to fullnamevalue
+    const fullNameValue = feildId.value;
+    //pattern for name validate
+    //in here 1st letter need to be capital
+    //1st name can be 2-20 that mean add morethan 1 and  less than or equal to 20 letters
+    //[\\s] match any white space characters
+    //+ mean it will match one or more pattern of inside 1st ()
+    //* mean it can happen multiple time
+    // 2nd() is last part
+    const regPettern = new RegExp('^([A-Z][a-z]{2,20}[\\s])+([A-Z][a-z]{2,20}[\\s]*)$');
+
+    //check full name is not empty
+    if (fullNameValue != '') {
+        //if there is no error in fullname pattern
+        if (regPettern.test(fullNameValue)) {
+            //valid value 
+            //add success color for border
+            feildId.classList.remove('is-invalid');
+            feildId.classList.add('is-valid');
+            employee.fullname = fullNameValue;
+
+            //process to automatic genarating of calling name using fullname
+            // cleared added static values 
+            dlFullNameParts.innerHTML = '';
+            //split the fullname and store as a array
+            //in here splitting criteria is " " and store it in array
+            callingnameList = fullNameValue.split(' ');
+            //loop through callingnameList and create option
+            callingnameList.forEach(element => {
+                //create option element
+                const option = document.createElement('option');
+                //add  value to option tag
+                option.value = element;
+                //append option to dlfullnamepart datalist
+                //data list is a elements that can do both text and dropdown
+                dlFullNameParts.appendChild(option);
+            });
+
+        }
+        //if regex patten has error
+        //that mean inputed content not in right criteria
+        else {
+            //color that border with error color
+            feildId.classList.remove('is-valid');
+            feildId.classList.add('is-invalid');
+            //empty datalist
+            dlFullNameParts.innerHTML = '';
+            //empty the fullname
+            employee.fullname = '';
+            //assign callingname null
+            employee.callingname = null;
+
+        }
+    }
+    //if user leave the empty input field
+    else {
+        //clear the datalist
+        dlFullNameParts.innerHTML = '';
+        //clear the fullname
+        employee.fullname = '';
+        //clear the callingname
+        employee.callingname = null;
+        //color that border with error color
+        feildId.classList.remove('is-invalid');
+        feildId.classList.remove('is-valid');
+    }
+} */
+
+
+const getCurrentDate = (givendate) => {
+    let nowDate = new Date(givendate);
+    // retrive 0 to 11
+    let month = nowDate.getMonth() + 1; //return 0-jan-11-Dec  //currently do jan=0+1=1
+    //retrive 1-31
+    let date = nowDate.getDate(); //return 1-31
+    //year
+    let year = nowDate.getFullYear();
+
+    if (month < 10) {
+        month = "0" + month;
+    }
+    if (date < 10) {
+        date = "0" + date;
+    }
+
+
+    return year + "-" + month + "-" + date;
+}
+
+
+const getDateAndMonth = (dateob, format) => {
+    let month = dateob.getMonth() + 1;
+    let date = dateob.getDate();
+
+    if (month < 10) month = "0" + month;
+    if (date < 10) date = "0" + date;
+
+    if (format === "MMDD") return "-" + month + "-" + date;
+    if (format === "MM") return month;
+    if (format === "DD") return date;
+};
+
+
+const setDateLimits = (elementId, min, max) => {
+
+    if (min) {
+        elementId.min = min;
+    } else {
+        elementId.removeAttribute("min");
+    }
+
+    if (max) {
+        elementId.max = max;
+    } else {
+        elementId.removeAttribute("max");
+    }
+}
