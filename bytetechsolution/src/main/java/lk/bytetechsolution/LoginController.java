@@ -1,6 +1,8 @@
 package lk.bytetechsolution;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +45,25 @@ public class LoginController {
     @RequestMapping(value = "/dashboard")
     public ModelAndView dashboardUI(){
         ModelAndView dashView=new ModelAndView();
+        // get logged user authentication object using security
+        // this help to retrieve the current authentication object which holds the user
+        // detail
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // get current log user
+        UserEntity loggedUser = daoUser.getByUsername(authentication.getName());
+
+        // current loggedemployee
+        String loggedEmployee = daoEmployee.getFullnameById(loggedUser.getId());
+
+        // pass the ui
+        dashView.setViewName("supplierpayment.html");
+        // attributes set to show titles in web page using theamleaf
         dashView.addObject("title", "Dashboard || Bytetech Solution");
+        dashView.addObject("user", authentication.getName());// passing logged user name
+        dashView.addObject("EmpName", loggedEmployee);
+        dashView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());// get the first role
+        dashView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
         dashView.setViewName("dashboard.html");
         return dashView;
     }

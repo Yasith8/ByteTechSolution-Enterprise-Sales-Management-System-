@@ -1,0 +1,58 @@
+package lk.bytetechsolution.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import lk.bytetechsolution.Dao.EmployeeDao;
+import lk.bytetechsolution.Dao.InvoiceDao;
+import lk.bytetechsolution.Dao.InvoiceStatusDao;
+import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.UserEntity;
+
+@RestController
+public class OrderController {
+        @Autowired
+    private InvoiceDao daoInvoice;
+    @Autowired
+    private UserDao daoUser;
+
+    @Autowired
+    private InvoiceStatusDao daoInvoiceStatus;
+
+    @Autowired
+    private EmployeeDao daoEmployee;
+
+    @Autowired
+    private PrivilageController privilageController;
+
+    @RequestMapping(value = "/order")
+    public ModelAndView GetInvoiceUI() {
+        // get logged user authentication object using security
+        // this help to retrieve the current authentication object which holds the user
+        // detail
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // get current log user
+        UserEntity loggedUser = daoUser.getByUsername(authentication.getName());
+
+        // current loggedemployee
+        String loggedEmployee = daoEmployee.getFullnameById(loggedUser.getId());
+
+        // Create a new ModelAndView object to hold the model data and view information
+        ModelAndView orderView = new ModelAndView();
+        // pass the ui
+        orderView.setViewName("order.html");
+        // attributes set to show titles in web page using theamleaf
+        orderView.addObject("title", "Order Management || Bytetech Solution");
+        orderView.addObject("user", authentication.getName());// passing logged user name
+        orderView.addObject("EmpName", loggedEmployee);
+        orderView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());// get the first role
+        orderView.addObject("LoggedUserPhoto", loggedUser.getPhoto()); 
+
+        return orderView;
+    }
+}
