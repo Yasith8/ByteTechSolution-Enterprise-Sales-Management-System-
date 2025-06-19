@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{component::headerFragment}"></head>
+
+<head>
+    <link rel="stylesheet" href="resources/style/accessories.css">
+    <script src="resources/controller/accessories.js"></script>
+</head>
+
+
+<body>
+
+    <nav th:replace="~{component::navFragment}"></nav>
+    <div th:replace="~{component::offcanvasFragment}"></div>
+
+    <div class="container-fluid mt-3 mb-3">
+
+        <!-- title area start -->
+        <div class="row m-2">
+            <div class="col-12 text-center 
+            title-header-div">
+                <h2> Accessories Management </h2>
+            </div>
+        </div>
+        <!-- title area End -->
+
+        <!-- Card area start  -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-6">
+
+            </div>
+            <div class="col-4 text-end">
+                <button type="button" class="Btn printTableBtn" onclick="printAccessoriesTable('tableAccessories')">
+                    Print
+                </button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#accessoriesAddModal" class="btn addBtn">
+                    Add New Accessories </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- Card area end  -->
+
+        <!-- table Area Start-->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="card employee-card">
+                    <div class="card-body employee-cardbody">
+
+                        <table class="table table-hover" id="tableAccessories">
+                            <thead class="table-header">
+                                <tr>
+                                    <th> # </th>
+                                    <th> Item Code </th>
+                                    <th> Item Name </th>
+                                    <th> Brand </th>
+                                    <th> Profit Rate (%) </th>
+                                    <th> Item Status </th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="table-body">
+
+                                <!-- create static values for table -->
+                                <!-- used for initial designs -->
+                                <!-- probebly this appear when data not loading to table from db -->
+                                <tr>
+                                    <td> 1 </td>
+                                    <td> Initial User </td>
+                                    <td> 00000000000V </td>
+                                    <td> 0000000000 </td>
+                                    <td> inituser@gmail.com </td>
+                                    <td> Doctor </td>
+                                    <td>
+                                        Active
+                                    </td>
+
+                                    <td>
+                                        <button type="button" class="btn btnEdit">
+                                            <i class="fa-solid fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn ms-1 me-1 btnDel">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                        <button type="button" class="btn btnView">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+
+        </div>
+        <!-- table Area End-->
+
+    </div>
+
+    <!-- employee Add Modal -->
+    <div class="modal fade" id="accessoriesAddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Item</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="accessoriesForm">
+                        <!-- Employee Profile Image Upload Start -->
+                        <div class="row mb-4">
+                            <div class="col-12 d-flex justify-content-center">
+                                <div class="item-img-container">
+                                    <img src="/resources/image/noitem.jpg" alt="no item" id="imgAccessoriesPhoto" class="item-img" />
+                                    <div class="item-img-overlay">
+                                        <button id="btnSelectImage" type="button" class="btn btn-primary btn-item-select-image" onclick="FileProcessorPhoto.click()">Select Image</button>
+                                        <button id="btnClearImage" type="button" class="btn btn-danger btn-item-remove-image" onclick="accessoriesPictureRemove()">Clear Image</button>
+                                    </div>
+                                    <p id="textAccessoriesPhoto" class="image-item-status">No Image Selected</p>
+                                    <input type="file" class="d-none" id="FileAccessoriesPhoto" onchange="validateFileField(this, 'accessories', 'photo', 'photoname', 'oldAccessories', imgAccessoriesPhoto, textAccessoriesPhoto)">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Employee Profile Image Upload End -->
+                        <!-- itemname Input Start -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="textItemName" placeholder="procesor name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','accessories','itemname')">
+                                    <label for="textItemName">Item Name <span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- itemname Input end -->
+
+                        <!-- purchase Price Start -->
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <!-- 
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
+                                    -->
+                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','accessories','profitrate')">
+                                    <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- purchase Price end -->
+                            <!-- profit rate start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <!-- 
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
+                                    -->
+                                    <input type="number" class="form-control" id="numberROP" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','accessories','rop')">
+                                    <label for="numberROP">ROP</label>
+                                </div>
+                            </div>
+                            <!-- profit rate end -->
+                            <!-- sales price start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <!-- 
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
+                                    -->
+                                    <input type="number" class="form-control" id="numberROQ" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','accessories','roq')">
+                                    <label for="numberROQ">ROQ</label>
+                                </div>
+                            </div>
+                            <!-- sales price end -->
+                        </div>
+
+                        <div class="row">
+                            <!-- warranty start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="numberWarranty" placeholder="" required onkeyup="textValidator(this,'^[0-9]+$','accessories','warranty')">
+                                    <label for="numberWarranty">Warranty (Months)<span class="requiredIcon">*</span></label>
+                                </div>
+                            </div>
+                            <!-- warranty end -->
+                            <!-- rop start -->
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <div class="mb-3 form-floating">
+                                        <textarea class="form-control" id="textDescription" placeholder="" onkeyup="textValidator(this,'^(([0-9A-Za-z\\.\\-\\s]{1,300}))$','accessories','description')"></textarea>
+                                        <label for="textDescription">Description</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-floating mb-3">
+                                    <select name="itemStatus" id="selectItemStatus" class="form-select" onchange="selectDynamicValidator(this,'','accessories','itemstatus_id')">
+                                    <option value=""  selected disabled>Select Item Status</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <!--item status start-->
+                            <div class="col-4">
+                                <div class="mb-3 form-floating">
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','accessories','brand_id')">
+                                             <option value=""  selected disabled>Select Brand</option>
+                                        </select>
+                                </div>
+                            </div>
+                            <!--item status end-->
+                        </div>
+
+
+
+
+                    </form>
+                </div>
+
+                <div class="row mt-3 mb-3">
+                    <div class="col-6">
+                        <div id="divModifyButton">
+                            <div class="row" id="">
+                                <div class="col-1"></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printAccessoriesDetails(window['editOb'], window['editRow'])">Print</button></div>
+                                <div class="col-2"><button type="button" id="buttonDelete" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteAccessories(window['editOb'], window['editRow'])">Delete</button></div>
+                                <div class="col-7"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-5"></div>
+                            <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
+                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonAccessoriesUpdate()">Update</button></div>
+                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonAccessoriesSubmit()">Submit</button></div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
