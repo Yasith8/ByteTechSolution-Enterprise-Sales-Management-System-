@@ -17,7 +17,7 @@ public interface AccessoriesDao extends JpaRepository<AccessoriesEntity,Integer>
     @Query(value = "select concat('ACS',lpad(substring(max(acs.itemcode),4)+1,4,'0')) as itemcode from bytetechsolution.accessories as acs",nativeQuery = true)
     public String getNextAccessoriesNumber();
 
-   @Query(value="SELECT * FROM bytetechsolution.accessories as acc WHERE " +"(?1 IS NULL OR acc.id = ?1) AND " +"(?2 IS NULL OR acc.itemcode = ?2) AND " +"(?3 IS NULL OR acc.warranty = ?3) AND " +"(?4 IS NULL OR acc.totalcore = ?4)",nativeQuery=true)
+   @Query(value="SELECT * FROM bytetechsolution.accessories as acc WHERE " +"(?1 IS NULL OR acc.id = ?1) AND " +"(?2 IS NULL OR acc.itemcode = ?2) AND " +"(?3 IS NULL OR acc.warranty = ?3) AND " +"(?4 IS NULL OR acc.brand_id = ?4)",nativeQuery=true)
    public List<AccessoriesEntity> filterItemList(Integer id, String itemcode, Integer warranty, Integer brandId);
 
    @Query(value="select new AccessoriesEntity(a.id,a.itemcode,a.itemname,a.category_id,a.brand_id) from AccessoriesEntity a where a.brand_id=?1")
