@@ -57,6 +57,10 @@ public class SerialNoListEntity {
     @Column(name = "itemname")
     private String itemname;
 
+    @NotNull
+    @Column(name = "quantity")
+    private Integer quantity;
+
     @ManyToOne
     @JoinColumn(name = "category_id",referencedColumnName = "id")
     private CategoryEntity category_id;
