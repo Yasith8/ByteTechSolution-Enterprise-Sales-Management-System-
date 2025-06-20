@@ -247,6 +247,8 @@ Navbar and Sidebar
 
 .get-nav-top {
     z-index: 100;
+    position: fixed;
+    width: -webkit-fill-available;
 }
 
 
