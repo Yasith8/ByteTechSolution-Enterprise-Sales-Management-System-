@@ -10,9 +10,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.GRNDao;
 import lk.bytetechsolution.Dao.GRNStatusDao;
+import lk.bytetechsolution.Dao.SerialNoListDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.CategoryEntity;
 import lk.bytetechsolution.Entity.GRNEntity;
@@ -46,6 +49,12 @@ public class GRNController {
      */
     @Autowired
     private GRNDao daoGRN;
+
+    @Autowired
+    private SerialNoListDao daoSerial;
+
+    @Autowired
+    private CategoryDao daoCategory;
 
      @Autowired
     private UserDao daoUser;
@@ -130,6 +139,17 @@ public class GRNController {
 
             for(SerialNoListEntity serialNoList:grn.getSerial_no_list()){
                 serialNoList.setGrn_id((grn));
+                
+                String nextAcsSerialNo=daoSerial.getNextASCSeriealNo();
+
+                if(serialNoList.getCategory_id().getId()==11){
+
+                    if(nextAcsSerialNo==null){
+                        serialNoList.setSerialno("SNL0001");
+                    }else{
+                        serialNoList.setSerialno(nextAcsSerialNo);
+                    }
+                }
             }
 
             daoGRN.save(grn);

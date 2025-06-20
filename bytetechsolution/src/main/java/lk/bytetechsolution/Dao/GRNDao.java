@@ -15,4 +15,6 @@ import lk.bytetechsolution.Entity.GRNEntity;
 public interface GRNDao extends JpaRepository<GRNEntity,Integer>{
     @Query(value = "select concat('GRN',lpad(substring(max(grn.grncode),4)+1,4,'0')) as grncode from bytetechsolution.grn as grn",nativeQuery = true)
     String getNextGRNCode();
+    
+   
 }

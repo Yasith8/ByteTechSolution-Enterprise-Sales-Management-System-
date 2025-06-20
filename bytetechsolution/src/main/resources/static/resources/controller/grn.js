@@ -33,7 +33,14 @@ const refreshGrnForm = () => {
     grn.grn_item = new Array();
     grn.serial_no_list = new Array();
 
+    removeValidationColor([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, decimalPaidAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice])
 
+
+    divGrnInnerContent.classList.remove('elementHide')
+    buttonClear.classList.remove('elementHide')
+    buttonUpdate.classList.add('elementHide')
+    buttonSubmit.classList.remove('elementHide')
+    inputFieldsHandler([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, decimalPaidAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice], false)
 
     currentGrns = getServiceAjaxRequest("/grn/alldata");
     //gatta all the pr that required date not expired
@@ -51,6 +58,8 @@ const refreshGrnForm = () => {
     grnstatus = getServiceAjaxRequest("/grnstatus/alldata")
     fillDataIntoSelect(selectGRNStatus, "Select GRN Status", grnstatus, "name")
 
+    //categories = getServiceAjaxRequest("/category/alldata")
+    //fillDataIntoSelect(selectCategory, "Select Category", categories, "name")
 
     decimalTotalAmount.disabled = true;
     let totalAmount = 0;
@@ -91,7 +100,6 @@ const refeshInnerGrnFormAndTable = () => {
     serialNumbersData = new Array();
     serialNoWithDetails = new Object();
     serialNoList = new Array();
-
     numberQuantity.value = null;
     decimalPurchasePrice.value = null;
     decimalLinePrice.value = null;
@@ -100,8 +108,11 @@ const refeshInnerGrnFormAndTable = () => {
     updateSerialNumberInputs();
 
 
+
+
     if (selectPurchaseRequest.value == "Select Purchase Request") {
 
+        fillMultipleItemOfDataOnSignleSelectRecursion(selectCategory, "Select Purchase Request First", [], "itemcode", "itemname")
         fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Purchase Request First", [], "itemcode", "itemname")
 
         selectPurchaseRequest.addEventListener('change', () => {
@@ -109,8 +120,35 @@ const refeshInnerGrnFormAndTable = () => {
 
             removeValidationColor([selectPRItemName]);
             const purchaseRequestedItem = selectValueHandler(selectPurchaseRequest);
+
+            // Create a new Map to store unique categories using their `name` as the key
+            const uniqueCategoriesMap = new Map();
+
+            // Loop through each item in the purchase request
+            purchaseRequestedItem.purchase_request_item.forEach((prItem) => {
+                const category = prItem.category_id; // Get the category object from the item
+
+                // Check if this category name is not already in the Map
+                if (!uniqueCategoriesMap.has(category.name)) {
+                    // If it's not in the Map, add it using the name as the key and the full category object as the value
+                    uniqueCategoriesMap.set(category.name, category);
+                }
+            });
+
+            // Convert the values (unique category objects) from the Map into an array
+            const categories = Array.from(uniqueCategoriesMap.values());
+
+            fillDataIntoSelect(selectCategory, "Select Category", categories, "name")
             fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", purchaseRequestedItem.purchase_request_item, "itemcode", "itemname")
 
+            selectCategory.addEventListener('change', () => {
+                const selectedCategory = selectValueHandler(selectCategory);
+                const selectedCategoryItems = purchaseRequestedItem.purchase_request_item.filter(item =>
+                    item.category_id.name == selectedCategory.name
+                );
+                console.log(selectedCategoryItems)
+                fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", selectedCategoryItems, "itemcode", "itemname")
+            })
 
         })
 
@@ -135,6 +173,14 @@ const refeshInnerGrnFormAndTable = () => {
             removeValidationColor([selectPRItemName]);
         })
     }
+
+    selectCategory.addEventListener('change', () => {
+        const selectedCategory = selectValueHandler(selectCategory);
+        if (selectedCategory.name == "Accessories") {
+            toggleSerialBtn.disabled = true;
+            toggleSerialBtn.classList.add('elementHide')
+        }
+    })
 
     numberQuantity.addEventListener('input', () => {
         const newQty = parseInt(numberQuantity.value);
@@ -207,8 +253,10 @@ const refeshInnerGrnFormAndTable = () => {
         { dataType: 'text', propertyName: "lineprice" },
     ]
 
-    fillDataIntoInnerTable(innerSupplierTable, grn.grn_item, displayPropertyList, refillInnerGRNItemForm, deleteInnerGRNItemForm)
-        // updateAvailableItems()
+    console.log(grn.grn_item, "dddd")
+
+    fillDataIntoInnerTable(innerGrnTable, grn.grn_item, displayPropertyList, refillInnerGRNItemForm, deleteInnerGRNItemForm)
+        //updateAvailableItems()
 }
 
 const updateAvailableItems = () => {
@@ -242,7 +290,46 @@ const updateAvailableItems = () => {
 
 
 const refillGrnForm = (ob, rowIndex) => {
+    $('#grnAddModal').modal('show');
+    grn = ob;
+    removeValidationColor([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, decimalPaidAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice])
 
+    divGrnInnerContent.classList.add('elementHide')
+    buttonClear.classList.add('elementHide')
+    buttonUpdate.classList.add('elementHide')
+    buttonSubmit.classList.add('elementHide')
+
+    grnstatus = getServiceAjaxRequest("/grnstatus/alldata")
+    fillDataIntoSelect(selectGRNStatus, "Select GRN Status", grnstatus, "name", grn.grnstatus_id.name);
+
+    purchaserequests = getServiceAjaxRequest("/purchaserequest/alldata")
+    fillMultipleItemOfDataOnSignleSelectRecursion(selectPurchaseRequest, "Select Purchase Request", purchaserequests, "requestcode", "supplier_id.name", grn.purchase_request_id.requestcode, grn.purchase_request_id.supplier_id.name);
+
+
+    decimalTotalAmount.value = grn.totalamount;
+    numberDiscountRate.value = grn.discountrate;
+    decimalFinalAmount.value = grn.finalamount;
+    decimalPaidAmount.value = grn.paidamount;
+    textNote.value = grn.note;
+    dateRecivedDate.value = grn.reciveddate;
+    inputFieldsHandler([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, decimalPaidAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice], true)
+
+    if (grn.grnstatus_id.name == "Deleted") {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+
+        selectGrnStatus.addEventListener('change', () => {
+            if (grn.grnstatus_id.name == "Deleted") {
+                buttonDelete.disabled = true;
+                buttonDelete.classList.remove('modal-btn-delete');
+            } else {
+                buttonDelete.disabled = false;
+                buttonDelete.classList.add('modal-btn-delete');
+            }
+        })
+    }
+
+    refeshInnerGrnFormAndTable()
 }
 
 // Function to check and toggle the button
@@ -335,8 +422,10 @@ const checkInnerItemFormErrors = () => {
     if (grnItem.quantity == null) {
         errors += "Quantity is required.\n"
     }
-    if (serialNoList.length != grnItem.quantity) {
-        errors += "All the Serial Numbers filling is required.\n"
+    if (grnItem.category_id.name != "Accessories") {
+        if (serialNoList.length != grnItem.quantity) {
+            errors += "All the Serial Numbers filling is required.\n"
+        }
     }
 
     return errors;
@@ -347,16 +436,43 @@ const innerSupplierProductAdd = () => {
     //destructure the pr irem code for remove itemname_id
     const { itemname_id, ...rest } = grnItem;
     updatedGRNItem = rest;
-    serialNumbersData.forEach(seialNo => {
-        const { category_id, itemcode, itemname, purchaseprice, ...rest } = updatedGRNItem;
+
+
+    if (updatedGRNItem.category_id.name === "Accessories") {
+        const { category_id, itemcode, itemname, purchaseprice, quantity, ...rest } = updatedGRNItem;
         let currentItem = getServiceAjaxRequest(`/${(category_id.name).toLowerCase()}/filteritem?itemcode=${itemcode}`);
         console.log("Current Item DATA", currentItem[0].profitrate)
         let purchasePrice = parseFloat(purchaseprice);
         let profitRate = currentItem[0].profitrate;
         let salesprice = (profitRate / 100) * purchasePrice + purchasePrice;
-        serialNoWithDetails = { category_id: category_id, itemcode: itemcode, itemname: itemname, status: true, serialno: seialNo, salesprice: salesprice }
+        console.log(quantity, "ddkddk")
+
+        serialNoWithDetails = {
+            category_id: category_id,
+            itemcode: itemcode,
+            itemname: itemname,
+            status: true,
+            salesprice: salesprice,
+            quantity: quantity
+        }
         serialNoList.push(serialNoWithDetails);
-    })
+    } else {
+        serialNumbersData.forEach(seialNo => {
+            const { category_id, itemcode, itemname, purchaseprice, ...rest } = updatedGRNItem;
+            let currentItem = getServiceAjaxRequest(`/${(category_id.name).toLowerCase()}/filteritem?itemcode=${itemcode}`);
+            console.log("Current Item DATA", currentItem[0].profitrate)
+            let purchasePrice = parseFloat(purchaseprice);
+            let profitRate = currentItem[0].profitrate;
+            let salesprice = (profitRate / 100) * purchasePrice + purchasePrice;
+            let itemQuantity = 1
+
+
+
+            serialNoWithDetails = { category_id: category_id, itemcode: itemcode, itemname: itemname, status: true, serialno: seialNo, salesprice: salesprice, quantity: itemQuantity }
+            serialNoList.push(serialNoWithDetails);
+        })
+
+    }
     console.log("GRN", grn)
     console.log("GRN ITEM", updatedGRNItem)
     console.log("SERIAL NO LIST", grn.serial_no_list)
@@ -514,9 +630,9 @@ const submitGRN = () => {
                     }).then(() => {
                         $('#grnAddModal').modal('hide');
                         //reset the Item form
-                        formGRN.reset();
-                        refreshGrnForm();
                         refreshGrnTable();
+                        refreshGrnForm();
+                        //formGRN.reset();
                     })
                 } else {
                     Swal.fire({
@@ -541,5 +657,87 @@ const submitGRN = () => {
         });
     }
 }
-const updateGRN = () => {}
-const clearGRN = () => {}
+
+
+const buttonModalClose = () => {
+    Swal.fire({
+        title: "Are you sure to close the form?",
+        text: "If you close this form, filled data will be removed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Close",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+            $('#grnAddModal').modal('hide');
+            divModifyButton.className = 'd-none';
+            refreshGrnForm();
+            grnItemForm.reset();
+        }
+    });
+}
+
+const innerClearButton = () => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to refresh the Item Form? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Refresh",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            refeshInnerGrnFormAndTable();
+
+            Swal.fire({
+                title: "Success!",
+                text: "Item Form Refreshed Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+
+
+        }
+    })
+}
+
+const refreshGRN = () => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to refresh the Purchase Request Form? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Refresh",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            refeshInnerGrnFormAndTable();
+            refreshGrnForm();
+            grnItemForm.reset();
+
+            Swal.fire({
+                title: "Success!",
+                text: "Purchase Request Form Refreshed Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+
+
+        }
+    })
+}
