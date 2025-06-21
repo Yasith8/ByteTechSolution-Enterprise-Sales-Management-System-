@@ -124,8 +124,7 @@ public class PurchaseRequestController {
                 purchaseequestitem.setPurchase_request_id(prequest);
             }
 
-            //supplier id set from supplierquotation
-            prequest.setSupplier_id(prequest.getSupplier_quotation_id().getSupplier_id());
+            
 
             daoPurchaseRequest.save(prequest);
             return "OK";

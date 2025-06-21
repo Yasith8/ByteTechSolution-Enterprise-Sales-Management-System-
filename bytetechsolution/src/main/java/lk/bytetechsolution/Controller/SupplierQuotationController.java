@@ -1,5 +1,6 @@
 package lk.bytetechsolution.Controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,7 +85,7 @@ public class SupplierQuotationController {
     }
 
         @GetMapping(value="/supplierquotation/quotationbyvaliddate",produces = "application/json")
-    public List<SupplierQuotationEntity> GetPrequestByValidDate(){
+    public List<SupplierQuotationEntity> GetPrequestByValidDate(@RequestParam(value = "supplier_id") Integer supplierId,@RequestParam(value = "validdate") String validdate){
         //Authentication and autherization
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"QUOTATION");
@@ -95,7 +96,7 @@ public class SupplierQuotationController {
             return new ArrayList<SupplierQuotationEntity>();
         }
 
-        return daoSupplierQuotation.findByAfterValiddate();
+        return daoSupplierQuotation.findByAfterValiddate(supplierId,validdate);
     }
 
 
