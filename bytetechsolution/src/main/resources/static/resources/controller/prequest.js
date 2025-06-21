@@ -38,20 +38,54 @@ const refreshPurchaseRequestForm = () => {
 
     prequest.purchase_request_item = new Array();
 
+    //supplier data getting
+    suppliers = getServiceAjaxRequest('/supplier/alldata');
+    fillMultipleItemOfDataIntoSingleSelect(selectSupplier, "Select Supplier", suppliers, "supplierid", "name");
+
+
+    //date managing accordsing to requeire date
+    let currentDateMin = new Date();
+    let minDate = currentDateMin.setFullYear(currentDateMin.getFullYear())
+    let currentDateMax = new Date();
+    //let maxDate = currentDateMax.setFullYear(currentDateMax.getFullYear())
+    let maxDate = currentDateMax.setDate(currentDateMax.getDate() + 14)
+
+    console.log("MIN===========>", getCurrentDate(minDate), "||||||| max=======>", getCurrentDate(maxDate))
+        //getCurrentDate()
+    setDateLimits(dateRequiredDate, getCurrentDate(minDate), getCurrentDate(maxDate))
+
+    fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Valid Date and Supplier First", [], "quotationid", "supplier_id.name");
+    selectSupplier.addEventListener('change', () => {
+
+        fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Valid Date First", [], "quotationid", "supplier_id.name");
+        ['change', 'input'].forEach(eventType => {
+            dateRequiredDate.addEventListener(eventType, () => {
+                const selectedsupplierId = selectValueHandler(selectSupplier);
+                const selectedDate = dateRequiredDate.value;
+                supplierquotations = getServiceAjaxRequest(`/supplierquotation/quotationbyvaliddate?validdate=${selectedDate}&supplier_id=${selectedsupplierId.id}`)
+                console.log("Selected SQs>>>>", supplierquotations)
+                fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierquotations, "quotationid", "supplier_id.name");
+            });
+        });
+    })
+
+
+
+
+    //purchase status getting
     selectPurchaseStatus.disabled = true;
     purchaseStatuses = getServiceAjaxRequest("/purchasestatus/alldata")
     fillDataIntoSelect(selectPurchaseStatus, "Select Purchase Status", purchaseStatuses, "name", purchaseStatuses[1].name);
     selectDynamicValidator(selectPurchaseStatus, '', 'prequest', 'purchasestatus_id')
 
-    supplierQuotations = getServiceAjaxRequest("/supplierquotation/quotationbyvaliddate")
-        //fillMultipleItemOfDataIntoSingleSelect(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name");
-    fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name");
+    //supplierQuotations = getServiceAjaxRequest("/supplierquotation/quotationbyvaliddate")
+    //fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name");
 
-    selectSupplierQuotation.addEventListener('change', () => {
-        console.log(selectSupplierQuotation.value)
-        prequest.purchase_request_item = [];
-        refreshPurchaseRequestHasItemInnerFormAndTable()
-    })
+    //selectSupplierQuotation.addEventListener('change', () => {
+    //    console.log(selectSupplierQuotation.value)
+    //    prequest.purchase_request_item = [];
+    //    refreshPurchaseRequestHasItemInnerFormAndTable()
+    //})
 
 
 
@@ -99,7 +133,7 @@ const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
     decimalItemPrice.disabled = true;
 
     //if supplier quotation eka fill nam
-    if (selectSupplierQuotation.value == "Select Supplier Quotation") {
+    if (selectSupplier.value == "Select Supplier") {
         console.log("EMPTY");
         //auto add item code when item select
         fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Purchase Request First", [], "", "");
