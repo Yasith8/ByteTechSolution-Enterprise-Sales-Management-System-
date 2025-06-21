@@ -57,4 +57,8 @@ public class PurchaseRequestItemEntity {
     @JoinColumn(name = "purchase_request_id", referencedColumnName = "id")
     @JsonIgnore
     private PurchaseRequestEntity purchase_request_id;
+
+    @ManyToOne
+    @JoinColumn(name="supplier_quotation_id",referencedColumnName="id")
+    private SupplierQuotationEntity supplier_quotation_id;
 }

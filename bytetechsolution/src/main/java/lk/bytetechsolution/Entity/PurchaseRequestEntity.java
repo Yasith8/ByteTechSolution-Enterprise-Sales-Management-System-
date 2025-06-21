@@ -83,10 +83,6 @@ public class PurchaseRequestEntity {
     @JoinColumn(name="supplier_id",referencedColumnName="id")
     private SupplierEntity supplier_id;
 
-    @ManyToOne
-    @JoinColumn(name="supplier_quotation_id",referencedColumnName="id")
-    private SupplierQuotationEntity supplier_quotation_id;
-    
     @OneToMany(mappedBy = "purchase_request_id",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<PurchaseRequestItemEntity> purchase_request_item;
 }
