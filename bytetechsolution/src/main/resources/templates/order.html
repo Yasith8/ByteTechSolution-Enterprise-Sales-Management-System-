@@ -17,7 +17,7 @@
     <div class="container-fluid mt-2">
 
         <!-- title area start -->
-        <div class="row m-2">
+        <div class="row m-2 contentMargin">
             <div class="col-12 text-center 
             title-header-div">
                 <h2> Order Management </h2>
@@ -137,7 +137,7 @@
 
                                                     <div class="col-6">
                                                         <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="decimalTtoalAmount" placeholder="" required onkeyup="textValidator(this,'^[0][7][01245678][0-9]{7}$', 'invoice', 'totalamount')">
+                                                            <input type="number" class="form-control" id="decimalTtoalAmount" placeholder="" required onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'invoice', 'totalamount')">
                                                             <label for="decimalTtoalAmount">Total Amount<span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
@@ -156,7 +156,7 @@
                                                 <div class="row">
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="decimalFinalAmount" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'invoice','finalamount')">
+                                                            <input type="number" class="form-control" id="decimalFinalAmount" placeholder="" required onkeyup="textValidator(this ,'^\\d+(\\.\\d{1,2})?$', 'invoice','finalamount')">
                                                             <label for="decimalFinalAmount">Final Amount<span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
@@ -164,7 +164,7 @@
                                                     <!-- discount rate start -->
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="decimalPaidAmount" placeholder="" onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'invoice','paidamount')">
+                                                            <input type="number" class="form-control" id="decimalPaidAmount" placeholder="" onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$','invoice','paidamount')">
                                                             <label for="decimalPaidAmount">Paid Amount</label>
                                                         </div>
                                                     </div>
@@ -225,7 +225,7 @@
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3 form-floating">
-                                                            <input type="number" class="form-control" id="decimalPurchasePrice" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'invoiceItem','purchaseprice')">
+                                                            <input type="number" class="form-control" id="decimalPurchasePrice" placeholder="" required onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'invoiceItem','purchaseprice')">
                                                             <label for="decimalPurchasePrice">Purchase Price<span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
