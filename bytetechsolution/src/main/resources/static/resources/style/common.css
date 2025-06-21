@@ -249,6 +249,11 @@ Navbar and Sidebar
     z-index: 100;
     position: fixed;
     width: -webkit-fill-available;
+    top: 0;
+}
+
+.contentMargin {
+    padding-top: 90px
 }
 
 
