@@ -51,24 +51,8 @@ const refreshPurchaseRequestForm = () => {
     let maxDate = currentDateMax.setDate(currentDateMax.getDate() + 14)
 
     console.log("MIN===========>", getCurrentDate(minDate), "||||||| max=======>", getCurrentDate(maxDate))
-        //getCurrentDate()
+
     setDateLimits(dateRequiredDate, getCurrentDate(minDate), getCurrentDate(maxDate))
-
-    fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Valid Date and Supplier First", [], "quotationid", "supplier_id.name");
-    selectSupplier.addEventListener('change', () => {
-
-        fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Valid Date First", [], "quotationid", "supplier_id.name");
-        ['change', 'input'].forEach(eventType => {
-            dateRequiredDate.addEventListener(eventType, () => {
-                const selectedsupplierId = selectValueHandler(selectSupplier);
-                const selectedDate = dateRequiredDate.value;
-                supplierquotations = getServiceAjaxRequest(`/supplierquotation/quotationbyvaliddate?validdate=${selectedDate}&supplier_id=${selectedsupplierId.id}`)
-                console.log("Selected SQs>>>>", supplierquotations)
-                fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierquotations, "quotationid", "supplier_id.name");
-            });
-        });
-    })
-
 
 
 
@@ -78,24 +62,6 @@ const refreshPurchaseRequestForm = () => {
     fillDataIntoSelect(selectPurchaseStatus, "Select Purchase Status", purchaseStatuses, "name", purchaseStatuses[1].name);
     selectDynamicValidator(selectPurchaseStatus, '', 'prequest', 'purchasestatus_id')
 
-    //supplierQuotations = getServiceAjaxRequest("/supplierquotation/quotationbyvaliddate")
-    //fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name");
-
-    //selectSupplierQuotation.addEventListener('change', () => {
-    //    console.log(selectSupplierQuotation.value)
-    //    prequest.purchase_request_item = [];
-    //    refreshPurchaseRequestHasItemInnerFormAndTable()
-    //})
-
-
-
-    decimalTotalAmount.disabled = true;
-    let totalAmount = 0
-    prequest.purchase_request_item.forEach(item => {
-        totalAmount += item.linetotal
-    });
-    decimalTotalAmount.value = totalAmount;
-    textValidator(decimalTotalAmount, '', 'prequest', 'totalamount')
 
     removeValidationColor([decimalTotalAmount, dateRequiredDate, textNote, selectSupplierQuotation, selectPurchaseStatus, selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal])
 
@@ -114,96 +80,199 @@ const refreshPurchaseRequestForm = () => {
     refreshPurchaseRequestHasItemInnerFormAndTable();
 }
 
+
 const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
-    //inner form
+    // inner form
     purchaseRequestItem = new Object();
     oldPurchaseRequestItem = null;
 
     buttonInnerSubmit.classList.remove('elementHide')
     buttonInnerUpdate.classList.add('elementHide')
 
-    inputFieldsHandler([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal], false)
-    removeValidationColor([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal])
+    inputFieldsHandler([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal, selectSupplierQuotation], false)
+    removeValidationColor([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal, selectSupplierQuotation])
+
+
+    decimalTotalAmount.disabled = true;
+    const totalAmount = calculateTotalAmount();
+    decimalTotalAmount.value = totalAmount;
+    prequest.totalamount = parseFloat(totalAmount);
+    textValidator(decimalTotalAmount, '', 'prequest', 'totalamount');
+
+
+
+    if (selectSupplierQuotation.value == "") {
+        fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Valid Date and Supplier First", [], "quotationid", "supplier_id.name");
+        fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Supplier Quotation First", [], "", "");
+        selectSupplier.addEventListener('change', () => {
+            prequest.supplier_quotation_id = null;
+            prequest.validatedate = null;
+            removeValidationColor([selectSupplierQuotation, dateRequiredDate]);
+
+            fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Valid Date First", [], "quotationid", "supplier_id.name");
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Supplier Quotation First", [], "", "");
+            ['change', 'input'].forEach(eventType => {
+                dateRequiredDate.addEventListener(eventType, () => {
+                    const selectedsupplierId = selectValueHandler(selectSupplier);
+                    const selectedDate = dateRequiredDate.value;
+                    supplierquotations = getServiceAjaxRequest(`/supplierquotation/quotationbyvaliddate?validdate=${selectedDate}&supplier_id=${selectedsupplierId.id}`)
+                    console.log("Selected SQs>>>>", supplierquotations)
+
+                    //Filter quotations to show only those with available items(not in purchase request table)
+                    const filteredQuotations = filterAvailableQuotations(supplierquotations, prequest.purchase_request_item);
+                    fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", filteredQuotations, "quotationid", "supplier_id.name");
+                });
+            });
+        })
+    } else {
+        // Supplier quotation is already selected, maintain the existing state and load appropriate data
+        console.log("Supplier quotation already selected, maintaining state");
+        // Check if supplier and date are selected
+        const selectedSupplier = selectValueHandler(selectSupplier);
+        const selectedDate = dateRequiredDate.value;
+
+        if (selectedSupplier && selectedDate) {
+            // Load quotations based on existing supplier and date
+            supplierquotations = getServiceAjaxRequest(`/supplierquotation/quotationbyvaliddate?validdate=${selectedDate}&supplier_id=${selectedSupplier.id}`);
+
+            // Filter quotations to show only those with available items
+            const filteredQuotations = filterAvailableQuotations(supplierquotations, prequest.purchase_request_item);
+
+            // Maintain the currently selected quotation if it's still available
+            const currentQuotationValue = selectSupplierQuotation.value;
+            fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", filteredQuotations, "quotationid", "supplier_id.name");
+
+            // Try to restore the previous selection if it's still available
+            if (currentQuotationValue !== "Select Supplier Quotation") {
+                const stillAvailable = filteredQuotations.find(q => q.quotationid == currentQuotationValue);
+                if (stillAvailable) {
+                    selectSupplierQuotation.value = currentQuotationValue;
+                }
+            }
+
+            // Load items based on current or updated quotation selection
+            // loadItemsForSelectedQuotation(existingItemCodes);
+        } else {
+            // If supplier or date is not selected, show appropriate messages
+            fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Valid Date and Supplier First", [], "quotationid", "supplier_id.name");
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Supplier Quotation First", [], "", "");
+        }
+    }
 
     buttonInnerSubmit.disabled = false;
     buttonInnerSubmit.classList.add('inner-add-btn');
 
-
     decimalLineTotal.disabled = true;
     decimalItemPrice.disabled = true;
 
-    //if supplier quotation eka fill nam
+    // Get existing itemcodes from purchase request items
+    const existingItemCodes = prequest.purchase_request_item.map(item => item.itemcode);
+
     if (selectSupplier.value == "Select Supplier") {
         console.log("EMPTY");
-        //auto add item code when item select
         fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Purchase Request First", [], "", "");
+
         selectSupplierQuotation.addEventListener('change', () => {
             prequest.selectItemName_id = null;
             removeValidationColor([selectItemName]);
             const selectedSupplierQuotation = selectValueHandler(selectSupplierQuotation);
-            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", selectedSupplierQuotation.quotation_item, "itemcode", "itemname");
-            console.log("pr some array", selectedSupplierQuotation.quotation_item)
+            console.log('selected Suplier Quotation', selectedSupplierQuotation)
+            purchaseRequestItem.supplier_quotation_id = selectedSupplierQuotation;
 
-        })
+            // Filter items to show only those not in the purchase request
+            const availableItems = selectedSupplierQuotation.quotation_item.filter(item =>
+                !existingItemCodes.includes(item.itemcode)
+            );
+
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", availableItems, "itemcode", "itemname");
+            console.log("Available items for selection:", availableItems);
+        });
 
     } else {
         console.log("NOT EMPTY");
 
-        const selectedSupplierQuotation = selectValueHandler(selectSupplierQuotation);
-        console.log("quotation item", selectedSupplierQuotation);
-        console.log("quotation item main array", prequest.purchase_request_item);
+        // Filter quotations to show only those with available items
+        const availableSupplierQuotations = supplierquotations.filter(quotation => {
+            const hasAvailableItems = quotation.quotation_item.some(qItem =>
+                !existingItemCodes.includes(qItem.itemcode)
+            );
+            return hasAvailableItems;
+        });
 
-        // Extract all itemcodes from the purchase request items
-        const prItemCodes = prequest.purchase_request_item.map(item => item.itemcode);
-
-        // Filter out quotation items that already exist in the purchase request items
-        const remainPRItem = selectedSupplierQuotation.quotation_item.filter(
-            (qItem) => !prItemCodes.includes(qItem.itemcode)
-        );
-
-        console.log("Filtered quotation items not in purchase request:", remainPRItem);
+        console.log("Available supplier quotations:", availableSupplierQuotations);
 
         decimalItemPrice.value = null;
         decimalLineTotal.value = null;
         numberQuantity.value = null;
 
+        // Show all available items from all available quotations
+        const allAvailableItems = [];
+        availableSupplierQuotations.forEach(quotation => {
+            quotation.quotation_item.forEach(item => {
+                if (!existingItemCodes.includes(item.itemcode)) {
+                    allAvailableItems.push(item);
+                }
+            });
+        });
 
-        fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", remainPRItem, "itemcode", "itemname");
+        fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", allAvailableItems, "itemcode", "itemname");
+
         selectSupplierQuotation.addEventListener('change', () => {
+            const selectedSupplierQuotation = selectValueHandler(selectSupplierQuotation);
+            purchaseRequestItem.supplier_quotation_id = selectedSupplierQuotation;
             prequest.selectItemName_id = null;
-            removeValidationColor([selectItemName]);
-            console.log("pr some array", selectedSupplierQuotation.quotation_item)
-        })
+            prequest.unitprice = null;
+            prequest.quantity = null;
+            prequest.linetotal = null;
+            removeValidationColor([selectItemName, decimalItemPrice, numberQuantity, decimalLineTotal]);
+
+            const availableItems = selectedSupplierQuotation.quotation_item.filter(item =>
+                !existingItemCodes.includes(item.itemcode)
+            );
+
+            fillMultipleItemOfDataIntoSingleSelect(selectItemName, "Select Item", availableItems, "itemcode", "itemname");
+        });
     }
 
-
+    // Rest of your existing selectItemName.addEventListener code remains the same...
     selectItemName.addEventListener('change', () => {
         const selectedItemName = selectValueHandler(selectItemName);
         purchaseRequestItem.itemname = selectedItemName.itemname
         purchaseRequestItem.itemcode = selectedItemName.itemcode
 
-        console.log("Selected urem", selectedItemName)
+        console.log("Selected item", selectedItemName)
 
         purchaseRequestItem.category_id = selectedItemName.category_id
         numberQuantity.value = selectedItemName.quantity;
         decimalItemPrice.value = selectedItemName.unitprice;
+
+        const currentQuantity = parseFloat(numberQuantity.value);
+        const unitPrice = parseFloat(selectedItemName.unitprice);
+        decimalLineTotal.value = (currentQuantity * unitPrice).toFixed(2);
+
         textValidator(numberQuantity, '^(100|[1-9][0-9]?)$', 'purchaseRequestItem', 'quantity');
         textValidator(decimalItemPrice, '', 'purchaseRequestItem', 'unitprice');
 
-
-        decimalLineTotal.value = selectedItemName.lineprice
+        //decimalLineTotal.value = selectedItemName.lineprice
         numberQuantity.addEventListener('input', () => {
             const newQuantity = parseFloat(numberQuantity.value);
-            decimalLineTotal.value = newQuantity * selectedItemName.unitprice
+            console.log("Quantity Pass:::::", newQuantity)
+
+            const unitPrice = parseFloat(selectedItemName.unitprice)
+            const newLineTotal = (newQuantity * unitPrice).toFixed(2);
+            decimalLineTotal.value = newLineTotal;
+
+            // Update the purchase request item object
+            purchaseRequestItem.quantity = newQuantity;
+            purchaseRequestItem.unitprice = unitPrice;
+            purchaseRequestItem.linetotal = parseFloat(newLineTotal);
         })
         textValidator(decimalLineTotal, '', 'purchaseRequestItem', 'linetotal');
-    })
-
-
+    });
 
     console.log(purchaseRequestItem);
 
-    //inner table
+    // inner table - rest of your existing code remains the same
     let displayPropertyList = [
         { dataType: 'text', propertyName: "itemcode" },
         { dataType: 'text', propertyName: "itemname" },
@@ -213,9 +282,33 @@ const refreshPurchaseRequestHasItemInnerFormAndTable = () => {
     ]
 
     fillDataIntoInnerTable(tableInnerPrequestItem, prequest.purchase_request_item, displayPropertyList, refillInnerPurchaseItemForm, deleteInnerPurchaseItemForm)
+};
 
-}
+const calculateTotalAmount = () => {
+    let totalAmount = 0;
+    prequest.purchase_request_item.forEach(item => {
+        const lineTotal = parseFloat(item.linetotal) || 0;
+        totalAmount += lineTotal;
+    });
+    return totalAmount.toFixed(2);
+};
 
+const filterAvailableQuotations = (quotations, purchaseRequestItems) => {
+    // Get all itemcodes that are already in the purchase request
+    const existingItemCodes = purchaseRequestItems.map(item => item.itemcode);
+
+    // Filter quotations to only include those that have at least one item not in the purchase request
+    const availableQuotations = quotations.filter(quotation => {
+        // Check if this quotation has at least one item that's not already in the purchase request
+        const hasAvailableItems = quotation.quotation_item.some(qItem =>
+            !existingItemCodes.includes(qItem.itemcode)
+        );
+        return hasAvailableItems;
+    });
+
+    console.log("Available quotations after filtering:", availableQuotations);
+    return availableQuotations;
+};
 
 const getSupplierName = (ob) => {
     return ob.supplier_id.name;
@@ -251,6 +344,7 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
     buttonSubmit.classList.add('elementHide')
     buttonUpdate.classList.remove('elementHide')
 
+    console.log(ob)
     prequest = JSON.parse(JSON.stringify(ob));
     oldPrequest = ob;
 
@@ -289,9 +383,9 @@ const refillPurchaseRequestForm = (ob, rowIndex) => {
         }
     })
 
-    selectSupplierQuotation.disabled = true;
-    supplierQuotations = getServiceAjaxRequest("/supplierquotation/alldata")
-    fillMultipleItemOfDataOnSignleSelectRecursion(selectSupplierQuotation, "Select Supplier Quotation", supplierQuotations, "quotationid", "supplier_id.name", prequest.supplier_quotation_id.quotationid, prequest.supplier_quotation_id.supplier_id.name);
+    selectSupplier.disabled = true;
+    suppliers = getServiceAjaxRequest("/supplier/alldata")
+    fillMultipleItemOfDataIntoSingleSelect(selectSupplier, "Select Supplier", suppliers, "supplierid", "name", prequest.supplier_id.supplierid, prequest.supplier_id.name);
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/PREQUEST");
     if (!userPrivilages.update) {
@@ -339,13 +433,18 @@ const refillInnerPurchaseItemForm = (ob, rowIndex) => {
 
     numberQuantity.addEventListener('input', () => {
         const newQuantity = parseFloat(numberQuantity.value);
-        decimalLineTotal.value = newQuantity * ob.unitprice;
+        const unitPrice = parseFloat(decimalItemPrice.value);
+        const newLineTotal = (newQuantity * unitPrice);
 
-        purchaseRequestItem.quantity = numberQuantity.value;
-        purchaseRequestItem.unitprice = decimalItemPrice.value;
-        purchaseRequestItem.linetotal = decimalLineTotal.value;
-        console.log("pri", purchaseRequestItem)
-    })
+        decimalLineTotal.value = newLineTotal.toFixed(2);
+
+        // Update purchaseRequestItem object
+        purchaseRequestItem.quantity = newQuantity;
+        purchaseRequestItem.unitprice = unitPrice;
+        purchaseRequestItem.linetotal = newLineTotal;
+
+        console.log("Updated purchaseRequestItem:", purchaseRequestItem);
+    });
     textValidator(decimalLineTotal, '', 'purchaseRequestItem', 'linetotal')
 
 
@@ -387,6 +486,10 @@ const deleteInnerPurchaseItemForm = (ob, rowIndex) => {
 const checkInnerItemFormErrors = () => {
     let errors = ""
 
+    if (purchaseRequestItem.supplier_quotation_id == null) {
+        errors += "Supplier Quotation is required.\n"
+    }
+
     if (purchaseRequestItem.itemname_id == null) {
         errors += "Item selection is required.\n"
     }
@@ -419,12 +522,9 @@ const innerPurchaseRequestItemAdd = () => {
                 prequest.purchase_request_item.push(updatedPurchaseRequestItem);
                 console.log(prequest.purchase_request_item);
 
-                let totalAmount = 0;
-                prequest.purchase_request_item.forEach(item => {
-                    totalAmount += parseFloat(item.linetotal);
-                });
+                const totalAmount = calculateTotalAmount();
                 decimalTotalAmount.value = totalAmount;
-                prequest.totalamount = totalAmount;
+                prequest.totalamount = parseFloat(totalAmount);
 
                 Swal.fire({
                     title: "Success!",
@@ -486,12 +586,9 @@ const innerPurchaseRequestItemUpdate = () => {
                 if (purchaseItemIndex !== -1) {
                     prequest.purchase_request_item[purchaseItemIndex] = updatedPurchaseRequestItem;
 
-                    let totalAmount = 0;
-                    prequest.purchase_request_item.forEach(item => {
-                        totalAmount += parseFloat(item.linetotal);
-                    });
+                    const totalAmount = calculateTotalAmount();
                     decimalTotalAmount.value = totalAmount;
-                    prequest.totalamount = totalAmount;
+                    prequest.totalamount = parseFloat(totalAmount);
 
                     Swal.fire({
                         title: "Success!",
@@ -545,9 +642,6 @@ const innerPurchaseRequestItemUpdate = () => {
 const checkPRequestFormErrors = () => {
     let errors = "";
 
-    if (prequest.supplier_quotation_id == null) {
-        errors += "Supplier Quotation is required.<br>";
-    }
     if (prequest.purchasestatus_id == null) {
         errors += "Purchase Status is required.<br>";
     }
@@ -610,12 +704,12 @@ const submitPrequest = () => {
                         allowEscapeKey: false
                     }).then(() => {
                         $('#prequestAddModal').modal('hide');
-                        //reset the Item form
-                        formPrequest.reset();
                         //refreash Item form
                         refreshPurchaseRequestForm();
                         //refreash Item table
                         refreshPurchaseRequestTable();
+                        //reset the Item form
+                        formPrequest.reset();
                     })
                 } else {
                     Swal.fire({
@@ -733,12 +827,12 @@ const updatePrequest = () => {
                             allowEscapeKey: false
                         }).then(() => {
                             $('#prequestAddModal').modal('hide');
-                            //reset the Item form
-                            formPrequest.reset();
                             //refreash Item form
                             refreshPurchaseRequestForm();
                             //refreash Item table
                             refreshPurchaseRequestTable();
+                            //reset the Item form
+                            formPrequest.reset();
                         })
                     } else {
                         Swal.fire({
@@ -915,7 +1009,6 @@ const printPrequestDetails = (ob, rowIndex) => {
     printPONO.textContent = ob.requestcode;
     printPODate.textContent = ob.addeddate;
     printSupplier.textContent = ob.supplier_id.name;
-    printQuotation.textContent = ob.supplier_quotation_id.quotationid;
     printRequiredDate.textContent = ob.requireddate;
     printTotalAmount.textContent = ob.totalamount;
 
