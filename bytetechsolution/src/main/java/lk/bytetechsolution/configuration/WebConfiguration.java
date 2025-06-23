@@ -35,37 +35,47 @@ public class WebConfiguration {
         //allow all request to access
         .requestMatchers("/resources/**").permitAll()
         //allow only for admin Manager and user to dash  board
-        .requestMatchers("/dashboard/**").hasAnyAuthority("Admin","Manager","Technician","Store Manager")
+        .requestMatchers("/dashboard/**").hasAnyAuthority("Admin","Manager","Store Manager","Assistant Manager","Store Assistant","Cashier")
         //allow only for admin Manager
-        .requestMatchers("/employee/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/employee/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
         //allow only for admin Manager
         .requestMatchers("/user/**").hasAnyAuthority("Admin","Manager")
         //allow only for admin Manager
-        .requestMatchers("/privilage/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/supplier/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/privilage/**").hasAnyAuthority("Admin","Manager")
+        .requestMatchers("/supplier/**").hasAnyAuthority("Admin","Manager")
         
         //allow for items
-        .requestMatchers("/processor/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/motherboard/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/gpu/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/memory/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/storage/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/cooler/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/powersupply/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/casing/**").hasAnyAuthority("Admin","Manager","Technician")
-        .requestMatchers("/monitor/**").hasAnyAuthority("Admin","Manager","Technician")
+        .requestMatchers("/processor/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+        .requestMatchers("/motherboard/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+        .requestMatchers("/gpu/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+        .requestMatchers("/memory/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+        .requestMatchers("/storage/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+        .requestMatchers("/cooler/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+        .requestMatchers("/powersupply/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+        .requestMatchers("/casing/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+        .requestMatchers("/monitor/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+        .requestMatchers("/monitor/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+        .requestMatchers("/accessories/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
+
+        .requestMatchers("/inventory/**").hasAnyAuthority("Admin","Manager","Store Manager")
         
         //allow for supplier portal
-        .requestMatchers("/quotationrequest/**").hasAnyAuthority("Admin","Manager","Store Manager") 
-        .requestMatchers("/supplierquotation/**").hasAnyAuthority("Admin","Manager","Store Manager") 
-        .requestMatchers("/grn/**").hasAnyAuthority("Admin","Manager","Store Manager") 
+        .requestMatchers("/supplier/**").hasAnyAuthority("Admin","Manager","Assistant Manager") 
+        .requestMatchers("/quotationrequest/**").hasAnyAuthority("Admin","Manager","Store Manager","Store Assistant") 
+        .requestMatchers("/supplierquotation/**").hasAnyAuthority("Admin","Manager","Store Manager","Store Assistant") 
+        .requestMatchers("/purchaserequest/**").hasAnyAuthority("Admin","Manager","Store Manager") 
+        .requestMatchers("/grn/**").hasAnyAuthority("Admin","Manager","Store Manager","Store Assistant") 
+        .requestMatchers("/supplierpayment/**").hasAnyAuthority("Admin","Manager") 
         .requestMatchers("/suppliersubmitquotation/**").permitAll()
         .requestMatchers("/quotationrequestsubmit/**").permitAll()
         .requestMatchers("/suppliersubmit/**").permitAll()
 
         //allow for the  customer and sales portal
-        .requestMatchers("/grn/**").hasAnyAuthority("Admin","Manager","Cashier") 
-        .requestMatchers("/customer/**").hasAnyAuthority("Admin","Manager","Cashier") 
+        .requestMatchers("/customer/**").hasAnyAuthority("Admin","Manager","Cashier","Assistant Manager") 
+        .requestMatchers("/order/**").hasAnyAuthority("Admin","Manager","Cashier","Assistant Manager") 
+        .requestMatchers("/preorder/**").hasAnyAuthority("Admin","Manager","Cashier","Assistant Manager") 
+        .requestMatchers("/invoice/**").hasAnyAuthority("Admin","Manager","Cashier","Assistant Manager") 
+        .requestMatchers("/customerpayment/**").hasAnyAuthority("Admin","Manager","Cashier","Assistant Manager") 
         .anyRequest().authenticated();// any other requst need authenticate
         
         
