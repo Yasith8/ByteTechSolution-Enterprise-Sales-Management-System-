@@ -42,6 +42,21 @@ const refreshGrnForm = () => {
     buttonSubmit.classList.remove('elementHide')
     inputFieldsHandler([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, decimalPaidAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice], false)
 
+
+    //date managing accordsing to requeire date
+    //only last 7 days work here
+    let currentDateMin = new Date();
+    let minDate = currentDateMin.setDate(currentDateMin.getDate() - 7)
+
+    let currentDateMax = new Date();
+    let maxDate = currentDateMax.setFullYear(currentDateMax.getFullYear())
+        //let maxDate = currentDateMax.setFullYear(currentDateMax.getFullYear())
+
+    console.log("MIN===========>", getCurrentDate(minDate), "||||||| max=======>", getCurrentDate(maxDate))
+
+    setDateLimits(dateRecivedDate, getCurrentDate(minDate), getCurrentDate(maxDate))
+
+
     currentGrns = getServiceAjaxRequest("/grn/alldata");
     //gatta all the pr that required date not expired
     purchaseRequests = getServiceAjaxRequest("/purchaserequest/prequestbyrequireddate")
@@ -58,36 +73,15 @@ const refreshGrnForm = () => {
     grnstatus = getServiceAjaxRequest("/grnstatus/alldata")
     fillDataIntoSelect(selectGRNStatus, "Select GRN Status", grnstatus, "name")
 
-    //categories = getServiceAjaxRequest("/category/alldata")
-    //fillDataIntoSelect(selectCategory, "Select Category", categories, "name")
-
     decimalTotalAmount.disabled = true;
-    let totalAmount = 0;
-
-    // Calculate totalAmount from items
-    grn.grn_item.forEach(item => {
-        totalAmount += item.lineprice;
-    });
-    decimalTotalAmount.value = totalAmount;
-    textValidator(decimalTotalAmount, '', 'grn', 'totalamount');
-
-    // Disable final amount field initially
     decimalFinalAmount.disabled = true;
 
-    // Initialize discount rate input handler
-    numberDiscountRate.addEventListener('input', () => {
-        let discountRate = parseFloat(numberDiscountRate.value);
-        if (isNaN(discountRate)) discountRate = 0;
+    // Initialize total amount to 0 for new GRN
+    updateTotalAmount();
 
-        let finalAmount = totalAmount * (1 - discountRate / 100);
-        finalAmount = parseFloat(finalAmount.toFixed(2));
-
-        decimalFinalAmount.value = finalAmount.toFixed(2);
-        textValidator(decimalFinalAmount, '', 'grn', 'finalamount');
-        console.log("FINAL AMOUNT H", finalAmount);
-
-    });
-
+    // Remove existing event listener before adding new one
+    numberDiscountRate.removeEventListener('input', handleDiscountRateChange);
+    numberDiscountRate.addEventListener('input', handleDiscountRateChange);
 
     refeshInnerGrnFormAndTable();
 }
@@ -383,6 +377,58 @@ const updateSerialNumberInputs = () => {
     });
 }
 
+const handleDiscountRateChange = () => {
+    let discountRate = parseFloat(numberDiscountRate.value);
+    if (isNaN(discountRate)) discountRate = 0;
+
+    // Get current total amount from the field
+    let totalAmount = parseFloat(decimalTotalAmount.value) || 0;
+
+    let finalAmount = totalAmount * (1 - discountRate / 100);
+    finalAmount = parseFloat(finalAmount.toFixed(2));
+
+    decimalFinalAmount.value = finalAmount.toFixed(2);
+    textValidator(decimalFinalAmount, '', 'grn', 'finalamount');
+
+    // Update grn object
+    grn.discountrate = discountRate;
+    grn.finalamount = finalAmount;
+
+    console.log("FINAL AMOUNT:", finalAmount);
+}
+
+
+const updateTotalAmount = () => {
+    let totalAmount = 0;
+
+    // Calculate total from all items in grn
+    if (grn && grn.grn_item && grn.grn_item.length > 0) {
+        grn.grn_item.forEach(item => {
+            totalAmount += parseFloat(item.lineprice) || 0;
+        });
+    }
+
+    // Update the total amount field
+    decimalTotalAmount.value = totalAmount.toFixed(2);
+    grn.totalamount = totalAmount;
+
+    // Recalculate final amount with current discount
+    let discountRate = parseFloat(numberDiscountRate.value) || 0;
+    let finalAmount = totalAmount * (1 - discountRate / 100);
+    finalAmount = parseFloat(finalAmount.toFixed(2));
+
+    decimalFinalAmount.value = finalAmount.toFixed(2);
+    grn.finalamount = finalAmount;
+
+    // Validate the fields
+    textValidator(decimalTotalAmount, '', 'grn', 'totalamount');
+    textValidator(decimalFinalAmount, '', 'grn', 'finalamount');
+
+    console.log("Total Amount Updated:", totalAmount);
+    console.log("Final Amount Updated:", finalAmount);
+}
+
+
 const getPurchaseRequest = (ob) => {
     return ob.purchase_request_id.requestcode;
 }
@@ -407,9 +453,154 @@ const getGRNStatus = (ob) => {
 }
 
 const refillInnerGRNItemForm = (ob, rowIndex) => {
+    // Disable all inner delete and edit buttons to prevent conflicts
+    document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
+        btn.classList.add('custom-disabled');
+    });
 
-}
+    document.querySelectorAll('.inner-edit-button').forEach((btn) => {
+        btn.classList.add('custom-disabled');
+    });
+
+    // Switch to update mode
+    buttonInnerSubmit.classList.add('elementHide');
+    buttonInnerUpdate.classList.remove('elementHide');
+
+    // Store the old item for comparison during update
+    oldGrnItem = ob;
+
+    // Create array with current item for select population
+    const grnItemArray = [ob];
+
+    // Fill the item select dropdown with current item and make it disabled
+    fillMultipleItemOfDataIntoSingleSelect(
+        selectPRItemName,
+        "Select Item",
+        grnItemArray,
+        "itemcode",
+        "itemname",
+        ob.itemcode,
+        ob.itemname
+    );
+
+    // Set the current item data
+    grnItem.itemname = ob.itemname;
+    grnItem.itemcode = ob.itemcode;
+    grnItem.category_id = ob.category_id;
+    grnItem.purchaseprice = ob.purchaseprice;
+    grnItem.lineprice = ob.lineprice;
+
+    // Disable item selection during edit
+    selectPRItemName.disabled = true;
+
+    // Fill form fields with current values
+    numberQuantity.value = ob.quantity;
+    decimalPurchasePrice.value = ob.purchaseprice;
+    decimalLinePrice.value = ob.lineprice;
+
+    // Validate initial values
+    textValidator(numberQuantity, '', 'grnItem', 'quantity');
+    textValidator(decimalPurchasePrice, '', 'grnItem', 'purchaseprice');
+    textValidator(decimalLinePrice, '', 'grnItem', 'lineprice');
+
+    // Set up quantity change listener for price recalculation
+    const quantityChangeHandler = () => {
+        const newQuantity = parseFloat(numberQuantity.value);
+        const unitPrice = parseFloat(decimalPurchasePrice.value);
+
+        if (!isNaN(newQuantity) && !isNaN(unitPrice) && newQuantity > 0) {
+            const newLinePrice = newQuantity * unitPrice;
+            decimalLinePrice.value = newLinePrice.toFixed(2);
+
+            // Update grnItem object
+            grnItem.quantity = newQuantity;
+            grnItem.lineprice = newLinePrice;
+
+            // Validate the updated line price
+            textValidator(decimalLinePrice, '', 'grnItem', 'lineprice');
+
+            // Update serial number data if needed
+            if (grnItem.category_id.name !== "Accessories") {
+                // Adjust serial numbers array based on new quantity
+                if (newQuantity < serialNumbersData.length) {
+                    serialNumbersData = serialNumbersData.slice(0, newQuantity);
+                } else {
+                    while (serialNumbersData.length < newQuantity) {
+                        serialNumbersData.push('');
+                    }
+                }
+                updateSerialNumberInputs();
+            }
+
+            console.log("Updated grnItem:", grnItem);
+        } else {
+            // Invalid quantity, reset line price
+            decimalLinePrice.value = '';
+            grnItem.quantity = null;
+            grnItem.lineprice = null;
+        }
+    };
+
+    // Remove existing listeners and add new one
+    numberQuantity.removeEventListener('input', quantityChangeHandler);
+    numberQuantity.addEventListener('input', quantityChangeHandler);
+
+    // Handle serial numbers for non-accessory items
+    if (grnItem.category_id.name !== "Accessories") {
+        // Load existing serial numbers if available
+        const existingSerialNumbers = grn.serial_no_list.filter(serial =>
+            serial.itemcode === ob.itemcode
+        );
+
+        serialNumbersData = existingSerialNumbers.map(serial => serial.serialno || '');
+
+        // Ensure serial numbers array matches quantity
+        while (serialNumbersData.length < ob.quantity) {
+            serialNumbersData.push('');
+        }
+
+        updateSerialNumberInputs();
+
+        // Enable serial number toggle
+        toggleSerialBtn.disabled = false;
+    } else {
+        // For accessories, disable serial number functionality
+        toggleSerialBtn.disabled = true;
+        toggleSerialBtn.classList.add('elementHide');
+        serialNumbersData = [];
+    }
+
+    console.log("Refilled GRN item form with:", ob);
+};
+
 const deleteInnerGRNItemForm = (ob, rowIndex) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to remove item from the Good Recived Note? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            grn.grn_item.splice(rowIndex, 1);
+            refeshInnerGrnFormAndTable()
+
+            Swal.fire({
+                title: "Success!",
+                text: "Item Removed Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+
+
+        }
+    })
 
 }
 
@@ -431,7 +622,7 @@ const checkInnerItemFormErrors = () => {
     return errors;
 }
 
-const innerSupplierProductAdd = () => {
+const innerGrnItemAdd = () => {
     //itemdata
     //destructure the pr irem code for remove itemname_id
     const { itemname_id, ...rest } = grnItem;
@@ -482,7 +673,7 @@ const innerSupplierProductAdd = () => {
     if (errors === "") {
         Swal.fire({
             title: "Are you sure?",
-            text: "Do you want to assign this product to the GRN?",
+            text: "Do you want to assign this product to the Good Recived Note?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#103D45",
@@ -518,7 +709,7 @@ const innerSupplierProductAdd = () => {
 
                 Swal.fire({
                     title: "Success!",
-                    text: "Items assigned to the GRN successfully!",
+                    text: "Items assigned to the Good Recived Note Successfully!",
                     icon: "success",
                     confirmButtonColor: "#B3C41C",
                     allowOutsideClick: false,
@@ -556,6 +747,86 @@ const innerSupplierProductAdd = () => {
         });
     }
 
+}
+
+const innerGrnItemUpdate = () => {
+    //destructure the pr irem code for remove itemname_id
+    const { itemname_id, ...rest } = grnItem;
+    updatedGrnItem = rest;
+    let errors = checkInnerItemFormErrors();
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to assign this product to the Good Recived Note?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, assign it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log(updatedGrnItem);
+
+                //purchase reqyest item obj eke hv the look
+                const grnItemIndex = grn.grn_item.findIndex((grnItem) => grnItem.itemcode === updatedGrnItem.itemcode);
+
+                //validate karanawa exist or not 
+                if (purchaseItemIndex !== -1) {
+                    grn.grn_item[grnItemIndex] = updatedGrnItem;
+
+                    const totalAmount = updateTotalAmount();
+                    decimalTotalAmount.value = totalAmount;
+                    grn.totalamount = parseFloat(totalAmount);
+
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Items assigned to the Good Recived Note successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        refeshInnerGrnFormAndTable();
+                        document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
+                            btn.classList.remove('custom-disabled');
+                        });
+
+                        document.querySelectorAll('.inner-edit-button').forEach((btn) => {
+                            btn.classList.remove('custom-disabled');
+                        });
+                    });
+
+                } else {
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "The Item you try to adding is not in the Item List. Sure to add as a New Item?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#103D45",
+                        cancelButtonColor: "#F25454",
+                        confirmButtonText: "Yes, Add it!",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            grn.qrn_item.push(updatedGrnItem);
+                        }
+                    })
+                }
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "Error!",
+            html: "Item assignment failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
+    }
 }
 
 const formGrnInputErrors = () => {
@@ -657,6 +928,9 @@ const submitGRN = () => {
         });
     }
 }
+
+
+
 
 
 const buttonModalClose = () => {
