@@ -256,6 +256,10 @@ Navbar and Sidebar
     padding-top: 90px
 }
 
+#dashboardGreetingMsg {
+    margin-left: 22px;
+}
+
 
 /* ############################################################### */
 

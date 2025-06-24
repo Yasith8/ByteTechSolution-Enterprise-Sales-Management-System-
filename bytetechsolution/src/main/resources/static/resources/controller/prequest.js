@@ -1002,45 +1002,432 @@ const refreshPrequest = () => {
 }
 
 const printPrequestDetails = (ob, rowIndex) => {
+    // Create the complete HTML content for printing
+    const printContent = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Purchase Order - ${ob.requestcode}</title>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    background: white;
+                    padding: 20px;
+                }
+                
+                .invoice-container {
+                    max-width: 800px;
+                    margin: 0 auto;
+                    background: white;
+                    padding: 30px;
+                    border-radius: 8px;
+                    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+                }
+                
+                .invoice-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 40px;
+                    padding-bottom: 20px;
+                    border-bottom: 3px solid #103d45;
+                }
+                
+                .company-info {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 20px;
+                }
+                
+                .logo-container {
+                    flex-shrink: 0;
+                }
+                
+                .company-logo {
+                    max-width: 120px;
+                    height: auto;
+                }
+                
+                .company-details {
+                    color: #666;
+                    font-size: 14px;
+                    line-height: 1.4;
+                }
+                
+                .invoice-title {
+                    font-size: 32px;
+                    font-weight: bold;
+                    color: #103d45;
+                    margin-bottom: 15px;
+                    text-align: right;
+                }
+                
+                .invoice-details {
+                    text-align: right;
+                    font-size: 14px;
+                }
+                
+                .invoice-details > div {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 5px;
+                    min-width: 200px;
+                }
+                
+                .invoice-details span:first-child {
+                    font-weight: bold;
+                    color: #666;
+                }
+                
+                .invoice-details span:last-child {
+                    color: #333;
+                    font-weight: 600;
+                }
+                
+                .shipping-details {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 30px;
+                    padding: 20px;
+                    background: #f8fafc;
+                    border-radius: 8px;
+                    border-left: 4px solid #103d45;
+                }
+                
+                .shipping-box {
+                    background: white;
+                    padding: 15px;
+                    border-radius: 6px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                }
+                
+                .shipping-label {
+                    font-size: 12px;
+                    font-weight: bold;
+                    color: #666;
+                    text-transform: uppercase;
+                    margin-bottom: 5px;
+                    letter-spacing: 0.5px;
+                }
+                
+                .shipping-box > div:last-child {
+                    font-weight: 600;
+                    color: #333;
+                    font-size: 14px;
+                }
+                
+                .items-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: 30px;
+                    background: white;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                }
+                
+                .items-table thead {
+                    background: linear-gradient(135deg, #103d45 0%, #0d3239 100%);
+                    color: white;
+                }
+                
+                .items-table th {
+                    padding: 15px 12px;
+                    text-align: left;
+                    font-weight: 600;
+                    font-size: 13px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                
+                .items-table td {
+                    padding: 12px;
+                    border-bottom: 1px solid #e5e7eb;
+                    font-size: 14px;
+                }
+                
+                .items-table tbody tr:hover {
+                    background: #b9f8c5;
+                }
+                
+                .items-table tbody tr:last-child td {
+                    border-bottom: none;
+                }
+                
+                .items-table td:last-child,
+                .items-table th:last-child {
+                    text-align: right;
+                    font-weight: 600;
+                }
+                
+                .totals-section {
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-bottom: 30px;
+                }
+                
+                .totals-table {
+                    min-width: 300px;
+                }
+                
+                .grand-total {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 15px 20px;
+                    background: linear-gradient(135deg, #103d45 0%, #0d3239 100%);
+                    color: white;
+                    font-size: 18px;
+                    font-weight: bold;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+                }
+                
+                .notes-section {
+                    background: #f8fafc;
+                    padding: 20px;
+                    border-radius: 8px;
+                    margin-bottom: 30px;
+                    border-left: 4px solid #10b981;
+                }
+                
+                .notes-header {
+                    font-weight: bold;
+                    color: #374151;
+                    margin-bottom: 10px;
+                    font-size: 16px;
+                }
+                
+                .notes-content {
+                    color: #6b7280;
+                    font-size: 14px;
+                    line-height: 1.6;
+                }
+                
+                .notes-content p {
+                    margin-bottom: 8px;
+                }
+                
+                .invoice-footer {
+                    text-align: center;
+                    padding-top: 20px;
+                    border-top: 1px solid #e5e7eb;
+                    color: #6b7280;
+                    font-size: 14px;
+                }
+                
+                .invoice-footer p {
+                    margin: 5px 0;
+                }
+                
+                /* Print styles */
+                @media print {
+                    body {
+                        padding: 0;
+                        background: white;
+                    }
+                    
+                    .invoice-container {
+                        box-shadow: none;
+                        padding: 20px;
+                        max-width: none;
+                    }
+                    
+                    .items-table {
+                        box-shadow: none;
+                    }
+                    
+                    .grand-total {
+                        box-shadow: none;
+                    }
+                    
+                    .shipping-details {
+                        break-inside: avoid;
+                    }
+                    
+                    .items-table {
+                        break-inside: avoid;
+                    }
+                }
+                
+                /* Responsive design */
+                @media (max-width: 768px) {
+                    .invoice-header {
+                        flex-direction: column;
+                        gap: 20px;
+                    }
+                    
+                    .invoice-title {
+                        text-align: left;
+                    }
+                    
+                    .invoice-details {
+                        text-align: left;
+                    }
+                    
+                    .shipping-details {
+                        grid-template-columns: 1fr;
+                    }
+                    
+                    .items-table {
+                        font-size: 12px;
+                    }
+                    
+                    .items-table th,
+                    .items-table td {
+                        padding: 8px 6px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="invoice-container">
+                <!-- Header Section -->
+                <div class="invoice-header">
+                    <div class="company-info">
+                        <div class="logo-container">
+                            <div class="logo">
+                                <div class="logo-icon">
+                                    <img src="resources/image/logo/onlylogo.png" class="company-logo" alt="Company Logo" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="company-details">
+                            <div><strong>No 72, Peoples Road</strong></div>
+                            <div>Panadura, 12560</div>
+                            <div>Phone: (038) 229-5555</div>
+                            <div>Email: info@company.com</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="invoice-title">PURCHASE ORDER</div>
+                        <div class="invoice-details">
+                            <div><span>PO NO:</span><span>${ob.requestcode || 'N/A'}</span></div>
+                            <div><span>DATE:</span><span>${formatDate(ob.addeddate)}</span></div>
+                        </div>
+                    </div>
+                </div>
 
-    // Open a new tab
-    const newTab = window.open();
+                <!-- Shipping Details -->
+                <div class="shipping-details">
+                    <div class="shipping-box">
+                        <div class="shipping-label">Supplier</div>
+                        <div>${ob.supplier_id?.name || 'N/A'}</div>
+                    </div>
+                    <div class="shipping-box">
+                        <div class="shipping-label">Shipping Method</div>
+                        <div>Standard Delivery</div>
+                    </div>
+                    <div class="shipping-box">
+                        <div class="shipping-label">Quotation No</div>
+                        <div>${ob.quotation_no || 'N/A'}</div>
+                    </div>
+                    <div class="shipping-box">
+                        <div class="shipping-label">Required Date</div>
+                        <div>${formatDate(ob.requireddate)}</div>
+                    </div>
+                </div>
 
-    printPONO.textContent = ob.requestcode;
-    printPODate.textContent = ob.addeddate;
-    printSupplier.textContent = ob.supplier_id.name;
-    printRequiredDate.textContent = ob.requireddate;
-    printTotalAmount.textContent = ob.totalamount;
+                <!-- Items Table -->
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Item Code</th>
+                            <th style="width: 45%;">Description</th>
+                            <th style="width: 10%;">Qty</th>
+                            <th style="width: 15%;">Unit Price</th>
+                            <th style="width: 15%;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${generateItemRows(ob.purchase_request_item || [])}
+                    </tbody>
+                </table>
 
+                <!-- Totals Section -->
+                <div class="totals-section">
+                    <div class="totals-table">
+                        <div class="grand-total">
+                            <div>TOTAL  </div>
+                            <div> Rs. ${formatCurrency(ob.totalamount)}</div>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Notes Section -->
+                <div class="notes-section">
+                    <div class="notes-header">NOTES & TERMS</div>
+                    <div class="notes-content">
+                        <p><strong>Note:</strong> ${ob.note || 'No additional notes provided.'}</p>
+                        <p>Thank you for your business. Please ensure all items are delivered by the required date.</p>
+                        <p>For questions concerning this purchase order, please contact our procurement department.</p>
+                    </div>
+                </div>
 
-    ob.purchase_request_item.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-        <td>${item.itemcode}</td>
-        <td>${item.itemname}</td>
-        <td>${item.quantity}</td>
-        <td>${item.unitprice.toFixed(2)}</td>
-        <td>${item.linetotal}</td>
-      `;
-        itemsContainer.appendChild(row);
-    });
+                <!-- Footer -->
+                <div class="invoice-footer">
+                    <p>If you have any questions about this Purchase Order, please contact</p>
+                    <p><strong>spinfo@bytetechsolution.gmail.com</strong></p>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
 
-    // Write content to the new tab
-    newTab.document.write(
-        '<html><head>' +
-        '<link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">' +
-        '<link rel="stylesheet" href="resources/style/prequest.css">' +
-        '<link rel="stylesheet" href="resources/style/common.css">' +
-        '</head><body>' +
-        printPurchaseRequestDetails.outerHTML +
-        '<script>' +
-        'document.getElementById("printPurchaseRequestDetails").removeAttribute("style");' +
-        'window.onload = function() { window.print(); };' +
-        '</script>' +
-        '</body></html>'
-    );
-
-    // Close the document to finish loading
+    // Open new tab and write content
+    const newTab = window.open('', '_blank');
+    newTab.document.write(printContent);
     newTab.document.close();
-}
+
+    // Auto-print when page loads
+    newTab.onload = function() {
+        newTab.print();
+    };
+};
+
+// Helper function to format dates
+const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+};
+
+// Helper function to format currency
+const formatCurrency = (amount) => {
+    if (!amount) return '0.00';
+    return parseFloat(amount).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+};
+
+// Helper function to generate item rows
+const generateItemRows = (items) => {
+    if (!items || items.length === 0) {
+        return '<tr><td colspan="5" style="text-align: center; color: #666; font-style: italic;">No items found</td></tr>';
+    }
+
+    return items.map(item => `
+        <tr>
+            <td>${item.itemcode || 'N/A'}</td>
+            <td>${item.itemname || 'N/A'}</td>
+            <td style="text-align: center;">${item.quantity || 0}</td>
+            <td style="text-align: right;">Rs. ${formatCurrency(item.unitprice)}</td>
+            <td style="text-align: right;">Rs. ${formatCurrency(item.linetotal)}</td>
+        </tr>
+    `).join('');
+};
