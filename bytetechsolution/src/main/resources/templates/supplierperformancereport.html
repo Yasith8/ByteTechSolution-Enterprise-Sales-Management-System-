@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{component::headerFragment}"></head>
+
+<head>
+    <link rel="stylesheet" href="resources/style/salesreport.css">
+</head>
+
+
+<body>
+
+    <nav th:replace="~{component::navFragment}"></nav>
+    <div th:replace="~{component::offcanvasFragment}"></div>
+
+    <div class="container-fluid mt-3 mb-3">
+        <!-- title area start -->
+        <div class="row m-2 contentMargin">
+            <div class="col-12 text-center 
+            title-header-div">
+                <h2> Supplier Performance </h2>
+            </div>
+        </div>
+        <!-- title area End -->
+        <div class="row">
+            <div class="col-6">
+                <div class="card chart-card">
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="form-floating mb-2">
+                                <select name="itemStatus" id="selectSupplier" class="form-select">
+                                        <option value=""  selected disabled>Select Supplier</option>
+                                        <option value="">SUP0002 - MD Computers</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="row">
+                                <div class="col-12"><button class="modal-button modal-btn-submit sale-summary-button">Search</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="card chart-card">
+                        <h5 class="table-card-title">Recived GRN CountS(Last 12 months)</h5>
+                        <canvas id="mySupplierChrt1" height="350"></canvas>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card chart-card newcard">
+                        <h5 class="table-card-title">Purchase Order Status Distribution</h5>
+                        <canvas id="mySupplierChrt2" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card chart-card">
+                    <h5 class="table-card-title">Recent Suplier Quotations</h5>
+                    <table class="table table-hover" id="tableSupplierQuotation">
+                        <thead class="table-header">
+                            <tr>
+                                <th> # </th>
+                                <th> Supplier Quotation Code </th>
+                                <th> Quotation Request Id </th>
+                                <th> Category </th>
+                                <th> Brand </th>
+                                <th> Valid Date </th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="card chart-card">
+                    <h5 class="table-card-title">Recent Purchase Request</h5>
+                    <table class="table table-hover" id="tableSupplierPurchaseRequest">
+                        <thead class="table-header">
+                            <tr>
+                                <th> # </th>
+                                <th> Purchase Request Code </th>
+                                <th> Required Date </th>
+                                <th> Total Amount </th>
+                                <th> Status </th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card chart-card">
+                    <h5 class="table-card-title">Recent Good Recived Notes</h5>
+                    <table class="table table-hover" id="tableGRN">
+                        <thead class="table-header">
+                            <tr>
+                                <th> # </th>
+                                <th> GRN Code </th>
+                                <th> Recived Date </th>
+                                <th> Total Amount </th>
+                                <th> Status </th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="divModifyButton"></div>
+    </div>
+    <script src="resources/controller/salessummaryreport.js"></script>
+</body>
+
+</html>

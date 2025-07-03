@@ -50,16 +50,6 @@ public class InvoiceEntity {
     @NotNull
     private BigDecimal balance;
 
-     @Column(name = "quantity")
-    @NotNull
-    private int quantity;
-
-    @Column(name = "lineprice")
-    @NotNull
-    private BigDecimal lineprice;
-
-
-
     @Column(name="addeddate")
     @NotNull
     private LocalDateTime addeddate;

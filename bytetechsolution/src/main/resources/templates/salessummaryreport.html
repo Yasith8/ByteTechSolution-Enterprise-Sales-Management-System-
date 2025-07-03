@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{component::headerFragment}"></head>
+
+<head>
+    <link rel="stylesheet" href="resources/style/salesreport.css">
+</head>
+
+
+<body>
+
+    <nav th:replace="~{component::navFragment}"></nav>
+    <div th:replace="~{component::offcanvasFragment}"></div>
+
+    <div class="container-fluid mt-3 mb-3">
+        <!-- title area start -->
+        <div class="row m-2 contentMargin">
+            <div class="col-12 text-center 
+            title-header-div">
+                <h2> Sales Summary Report </h2>
+            </div>
+        </div>
+        <!-- title area End -->
+        <div class="row">
+            <div class="col-3">
+                <div class="form-floating mb-2">
+                    <input type="date" class="form-control" id="dateStartDate" placeholder="startdate" required>
+                    <label for="dateStartDate">Start Date<span class="requiredIcon">*</span></label>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-floating mb-2">
+                    <input type="date" class="form-control" id="dateEndDate" placeholder="enddate" required>
+                    <label for="dateEndDate">End Date<span class="requiredIcon">*</span></label>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-floating mb-3">
+                    <select name="itemStatus" id="selectItemStatus" class="form-select">
+                        <option value=""  selected disabled>Select Type</option>
+                        <option value="" >Monthly</option>
+                        <option value="" >Daily</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="row">
+                    <div class="col-6"><button class="modal-button modal-btn-submit sale-summary-button">Generate Report</button></div>
+                    <div class="col-6"><button class="modal-button modal-btn-print sale-summary-button">Print Report</button></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="card chart-card">
+                    <table class="table table-hover" id="tableSalesList">
+                        <thead class="table-header">
+                            <tr>
+                                <th> # </th>
+                                <th> Day </th>
+                                <th> Count </th>
+                                <th> Total Amount </th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card chart-card">
+                    <canvas id="myChart" height="350"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="divModifyButton"></div>
+    </div>
+    <script src="resources/controller/salessummaryreport.js"></script>
+</body>
+
+</html>

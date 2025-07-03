@@ -30,8 +30,11 @@ public class SeasonalDiscountEntity {
     private String name;
 
     @NotNull
-    @Column(name = "seasondate")
-    private LocalDate seasondate;
+    @Column(name = "startdate")
+    private LocalDate startdate;
+    @NotNull
+    @Column(name = "enddate")
+    private LocalDate enddate;
 
     @NotNull
     @Column(name = "discountrate")

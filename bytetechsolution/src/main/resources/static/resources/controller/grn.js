@@ -98,6 +98,8 @@ const refeshInnerGrnFormAndTable = () => {
     decimalPurchasePrice.value = null;
     decimalLinePrice.value = null;
     removeValidationColor([numberQuantity, decimalPurchasePrice, decimalLinePrice])
+
+    serialNumbersSection.classList.add('elementHide')
         //checkAndToggleButton();
     updateSerialNumberInputs();
 
@@ -168,11 +170,16 @@ const refeshInnerGrnFormAndTable = () => {
         })
     }
 
+
     selectCategory.addEventListener('change', () => {
         const selectedCategory = selectValueHandler(selectCategory);
         if (selectedCategory.name == "Accessories") {
             toggleSerialBtn.disabled = true;
             toggleSerialBtn.classList.add('elementHide')
+        } else {
+            toggleSerialBtn.disabled = false;
+            toggleSerialBtn.classList.remove('elementHide')
+
         }
     })
 
