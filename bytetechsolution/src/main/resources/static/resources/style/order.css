@@ -5,3 +5,24 @@
     transform: translateX(-50%);
     width: 1500px;
 }
+
+#innerInvoiceItemTable {
+    border: 1px solid #103D45;
+    border-radius: 5px;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+#innerInvoiceItemTable thead {
+    background-color: #00B69B;
+    color: white;
+}
+
+#innerInvoiceItemTable thead tr th:first-child {
+    border-top-left-radius: 5px;
+}
+
+#innerInvoiceItemTable thead tr th:last-child {
+    border-top-right-radius: 5px;
+}

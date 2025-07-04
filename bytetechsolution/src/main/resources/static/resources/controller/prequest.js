@@ -558,7 +558,7 @@ const innerPurchaseRequestItemAdd = () => {
     }
 };
 
-
+//bug ko check function eka......
 const innerPurchaseRequestItemUpdate = () => {
     //destructure the pr irem code for remove itemname_id
     const { itemname_id, ...rest } = purchaseRequestItem;

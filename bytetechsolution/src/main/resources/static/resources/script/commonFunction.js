@@ -228,7 +228,21 @@ const selectValueHandler = (filedId) => {
         return JSON.parse(filedId.value);
     }
 }
+const selectComplexValueHandler = (fieldId) => {
+    const value = fieldId ? fieldId.value : null;
 
+    // Skip if value is empty, null, or not JSON-like
+    if (!value || value.startsWith("Select ")) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(value);
+    } catch (e) {
+        console.warn("Invalid JSON value in select:", value);
+        return null;
+    }
+};
 const elementHide = (elements, need) => {
     elements.forEach((element) => {
         if (need) {
