@@ -18,7 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "seasonaldiscount") // map the modularity table
+@Table(name = "invoice_item") // map the modularity table
 @Data // genarate getters and setters and toString to class
 @AllArgsConstructor // AllArgsConstructor annotation generates a constructor initializing all object
 @NoArgsConstructor // NoArgsConstructor generates a no-argument constructor for a class
@@ -36,8 +36,8 @@ public class InvoiceItemEntity {
     @Column(name = "itemname")
     private String itemname;
     
-    @Column(name = "serialno")
-    private String serialno;
+    @Column(name = "serial_no")
+    private String serial_no;
     
     @NotNull
     @Column(name = "itemprice")

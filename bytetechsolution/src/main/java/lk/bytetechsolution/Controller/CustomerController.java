@@ -84,6 +84,18 @@ public class CustomerController {
         return dao.findAll();
     }
 
+     @GetMapping(value = "/customer/getallactivecustomers", produces = "application/json")
+    public List<CustomerEntity> GetActiveCustomerDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),"CUSTOMER");
+
+        if (!userPrivilage.get("select")) {
+            return new ArrayList<CustomerEntity>();
+        }
+
+        return dao.getAllActiveCustomers();
+    }
+
     @PostMapping(value = "/customer")
     public String AddCustomer(@RequestBody CustomerEntity customer) {
         // authentiction and autherzation

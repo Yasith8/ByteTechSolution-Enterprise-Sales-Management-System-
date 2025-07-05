@@ -1,5 +1,6 @@
 package lk.bytetechsolution.Controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,14 +18,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import lk.bytetechsolution.Dao.CustomerDao;
+import lk.bytetechsolution.Dao.CustomerPaymentDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.InvoiceDao;
 import lk.bytetechsolution.Dao.InvoiceStatusDao;
+import lk.bytetechsolution.Dao.PaymentTypeDao;
+import lk.bytetechsolution.Dao.SerialNoListDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.GRNEntity;
-import lk.bytetechsolution.Entity.GRNItemEntity;
+import lk.bytetechsolution.Entity.CustomerEntity;
+import lk.bytetechsolution.Entity.CustomerPaymentEntity;
 import lk.bytetechsolution.Entity.InvoiceEntity;
 import lk.bytetechsolution.Entity.InvoiceItemEntity;
+import lk.bytetechsolution.Entity.SerialNoListEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -39,6 +45,18 @@ public class InvoiceController {
 
     @Autowired
     private EmployeeDao daoEmployee;
+
+    @Autowired
+    private CustomerDao daoCustomer;
+
+    @Autowired
+    private PaymentTypeDao daoPaymentType;
+
+    @Autowired
+    private CustomerPaymentDao daoCustomerPayment;
+
+    @Autowired
+    private SerialNoListDao daoSerialNoList;
 
     @Autowired
     private PrivilageController privilageController;
@@ -100,7 +118,7 @@ public class InvoiceController {
 
             // if next employee number is not come then set manualy last number+1
             if (nextNumber == null) {
-                invoice.setInvoiceno("CUS0001");
+                invoice.setInvoiceno("CCO0001");
             } else {
                 invoice.setInvoiceno(nextNumber);
             }
@@ -112,9 +130,56 @@ public class InvoiceController {
 
             for (InvoiceItemEntity invoiceitem : invoice.getInvoice_item()) {
                 invoiceitem.setInvoice_id((invoice));
+
+                // inventory release
+                String serialNumberString = invoiceitem.getSerial_no();
+                System.err.println("Checking Serial No: " + serialNumberString);
+                SerialNoListEntity serialNo = daoSerialNoList.findBySerialNo(serialNumberString);
+
+                if (serialNo != null) {
+                    Integer quantity = invoiceitem.getQuantity();
+                    Integer updatedQuantity = quantity - 1;
+                    serialNo.setQuantity(updatedQuantity);
+
+                    if (updatedQuantity == 0) {
+                        serialNo.setStatus(false);
+                    }
+                    daoSerialNoList.save(serialNo);
+                } 
+
             }
 
             daoInvoice.save(invoice);
+
+            // dependency management
+            // customer payment manage
+            CustomerPaymentEntity customerPayment = new CustomerPaymentEntity();
+
+            // create the customer payment no
+            String nextCustomerPaymentNumber = daoCustomerPayment.getNextCustomerPaymentCode();
+            customerPayment.setPaymentno(nextCustomerPaymentNumber != null ? nextCustomerPaymentNumber : "CPY0001");
+
+            customerPayment.setTotalamount(invoice.getTotalamount());
+            customerPayment.setPaidamount(invoice.getPaidamount());
+            customerPayment.setBalance(invoice.getBalance());
+
+            customerPayment.setInvoice_id(daoInvoice.getReferenceById(invoice.getId()));
+            customerPayment.setCustomer_id(invoice.getCustomer_id());
+            customerPayment.setInvoicestatus_id(invoice.getInvoicestatus_id());
+
+            customerPayment.setAddeddate(invoice.getAddeddate());
+            customerPayment.setAddeduser(invoice.getAddeduser());
+            customerPayment.setPaymenttype_id(daoPaymentType.getReferenceById(1));
+
+            daoCustomerPayment.save(customerPayment);
+
+            // customer manage
+            CustomerEntity customer = daoCustomer.getReferenceById(invoice.getCustomer_id().getId());
+            BigDecimal currentTotalAmount = customer.getTotalpurchase();
+            BigDecimal newTotalAmount = invoice.getPaidamount();
+            BigDecimal UpdatedTotalAmount = currentTotalAmount.add(newTotalAmount);
+            customer.setTotalpurchase(UpdatedTotalAmount);
+            daoCustomer.save(customer);
 
             return "OK";
 
@@ -125,72 +190,71 @@ public class InvoiceController {
     }
 
     @DeleteMapping(value = "/invoice")
-   public String DeleteInvoice(@RequestBody InvoiceEntity invoice){
-       //Autherntication and autherization
-       Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
-       HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "INVOICE");
-   
-       
-       if(!userPrivilage.get("delete")){
-           return "Permission Denied! Delete not Completed";
-       }
+    public String DeleteInvoice(@RequestBody InvoiceEntity invoice) {
+        // Autherntication and autherization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "INVOICE");
 
-       InvoiceEntity extInvoice=daoInvoice.getReferenceById(invoice.getId());
-      if(extInvoice==null){
-       return "Delete not Completed.Invoice not exists";
-      }
+        if (!userPrivilage.get("delete")) {
+            return "Permission Denied! Delete not Completed";
+        }
 
-      try {
-       UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
-       invoice.setDeleteuser(deleteUser.getId());
+        InvoiceEntity extInvoice = daoInvoice.getReferenceById(invoice.getId());
+        if (extInvoice == null) {
+            return "Delete not Completed.Invoice not exists";
+        }
 
-       invoice.setDeletedate(LocalDateTime.now());
+        try {
+            UserEntity deleteUser = daoUser.getByUsername(authentication.getName());
+            invoice.setDeleteuser(deleteUser.getId());
 
-       invoice.setInvoicestatus_id(daoInvoiceStatus.getReferenceById(3));
+            invoice.setDeletedate(LocalDateTime.now());
 
-       daoInvoice.save(invoice);
+            invoice.setInvoicestatus_id(daoInvoiceStatus.getReferenceById(3));
 
-       return "OK";
-      } catch (Exception e) {
-       return "Delete not completed. "+e.getMessage();
-      }
-   }
+            daoInvoice.save(invoice);
+
+            return "OK";
+        } catch (Exception e) {
+            return "Delete not completed. " + e.getMessage();
+        }
+    }
 
     @PutMapping(value = "/invoice")
     public String updateInvoice(@RequestBody InvoiceEntity invoice) {
-       
-        //Authentication and Autherization
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"INVOICE");
 
-        if(!userPrivilage.get("update")){
+        // Authentication and Autherization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "INVOICE");
+
+        if (!userPrivilage.get("update")) {
             return "Permission Denied! Update not Completed";
         }
 
-        InvoiceEntity extInvoice=daoInvoice.getReferenceById(invoice.getId());
-        if(extInvoice==null){
-         return "Update not Completed.Invoice not exists";
+        InvoiceEntity extInvoice = daoInvoice.getReferenceById(invoice.getId());
+        if (extInvoice == null) {
+            return "Update not Completed.Invoice not exists";
         }
-      
-
 
         try {
-            //asign update user
-            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
+            // asign update user
+            UserEntity modifyUser = daoUser.getByUsername(authentication.getName());
             invoice.setModifyuser(modifyUser.getId());
 
-            //assign update date
+            // assign update date
             invoice.setModifydate(LocalDateTime.now());
 
-             for (InvoiceItemEntity invoiceitem : invoice.getInvoice_item()) {
+            for (InvoiceItemEntity invoiceitem : invoice.getInvoice_item()) {
                 invoiceitem.setInvoice_id((invoice));
             }
 
-            //save the data
+            // save the data
             daoInvoice.save(invoice);
             return "OK";
         } catch (Exception e) {
-            return "Update not Completed."+e.getMessage();
+            return "Update not Completed." + e.getMessage();
         }
     }
 

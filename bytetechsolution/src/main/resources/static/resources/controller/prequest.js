@@ -749,7 +749,7 @@ const checkPrequstUpdates = () => {
     }
 
     if (prequest.purchase_request_item.length != oldPrequest.purchase_request_item.length) {
-        updates = updates + "Supplier Inner Form is Changed <br>";
+        updates = updates + "Purchase Request Item Inner Form is Changed <br>";
     } else {
         for (let newPurchaseItem of prequest.purchase_request_item) {
             const matchOldPrequest = oldPrequest.purchase_request_item.find(oldPrequestItem => oldPrequestItem.id === newPurchaseItem.id);

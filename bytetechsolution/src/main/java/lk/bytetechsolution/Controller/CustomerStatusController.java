@@ -40,4 +40,6 @@ public class CustomerStatusController {
     public List<CustomerStatusEntity> getAllCustomerStatusData(){
         return dao.findAll();
     }
+
+  
 }

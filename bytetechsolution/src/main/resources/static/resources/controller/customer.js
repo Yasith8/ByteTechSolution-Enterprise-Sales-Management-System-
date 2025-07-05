@@ -33,6 +33,8 @@ const refreshCustomerForm = () => {
 
     staticBackdropLabel.textContent = "Add New Customer";
 
+    decimalTotalPurchase.disabled = true;
+
     customerstatuses = getServiceAjaxRequest("/customerstatus/alldata");
     console.log("cs", customerstatuses)
     fillDataIntoSelect(selectCustomerStatus, "Please Select Customer Status", customerstatuses, "name");
@@ -51,7 +53,7 @@ const refreshCustomerForm = () => {
 }
 
 const getCustomerStatus = (ob) => {
-    if (ob.customerstatus_id.name == "Available") {
+    if (ob.customerstatus_id.name == "Active") {
         return '<p class="common-status-available">Available</p>';
     } else {
         return '<p class="common-status-delete">Not Available</p>'
@@ -61,6 +63,7 @@ const getCustomerStatus = (ob) => {
 const refillCustomerForm = (ob, rowIndex) => {
     $('#customerAddModal').modal('show');
 
+    decimalTotalPurchase.disabled = true;
     removeValidationColor([textName, textMobile, decimalTotalPurchase, textEmail, textAddress, selectCustomerStatus])
 
     buttonSubmit.disabled = true;

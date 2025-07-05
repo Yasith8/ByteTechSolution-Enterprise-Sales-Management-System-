@@ -243,7 +243,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="row">
-                                                <div class="col-2"><button class="btn inner-cancel-btn modal-button">Clear</button></div>
+                                                <div class="col-2"><button class="btn inner-cancel-btn modal-button" onclick="innerClearButton()">Clear</button></div>
                                                 <div class="col-6"></div>
                                                 <div class="col-2"><button id="buttonInnerUpdate" class="btn inner-update-btn modal-button" onclick="innerOrderUpdate()">Update</button></div>
                                                 <div class="col-2"><button id="buttonInnerSubmit" class="btn inner-add-btn modal-button" onclick="innerOrderAdd()">Add</button></div>
@@ -314,7 +314,7 @@
                         <div class="row">
                             <div class="col-5"></div>
                             <div class="col-7" style="display: flex; justify-content: center;gap: 12px;">
-                                <button type="button" class="modal-button modal-btn-clear" id="btnClear" data-bs-dismiss="modal" onclick="clearOrder()">Clear</button>
+                                <button type="button" class="modal-button modal-btn-clear" id="btnClear" data-bs-dismiss="modal" onclick="refreshOrder()">Clear</button>
                                 <button type="button" class="modal-button modal-btn-update" id="btnUpdate" data-bs-dismiss="modal" onclick="updateOrder()">Update</button>
                                 <button type="button" class="modal-button modal-btn-submit" id="btnSubmit" onclick="submitOrder()">Submit</button>
                             </div>
