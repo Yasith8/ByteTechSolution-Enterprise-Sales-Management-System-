@@ -159,7 +159,7 @@ public class InvoiceController {
             String nextCustomerPaymentNumber = daoCustomerPayment.getNextCustomerPaymentCode();
             customerPayment.setPaymentno(nextCustomerPaymentNumber != null ? nextCustomerPaymentNumber : "CPY0001");
 
-            customerPayment.setTotalamount(invoice.getTotalamount());
+            customerPayment.setTotalamount(invoice.getFinalamount());
             customerPayment.setPaidamount(invoice.getPaidamount());
             customerPayment.setBalance(invoice.getBalance());
 

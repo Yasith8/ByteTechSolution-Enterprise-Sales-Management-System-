@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{component::headerFragment}"></head>
+
+<head>
+    <link rel="stylesheet" href="resources/style/customerpayment.css">
+    <script src="resources/controller/customerpayment.js"></script>
+</head>
+
+
+<body>
+
+    <nav th:replace="~{component::navFragment}"></nav>
+    <div th:replace="~{component::offcanvasFragment}"></div>
+
+    <div class="container-fluid mt-2">
+
+        <!-- title area start -->
+        <div class="row m-2 contentMargin">
+            <div class="col-12 text-center 
+            title-header-div">
+                <h2> Customer Payment Management </h2>
+            </div>
+        </div>
+        <!-- title area End -->
+
+        <!-- Card area start  -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-6">
+
+            </div>
+            <div class="col-4 text-end">
+                <!-- <button type="button" data-bs-toggle="modal" data-bs-target="#customerpaymentAddModal" class="btn addBtn">
+                    Add New Customer Payment </button> -->
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- Card area end  -->
+
+        <!-- table Area Start-->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <div class="card employee-card">
+                    <div class="card-body employee-cardbody">
+
+                        <table class="table table-hover" id="tableCustomerPayment">
+                            <thead class="table-header">
+                                <tr>
+                                    <th> # </th>
+                                    <th> Payment No </th>
+                                    <th> Invoice No </th>
+                                    <th> Customer </th>
+                                    <th> Total Amount </th>
+                                    <th> Paid Amount </th>
+                                    <th> Balance </th>
+                                    <th> Status </th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="table-body">
+
+                                <!-- create static values for table -->
+                                <!-- used for initial designs -->
+                                <!-- probebly this appear when data not loading to table from db -->
+                                <tr>
+                                    <td> 1 </td>
+                                    <td> Initial User </td>
+                                    <td> 00000000000V </td>
+                                    <td> 0000000000 </td>
+                                    <td> inituser@gmail.com </td>
+                                    <td> Doctor </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+
+        </div>
+        <!-- table Area End-->
+
+    </div>
+
+    <!-- employee Add Modal -->
+    <div class="modal fade" id="customerpaymentAddModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Order</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-12">
+
+                            <!-- supplier Basic Details -->
+                            <form id="formCustomerPayment">
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-floating mb-3">
+                                            <select name="customer" id="selectCustomer" class="form-select" onchange="selectDynamicValidator(this,'','customerpayment','customer_id')">
+                                                                <option value=""  selected disabled>Select Customer</option>
+                                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control" id="selectInvoice" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'customerpayment', 'invoice_id')">
+                                            <label for="selectInvoice">Invoice Id<span class="requiredIcon">*</span></label>
+                                        </div>
+                                    </div>
+                                    <!-- PURCHASE REQUEST Input Start -->
+
+                                    <div class="col-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control" id="decimalTotalAmount" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'customerpayment', 'totalamount')">
+                                            <label for="decimalTotalAmount">Total Amount<span class="requiredIcon">*</span></label>
+                                        </div>
+                                    </div>
+                                    <!-- PURCHASE REQUEST Input end -->
+                                    <div class="col-4">
+                                        <div class="form-floating mb-3">
+                                            <select name="brand" id="decimalPaidAmount" class="form-select" onchange="selectDynamicValidator(this,'','customerpayment','paidamount')">
+                                                <option value=""  selected disabled>Paid Amount</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- total amount  Start -->
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control" id="decimalBalance" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'customerpayment','balance')">
+                                            <label for="decimalBalance">Balance<span class="requiredIcon">*</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-floating mb-3">
+                                            <select name="brand" id="selectInvoiceType" class="form-select" onchange="selectDynamicValidator(this,'','customerpayment','invoicetype_id')">
+                                                <option value=""  selected disabled>Select Invoice Type</option>
+                                                </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-floating mb-3">
+                                            <select name="brand" id="selectInvoiceStatus" class="form-select" onchange="selectDynamicValidator(this,'','customerpayment','invoicestatus_id')">
+                                                <option value=""  selected disabled>Select Invoice Status</option>
+                                                </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="row mt-3 mb-3">
+                    <div class="col-6">
+                        <div id="divModifyButton">
+                            <div class="row">
+                                <div class="col-4" style="display: flex; justify-content: center;gap: 5px;">
+                                    <button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" id="buttonPrint" onclick="printCustomerPayment(window['editOb'], window['editRow'])">Print</button>
+                                    <button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" id="buttonDelete" onclick="deleteCustomerPayment(window['editOb'], window['editRow'])">Delete</button>
+                                </div>
+                            </div>
+                            <div class="col-8"></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-5"></div>
+                            <div class="col-7" style="display: flex; justify-content: center;gap: 12px;">
+                                <button type="button" class="modal-button modal-btn-clear" id="btnClear" onclick="refreshCustomerPayment()">Clear</button>
+                                <button type="button" class="modal-button modal-btn-update" id="btnUpdate" onclick="updateCustomerPayment()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
