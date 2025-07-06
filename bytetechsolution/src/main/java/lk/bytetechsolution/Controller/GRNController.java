@@ -15,11 +15,14 @@ import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.GRNDao;
 import lk.bytetechsolution.Dao.GRNStatusDao;
+import lk.bytetechsolution.Dao.PurchaseRequestDao;
 import lk.bytetechsolution.Dao.SerialNoListDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.CategoryEntity;
 import lk.bytetechsolution.Entity.GRNEntity;
 import lk.bytetechsolution.Entity.GRNItemEntity;
+import lk.bytetechsolution.Entity.PurchaseRequestEntity;
+import lk.bytetechsolution.Entity.PurchaseStatusEntity;
 import lk.bytetechsolution.Entity.SerialNoListEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,6 +58,9 @@ public class GRNController {
 
     @Autowired
     private CategoryDao daoCategory;
+
+    @Autowired
+    private PurchaseRequestDao daoPR;
 
      @Autowired
     private UserDao daoUser;
@@ -153,6 +159,14 @@ public class GRNController {
             }
 
             daoGRN.save(grn);
+
+            //purchase order dependency management
+           PurchaseRequestEntity assignedPR = grn.getPurchase_request_id();
+           PurchaseStatusEntity status = new PurchaseStatusEntity();
+           status.setId(1); 
+           assignedPR.setPurchasestatus_id(status);
+
+
 
             return "OK";
 

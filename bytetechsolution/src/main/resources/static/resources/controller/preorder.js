@@ -25,10 +25,6 @@ const refreshOrderForm = () => {
     decimalTotalAmount.disabled = true;
     decimalFinalAmount.disabled = true;
 
-    btnUpdate.classList.add('elementHide')
-    btnSubmit.classList.remove('elementHide')
-    removeValidationColor([selectCustomer])
-
     invoice = new Object();
     oldInvoice = null;
 
@@ -50,6 +46,7 @@ const refreshOrderForm = () => {
     selectInvoiceStatus.disabled = true;
     const invoicestatus = getServiceAjaxRequest("/invoicestatus/alldata")
     fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoicestatus[0].name)
+    invoice.invoicestatus_id = invoicestatus[0];
 
     //seasonal discount selection
     selectSeasonalDiscount.disabled = true;
@@ -224,11 +221,8 @@ const refillOrdersForm = (ob, rowIndex) => {
     invoice = JSON.parse(JSON.stringify(ob));
     oldInvoice = ob;
 
-    btnUpdate.classList.remove('elementHide')
-    btnSubmit.classList.add('elementHide')
-
     $('#orderAddModal').modal('show');
-    staticBackdropLabel.textContent = invoice.requestcode;
+    staticBackdropLabel.textContent = invoice.invoiceno;
 
     selectCustomer.disabled = true;
 
@@ -244,6 +238,7 @@ const refillOrdersForm = (ob, rowIndex) => {
     selectInvoiceStatus.disabled = true;
     const invoicestatus = getServiceAjaxRequest("/invoicestatus/alldata")
     fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoice.invoicestatus_id.name)
+    invoice.invoicestatus_id = invoice.invoicestatus_id.name;
 
     //seasonal discount selection
     selectSeasonalDiscount.disabled = true;
@@ -275,12 +270,7 @@ const refillOrdersForm = (ob, rowIndex) => {
     }
 
 
-    console.log("SELECTED INVOICE STATUS", invoice.invoicestatus_id)
 
-    if (invoice.invoicestatus_id.name == "Deleted") {
-        buttonDelete.disabled = true;
-        buttonDelete.classList.remove('modal-btn-delete');
-    }
 
 
     refreshInnerOrderTableAndForm()
@@ -730,7 +720,7 @@ const updateOrder = () => {
 
     let errors = invoiceUserInputErrors();
 
-    if (errors == "") {
+    if (errors = "") {
         let updates = checkUserUpdates();
 
         if (updates == "") {

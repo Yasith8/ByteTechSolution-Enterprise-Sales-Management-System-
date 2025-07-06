@@ -1,5 +1,7 @@
 package lk.bytetechsolution.Dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -29,5 +31,8 @@ public interface UserDao extends JpaRepository<UserEntity,Integer>{
     public UserEntity getByEmail(String email);
     
     @Query("select u from UserEntity u where u.username=?1") 
-    public UserEntity getByUsername(String username);   
+    public UserEntity getByUsername(String username);
+    
+    @Query(value="select * from bytetechsolution.user u where u.id=?1",nativeQuery =true) 
+    public List<UserEntity> findUserById(Integer userId);   
 }

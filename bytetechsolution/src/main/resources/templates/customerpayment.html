@@ -131,9 +131,8 @@
                                     <!-- PURCHASE REQUEST Input end -->
                                     <div class="col-4">
                                         <div class="form-floating mb-3">
-                                            <select name="brand" id="decimalPaidAmount" class="form-select" onchange="selectDynamicValidator(this,'','customerpayment','paidamount')">
-                                                <option value=""  selected disabled>Paid Amount</option>
-                                            </select>
+                                            <input type="number" class="form-control" id="decimalPaidAmount" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'customerpayment', 'paidamount')">
+                                            <label for="decimalPaidAmount">Paid Amount<span class="requiredIcon">*</span></label>
                                         </div>
                                     </div>
 
@@ -149,8 +148,8 @@
                                     </div>
                                     <div class="col-4">
                                         <div class="form-floating mb-3">
-                                            <select name="brand" id="selectInvoiceType" class="form-select" onchange="selectDynamicValidator(this,'','customerpayment','invoicetype_id')">
-                                                <option value=""  selected disabled>Select Invoice Type</option>
+                                            <select name="brand" id="selectPaymentType" class="form-select" onchange="selectDynamicValidator(this,'','customerpayment','paymenttype_id')">
+                                                <option value=""  selected disabled>Select Payment Type</option>
                                                 </select>
                                         </div>
                                     </div>
@@ -165,21 +164,24 @@
                             </form>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-warning" role="alert" id="transactionDitails">
 
-
-
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row mt-3 mb-3">
                     <div class="col-6">
                         <div id="divModifyButton">
                             <div class="row">
-                                <div class="col-4" style="display: flex; justify-content: center;gap: 5px;">
-                                    <button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" id="buttonPrint" onclick="printCustomerPayment(window['editOb'], window['editRow'])">Print</button>
-                                    <button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" id="buttonDelete" onclick="deleteCustomerPayment(window['editOb'], window['editRow'])">Delete</button>
+                                <div class="col-5" style="display: flex; justify-content: center;gap: 5px;">
+                                    <!-- <button type="button" class="modal-button modal-btn-print" id="buttonPrint" onclick="printCustomerPayment(window['editOb'], window['editRow'])">Print</button> -->
+                                    <button type="button" class="modal-button modal-btn-delete" id="buttonDelete" onclick="deleteCustomerPayment(window['editOb'], window['editRow'])">Delete</button>
                                 </div>
                             </div>
-                            <div class="col-8"></div>
                         </div>
                     </div>
                     <div class="col-6">

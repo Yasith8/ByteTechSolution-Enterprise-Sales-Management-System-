@@ -94,6 +94,7 @@ const refeshInnerGrnFormAndTable = () => {
     serialNumbersData = new Array();
     serialNoWithDetails = new Object();
     serialNoList = new Array();
+
     numberQuantity.value = null;
     decimalPurchasePrice.value = null;
     decimalLinePrice.value = null;
@@ -106,6 +107,7 @@ const refeshInnerGrnFormAndTable = () => {
 
 
 
+    //still not submit the grn - item add and 2nond now
     if (selectPurchaseRequest.value == "Select Purchase Request") {
 
         fillMultipleItemOfDataOnSignleSelectRecursion(selectCategory, "Select Purchase Request First", [], "itemcode", "itemname")
@@ -150,23 +152,43 @@ const refeshInnerGrnFormAndTable = () => {
 
     } else {
 
+        removeValidationColor([selectPRItemName, selectCategory]);
 
         const selectedPR = selectValueHandler(selectPurchaseRequest);
 
         const grnItemCodes = grn.grn_item.map(item => item.itemcode);
 
-
+        // Filter PR items that are not already in the GRN
         const remainGRNItem = selectedPR.purchase_request_item.filter(
             (qItem) => !grnItemCodes.includes(qItem.itemcode)
         );
 
+        // Create a new Map to store unique categories using their `name` as the key
+        const uniqueCategoriesMap = new Map();
+
+        // Use the filtered remainGRNItem list to extract categories
+        remainGRNItem.forEach((prItem) => {
+            if (prItem && prItem.category_id) {
+                const category = prItem.category_id;
+
+                // Add to map if the category name is not already added
+                if (!uniqueCategoriesMap.has(category.name)) {
+                    uniqueCategoriesMap.set(category.name, category);
+                }
+            }
+        });
+
+        // Convert the Map values to an array
+        const categories = Array.from(uniqueCategoriesMap.values());
+
+
+        fillDataIntoSelect(selectCategory, "Select Category", categories, "name")
 
 
         fillMultipleItemOfDataIntoSingleSelect(selectPRItemName, "Select Item", remainGRNItem, "itemcode", "itemname")
 
         selectPurchaseRequest.addEventListener('change', () => {
             grn.selectItemName_id = null;
-            removeValidationColor([selectPRItemName]);
         })
     }
 
@@ -426,10 +448,6 @@ const updateTotalAmount = () => {
 
     decimalFinalAmount.value = finalAmount.toFixed(2);
     grn.finalamount = finalAmount;
-
-    // Validate the fields
-    textValidator(decimalTotalAmount, '', 'grn', 'totalamount');
-    textValidator(decimalFinalAmount, '', 'grn', 'finalamount');
 
     console.log("Total Amount Updated:", totalAmount);
     console.log("Final Amount Updated:", finalAmount);
@@ -698,21 +716,7 @@ const innerGrnItemAdd = () => {
                 })
                 console.log("GRN--->sERIAL NO List", grn.serial_no_list);
 
-                let totalAmount = 0;
-                grn.grn_item.forEach(item => {
-                    totalAmount += parseFloat(item.lineprice);
-                });
-                decimalTotalAmount.value = totalAmount;
-                grn.totalamount = totalAmount;
-
-                let discountRate = parseFloat(numberDiscountRate.value);
-                if (isNaN(discountRate)) discountRate = 0;
-
-                let finalAmount = totalAmount * (1 - discountRate / 100);
-                finalAmount = parseFloat(finalAmount.toFixed(2));
-
-                decimalFinalAmount.value = finalAmount.toFixed(2);
-                textValidator(decimalFinalAmount, '', 'grn', 'finalamount');
+                updateTotalAmount();
 
                 Swal.fire({
                     title: "Success!",
@@ -722,24 +726,12 @@ const innerGrnItemAdd = () => {
                     allowOutsideClick: false,
                     allowEscapeKey: false
                 }).then(() => {
+                    grnItemForm.reset();
                     refeshInnerGrnFormAndTable();
 
-                    let totalAmount = 0;
-                    grn.grn_item.forEach(item => {
-                        totalAmount += parseFloat(item.lineprice);
-                    });
-
-                    decimalTotalAmount.value = totalAmount;
-                    grn.totalamount = totalAmount;
-                    toggleSerialNoContent();
-                    //purchaseItemForm.reset();
-                    /*  document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
-                         btn.classList.remove('custom-disabled');
-                     });
-
-                     document.querySelectorAll('.inner-edit-button').forEach((btn) => {
-                         btn.classList.remove('custom-disabled');
-                     }); */
+                    if (serialNumbersVisible) {
+                        toggleSerialNoContent();
+                    }
                 });
             }
         });

@@ -8,19 +8,21 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.EmployeeDao;
+import lk.bytetechsolution.Dao.InvoiceDao;
+import lk.bytetechsolution.Dao.InvoiceStatusDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
-public class OrderController {
+public class PreOrderController {
     @Autowired
     private UserDao daoUser;
 
     @Autowired
     private EmployeeDao daoEmployee;
 
-    @RequestMapping(value = "/order")
-    public ModelAndView GetInvoiceUI() {
+    @RequestMapping(value = "/preorder")
+    public ModelAndView GetPreOrderUI() {
         // get logged user authentication object using security
         // this help to retrieve the current authentication object which holds the user
         // detail
@@ -33,16 +35,16 @@ public class OrderController {
         String loggedEmployee = daoEmployee.getFullnameById(loggedUser.getId());
 
         // Create a new ModelAndView object to hold the model data and view information
-        ModelAndView orderView = new ModelAndView();
+        ModelAndView preOrderView = new ModelAndView();
         // pass the ui
-        orderView.setViewName("order.html");
+        preOrderView.setViewName("preorder.html");
         // attributes set to show titles in web page using theamleaf
-        orderView.addObject("title", "Order Management || Bytetech Solution");
-        orderView.addObject("user", authentication.getName());// passing logged user name
-        orderView.addObject("EmpName", loggedEmployee);
-        orderView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());// get the first role
-        orderView.addObject("LoggedUserPhoto", loggedUser.getPhoto()); 
+        preOrderView.addObject("title", "Pre-Order Management || Bytetech Solution");
+        preOrderView.addObject("user", authentication.getName());// passing logged user name
+        preOrderView.addObject("EmpName", loggedEmployee);
+        preOrderView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());// get the first role
+        preOrderView.addObject("LoggedUserPhoto", loggedUser.getPhoto()); 
 
-        return orderView;
+        return preOrderView;
     }
 }

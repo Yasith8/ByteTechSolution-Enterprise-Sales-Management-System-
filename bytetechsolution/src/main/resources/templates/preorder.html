@@ -5,7 +5,7 @@
 
 <head>
     <link rel="stylesheet" href="resources/style/order.css">
-    <script src="resources/controller/order.js"></script>
+    <script src="resources/controller/preorder.js"></script>
 </head>
 
 
@@ -20,7 +20,7 @@
         <div class="row m-2 contentMargin">
             <div class="col-12 text-center 
             title-header-div">
-                <h2> Order Management </h2>
+                <h2>Pre-Order Management </h2>
             </div>
         </div>
         <!-- title area End -->
@@ -33,7 +33,7 @@
             </div>
             <div class="col-4 text-end">
                 <button type="button" data-bs-toggle="modal" data-bs-target="#orderAddModal" class="btn addBtn">
-                    Add New Order </button>
+                    Add New Pre-Order </button>
             </div>
             <div class="col-1"></div>
         </div>
@@ -54,6 +54,8 @@
                                     <th> Custmer </th>
                                     <th> Total Amount </th>
                                     <th> Final Amount </th>
+                                    <th> Paid Amount </th>
+                                    <th> Balance </th>
                                     <th> Status </th>
                                 </tr>
                             </thead>
@@ -144,24 +146,24 @@
                                                         </div>
                                                     </div>
                                                     <!-- total amount end -->
-                                                    <!--   
+
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
                                                             <input type="number" class="form-control" id="decimalPaidAmount" placeholder="" onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$','invoice','paidamount')">
                                                             <label for="decimalPaidAmount">Paid Amount</label>
                                                         </div>
                                                     </div>
-                                                   
+
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
                                                             <input type="number" class="form-control" id="decimalBalance" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'invoice','balance')">
                                                             <label for="decimalBalance">Balance<span class="requiredIcon">*</span></label>
                                                         </div>
                                                     </div>
-                                                      -->
-                                                    <!-- </div> -->
 
-                                                    <!-- <div class="row"> -->
+                                                </div>
+
+                                                <div class="row">
                                                     <div class="col-4">
                                                         <div class="form-floating mb-3">
                                                             <select name="brand" id="selectInvoiceStatus" class="form-select" onchange="selectDynamicValidator(this,'','invoice','invoicestatus_id')">
@@ -303,8 +305,8 @@
                         <div id="divModifyButton">
                             <div class="row">
                                 <div class="col-4" style="display: flex; justify-content: center;gap: 5px;">
-                                    <button type="button" class="modal-button modal-btn-print" id="buttonPrint" onclick="printOrder(window['editOb'], window['editRow'])">Print</button>
-                                    <button type="button" class="modal-button modal-btn-delete" id="buttonDelete" onclick="deleteOrder(window['editOb'], window['editRow'])">Delete</button>
+                                    <button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" id="buttonPrint" onclick="printOrder(window['editOb'], window['editRow'])">Print</button>
+                                    <button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" id="buttonDelete" onclick="deleteOrder(window['editOb'], window['editRow'])">Delete</button>
                                 </div>
                             </div>
                             <div class="col-8"></div>
@@ -313,10 +315,10 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5"></div>
-                            <div class="col-7" style="display: flex; flex-wrap: nowrap;justify-content: end;;gap: 12px; ">
+                            <div class="col-7" style="display: flex; justify-content: center;gap: 12px;">
                                 <button type="button" class="modal-button modal-btn-clear" id="btnClear" onclick="refreshOrder()">Clear</button>
-                                <button type="button" class="modal-button modal-btn-update" style="margin-right: 25px" id="btnUpdate" onclick="updateOrder()">Update</button>
-                                <button type="button" class="modal-button modal-btn-submit" style="margin-right: 25px" id="btnSubmit" onclick="submitOrder()">Submit</button>
+                                <button type="button" class="modal-button modal-btn-update" id="btnUpdate" onclick="updateOrder()">Update</button>
+                                <button type="button" class="modal-button modal-btn-submit" id="btnSubmit" onclick="submitOrder()">Submit</button>
                             </div>
                         </div>
                     </div>

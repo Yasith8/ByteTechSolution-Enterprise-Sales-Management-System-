@@ -43,10 +43,13 @@
                     <div class="card-header">Filter the items</div>
                     <div class="card-text">
                         <form id="filterForm">
-                            <div class="row mt-4">
+                            <div class="row mt-3">
+                                <h5>General Details</h5>
+                            </div>
+                            <div class="row mt-1">
                                 <div class="col-2">
                                     <div class="form-floating mb-3">
-                                        <input type="number" class="form-control" id="textItemcode" placeholder="">
+                                        <input type="text" class="form-control" id="textItemcode" placeholder="">
                                         <label for="textItemcode">Itemcode</label>
                                         </select>
                                     </div>
@@ -65,15 +68,16 @@
                                 </select>
                                     </div>
                                 </div>
-                                <div class="col-2">
-                                    <div class="form-floating mb-3">
-                                        <select name="category" id="selectWarranty" class="form-select">
-                                    <option value=""  selected disabled>Select Warranty</option>
-                                </select>
-                                    </div>
-                                </div>
 
-                                <!-- //todo casing filter start -->
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>Category Specific Features</h6>
+                                </div>
+                            </div>
+                            <!-- //todo casing filter start -->
+                            <div class="row" id="casingSection">
                                 <div class="col-2" id="colCasingWidth">
                                     <div class="form-floating mb-3">
                                         <input type="number" class="form-control" id="numberCasingWidth" placeholder="">
@@ -115,9 +119,11 @@
                                 </select>
                                     </div>
                                 </div>
-                                <!--todo casing filter end -->
+                            </div>
+                            <!--todo casing filter end -->
 
-                                <!--bug processor filter start -->
+                            <!--bug processor filter start -->
+                            <div class="row" id="processorSection">
                                 <div class="col-2" id="colCpuTotalCore">
                                     <div class="form-floating mb-3">
                                         <input type="number" class="form-control" id="numberCpuTotalCore" placeholder="">
@@ -159,9 +165,11 @@
                                 </select>
                                     </div>
                                 </div>
-                                <!--bug processor filter end -->
+                            </div>
+                            <!--bug processor filter end -->
 
-                                <!--optimize Motherboard filter start -->
+                            <!--optimize Motherboard filter start -->
+                            <div class="row" id="motherboardSection">
                                 <div class="col-2" id="colMboardMaxCapacity">
                                     <div class="form-floating mb-3">
                                         <input type="number" class="form-control" id="numberMboardMaxCapacity" placeholder="">
@@ -210,16 +218,173 @@
                                 </select>
                                     </div>
                                 </div>
-                                <!--optimize Motherboard filter end -->
-
-
-
-
-
-
-
-                                <!-- end of end -->
                             </div>
+                            <!--optimize Motherboard filter end -->
+
+                            <!--optimize memory filter start -->
+                            <div class="row" id="memorySection">
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="numberMemorySpeed" placeholder="">
+                                        <label for="numberMemorySpeed">Speed</label>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="selectMemoryCapacity" placeholder="">
+                                        <label for="selectMemoryCapacity">Capacity</label>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="memoryformfactor" id="selectMemoryFormFactor" class="form-select">
+                                        <option value=""  selected disabled>Select Memory Form Factor</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="gputype" id="selectMemoryType" class="form-select">
+                                        <option value=""  selected disabled>Select Memory Type</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--optimize memory filter end -->
+
+                            <!--optimize gpuSection filter start -->
+                            <div class="row" id="gpuSection">
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="interface" id="selectGpuInterface" class="form-select">
+                                        <option value=""  selected disabled>Select Interface</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="gpuchipset" id="selectGpuChipset" class="form-select">
+                                        <option value=""  selected disabled>Select GPU Chipset</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="gpuseries" id="selectGpuSeries" class="form-select">
+                                        <option value=""  selected disabled>Select GPU series</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="capacity" id="selectGpuCapacity" class="form-select">
+                                        <option value=""  selected disabled>Select Capacity</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="mbordformfactor" id="selectGpuMotherboardFormFactor" class="form-select">
+                                        <option value=""  selected disabled>Select Motherboard Form Factor</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="gputype" id="selectGpuType" class="form-select">
+                                        <option value=""  selected disabled>Select GPU Type</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--optimize gpuSection filter end -->
+
+                            <!--optimize powerSupplySection filter start -->
+                            <div class="row" id="powerSupplySection">
+                                <div class="col-2">
+                                    <div class="mb-3 form-floating">
+                                        <select name="modularity" id="selectPsuModularity" class="form-select">
+                                    <option value=""  selected disabled>Select Modularity</option>
+                                </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="gputype" id="selectPsuEfficiency" class="form-select">
+                                        <option value=""  selected disabled>Select Efficiency</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="mb-3 form-floating">
+                                        <select name="brand" id="selectPowerSupplyFormFactor" class="form-select">
+                                        <option value=""  selected disabled>Select Power Supply Form Factor</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="mb-3 form-floating">
+                                        <input type="text" class="form-control" id="numberPsuWattage" placeholder="" required>
+                                        <label for="numberPsuWattage">Wattage<span class="requiredIcon">*</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--optimize powerSupplySection filter end -->
+
+                            <!--optimize coolerSection filter start -->
+                            <div class="row" id="coolerSection">
+                                <div class="col-2">
+                                    <div class="mb-3 form-floating">
+                                        <select name="interface" id="selectCoolerCpuSocket" class="form-select">
+                                    <option value=""  selected disabled>Select Processor Socket</option>
+                                </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="gputype" id="selectCoolerType" class="form-select">
+                                        <option value=""  selected disabled>Select Cooler Type</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--optimize coolerSection filter end -->
+
+                            <!--optimize storageSection filter start -->
+                            <div class="row" id="storageSection">
+                                <div class="col-2">
+                                    <div class="mb-3 form-floating">
+                                        <select name="interface" id="selectStorageInterface" class="form-select">
+                                    <option value=""  selected disabled>Select Storage Interface</option>
+                                </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <select name="gputype" id="selectStorageType" class="form-select">
+                                        <option value=""  selected disabled>Select Storage Type</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="mb-3 form-floating">
+                                        <select name="capacity" id="selectStorageCapacity" class="form-select">
+                                        <option value=""  selected disabled>Select Capacity</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--optimize storageSection filter end -->
+
+
+
+
+
+
+
+
+                            <!-- end of end -->
+
                             <div class="row mb-2">
                                 <div class="col-10"></div>
                                 <div class="col-2 text-end">
@@ -358,6 +523,7 @@
                                     <th> Item Code </th>
                                     <th> Item Name </th>
                                     <th> Sales Price </th>
+                                    <th> Qty </th>
                                     <th> Status </th>
                                 </tr>
                             </thead>

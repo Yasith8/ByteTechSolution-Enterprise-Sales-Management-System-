@@ -243,7 +243,7 @@ const selectComplexValueHandler = (fieldId) => {
         return null;
     }
 };
-const elementHide = (elements, need) => {
+const elementHides = (elements, need) => {
     elements.forEach((element) => {
         if (need) {
             element.classList.remove("elementHide");

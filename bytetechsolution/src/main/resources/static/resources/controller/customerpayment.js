@@ -29,6 +29,11 @@ const refillCustomerPaymentForm = (ob) => {
     $('#customerpaymentAddModal').modal('show');
     staticBackdropLabel.textContent = customerPayment.paymentno;
 
+    fixedDate = getCurrentDate(customerPayment.addeddate)
+    employeeUser = getServiceAjaxRequest(`/user/userbyid/${customerPayment.addeduser}`)
+    console.log(employeeUser)
+    transactionDitails.textContent = `This Transaction handled by ${employeeUser[0].employee_id.callingname} at ${fixedDate}`
+
     selectCustomer.disabled = true;
     const customers = getServiceAjaxRequest('/customer/alldata')
     fillMultipleItemOfDataIntoSingleSelect(selectCustomer, "Select Customer Details", customers, 'name', 'mobile', customerPayment.customer_id.name, customerPayment.customer_id.mobile)
@@ -46,10 +51,16 @@ const refillCustomerPaymentForm = (ob) => {
     decimalBalance.value = customerPayment.balance;
 
     const paymenttypes = getServiceAjaxRequest('/paymenttype/alldata')
-    fillDataIntoSelect(selectPaymentType, "Select Payment Type", paymenttypes, 'name', customerPayment.paymettype_id.name);
+    fillDataIntoSelect(selectPaymentType, "Select Payment Type", paymenttypes, 'name', customerPayment.paymenttype_id.name);
 
     const invoicestatus = getServiceAjaxRequest('/invoicestatus/alldata')
     fillDataIntoSelect(selectInvoiceStatus, "Select Invoice Status", invoicestatus, 'name', customerPayment.invoicestatus_id.name);
+
+    if (customerPayment.invoicestatus_id.name == "Completed") {
+        selectInvoiceStatus.disabled = true;
+    } else {
+        selectInvoiceStatus.disabled = false;
+    }
 
 
 }
@@ -206,4 +217,27 @@ const refreshCustomerPayment = () => {
 
         }
     })
+}
+
+
+const buttonModalClose = () => {
+    Swal.fire({
+        title: "Are you sure to close the form?",
+        text: "If you close this form, filled data will be removed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Close",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+            $('#customerpaymentAddModal').modal('hide');
+            formCustomerPayment.reset();
+            divModifyButton.className = 'd-none';
+        }
+    });
 }

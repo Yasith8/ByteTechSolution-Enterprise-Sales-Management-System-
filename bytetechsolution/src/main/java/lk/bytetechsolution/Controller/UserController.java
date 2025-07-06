@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -91,6 +92,18 @@ public class UserController {
         }
 
         return dao.findAll();
+    }
+     @GetMapping(value="/user/userbyid/{userId}",produces = "application/json")
+    public List<UserEntity> FindUserById(@PathVariable("userId") Integer userId){
+        //Authentication and Autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "USER");
+
+        if(!userPrivilage.get("select")){
+            return new ArrayList<UserEntity>();
+        }
+
+        return dao.findUserById(userId);
     }
 
     @PostMapping(value = "/user")

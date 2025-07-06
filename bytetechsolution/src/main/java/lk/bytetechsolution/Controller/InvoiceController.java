@@ -207,13 +207,13 @@ public class InvoiceController {
 
         try {
             UserEntity deleteUser = daoUser.getByUsername(authentication.getName());
-            invoice.setDeleteuser(deleteUser.getId());
+            extInvoice.setDeleteuser(deleteUser.getId());
 
-            invoice.setDeletedate(LocalDateTime.now());
+            extInvoice.setDeletedate(LocalDateTime.now());
 
-            invoice.setInvoicestatus_id(daoInvoiceStatus.getReferenceById(3));
+            extInvoice.setInvoicestatus_id(daoInvoiceStatus.getReferenceById(3));
 
-            daoInvoice.save(invoice);
+            daoInvoice.save(extInvoice);
 
             return "OK";
         } catch (Exception e) {
