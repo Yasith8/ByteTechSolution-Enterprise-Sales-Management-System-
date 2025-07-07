@@ -55,4 +55,9 @@ public class SerialNoListController {
     public List<SerialNoListEntity> getAllSerialNoList(){
         return daoSerialNoList.findAll();
     }
+
+    @GetMapping(value = "/inventory/availableitem",produces = "application/json")
+    public List<SerialNoListEntity> getAvailableSerialNoList(){
+        return daoSerialNoList.availableSerialNoList();
+    }
 }

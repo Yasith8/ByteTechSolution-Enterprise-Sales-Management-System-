@@ -1,5 +1,6 @@
 window.addEventListener('load', () => {
-    refreshCustomerPaymentTable()
+    refreshCustomerPaymentTable();
+    refreshCustomerPaymentForm();
 })
 
 const refreshCustomerPaymentTable = () => {
@@ -22,41 +23,117 @@ const refreshCustomerPaymentTable = () => {
     divModifyButton.className = 'd-none';
 }
 
+const refreshCustomerPaymentForm = () => {
+    customerpayment = new Object();
+    oldcustomerpayment = null;
+
+    buttonSubmit.disabled = false;
+    buttonUpdate.disabled = true;
+    buttonSubmit.classList.remove('elementHide')
+    buttonUpdate.classList.add('elementHide')
+
+    staticBackdropLabel.textContent = "Add New Customer Payment";
+    transactionDitails.classList.add('elementHide')
+    inputFieldsHandler([selectPaymentType, selectInvoiceStatus, decimalPaidAmount, selectCustomer, selectInvoice], false)
+
+    invoiceTotalAmountRow.classList.add('elementHide');
+    //load customer data
+    const customers = getServiceAjaxRequest('/customer/getallactivecustomers')
+    $('#selectCustomer').select2({
+        theme: 'bootstrap-5',
+        dropdownParent: $('#selectCustomer').parent(),
+        width: '100%'
+    })
+    fillMultipleItemOfDataIntoSingleSelect(selectCustomer, "Select Customer Details", customers, 'name', 'mobile')
+
+    fillMultipleItemOfDataIntoSingleSelect(selectInvoice, "Select Customer First", [], "invoiceno", "finalamount")
+
+    selectCustomer.addEventListener('change', () => {
+        customerpayment.invoice_id = null;
+        removeValidationColor([selectInvoice])
+        const selectedCustomer = selectValueHandler(selectCustomer)
+
+        customerInvoices = getServiceAjaxRequest(`/invoice/invoicebycustomer/${selectedCustomer.id}`);
+        fillMultipleItemOfDataIntoSingleSelect(selectInvoice, "Select Customer First", customerInvoices, "invoiceno", "finalamount")
+
+    })
+
+    decimalDueAmount.disabled = true;
+    selectInvoice.addEventListener('change', () => {
+        selectedInvoice = selectValueHandler(selectInvoice);
+        invoiceTotalAmountRow.classList.remove('elementHide');
+        invoiceTotalAmountText.textContent = selectedInvoice.finalamount;
+
+        decimalDueAmount.value = selectedInvoice.balance;
+    })
+
+    decimalBalance.disabled = true;
+    decimalBalance.value = 0.00;
+    decimalPaidAmount.addEventListener('input', () => {
+        const paidAmount = parseFloat(decimalPaidAmount.value);
+        const dueAmount = parseFloat(decimalDueAmount.value);
+
+        const newBalance = dueAmount - paidAmount;
+        decimalBalance.value = newBalance;
+    })
+
+    const paymenttypes = getServiceAjaxRequest('/paymenttype/alldata')
+    fillDataIntoSelect(selectPaymentType, "Select Payment Type", paymenttypes, "name")
+
+    fillDataIntoSelect(selectInvoiceStatus, "Status will change due to the balance", [], 'name')
+    invoicestatuses = getServiceAjaxRequest('/invoice/alldata')
+    suitableInvoice = new Array();
+    if (decimalBalance.value == 0) {
+        suitableInvoice = invoicestatuses.filter(item => item.name = "Completed");
+        fillDataIntoSelect(selectInvoiceStatus, "Status will change due to the balance", invoicestatuses, 'name', suitableInvoice[0].name)
+    } else {
+        suitableInvoice = invoicestatuses.filter(item => item.name = "Processing");
+        fillDataIntoSelect(selectInvoiceStatus, "Status will change due to the balance", invoicestatuses, 'name', suitableInvoice[0].name)
+    }
+}
+
 const refillCustomerPaymentForm = (ob) => {
-    customerPayment = JSON.parse(JSON.stringify(ob));
-    oldCustomerPayment = ob;
+    customerpayment = JSON.parse(JSON.stringify(ob));
+    oldcustomerpayment = ob;
+
+    inputFieldsHandler([selectPaymentType, selectInvoiceStatus, decimalPaidAmount], true)
+    transactionDitails.classList.remove('elementHide')
+
+    buttonSubmit.classList.add('elementHide')
+    buttonUpdate.classList.add('elementHide')
+    buttonClear.classList.add('elementHide')
 
     $('#customerpaymentAddModal').modal('show');
-    staticBackdropLabel.textContent = customerPayment.paymentno;
+    staticBackdropLabel.textContent = customerpayment.paymentno;
 
-    fixedDate = getCurrentDate(customerPayment.addeddate)
-    employeeUser = getServiceAjaxRequest(`/user/userbyid/${customerPayment.addeduser}`)
+    fixedDate = getCurrentDate(customerpayment.addeddate)
+    employeeUser = getServiceAjaxRequest(`/user/userbyid/${customerpayment.addeduser}`)
     console.log(employeeUser)
     transactionDitails.textContent = `This Transaction handled by ${employeeUser[0].employee_id.callingname} at ${fixedDate}`
 
     selectCustomer.disabled = true;
     const customers = getServiceAjaxRequest('/customer/alldata')
-    fillMultipleItemOfDataIntoSingleSelect(selectCustomer, "Select Customer Details", customers, 'name', 'mobile', customerPayment.customer_id.name, customerPayment.customer_id.mobile)
+    fillMultipleItemOfDataIntoSingleSelect(selectCustomer, "Select Customer Details", customers, 'name', 'mobile', customerpayment.customer_id.name, customerpayment.customer_id.mobile)
 
     selectInvoice.disabled = true;
     const invoices = getServiceAjaxRequest('/invoice/alldata')
-    fillDataIntoSelect(selectInvoice, "Select Invoice", invoices, 'invoiceno', customerPayment.invoice_id.invoiceno);
+    fillDataIntoSelect(selectInvoice, "Select Invoice", invoices, 'invoiceno', customerpayment.invoice_id.invoiceno);
 
-    decimalTotalAmount.disabled = true;
-    decimalTotalAmount.value = customerPayment.totalamount;
+    decimalDueAmount.disabled = true;
+    decimalDueAmount.value = customerpayment.totalamount;
 
     decimalPaidAmount.disabled = true;
-    decimalPaidAmount.value = customerPayment.paidamount;
+    decimalPaidAmount.value = customerpayment.paidamount;
 
-    decimalBalance.value = customerPayment.balance;
+    decimalBalance.value = customerpayment.balance;
 
     const paymenttypes = getServiceAjaxRequest('/paymenttype/alldata')
-    fillDataIntoSelect(selectPaymentType, "Select Payment Type", paymenttypes, 'name', customerPayment.paymenttype_id.name);
+    fillDataIntoSelect(selectPaymentType, "Select Payment Type", paymenttypes, 'name', customerpayment.paymenttype_id.name);
 
     const invoicestatus = getServiceAjaxRequest('/invoicestatus/alldata')
-    fillDataIntoSelect(selectInvoiceStatus, "Select Invoice Status", invoicestatus, 'name', customerPayment.invoicestatus_id.name);
+    fillDataIntoSelect(selectInvoiceStatus, "Select Invoice Status", invoicestatus, 'name', customerpayment.invoicestatus_id.name);
 
-    if (customerPayment.invoicestatus_id.name == "Completed") {
+    if (customerpayment.invoicestatus_id.name == "Completed") {
         selectInvoiceStatus.disabled = true;
     } else {
         selectInvoiceStatus.disabled = false;
@@ -95,99 +172,90 @@ const UserInputErrors = () => {
     return errors;
 }
 
-const checkUserUpdates = () => {
-    let updates = "";
-
-    return updates;
-}
-
-const updateCustomerPayment = () => {
+const submitCustomerPayment = () => {
+    //check errors in user inputs
     let errors = UserInputErrors();
 
-    if (errors = "") {
-        let updates = checkUserUpdates();
+    //if there is no errors open sweet alert to get a confomation
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to place this customer payment?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, Add it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            //if user conformed called post request
+            if (result.isConfirmed) {
 
-        if (updates == "") {
-            Swal.fire({
-                title: "Nothing Updated",
-                text: "There are no any updates in Custoomer Payment Form",
-                icon: "info",
-                showCancelButton: true,
-                confirmButtonColor: "#103D45",
-                confirmButtonText: "OK",
-                allowOutsideClick: false,
-                allowEscapeKey: false
-            })
-        } else {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "Do you want to update the Custoomer Payment details?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#103D45",
-                cancelButtonColor: "#F25454",
-                confirmButtonText: "Yes, send it!",
-                allowOutsideClick: false,
-                allowEscapeKey: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    let putServiceResponse;
+                let postServiceResponce;
+                //ajax request
+                $.ajax("/customerpayment", {
+                    type: "POST", //method
+                    contentType: "application/json",
+                    data: JSON.stringify(customerpayment),
+                    async: false,
 
-                    $.ajax("/customerpayment", {
-                        type: "PUT",
-                        async: false,
-                        contentType: "application/json",
-                        data: JSON.stringify(customerPayment),
+                    //if success
+                    success: function(data) {
+                        console.log("success", data);
+                        postServiceResponce = data;
+                    },
 
-
-                        success: function(successResponseOb) {
-                            putServiceResponse = successResponseOb;
-                        },
-
-                        error: function(failedResponseOb) {
-                            putServiceResponse = failedResponseOb;
-                        }
-
-                    });
-
-                    if (putServiceResponse == "OK") {
-                        Swal.fire({
-                            title: "Success!",
-                            text: "Customer Payment update successfully!",
-                            icon: "success",
-                            confirmButtonColor: "#B3C41C",
-                            allowOutsideClick: false,
-                            allowEscapeKey: false
-                        }).then(() => {
-                            $('#customerpaymentAddModal').modal('hide');
-                            formCustomerPayment.reset();
-                            //refreash Item form
-                            refreshCustomerPaymentTable();
-                        })
-                    } else {
-                        Swal.fire({
-                            title: "Error!",
-                            html: "Customer Payment Updation failed due to the following errors:<br>" + putServiceResponse,
-                            icon: "error",
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                            confirmButtonColor: "#F25454"
-                        });
+                    //if not success
+                    error: function(resData) {
+                        console.log("Fail", resData);
+                        postServiceResponce = resData;
                     }
-                }
-            })
-        }
 
+                });
+
+
+                if (postServiceResponce == "OK") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Customer Order Palced Successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        //hide the model
+                        $('#customerpaymentAddModal').modal('hide');
+                        //reset the Item form
+                        formCustomerPayment.reset();
+                        //refreash Item form
+                        refreshCustomerPaymentForm();
+                        //refreash Item table
+                        refreshCustomerPaymentTable();
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        html: "Adding Processor to the system failed due to the following errors:<br>" + postServiceResponce,
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: "#F25454"
+                    });
+                }
+            }
+        });
     } else {
         Swal.fire({
             title: "Error!",
-            html: "Updation of Order failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            html: "Customer Payment Placement Failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
             icon: "error",
             allowOutsideClick: false,
             allowEscapeKey: false,
             confirmButtonColor: "#F25454"
         });
     }
+
 }
 
 const refreshCustomerPayment = () => {
@@ -220,6 +288,8 @@ const refreshCustomerPayment = () => {
 }
 
 
+
+
 const buttonModalClose = () => {
     Swal.fire({
         title: "Are you sure to close the form?",
@@ -237,6 +307,7 @@ const buttonModalClose = () => {
         if (result.isConfirmed) {
             $('#customerpaymentAddModal').modal('hide');
             formCustomerPayment.reset();
+            refreshCustomerPaymentForm();
             divModifyButton.className = 'd-none';
         }
     });

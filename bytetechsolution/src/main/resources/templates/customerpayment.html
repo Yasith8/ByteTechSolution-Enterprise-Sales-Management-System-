@@ -32,8 +32,8 @@
 
             </div>
             <div class="col-4 text-end">
-                <!-- <button type="button" data-bs-toggle="modal" data-bs-target="#customerpaymentAddModal" class="btn addBtn">
-                    Add New Customer Payment </button> -->
+                <button type="button" data-bs-toggle="modal" data-bs-target="#customerpaymentAddModal" class="btn addBtn">
+                    Add New Customer Payment </button>
             </div>
             <div class="col-1"></div>
         </div>
@@ -92,9 +92,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Order</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
+                    <button type="button" class="btn-close" aria-label="Close" onclick="buttonModalClose()"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="row mb-2" id="invoiceTotalAmountRow">
+                        <div class="col-12">
+                            <h5 id="invoiceTotalAmountText">Total Amount:</h5>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-12">
@@ -116,23 +121,24 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" id="selectInvoice" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'customerpayment', 'invoice_id')">
-                                            <label for="selectInvoice">Invoice Id<span class="requiredIcon">*</span></label>
+                                            <select name="customer" id="selectInvoice" class="form-select" onchange="selectDynamicValidator(this,'','customerpayment','invoice_id')">
+                                                                <option value=""  selected disabled>Select Invoice</option>
+                                                            </select>
                                         </div>
                                     </div>
                                     <!-- PURCHASE REQUEST Input Start -->
 
                                     <div class="col-4">
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" id="decimalTotalAmount" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'customerpayment', 'totalamount')">
-                                            <label for="decimalTotalAmount">Total Amount<span class="requiredIcon">*</span></label>
+                                            <input type="number" class="form-control" id="decimalDueAmount" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'customerpayment', 'dueamount')">
+                                            <label for="decimalDueAmount">Due Amount<span class="requiredIcon">*</span></label>
                                         </div>
                                     </div>
                                     <!-- PURCHASE REQUEST Input end -->
                                     <div class="col-4">
                                         <div class="form-floating mb-3">
-                                            <input type="number" class="form-control" id="decimalPaidAmount" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'customerpayment', 'paidamount')">
-                                            <label for="decimalPaidAmount">Paid Amount<span class="requiredIcon">*</span></label>
+                                            <input type="number" class="form-control" id="decimalPaidAmount" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'customerpayment', 'todayPayedamount')">
+                                            <label for="decimalPaidAmount">Paying Amount<span class="requiredIcon">*</span></label>
                                         </div>
                                     </div>
 
@@ -188,8 +194,9 @@
                         <div class="row">
                             <div class="col-5"></div>
                             <div class="col-7" style="display: flex; justify-content: center;gap: 12px;">
-                                <button type="button" class="modal-button modal-btn-clear" id="btnClear" onclick="refreshCustomerPayment()">Clear</button>
-                                <button type="button" class="modal-button modal-btn-update" id="btnUpdate" onclick="updateCustomerPayment()">Update</button>
+                                <button type="button" class="modal-button modal-btn-clear" id="buttonClear" onclick="refreshCustomerPayment()">Clear</button>
+                                <button type="button" class="modal-button modal-btn-update" id="buttonUpdate" onclick="updateCustomerPayment()">Update</button>
+                                <button type="button" class="modal-button modal-btn-update" id="buttonSubmit" onclick="submitCustomerPayment()">Update</button>
                             </div>
                         </div>
                     </div>

@@ -1,145 +1,10 @@
-/* window.addEventListener('load', () => {
-    refreshInventoryTable();
-    refreshFilterForm();
-})
-
-const refreshInventoryTable = () => {
-    inventories = getServiceAjaxRequest("/inventory/alldata");
-
-    const displayPropertyList = [
-        { dataType: 'text', propertyName: 'serialno' },
-        { dataType: 'function', propertyName: getCategoryId },
-        { dataType: 'text', propertyName: 'itemcode' },
-        { dataType: 'text', propertyName: 'itemname' },
-        { dataType: 'text', propertyName: 'salesprice' },
-        { dataType: 'function', propertyName: getStatus },
-    ];
-
-    //call fillDataIntoTable Function
-    //(tableid,dataArray variable name, displayproperty list, refill function,button)
-    fillDataIntoTable(tableInventory, inventories, displayPropertyList, refillFilterForm)
-        //table show with dataTable
-    $('#tableInventory').dataTable();
-}
-
-const refreshFilterForm = () => {
-    route = "";
-
-    categories = getServiceAjaxRequest("/category/alldata");
-    fillDataIntoSelect(selectCategory, "Select Item Category", categories, "name")
-
-    brands = getServiceAjaxRequest("/brand/alldata");
-    fillDataIntoSelect(selectBrand, "Select Item Brand", brands, "name")
-
-
-    selectCategory.addEventListener('change', () => {
-        let selectedCategory = selectValueHandler(selectCategory);
-        let selectedBrand = selectValueHandler(selectBrand);
-
-        cpusockets = getServiceAjaxRequest("/cpusocket/alldata");
-        fillDataIntoSelect(selectCpuSocket, "Select CPU Socket", cpusockets, "name")
-
-        cpuseries = getServiceAjaxRequest("/cpuseries/alldata");
-        fillDataIntoSelect(selectCpuSeries, "Select CPU Series", cpuseries, "name")
-
-        cpugenerations = getServiceAjaxRequest("/cpugeneration/alldata");
-        fillDataIntoSelect(selectCpuGeneration, "Select CPU Socket", cpusockets, "name")
-
-        cpusuffixs = getServiceAjaxRequest("/cpusuffix/alldata");
-        fillDataIntoSelect(selectCpuSuffix, "Select CPU Suffix", cpusuffixs, "name")
-
-        route = `/${(selectedCategory.name).toLowerCase()}/filteritem?brand_id=${selectedBrand.id}`
-
-        if (selectedCategory.name == "Processor") {
-            console.log("Processor Selected");
-            //show/hide fields
-            elementHide([casingSection, motherboardSection, memorySection, gpuSection, powerSupplySection, coolerSection, storageSection], true)
-            elementHide([processorSection], false)
-
-            route = `/${(selectedCategory.name).toLowerCase()}/filteritem?brand_id=${selectedBrand.id}&totalcore=${numberCpuTotalCore?.value}&cache=${numbercache?.value}`
-
-            console.log("Route being set:", route);
-
-        }
-        if (selectedCategory.name == "Motherboard") {
-            console.log("Motherboard Selected")
-            elementHide([processorSection, casingSection, memorySection, gpuSection, powerSupplySection, coolerSection, storageSection], true)
-            elementHide([motherboardSection], false)
-
-        }
-
-        if (selectedCategory.name == "Memory") {
-            elementHide([processorSection, casingSection, motherboardSection, gpuSection, powerSupplySection, coolerSection, storageSection], true)
-            elementHide([memorySection], false)
-
-        }
-
-        if (selectedCategory.name == "GPU") {
-            elementHide([processorSection, casingSection, motherboardSection, memorySection, gpuSection, powerSupplySection, coolerSection, storageSection], true)
-            elementHide([], false)
-
-        }
-
-        if (selectedCategory.name == "PowerSupply") {
-            elementHide([processorSection, casingSection, motherboardSection, memorySection, gpuSection, coolerSection, storageSection], true)
-            elementHide([powerSupplySection], false)
-
-        }
-
-        if (selectedCategory.name == "Cooler") {
-            elementHide([processorSection, casingSection, motherboardSection, memorySection, gpuSection, powerSupplySection, storageSection], true)
-            elementHide([coolerSection], false)
-
-        }
-
-        if (selectedCategory.name == "Storage") {
-            elementHide([processorSection, casingSection, motherboardSection, memorySection, gpuSection, powerSupplySection, coolerSection], true)
-            elementHide([storageSection], false)
-
-        }
-
-        if (selectedCategory.name == "Casing") {
-            elementHide([processorSection, motherboardSection, memorySection, gpuSection, powerSupplySection, coolerSection, storageSection], true)
-            elementHide([casingSection], false)
-        }
-
-        if (selectedCategory.name == "Accessories") {
-            elementHide([processorSection, motherboardSection, memorySection, gpuSection, powerSupplySection, coolerSection, storageSection, casingSection], true)
-        }
-
-    })
-}
-
-
-const getCategoryId = (ob) => {
-    return ob.category_id.name;
-}
-
-const getStatus = (ob) => {
-    if (ob.status) {
-        return '<p class="common-status-available"> Available</p>';
-    } else {
-        return '<p class="common-status-delete">Not Available</p>'
-    }
-}
-
-const refillFilterForm = () => {
-
-}
-
-const applyFilterHandler = () => {
-    console.log("ROUTE>>>>>", route)
-    filteredItems = getServiceAjaxRequest(route)
-} */
-
-
 window.addEventListener('load', () => {
     refreshInventoryTable();
     refreshFilterForm();
 })
 
 const refreshInventoryTable = () => {
-    inventories = getServiceAjaxRequest("/inventory/alldata");
+    inventories = getServiceAjaxRequest("/inventory/availableitem");
 
     const displayPropertyList = [
         { dataType: 'text', propertyName: 'serialno' },
@@ -161,12 +26,13 @@ const refreshInventoryTable = () => {
 const refreshFilterForm = () => {
     route = "";
 
+    filterContentText.classList.add('elementHide')
+
     // Load general dropdown data
     categories = getServiceAjaxRequest("/category/alldata");
     fillDataIntoSelect(selectCategory, "Select Item Category", categories, "name")
 
-    brands = getServiceAjaxRequest("/brand/alldata");
-    fillDataIntoSelect(selectBrand, "Select Item Brand", brands, "name")
+    fillDataIntoSelect(selectBrand, "Select Category First", [], "name")
 
     // Hide all specific sections on first load - only show general details
     hideAllSections();
@@ -182,6 +48,8 @@ const refreshFilterForm = () => {
 
 const handleCategoryChange = () => {
     let selectedCategory = selectValueHandler(selectCategory);
+    filterContentText.classList.remove('elementHide');
+    filterText.textContent = `${selectedCategory.name} Specific Features`;
 
     if (!selectedCategory || !selectedCategory.name) {
         hideAllSections();
@@ -276,7 +144,7 @@ const handleBrandChange = () => {
 
 const updateRouteWithBrand = () => {
     let selectedCategory = selectValueHandler(selectCategory);
-    let selectedBrand = selectValueHandler(selectBrand);
+    let selectedBrand = selectBrand.value == "Select Item Brand" ? [] : selectValueHandler(selectBrand);
 
     if (selectedCategory && selectedCategory.name) {
         route = `/${(selectedCategory.name).toLowerCase()}/filteritem`;
@@ -362,6 +230,9 @@ const loadMemoryDropdowns = () => {
 
     memoryTypes = getServiceAjaxRequest("/memorytype/alldata");
     fillDataIntoSelect(selectMemoryType, "Select Memory Type", memoryTypes, "name");
+
+    memoryCapacities = getServiceAjaxRequest("/capacity/alldata");
+    fillDataIntoSelect(selectMemoryCapacity, "Select Memory Capacity", memoryCapacities, "name");
 }
 
 const loadGpuDropdowns = () => {
@@ -438,27 +309,23 @@ const addProcessorFilters = () => {
         params.push(`cache=${numberCpuCache.value}`);
     }
 
-    let cpuSocket = selectValueHandler(selectCpuSocket);
-    console.log("cpuSocket SELECTION: ", cpuSocket)
-    if (cpuSocket && cpuSocket != "Select CPU Socket" && cpuSocket.id) {
+    let cpuSocket = selectCpuSocket.value == "Select CPU Socket" ? [] : selectValueHandler(selectCpuSocket);
+    if (cpuSocket && cpuSocket.id) {
         params.push(`cpusocket_id=${cpuSocket.id}`);
     }
 
-    let cpuSeries = selectValueHandler(selectCpuSeries);
-    console.log("cpuSeries SELECTION: ", cpuSeries)
-    if (cpuSeries && cpuSeries != "Select CPU Series" && cpuSeries.id) {
+    let cpuSeries = selectCpuSeries.value == "Select CPU Series" ? [] : selectValueHandler(selectCpuSeries);
+    if (cpuSeries && cpuSeries.id) {
         params.push(`cpuseries_id=${cpuSeries.id}`);
     }
 
-    let cpuGeneration = selectValueHandler(selectCpuGeneration);
-    console.log("cpuGeneration SELECTION: ", cpuGeneration)
-    if (cpuGeneration && cpuGeneration != "Select CPU Generation" && cpuGeneration.id) {
+    let cpuGeneration = selectCpuGeneration.value == "Select CPU Generation" ? [] : selectValueHandler(selectCpuGeneration);
+    if (cpuGeneration && cpuGeneration.id) {
         params.push(`cpugeneration_id=${cpuGeneration.id}`);
     }
 
-    let cpuSuffix = selectValueHandler(selectCpuSuffix);
-    console.log("cpuSuffix SELECTION: ", cpuSuffix)
-    if (cpuSuffix && cpuSuffix != "Select CPU Suffix" && cpuSuffix.id) {
+    let cpuSuffix = selectCpuSuffix.value == "Select CPU Suffix" ? [] : selectValueHandler(selectCpuSuffix);
+    if (cpuSuffix && cpuSuffix.id) {
         params.push(`cpusuffix_id=${cpuSuffix.id}`);
     }
 
@@ -475,37 +342,37 @@ const addMotherboardFilters = () => {
         params.push(`maxcapacity=${numberMboardMaxCapacity.value}`);
     }
 
-    let cpuSocket = selectValueHandler(selectMboardCpuSocket);
+    let cpuSocket = selectMboardCpuSocket.value == "Select CPU Socket" ? [] : selectValueHandler(selectMboardCpuSocket);
     console.log("cpuSocket SELECTION: ", cpuSocket)
     if (cpuSocket && cpuSocket.id) {
         params.push(`cpusocket_id=${cpuSocket.id}`);
     }
 
-    let motherboardSeries = selectValueHandler(selectMotherboardSeries);
+    let motherboardSeries = selectMotherboardSeries.value == "Select Motherboard Series" ? [] : selectValueHandler(selectMotherboardSeries);
     console.log("motherboardSeries SELECTION: ", motherboardSeries)
     if (motherboardSeries && motherboardSeries.id) {
         params.push(`motherboardseries_id=${motherboardSeries.id}`);
     }
 
-    let motherboardType = selectValueHandler(selectotherboardType);
+    let motherboardType = selectotherboardType.value == "Select Motherboard Type" ? [] : selectValueHandler(selectotherboardType);
     console.log("motherboardType SELECTION: ", motherboardType)
     if (motherboardType && motherboardType.id) {
         params.push(`motherboardtype_id=${motherboardType.id}`);
     }
 
-    let motherboardFormFactor = selectValueHandler(selectMotherboardFormFactor);
+    let motherboardFormFactor = selectMotherboardFormFactor.value == "Select Motherboard Form Factor" ? [] : selectValueHandler(selectMotherboardFormFactor);
     console.log("motherboardFormFactor SELECTION: ", motherboardFormFactor)
     if (motherboardFormFactor && motherboardFormFactor.id) {
         params.push(`motherboardformfactor_id=${motherboardFormFactor.id}`);
     }
 
-    let memoryType = selectValueHandler(selectMotherboardMemoryType);
+    let memoryType = selectMotherboardMemoryType.value == "Select Memory Type" ? [] : selectValueHandler(selectMotherboardMemoryType);
     console.log("memoryType SELECTION: ", memoryType)
     if (memoryType && memoryType.id) {
         params.push(`memorytype_id=${memoryType.id}`);
     }
 
-    let interface = selectValueHandler(selectMBoardInterface);
+    let interface = selectMBoardInterface.value == "Select Interface" ? [] : selectValueHandler(selectMBoardInterface);
     console.log("interface SELECTION: ", interface)
     if (interface && interface.id) {
         params.push(`interface_id=${interface.id}`);
@@ -523,17 +390,17 @@ const addMemoryFilters = () => {
     if (numberMemorySpeed && numberMemorySpeed.value) {
         params.push(`speed=${numberMemorySpeed.value}`);
     }
-    let memoryCapacity = selectValueHandler(selectMemoryCapacity);
+    let memoryCapacity = selectMemoryCapacity.value = "Select Memory Capacity" ? [] : selectValueHandler(selectMemoryCapacity);
     if (memoryCapacity && memoryCapacity.id) {
         params.push(`capacity_id=${selectMemoryCapacity.id}`);
     }
 
-    let memoryFormFactor = selectValueHandler(selectMemoryFormFactor);
+    let memoryFormFactor = selectMemoryFormFactor.value == "Select Memory Form Factor" ? [] : selectValueHandler(selectMemoryFormFactor);
     if (memoryFormFactor && memoryFormFactor.id) {
         params.push(`memoryformfactor_id=${memoryFormFactor.id}`);
     }
 
-    let memoryType = selectValueHandler(selectMemoryType);
+    let memoryType = selectMemoryType.value == "Select Memory Type" ? [] : selectValueHandler(selectMemoryType);
     if (memoryType && memoryType.id) {
         params.push(`memorytype_id=${memoryType.id}`);
     }
@@ -547,32 +414,32 @@ const addMemoryFilters = () => {
 const addGpuFilters = () => {
     let params = [];
 
-    let gpuInterface = selectValueHandler(selectGpuInterface);
+    let gpuInterface = selectGpuInterface.value == "Select Interface" ? [] : selectValueHandler(selectGpuInterface);
     if (gpuInterface && gpuInterface.id) {
         params.push(`interface_id=${gpuInterface.id}`);
     }
 
-    let gpuChipset = selectValueHandler(selectGpuChipset);
+    let gpuChipset = selectGpuChipset.value == "Select GPU Chipset" ? [] : selectValueHandler(selectGpuChipset);
     if (gpuChipset && gpuChipset.id) {
         params.push(`gpuchipset_id=${gpuChipset.id}`);
     }
 
-    let gpuSeries = selectValueHandler(selectGpuSeries);
+    let gpuSeries = selectGpuSeries.value == "Select GPU Series" ? [] : selectValueHandler(selectGpuSeries);
     if (gpuSeries && gpuSeries.id) {
         params.push(`gpuseries_id=${gpuSeries.id}`);
     }
 
-    let gpuCapacity = selectValueHandler(selectGpuCapacity);
+    let gpuCapacity = selectGpuCapacity.value == "Select Capacity" ? [] : selectValueHandler(selectGpuCapacity);
     if (gpuCapacity && gpuCapacity.id) {
         params.push(`capacity_id=${gpuCapacity.id}`);
     }
 
-    let gpuMotherboardFormFactor = selectValueHandler(selectGpuMotherboardFormFactor);
+    let gpuMotherboardFormFactor = selectGpuMotherboardFormFactor.value == "Select Motherboard Form Factor" ? [] : selectValueHandler(selectGpuMotherboardFormFactor);
     if (gpuMotherboardFormFactor && gpuMotherboardFormFactor.id) {
         params.push(`motherboardformfactor_id=${gpuMotherboardFormFactor.id}`);
     }
 
-    let gpuType = selectValueHandler(selectGpuType);
+    let gpuType = selectGpuType.value == "Select GPU Type" ? [] : selectValueHandler(selectGpuType);
     if (gpuType && gpuType.id) {
         params.push(`gputype_id=${gpuType.id}`);
     }
@@ -586,17 +453,17 @@ const addGpuFilters = () => {
 const addPowerSupplyFilters = () => {
     let params = [];
 
-    let psuModularity = selectValueHandler(selectPsuModularity);
+    let psuModularity = selectPsuModularity.value == "Select Modularity" ? [] : selectValueHandler(selectPsuModularity);
     if (psuModularity && psuModularity.id) {
         params.push(`modularity_id=${psuModularity.id}`);
     }
 
-    let psuEfficiency = selectValueHandler(selectPsuEfficiency);
+    let psuEfficiency = selectPsuEfficiency.value == "Select Efficiency" ? [] : selectValueHandler(selectPsuEfficiency);
     if (psuEfficiency && psuEfficiency.id) {
         params.push(`efficiency_id=${psuEfficiency.id}`);
     }
 
-    let powerSupplyFormFactor = selectValueHandler(selectPowerSupplyFormFactor);
+    let powerSupplyFormFactor = selectPowerSupplyFormFactor.value == "Select Power Supply Form Factor" ? [] : selectValueHandler(selectPowerSupplyFormFactor);
     if (powerSupplyFormFactor && powerSupplyFormFactor.id) {
         params.push(`powersupplyformfactor_id=${powerSupplyFormFactor.id}`);
     }
@@ -614,12 +481,12 @@ const addPowerSupplyFilters = () => {
 const addCoolerFilters = () => {
     let params = [];
 
-    let coolerCpuSocket = selectValueHandler(selectCoolerCpuSocket);
+    let coolerCpuSocket = selectCoolerCpuSocket.value == "Select CPU Socket" ? [] : selectValueHandler(selectCoolerCpuSocket);
     if (coolerCpuSocket && coolerCpuSocket.id) {
         params.push(`cpusocket_id=${coolerCpuSocket.id}`);
     }
 
-    let coolerType = selectValueHandler(selectCoolerType);
+    let coolerType = selectCoolerType.value == "Select Cooler Type" ? [] : selectValueHandler(selectCoolerType);
     if (coolerType && coolerType.id) {
         params.push(`coolertype_id=${coolerType.id}`);
     }
@@ -633,17 +500,17 @@ const addCoolerFilters = () => {
 const addStorageFilters = () => {
     let params = [];
 
-    let storageInterface = selectValueHandler(selectStorageInterface);
+    let storageInterface = selectStorageInterface.value == "Select Storage Interface" ? [] : selectValueHandler(selectStorageInterface);
     if (storageInterface && storageInterface.id) {
         params.push(`storageinterface_id=${storageInterface.id}`);
     }
 
-    let storageType = selectValueHandler(selectStorageType);
+    let storageType = selectStorageType.value == "Select Storage Type" ? [] : selectValueHandler(selectStorageType);
     if (storageType && storageType.id) {
         params.push(`storagetype_id=${storageType.id}`);
     }
 
-    let storageCapacity = selectValueHandler(selectStorageCapacity);
+    let storageCapacity = selectStorageCapacity.value == "Select Capacity" ? [] : selectValueHandler(selectStorageCapacity);
     if (storageCapacity && storageCapacity.id) {
         params.push(`capacity_id=${storageCapacity.id}`);
     }
@@ -667,17 +534,17 @@ const addCasingFilters = () => {
         params.push(`depth=${numberCasingDepth.value}`);
     }
 
-    let casingMotherboardFormFactor = selectValueHandler(selectCasingMotherboardFormFactor);
+    let casingMotherboardFormFactor = selectCasingMotherboardFormFactor.value == "Select Motherboard Form Factor" ? [] : selectValueHandler(selectCasingMotherboardFormFactor);
     if (casingMotherboardFormFactor && casingMotherboardFormFactor.id) {
         params.push(`motherboardformfactor_id=${casingMotherboardFormFactor.id}`);
     }
 
-    let casingColor = selectValueHandler(selectCasingColor);
+    let casingColor = selectCasingColor.value == "Select Case Color" ? [] : selectValueHandler(selectCasingColor);
     if (casingColor && casingColor.id) {
         params.push(`casecolor_id=${casingColor.id}`);
     }
 
-    let casingMaterial = selectValueHandler(selectCasingMaterial);
+    let casingMaterial = selectCasingMaterial.value == "Select Case Material" ? [] : selectValueHandler(selectCasingMaterial);
     if (casingMaterial && casingMaterial.id) {
         params.push(`casematerial_id=${casingMaterial.id}`);
     }
@@ -759,7 +626,7 @@ const applyFilterHandler = () => {
 
             // Filter the inventory based on the item codes
             const filteredInventory = inventories.filter(inventory =>
-                filteredItemCodes.includes(inventory.itemcode) && inventory.status != false
+                filteredItemCodes.includes(inventory.itemcode)
             );
             console.log("Filtered inventory:", filteredInventory);
 
@@ -770,6 +637,7 @@ const applyFilterHandler = () => {
                 { dataType: 'text', propertyName: 'itemcode' },
                 { dataType: 'text', propertyName: 'itemname' },
                 { dataType: 'text', propertyName: 'salesprice' },
+                { dataType: 'text', propertyName: 'quantity' },
                 { dataType: 'function', propertyName: getStatus },
             ];
 
@@ -781,13 +649,33 @@ const applyFilterHandler = () => {
 
             // Reinitialize DataTable
             $('#tableInventory').DataTable();
+            $("#filterCollapse").collapse('hide')
+            filterForm.reset();
+            refreshFilterForm();
 
             console.log("Table updated with filtered inventory");
         } catch (error) {
             console.error("Error applying filter:", error);
             alert("Error applying filter. Please try again.");
+            Swal.fire({
+                title: "Error!",
+                html: "Error in applying Filters. Please try again.",
+                icon: "error",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonColor: "#F25454"
+            });
         }
     } else {
-        alert("Please select a category to filter.");
+        Swal.fire({
+            title: "Please select a category to filter.",
+            text: "Whole Filtering based on category. so catgory selection is mandetory",
+            icon: "warning",
+            showCancelButton: false,
+            confirmButtonColor: "#103D45",
+            confirmButtonText: "OK",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        })
     }
 }

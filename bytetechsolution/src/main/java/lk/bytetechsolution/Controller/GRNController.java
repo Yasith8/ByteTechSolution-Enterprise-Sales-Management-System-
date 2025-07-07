@@ -199,7 +199,7 @@ public class GRNController {
 
        grn.setDeletedate(LocalDateTime.now());
 
-       grn.setGrnstatus_id(daoGRNStatus.getReferenceById(3));
+       grn.setGrnstatus_id(daoGRNStatus.getReferenceById(4));
 
        daoGRN.save(grn);
 

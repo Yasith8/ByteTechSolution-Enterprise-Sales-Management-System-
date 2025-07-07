@@ -111,8 +111,8 @@ public class CasingController {
             @RequestParam(value = "casecolor_id", required = false) Integer casecolorId,
             @RequestParam(value = "motherboardformfactor_id", required = false) Integer motherboardformfactorId,
             @RequestParam(value = "width", required = false) Integer width,
-            @RequestParam(value = "width", required = false) Integer depth,
-            @RequestParam(value = "width", required = false) Integer height,
+            @RequestParam(value = "depth", required = false) Integer depth,
+            @RequestParam(value = "height", required = false) Integer height,
             @RequestParam(value = "brand_id", required = false) Integer BrandId
             ) {
 

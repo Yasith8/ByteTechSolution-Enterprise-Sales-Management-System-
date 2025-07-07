@@ -352,6 +352,11 @@ const refillGrnForm = (ob, rowIndex) => {
         })
     }
 
+    if (grn.grnstatus_id.name == "Deleted") {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
+
     refeshInnerGrnFormAndTable()
 }
 
@@ -928,7 +933,61 @@ const submitGRN = () => {
     }
 }
 
+const deleteGRN = (ob, rowIndex) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to delete following Good Recived Note? "  ${ob.grncode}`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let deleteServiceResponse;
+            //ajax request fot delete data
+            $.ajax("/grn", {
+                type: "DELETE",
+                contentType: "application/json",
+                data: JSON.stringify(ob),
+                async: false,
 
+                success: function(data) {
+                    deleteServiceResponse = data
+                },
+
+                error: function(errData) {
+                    deleteServiceResponse = errData;
+                }
+            })
+
+            if (deleteServiceResponse == "OK") {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Good Recived Note Deleted Successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    $('#grnAddModal').modal('hide');
+                    refreshGrnTable()
+                })
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    html: "Good Recived Note Deletion failed due to the following errors:<br>" + deleteServiceResponse,
+                    icon: "error",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: "#F25454"
+                });
+            }
+        }
+    })
+}
 
 
 
@@ -1014,3 +1073,611 @@ const refreshGRN = () => {
         }
     })
 }
+
+const printGRN = (ob, rowIndex) => {
+    // Create the complete HTML content for printing
+    const printContent = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Goods Received Note - ${ob.grncode || 'N/A'}</title>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    background: white;
+                    padding: 20px;
+                }
+                
+                .invoice-container {
+                    max-width: 1000px;
+                    margin: 0 auto;
+                    background: white;
+                    padding: 30px;
+                    border-radius: 8px;
+                    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+                }
+                
+                .invoice-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 40px;
+                    padding-bottom: 20px;
+                    border-bottom: 3px solid #103d45;
+                }
+                
+                .company-info {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 20px;
+                }
+                
+                .logo-container {
+                    flex-shrink: 0;
+                }
+                
+                .company-logo {
+                    max-width: 120px;
+                    height: auto;
+                }
+                
+                .company-details {
+                    color: #666;
+                    font-size: 14px;
+                    line-height: 1.4;
+                }
+                
+                .invoice-title {
+                    font-size: 32px;
+                    font-weight: bold;
+                    color: #103d45;
+                    margin-bottom: 15px;
+                    text-align: right;
+                }
+                
+                .invoice-details {
+                    text-align: right;
+                    font-size: 14px;
+                }
+                
+                .invoice-details > div {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 5px;
+                    min-width: 200px;
+                }
+                
+                .invoice-details span:first-child {
+                    font-weight: bold;
+                    color: #666;
+                }
+                
+                .invoice-details span:last-child {
+                    color: #333;
+                    font-weight: 600;
+                }
+                
+                .shipping-details {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 30px;
+                    padding: 20px;
+                    background: #f8fafc;
+                    border-radius: 8px;
+                    border-left: 4px solid #103d45;
+                }
+                
+                .shipping-box {
+                    background: white;
+                    padding: 15px;
+                    border-radius: 6px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                }
+                
+                .shipping-label {
+                    font-size: 12px;
+                    font-weight: bold;
+                    color: #666;
+                    text-transform: uppercase;
+                    margin-bottom: 5px;
+                    letter-spacing: 0.5px;
+                }
+                
+                .shipping-box > div:last-child {
+                    font-weight: 600;
+                    color: #333;
+                    font-size: 14px;
+                }
+                
+                .items-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-bottom: 30px;
+                    background: white;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                }
+                
+                .items-table thead {
+                    background: linear-gradient(135deg, #103d45 0%, #0d3239 100%);
+                    color: white;
+                }
+                
+                .items-table th {
+                    padding: 15px 12px;
+                    text-align: left;
+                    font-weight: 600;
+                    font-size: 13px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                
+                .items-table td {
+                    padding: 12px;
+                    border-bottom: 1px solid #e5e7eb;
+                    font-size: 14px;
+                    vertical-align: top;
+                }
+                
+                .items-table tbody tr:hover {
+                    background: #b9f8c5;
+                }
+                
+                .items-table tbody tr:last-child td {
+                    border-bottom: none;
+                }
+                
+                .items-table td:last-child,
+                .items-table th:last-child {
+                    text-align: right;
+                    font-weight: 600;
+                }
+                
+                .item-details {
+                    margin-bottom: 8px;
+                }
+                
+                .item-name {
+                    font-weight: 600;
+                    color: #333;
+                    margin-bottom: 4px;
+                }
+                
+                .item-code {
+                    font-size: 12px;
+                    color: #666;
+                    margin-bottom: 8px;
+                }
+                
+                .serial-numbers {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 4px;
+                    margin-top: 8px;
+                }
+                
+                .serial-badge {
+                    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                    color: white;
+                    padding: 4px 8px;
+                    border-radius: 12px;
+                    font-size: 11px;
+                    font-weight: 500;
+                    display: inline-block;
+                    white-space: nowrap;
+                    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+                }
+                
+                .serial-badge:nth-child(even) {
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+                }
+                
+                .serial-badge:nth-child(3n) {
+                    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+                }
+                
+                .serial-badge:nth-child(4n) {
+                    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+                    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+                }
+                
+                .serial-badge:nth-child(5n) {
+                    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+                    box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
+                }
+                
+                .totals-section {
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-bottom: 30px;
+                }
+                
+                .totals-table {
+                    min-width: 350px;
+                    background: white;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                }
+                
+                .total-row {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 12px 20px;
+                    border-bottom: 1px solid #e5e7eb;
+                }
+                
+                .total-row:last-child {
+                    border-bottom: none;
+                }
+                
+                .total-row.subtotal {
+                    background: #f8fafc;
+                }
+                
+                .total-row.discount {
+                    background: #fef3c7;
+                    color: #d97706;
+                }
+                
+                .grand-total {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 15px 20px;
+                    background: linear-gradient(135deg, #103d45 0%, #0d3239 100%);
+                    color: white;
+                    font-size: 18px;
+                    font-weight: bold;
+                    box-shadow: 0 4px 12px rgba(16, 61, 69, 0.3);
+                }
+                
+                .notes-section {
+                    background: #f8fafc;
+                    padding: 20px;
+                    border-radius: 8px;
+                    margin-bottom: 30px;
+                    border-left: 4px solid #10b981;
+                }
+                
+                .notes-header {
+                    font-weight: bold;
+                    color: #374151;
+                    margin-bottom: 10px;
+                    font-size: 16px;
+                }
+                
+                .notes-content {
+                    color: #6b7280;
+                    font-size: 14px;
+                    line-height: 1.6;
+                }
+                
+                .notes-content p {
+                    margin-bottom: 8px;
+                }
+                
+                .invoice-footer {
+                    text-align: center;
+                    padding-top: 20px;
+                    border-top: 1px solid #e5e7eb;
+                    color: #6b7280;
+                    font-size: 14px;
+                }
+                
+                .invoice-footer p {
+                    margin: 5px 0;
+                }
+                
+                .status-badge {
+                    display: inline-block;
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                
+                .status-received {
+                    background: #dcfce7;
+                    color: #166534;
+                }
+                
+                .status-pending {
+                    background: #fef3c7;
+                    color: #d97706;
+                }
+                
+                /* Print styles */
+                @media print {
+                    body {
+                        padding: 0;
+                        background: white;
+                    }
+                    
+                    .invoice-container {
+                        box-shadow: none;
+                        padding: 20px;
+                        max-width: none;
+                    }
+                    
+                    .items-table {
+                        box-shadow: none;
+                    }
+                    
+                    .grand-total {
+                        box-shadow: none;
+                    }
+                    
+                    .shipping-details {
+                        break-inside: avoid;
+                    }
+                    
+                    .items-table {
+                        break-inside: avoid;
+                    }
+                    
+                    .serial-badge {
+                        box-shadow: none;
+                        border: 1px solid #ccc;
+                    }
+                }
+                
+                /* Responsive design */
+                @media (max-width: 768px) {
+                    .invoice-header {
+                        flex-direction: column;
+                        gap: 20px;
+                    }
+                    
+                    .invoice-title {
+                        text-align: left;
+                    }
+                    
+                    .invoice-details {
+                        text-align: left;
+                    }
+                    
+                    .shipping-details {
+                        grid-template-columns: 1fr;
+                    }
+                    
+                    .items-table {
+                        font-size: 12px;
+                    }
+                    
+                    .items-table th,
+                    .items-table td {
+                        padding: 8px 6px;
+                    }
+                    
+                    .serial-numbers {
+                        gap: 2px;
+                    }
+                    
+                    .serial-badge {
+                        font-size: 10px;
+                        padding: 2px 6px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="invoice-container">
+                <!-- Header Section -->
+                <div class="invoice-header">
+                    <div class="company-info">
+                        <div class="logo-container">
+                            <div class="logo">
+                                <div class="logo-icon">
+                                    <img src="resources/image/logo/onlylogo.png" class="company-logo" alt="Company Logo" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="company-details">
+                            <div><strong>No 72, Peoples Road</strong></div>
+                            <div>Panadura, 12560</div>
+                            <div>Phone: (038) 229-5555</div>
+                            <div>Email: info@company.com</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="invoice-title">GOODS RECEIVED NOTE</div>
+                        <div class="invoice-details">
+                            <div><span>GRN NO:</span><span>${ob.grncode || 'N/A'}</span></div>
+                            <div><span>DATE:</span><span>${formatDate(ob.reciveddate)}</span></div>
+                            <div><span>STATUS:</span><span class="status-badge ${getStatusClass(ob.grnstatus_id?.name)}">${ob.grnstatus_id?.name || 'N/A'}</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Details -->
+                <div class="shipping-details">
+                    <div class="shipping-box">
+                        <div class="shipping-label">Supplier</div>
+                        <div>${ob.purchase_request_id?.supplier_id?.name || 'N/A'}</div>
+                    </div>
+                    <div class="shipping-box">
+                        <div class="shipping-label">Purchase Request</div>
+                        <div>${ob.purchase_request_id?.requestcode || 'N/A'}</div>
+                    </div>
+                    <div class="shipping-box">
+                        <div class="shipping-label">Received Date</div>
+                        <div>${formatDate(ob.reciveddate)}</div>
+                    </div>
+                    <div class="shipping-box">
+                        <div class="shipping-label">Supplier Contact</div>
+                        <div>${ob.purchase_request_id?.supplier_id?.phone || 'N/A'}</div>
+                    </div>
+                    <div class="shipping-box">
+                        <div class="shipping-label">Handled By</div>
+                        <div>${grnHandlerUser(ob.addeduser) || 'N/A'}</div>
+                    </div>
+                </div>
+
+                <!-- Items Table -->
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Item Details</th>
+                            <th style="width: 40%;">Serial Numbers</th>
+                            <th style="width: 10%;">Qty</th>
+                            <th style="width: 15%;">Purchase Price</th>
+                            <th style="width: 15%;">Line Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${generateGRNItemRows(ob.grn_item || [], ob.serial_no_list || [])}
+                    </tbody>
+                </table>
+
+                <!-- Totals Section -->
+                <div class="totals-section">
+                    <div class="totals-table">
+                        <div class="total-row subtotal">
+                            <div><strong>Subtotal:</strong></div>
+                            <div><strong>Rs. ${formatCurrency(ob.totalamount)}</strong></div>
+                        </div>
+                        <div class="total-row discount">
+                            <div><strong>Discount (${ob.discountrate || 0}%):</strong></div>
+                            <div><strong>- Rs. ${formatCurrency(calculateDiscount(ob.totalamount, ob.discountrate))}</strong></div>
+                        </div>
+                        <div class="grand-total">
+                            <div>FINAL AMOUNT</div>
+                            <div>Rs. ${formatCurrency(ob.finalamount)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="notes-section">
+                    <div class="notes-header">NOTES & TERMS</div>
+                    <div class="notes-content">
+                        <p><strong>Note:</strong> ${ob.note || 'No additional notes provided.'}</p>
+                        <p><strong>Paid Amount:</strong> Rs. ${formatCurrency(ob.paidamount || 0)}</p>
+                        <p><strong>Balance:</strong> Rs. ${formatCurrency((ob.finalamount || 0) - (ob.paidamount || 0))}</p>
+                        <p>All items have been received and checked as per the specifications mentioned in the purchase order.</p>
+                        <p>Serial numbers have been recorded for tracking and warranty purposes.</p>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="invoice-footer">
+                    <p>If you have any questions about this GRN, please contact</p>
+                    <p><strong>spinfo@bytetechsolution.gmail.com</strong></p>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+
+    // Open new tab and write content
+    const newTab = window.open('', '_blank');
+    newTab.document.write(printContent);
+    newTab.document.close();
+
+    // Auto-print when page loads
+    newTab.onload = function() {
+        newTab.print();
+    };
+};
+
+// Helper function to format dates
+const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+};
+
+// Helper function to format currency
+const formatCurrency = (amount) => {
+    if (!amount) return '0.00';
+    return parseFloat(amount).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+};
+
+const grnHandlerUser = (ob) => {
+    console.log("OB", ob)
+    const userData = getServiceAjaxRequest(`/user/userbyid/${ob}`);
+    console.log("AddedUser", userData)
+
+    return `${userData[0].employee_id.empid} - ${userData[0].employee_id.callingname}`
+}
+
+// Helper function to calculate discount
+const calculateDiscount = (amount, discountRate) => {
+    if (!amount || !discountRate) return 0;
+    return (parseFloat(amount) * parseFloat(discountRate)) / 100;
+};
+
+// Helper function to get status class
+const getStatusClass = (status) => {
+    if (!status) return 'status-pending';
+    switch (status.toLowerCase()) {
+        case 'received':
+        case 'completed':
+            return 'status-received';
+        default:
+            return 'status-pending';
+    }
+};
+
+// Helper function to generate GRN item rows with serial numbers
+const generateGRNItemRows = (grnItems, serialNumbers) => {
+    if (!grnItems || grnItems.length === 0) {
+        return '<tr><td colspan="5" style="text-align: center; color: #666; font-style: italic;">No items found</td></tr>';
+    }
+
+    return grnItems.map(item => {
+        // Find serial numbers for this item
+        const itemSerialNumbers = serialNumbers.filter(serial =>
+            serial.itemcode === item.itemcode
+        );
+
+        const serialBadges = itemSerialNumbers.length > 0 ?
+            itemSerialNumbers.map(serial =>
+                `<span class="serial-badge">${serial.serialno}</span>`
+            ).join('') :
+            '<span style="color: #666; font-style: italic;">No serial numbers</span>';
+
+        return `
+            <tr>
+                <td>
+                    <div class="item-details">
+                        <div class="item-name">${item.itemname || 'N/A'}</div>
+                        <div class="item-code">Code: ${item.itemcode || 'N/A'}</div>
+                        <div class="item-code">Category: ${item.category_id?.name || 'N/A'}</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="serial-numbers">
+                        ${serialBadges}
+                    </div>
+                </td>
+                <td style="text-align: center;">${item.quantity || 0}</td>
+                <td style="text-align: right;">Rs. ${formatCurrency(item.purchaseprice)}</td>
+                <td style="text-align: right;">Rs. ${formatCurrency(item.lineprice)}</td>
+            </tr>
+        `;
+    }).join('');
+};

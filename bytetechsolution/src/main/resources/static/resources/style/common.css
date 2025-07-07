@@ -22,6 +22,11 @@ body {
     border: 1px solid #0D3239;
 }
 
+.reBtn {
+    background-color: #008080;
+    color: white;
+}
+
 .addBtn {
     background-color: #103D45;
     color: white;
