@@ -39,7 +39,7 @@ const refreshPurchaseRequestForm = () => {
     prequest.purchase_request_item = new Array();
 
     //supplier data getting
-    suppliers = getServiceAjaxRequest('/supplier/alldata');
+    suppliers = getServiceAjaxRequest('/supplier/activesupplier');
     fillMultipleItemOfDataIntoSingleSelect(selectSupplier, "Select Supplier", suppliers, "supplierid", "name");
 
 

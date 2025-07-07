@@ -79,6 +79,18 @@ public class SupplierController {
         return daoSupplier.findAll();
     }
 
+     @GetMapping(value = "/supplier/activesupplier",produces = "application/json")
+    public List<SupplierEntity> GetAllActiveSupplierData(){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"SUPPLIER");
+
+        if(!userPrivilage.get("select")){
+            return new ArrayList<SupplierEntity>();
+        }
+
+        return daoSupplier.getActiveSuppliers();
+    }
+
     @GetMapping(value = "/supplier/supplierbyid",params = {"id"},produces = "application/json")
     public SupplierEntity GetSupplierDataById(@RequestParam("id") Integer id){
         return daoSupplier.findById(id).get();

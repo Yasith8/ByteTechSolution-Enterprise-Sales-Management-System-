@@ -11,14 +11,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.GRNDao;
 import lk.bytetechsolution.Dao.GRNStatusDao;
 import lk.bytetechsolution.Dao.PurchaseRequestDao;
 import lk.bytetechsolution.Dao.SerialNoListDao;
 import lk.bytetechsolution.Dao.UserDao;
-import lk.bytetechsolution.Entity.CategoryEntity;
 import lk.bytetechsolution.Entity.GRNEntity;
 import lk.bytetechsolution.Entity.GRNItemEntity;
 import lk.bytetechsolution.Entity.PurchaseRequestEntity;
@@ -31,7 +29,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -55,12 +52,6 @@ public class GRNController {
 
     @Autowired
     private SerialNoListDao daoSerial;
-
-    @Autowired
-    private CategoryDao daoCategory;
-
-    @Autowired
-    private PurchaseRequestDao daoPR;
 
      @Autowired
     private UserDao daoUser;
@@ -110,6 +101,7 @@ public class GRNController {
         }
 
         return daoGRN.findAll();
+
    }
    
 

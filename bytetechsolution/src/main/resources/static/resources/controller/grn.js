@@ -33,14 +33,14 @@ const refreshGrnForm = () => {
     grn.grn_item = new Array();
     grn.serial_no_list = new Array();
 
-    removeValidationColor([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, decimalPaidAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice])
+    removeValidationColor([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice])
 
 
     divGrnInnerContent.classList.remove('elementHide')
     buttonClear.classList.remove('elementHide')
     buttonUpdate.classList.add('elementHide')
     buttonSubmit.classList.remove('elementHide')
-    inputFieldsHandler([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, decimalPaidAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice], false)
+    inputFieldsHandler([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice], false)
 
 
     //date managing accordsing to requeire date
@@ -315,7 +315,7 @@ const updateAvailableItems = () => {
 const refillGrnForm = (ob, rowIndex) => {
     $('#grnAddModal').modal('show');
     grn = ob;
-    removeValidationColor([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, decimalPaidAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice])
+    removeValidationColor([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice])
 
     divGrnInnerContent.classList.add('elementHide')
     buttonClear.classList.add('elementHide')
@@ -332,10 +332,9 @@ const refillGrnForm = (ob, rowIndex) => {
     decimalTotalAmount.value = grn.totalamount;
     numberDiscountRate.value = grn.discountrate;
     decimalFinalAmount.value = grn.finalamount;
-    decimalPaidAmount.value = grn.paidamount;
     textNote.value = grn.note;
     dateRecivedDate.value = grn.reciveddate;
-    inputFieldsHandler([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, decimalPaidAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice], true)
+    inputFieldsHandler([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice], true)
 
     if (grn.grnstatus_id.name == "Deleted") {
         buttonDelete.disabled = true;
@@ -860,6 +859,7 @@ const formGrnInputErrors = () => {
 
 const submitGRN = () => {
     console.log(grn);
+    const updatedGrn = {...grn, paidamount: 0 }
     let errors = formGrnInputErrors();
 
     if (errors === "") {
@@ -879,7 +879,7 @@ const submitGRN = () => {
 
                 $.ajax("/grn", {
                     type: "POST",
-                    data: JSON.stringify(grn),
+                    data: JSON.stringify(updatedGrn),
                     contentType: "application/json",
                     async: false,
 

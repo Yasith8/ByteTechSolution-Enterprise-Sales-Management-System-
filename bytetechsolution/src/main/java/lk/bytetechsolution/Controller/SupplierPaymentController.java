@@ -102,7 +102,7 @@ public class SupplierPaymentController {
             }
 
             //asigning the supplier_payment_id to each and every items in supplier payment grn
-            for (SupplierPaymentHasGRNEntity supplierpaymentgrn : supplierpayment.getSupplier_payment_has_gen()) {
+            for (SupplierPaymentHasGRNEntity supplierpaymentgrn : supplierpayment.getSupplier_payment_has_grn()) {
                 supplierpaymentgrn.setSupplier_payment_id((supplierpayment));
             }
 
@@ -165,7 +165,7 @@ public class SupplierPaymentController {
 
 
         try {
-            for (SupplierPaymentHasGRNEntity supplierpaymentgrn : supplierpayment.getSupplier_payment_has_gen()) {
+            for (SupplierPaymentHasGRNEntity supplierpaymentgrn : supplierpayment.getSupplier_payment_has_grn()) {
                 supplierpaymentgrn.setSupplier_payment_id((supplierpayment));
             }
 

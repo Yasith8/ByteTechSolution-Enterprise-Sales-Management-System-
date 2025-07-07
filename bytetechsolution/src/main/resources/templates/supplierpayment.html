@@ -118,18 +118,11 @@
                                     <form id="formSupplier">
                                         <!-- supplier Input Start -->
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-12">
                                                 <div class="form-floating mb-3">
                                                     <select name="brand" id="selectSupplier" class="form-select" onchange="selectDynamicValidator(this,'','supplierpayment','supplier_id')">
                                                         <option value=""  selected disabled>Select Supplier Name</option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-floating mb-3">
-                                                    <select name="brand" id="selectGRN" class="form-select" onchange="selectDynamicValidator(this,'','supplier_payment_has_grn','grn_id')">
-                                                     <option value=""  selected disabled>Select Supplier Name</option>
-                                                  </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -213,6 +206,30 @@
                             </div>
 
                             <!-- supplier Basic Details -->
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">GRN Details</div>
+                                <div class="card-body">
+                                    <table class="table table-hover table-striped" id="innerSupplierPaymentTable">
+                                        <thead class="table-header">
+                                            <tr align="center">
+                                                <th> # </th>
+                                                <th> GRN ID </th>
+                                                <th> GRN Amount</th>
+                                                <th> Paid Amount </th>
+                                                <th> Due Amount </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="table-body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

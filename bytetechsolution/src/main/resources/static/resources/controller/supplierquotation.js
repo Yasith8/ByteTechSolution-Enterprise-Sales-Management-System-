@@ -53,7 +53,7 @@ const refreshSupplierQuotationForm = () => {
     fillDataIntoSelect(selectSupplier, "Select Quotation Request First", [], "name");
 
     selectQuotationRequest.addEventListener('change', () => {
-        suppliers = getServiceAjaxRequest("/supplier/alldata")
+        suppliers = getServiceAjaxRequest("/supplier/activesupplier")
         fillDataIntoSelect(selectSupplier, "Select Supplier", suppliers, "name");
 
         let selectedRequest = JSON.parse(selectQuotationRequest.value)

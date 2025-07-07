@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,8 +44,8 @@ public class SupplierPaymentEntity {
     private String paymentno;
 
     @NotNull
-    @Column(name = "totalamount")
-    private BigDecimal totalamount;
+    @Column(name = "totaldueamount")
+    private BigDecimal totaldueamount;
 
     @NotNull
     @Column(name = "payedamount")
@@ -53,8 +55,8 @@ public class SupplierPaymentEntity {
     @Column(name = "newdueamount")
     private BigDecimal newdueamount;
 
-    @Column(name = "checkno")
-    private BigDecimal checkno;
+    @Column(name = "chequeno")
+    private BigDecimal chequeno;
 
     @Column(name = "checkdate")
     private LocalDateTime checkdate;
@@ -66,17 +68,18 @@ public class SupplierPaymentEntity {
     private LocalDateTime transferdatetime;
 
     @ManyToOne
-    @JoinColumn(name = "grn_id",referencedColumnName = "id")
-    private GRNEntity grn_id;
-
-    @ManyToOne
     @JoinColumn(name = "supplier_id",referencedColumnName = "id")
     private SupplierEntity supplier_id;
 
     @ManyToOne
-    @JoinColumn(name = "payment_type_id",referencedColumnName = "id")
-    private PaymentTypeEntity payment_type_id;
+    @JoinColumn(name = "paymenttype_id",referencedColumnName = "id")
+    private PaymentTypeEntity paymenttype_id;
+
+    @ManyToOne
+    @JoinColumn(name = "supplierpaymentstatus_id",referencedColumnName = "id")
+    private SupplierPaymentStatusEntity supplierpaymentstatus_id;
+
 
     @OneToMany(mappedBy = "supplier_payment_id",cascade = CascadeType.ALL,orphanRemoval=true)
-    private List<SupplierPaymentHasGRNEntity> supplier_payment_has_gen;
+    private List<SupplierPaymentHasGRNEntity> supplier_payment_has_grn;
 }

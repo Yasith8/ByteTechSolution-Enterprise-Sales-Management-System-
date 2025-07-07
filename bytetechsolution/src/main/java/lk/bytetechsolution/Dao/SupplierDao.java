@@ -24,6 +24,9 @@ public interface SupplierDao extends JpaRepository<SupplierEntity,Integer>{
 
     @Query(value="select * from bytetechsolution.supplier s where s.id in (select shc.supplier_id from bytetechsolution.supplier_has_brand_category shc where shc.category_id in (select c.id from bytetechsolution.category c where c.id=?1) and shc.brand_id in (select b.id from bytetechsolution.brand b where b.id=?2))", nativeQuery = true)
     public List<SupplierEntity> getSupplierByBrandCategory(Integer categoryid,Integer brandid);
+    
+    @Query(value="select * from bytetechsolution.supplier s where s.supplierstatus_id=1", nativeQuery = true)
+    public List<SupplierEntity> getActiveSuppliers();
 } 
 
 
