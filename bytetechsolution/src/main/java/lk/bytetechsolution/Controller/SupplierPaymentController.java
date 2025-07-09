@@ -1,5 +1,7 @@
 package lk.bytetechsolution.Controller;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,28 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.EmployeeDao;
+import lk.bytetechsolution.Dao.GRNDao;
+import lk.bytetechsolution.Dao.GRNStatusDao;
 import lk.bytetechsolution.Dao.SupplierPaymentDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.GRNEntity;
 import lk.bytetechsolution.Entity.SupplierPaymentEntity;
 import lk.bytetechsolution.Entity.SupplierPaymentHasGRNEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
 public class SupplierPaymentController {
-     @Autowired
+    @Autowired
     private SupplierPaymentDao dao;
     @Autowired
     private UserDao daoUser;
 
+    @Autowired
+    private GRNDao daoGrn;
 
     @Autowired
     private EmployeeDao daoEmployee;
 
     @Autowired
+    private GRNStatusDao daoGrnStatus;
+
+    @Autowired
     private PrivilageController privilageController;
 
-
-     @RequestMapping(value = "/supplierpayment")
+    @RequestMapping(value = "/supplierpayment")
     public ModelAndView GetSupplierPaymentUI() {
         // get logged user authentication object using security
         // this help to retrieve the current authentication object which holds the user
@@ -59,7 +68,8 @@ public class SupplierPaymentController {
         supplierPaymentView.addObject("title", "Supplier Payment Management || Bytetech Solution");
         supplierPaymentView.addObject("user", authentication.getName());// passing logged user name
         supplierPaymentView.addObject("EmpName", loggedEmployee);
-        supplierPaymentView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());// get the first role
+        supplierPaymentView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());// get the first
+                                                                                                     // role
         supplierPaymentView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
 
         return supplierPaymentView;
@@ -85,7 +95,7 @@ public class SupplierPaymentController {
         HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
                 "SUPPLIERPAYMENT");
 
-                //check logged user have privileges or not
+        // check logged user have privileges or not
         if (!userPrivilage.get("insert")) {
             return "Permission Denied! Save not Completed";
         }
@@ -101,79 +111,94 @@ public class SupplierPaymentController {
                 supplierpayment.setPaymentno(nextNumber);
             }
 
-            //asigning the supplier_payment_id to each and every items in supplier payment grn
+            // asigning the supplier_payment_id to each and every items in supplier payment
+            // grn
             for (SupplierPaymentHasGRNEntity supplierpaymentgrn : supplierpayment.getSupplier_payment_has_grn()) {
                 supplierpaymentgrn.setSupplier_payment_id((supplierpayment));
+
+                GRNEntity grn = daoGrn.getReferenceById(supplierpaymentgrn.getGrn_id().getId());
+                BigDecimal currentPaidAmount = grn.getPaidamount() != null ? grn.getPaidamount() : BigDecimal.ZERO;
+                BigDecimal updatedPaidAmount = currentPaidAmount.add(supplierpaymentgrn.getPayedamount());
+                grn.setPaidamount(updatedPaidAmount);
+
+                if(grn.getFinalamount()==grn.getPaidamount()){
+                    grn.setGrnstatus_id(daoGrnStatus.getReferenceById(7));
+                }
             }
 
-            //save in db
+            UserEntity addedUserData = daoUser.getByUsername(authentication.getName());
+            supplierpayment.setAddeduser(addedUserData.getId());
+
+            supplierpayment.setAddeddate(LocalDateTime.now());
+
+            // save in db
             dao.save(supplierpayment);
-            //pass success msg
+
+            // pass success msg
             return "OK";
 
         } catch (Exception e) {
-            //if there is error
+            // if there is error
             return "Save not Completed: " + e.getMessage();
         }
 
     }
 
     @DeleteMapping(value = "/supplierpayment")
-   public String DeleteInvoice(@RequestBody SupplierPaymentEntity supplierpayment){
-       //Autherntication and autherization
-       Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
-       HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "SUPPLIERPAYMENT");
-   
-       
-       if(!userPrivilage.get("delete")){
-           return "Permission Denied! Delete not Completed";
-       }
+    public String DeleteInvoice(@RequestBody SupplierPaymentEntity supplierpayment) {
+        // Autherntication and autherization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "SUPPLIERPAYMENT");
 
-       SupplierPaymentEntity extSupplier=dao.getReferenceById(supplierpayment.getId());
-      if(extSupplier==null){
-       return "Delete not Completed.Supplier Payment not exists";
-      }
+        if (!userPrivilage.get("delete")) {
+            return "Permission Denied! Delete not Completed";
+        }
 
-      try {
+        SupplierPaymentEntity extSupplier = dao.getReferenceById(supplierpayment.getId());
+        if (extSupplier == null) {
+            return "Delete not Completed.Supplier Payment not exists";
+        }
 
-       //invoice.setInvoicestatus_id(daoInvoiceStatus.getReferenceById(3));
+        try {
 
-       dao.save(supplierpayment);
+            // invoice.setInvoicestatus_id(daoInvoiceStatus.getReferenceById(3));
 
-       return "OK";
-      } catch (Exception e) {
-       return "Delete not completed. "+e.getMessage();
-      }
-   }
+            dao.save(supplierpayment);
+
+            return "OK";
+        } catch (Exception e) {
+            return "Delete not completed. " + e.getMessage();
+        }
+    }
 
     @PutMapping(value = "/supplierpayment")
     public String updateInvoice(@RequestBody SupplierPaymentEntity supplierpayment) {
-       
-        //Authentication and Autherization
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"SUPPLIERPAYMENT");
 
-        if(!userPrivilage.get("update")){
+        // Authentication and Autherization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "SUPPLIERPAYMENT");
+
+        if (!userPrivilage.get("update")) {
             return "Permission Denied! Update not Completed";
         }
 
-        SupplierPaymentEntity extSupplierPayment=dao.getReferenceById(supplierpayment.getId());
-        if(extSupplierPayment==null){
-         return "Update not Completed.Invoice not exists";
+        SupplierPaymentEntity extSupplierPayment = dao.getReferenceById(supplierpayment.getId());
+        if (extSupplierPayment == null) {
+            return "Update not Completed.Invoice not exists";
         }
-      
-
 
         try {
             for (SupplierPaymentHasGRNEntity supplierpaymentgrn : supplierpayment.getSupplier_payment_has_grn()) {
                 supplierpaymentgrn.setSupplier_payment_id((supplierpayment));
             }
 
-            //save the data
+            // save the data
             dao.save(supplierpayment);
             return "OK";
         } catch (Exception e) {
-            return "Update not Completed."+e.getMessage();
+            return "Update not Completed." + e.getMessage();
         }
     }
 

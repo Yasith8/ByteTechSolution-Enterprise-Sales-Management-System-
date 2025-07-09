@@ -43,7 +43,8 @@ public class UserController {
     @Autowired
     private EmployeeDao daoEmployee;
 
-    private PrivilageController privilageController=new PrivilageController();
+    @Autowired
+    private PrivilageController privilageController;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
 

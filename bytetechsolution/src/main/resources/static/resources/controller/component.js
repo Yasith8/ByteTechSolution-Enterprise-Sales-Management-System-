@@ -1,4 +1,4 @@
-const navigatorData = {
+/* const navigatorData = {
     name: "appNavigator",
     display: "Navigator",
     navigators: [{
@@ -167,4 +167,4 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         console.error("SidebarUL element not found");
     }
-});
+}); */

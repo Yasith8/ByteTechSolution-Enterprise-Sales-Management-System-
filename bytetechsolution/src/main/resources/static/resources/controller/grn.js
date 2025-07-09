@@ -33,6 +33,8 @@ const refreshGrnForm = () => {
     grn.grn_item = new Array();
     grn.serial_no_list = new Array();
 
+    staticBackdropLabel.textContent = "Add New GRN";
+
     removeValidationColor([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice])
 
 
@@ -316,6 +318,8 @@ const refillGrnForm = (ob, rowIndex) => {
     $('#grnAddModal').modal('show');
     grn = ob;
     removeValidationColor([selectPurchaseRequest, selectGRNStatus, decimalTotalAmount, numberDiscountRate, decimalFinalAmount, textNote, dateRecivedDate, selectCategory, selectPRItemName, numberQuantity, decimalPurchasePrice, decimalLinePrice])
+
+    staticBackdropLabel.textContent = `GRN ID: ${grn.grncode}`;
 
     divGrnInnerContent.classList.add('elementHide')
     buttonClear.classList.add('elementHide')

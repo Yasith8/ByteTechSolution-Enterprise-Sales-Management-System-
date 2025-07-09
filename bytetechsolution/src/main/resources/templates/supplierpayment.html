@@ -50,12 +50,12 @@
                             <thead class="table-header">
                                 <tr>
                                     <th> # </th>
-                                    <th> Supplier ID </th>
-                                    <th> Supplier Name </th>
-                                    <th> Agent Name </th>
-                                    <th> Mobile No </th>
-                                    <th> Email</th>
-                                    <th> Item Status </th>
+                                    <th> Payment No</th>
+                                    <th> Customer Name</th>
+                                    <th> Total Due Amount </th>
+                                    <th> Paid Amount </th>
+                                    <th> New Due Amount </th>
+                                    <th> Payment Type</th>
                                 </tr>
                             </thead>
 
@@ -106,7 +106,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Supplier Payment</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
+                    <button type="button" class="btn-close" aria-label="Close" onclick="buttonModalClose()"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -115,7 +115,7 @@
                                 <div class="card-header">Genaral Payment Details</div>
                                 <div class="card-body">
                                     <!-- supplier Basic Details -->
-                                    <form id="formSupplier">
+                                    <form id="formSupplierPayment">
                                         <!-- supplier Input Start -->
                                         <div class="row">
                                             <div class="col-12">
@@ -141,7 +141,7 @@
                                             <!-- email start -->
                                             <div class="col-4">
                                                 <div class="form-floating mb-3">
-                                                    <input type="number" class="form-control" id="decimalPayedAmount" placeholder="" required onkeyup="textValidator(this,'^\\d+(\\.\\d{1,2})?$', 'supplierpayment','payedamount')">
+                                                    <input type="number" class="form-control" id="decimalPayedAmount" placeholder="" required onkeyup="textValidator(this,'^(?!0+(?:\.0+)?$)\d+(\.\d{1,2})?$', 'supplierpayment','payedamount')">
                                                     <label for="decimalPayedAmount">Payed Amount<span class="requiredIcon">*</span></label>
                                                 </div>
                                             </div>
@@ -157,40 +157,6 @@
                                         </div>
 
                                         <div class="row">
-                                            <!-- agent name start -->
-                                            <div class="col-3">
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="textCheckNo" placeholder="name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','supplierpayment','checkno')">
-                                                    <label for="textCheckNo">Check No</label>
-                                                </div>
-                                            </div>
-                                            <!-- agent name end -->
-                                            <!-- rop start -->
-                                            <div class="col-3">
-                                                <div class="form-floating mb-3">
-                                                    <input type="date" class="form-control" id="dateCheckDate" placeholder="" required onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','supplierpayment','checkdate')">
-                                                    <label for="dateCheckDate">Check Date</label>
-                                                </div>
-                                            </div>
-                                            <!-- rop end -->
-                                            <!-- roq start -->
-                                            <div class="col-3">
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="textTranseferNo" placeholder="name" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','supplierpayment','checkno')">
-                                                    <label for="textTranseferNo">Transfer No</label>
-                                                </div>
-                                            </div>
-                                            <!-- roq end -->
-                                            <div class="col-3">
-                                                <div class="form-floating mb-3">
-                                                    <input type="date" class="form-control" id="dateTransferDate" placeholder="" required onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','supplierpayment','transferdate')">
-                                                    <label for="dateTransferDate">Transfer Date</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
                                             <!--Bank Name start-->
                                             <div class="col-4">
                                                 <div class="mb-3 form-floating">
@@ -199,7 +165,36 @@
                                             </select>
                                                 </div>
                                             </div>
-
+                                            <!-- agent name start -->
+                                            <div class="col-4" id="checkNoCol">
+                                                <div class="form-floating mb-3">
+                                                    <input type="number" class="form-control" id="textCheckNo" placeholder="name" required onkeyup="textValidator(this,'^[0-9]{10}$','supplierpayment','chequeno')">
+                                                    <label for="textCheckNo">Check No</label>
+                                                </div>
+                                            </div>
+                                            <!-- agent name end -->
+                                            <!-- rop start -->
+                                            <div class="col-4" id="checkDateCol">
+                                                <div class="form-floating mb-3">
+                                                    <input type="date" class="form-control" id="dateCheckDate" placeholder="" required onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','supplierpayment','checkdate')">
+                                                    <label for="dateCheckDate">Cheque Date</label>
+                                                </div>
+                                            </div>
+                                            <!-- rop end -->
+                                            <!-- roq start -->
+                                            <div class="col-4" id="transferNoCol">
+                                                <div class="form-floating mb-3">
+                                                    <input type="number" class="form-control" id="textTranseferNo" placeholder="name" required onkeyup="textValidator(this,'^[0-9]{10}$','supplierpayment','transferno')">
+                                                    <label for="textTranseferNo">Transfer No</label>
+                                                </div>
+                                            </div>
+                                            <!-- roq end -->
+                                            <div class="col-4" id="TransfernoDate">
+                                                <div class="form-floating mb-3">
+                                                    <input type="date" class="form-control" id="dateTransferDate" placeholder="" required onchange="textValidator(this,'^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$','supplierpayment','transferdatetime')">
+                                                    <label for="dateTransferDate">Transfer Date</label>
+                                                </div>
+                                            </div>
                                         </div>
 
                                 </div>
@@ -239,8 +234,8 @@
                         <div id="divModifyButton">
                             <div class="row">
                                 <div class="col-4" style="display: flex; justify-content: center;gap: 5px;">
-                                    <button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printSupplierDetails(window['editOb'], window['editRow'])">Print</button>
-                                    <button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteSupplier(window['editOb'], window['editRow'])">Delete</button>
+                                    <!--  <button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printSupplierDetails(window['editOb'], window['editRow'])">Print</button>
+                                    <button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteSupplier(window['editOb'], window['editRow'])">Delete</button> -->
                                 </div>
                                 <div class="col-8"></div>
                             </div>
@@ -250,15 +245,17 @@
                         <div class="row">
                             <div class="col-5"></div>
                             <div class="col-7" style="display: flex; justify-content: center;gap: 12px;">
-                                <button type="reset" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button>
-                                <button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="updateSupplier()">Update</button>
-                                <button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="submitSupplier()">Submit</button>
+                                <button type="reset" id="buttonClear" class="modal-button modal-btn-clear" onclick="refreshOrder()">Clear</button>
+                                <button type="button" id="buttonUpdate" class="modal-button modal-btn-update" onclick="updateSupplier()">Update</button>
+                                <button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="customerPaymentSubmit()">Submit</button>
                             </div>
                         </div>
                     </div>
 
                 </div>
             </div>
+
+            <div id="divModify1Button"></div>
 </body>
 
 </html>

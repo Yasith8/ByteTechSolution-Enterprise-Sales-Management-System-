@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 
@@ -104,6 +105,18 @@ public class GRNController {
 
    }
    
+   @GetMapping(value = "/grn/unpaidgrn/{supplierId}",produces = "application/json")
+   public List<GRNEntity> GetUnpaidGRNDetails(@PathVariable Integer supplierId) {
+       Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GRN");
+
+        if(!userPrivilage.get("select")){
+            return new ArrayList<GRNEntity>();
+        }
+
+        return daoGRN.getUnpaidGRN(supplierId);
+
+   }
 
    @PostMapping(value = "/grn")
    public String AddGRN(@RequestBody GRNEntity grn){

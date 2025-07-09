@@ -91,6 +91,8 @@ const refreshInnerOrderTableAndForm = () => {
     buttonInnerSubmit.classList.remove('elementHide')
     buttonInnerUpdate.classList.add('elementHide')
 
+    staticBackdropLabel.textContent = "Add New Order";
+
     //calculate total amount when the refesh the inner form
     decimalTotalAmount.disabled = true;
     const totalAmount = calculateTotalAmount();

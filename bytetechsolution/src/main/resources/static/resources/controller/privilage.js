@@ -357,7 +357,7 @@ const submitPrivilage = () => {
                 //refreash employee table
                 refreshPrivilageTable();
             } else {
-                alert("Fail to submit Privilage Form \n" + postServiceResponce);
+                alert("Fail to submit Privilage Form \n" + postServiceResponse);
             }
 
         }

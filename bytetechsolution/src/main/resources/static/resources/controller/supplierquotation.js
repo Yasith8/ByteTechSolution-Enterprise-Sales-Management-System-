@@ -76,7 +76,6 @@ const refreshSupplierQuotationForm = () => {
         buttonSubmit.classList.remove('modal-btn-submit');
 
         inputFieldsHandler([dateValidDate, selectQuotationRequest, selectSupplier], true);
-        buttonClear.classList.remove('modal-btn-clear');
     }
 
 }

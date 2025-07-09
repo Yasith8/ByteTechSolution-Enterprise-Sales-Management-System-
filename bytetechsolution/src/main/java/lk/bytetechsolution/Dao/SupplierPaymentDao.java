@@ -14,7 +14,7 @@ import lk.bytetechsolution.Entity.SupplierPaymentEntity;
  */
 public interface SupplierPaymentDao extends JpaRepository<SupplierPaymentEntity,Integer>{
 
-    @Query(value = "select concat('SPC',lpad(substring(max(spy.paymentno),4)+1,4,'0')) as paymentno from bytetechsolution.supplier as spy",nativeQuery = true)
+    @Query(value = "select concat('SPC',lpad(substring(max(spy.paymentno),4)+1,4,'0')) as paymentno from bytetechsolution.supplier_payment as spy",nativeQuery = true)
     public String getNextSupplierPaymentCode();
     
 }

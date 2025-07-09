@@ -25,13 +25,19 @@ const refreshOrderForm = () => {
     decimalTotalAmount.disabled = true;
     decimalFinalAmount.disabled = true;
 
+    btnUpdate.classList.add('elementHide')
+    btnSubmit.classList.remove('elementHide')
+    removeValidationColor([selectCustomer])
+
     invoice = new Object();
     oldInvoice = null;
 
     invoice.invoice_item = new Array()
     selectCustomer.disabled = false;
 
-    staticBackdropLabel.textContent = "Add New Order";
+    staticBackdropLabel.textContent = "Add New Pre Order";
+
+    decimalBalance.disabled = true;
 
     //load customer data
     const customers = getServiceAjaxRequest('/customer/getallactivecustomers')
@@ -45,8 +51,7 @@ const refreshOrderForm = () => {
 
     selectInvoiceStatus.disabled = true;
     const invoicestatus = getServiceAjaxRequest("/invoicestatus/alldata")
-    fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoicestatus[0].name)
-    invoice.invoicestatus_id = invoicestatus[0];
+    fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoicestatus[1].name)
 
     //seasonal discount selection
     selectSeasonalDiscount.disabled = true;
@@ -79,6 +84,40 @@ const refreshOrderForm = () => {
         invoice.seasonaldiscount_id = noDiscount[0];
     }
 
+    // Updated paid amount validation with max limit
+    decimalPaidAmount.addEventListener('input', () => {
+        const paidAmount = parseFloat(decimalPaidAmount.value) || 0;
+        const finalAmount = parseFloat(invoice.finalamount) || 0;
+
+        // Validate that paid amount doesn't exceed final amount
+        if (paidAmount > finalAmount) {
+            decimalPaidAmount.value = finalAmount.toFixed(2);
+            invoice.paidamount = finalAmount;
+            fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoicestatus[0].name)
+        } else {
+            // Update invoice object with valid amount
+            invoice.paidamount = paidAmount;
+            fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoicestatus[1].name)
+        }
+
+        // Calculate balance
+        const balance = finalAmount - (invoice.paidamount || 0);
+
+        // Update balance display 
+        decimalBalance.value = balance.toFixed(2);
+        invoice.balance = balance;
+    });
+
+    // Set max attribute for paid amount input when final amount changes
+    const updatePaidAmountMax = () => {
+        const finalAmount = parseFloat(invoice.finalamount) || 0;
+        decimalPaidAmount.setAttribute('max', finalAmount);
+        decimalPaidAmount.setAttribute('step', '0.01');
+        decimalPaidAmount.setAttribute('min', '0');
+    };
+
+
+
     refreshInnerOrderTableAndForm()
 }
 
@@ -88,11 +127,15 @@ const refreshInnerOrderTableAndForm = () => {
     buttonInnerSubmit.classList.remove('elementHide')
     buttonInnerUpdate.classList.add('elementHide')
 
+    staticBackdropLabel.textContent = "Add New Order";
+
     //calculate total amount when the refesh the inner form
     decimalTotalAmount.disabled = true;
     const totalAmount = calculateTotalAmount();
     decimalTotalAmount.value = totalAmount;
     invoice.totalamount = parseFloat(totalAmount);
+
+    availableQtyMsg.classList.add('elementHide')
 
     let selectedSeasonalDiscount = selectComplexValueHandler(selectSeasonalDiscount)
     console.log("SEASONAL DISCOUNT", selectedSeasonalDiscount)
@@ -172,17 +215,54 @@ const refreshInnerOrderTableAndForm = () => {
         const selectedCategory = selectValueHandler(selectCategory)
         if (selectedCategory.name == "Accessories") {
             numberQuantity.disabled = false;
-            selectSerialNo.disabled = true;
-            numberQuantity.value = ""; //clear prev value
-            numberQuantity.addEventListener('input', () => {
-                const quantity = parseInt(numberQuantity.value || "0"); // Handle empty input
-                invoiceItem.quantity = quantity;
-                invoiceItem.lineprice = quantity * itemprice;
-                decimalLinePrice.value = invoiceItem.lineprice;
-            })
+            numberQuantity.value = ""; // clear prev value
+
+            const serialNos = filterAvailableAssessoriesInvoiceItems(filteredCategoryInventoryItems, selectedItem, invoice.invoice_item)
+            console.log("Accessories Serial No", serialNos)
+
+            if (serialNos.length > 0) {
+                // Find the maximum available quantity across all serial numbers
+                const maxAvailableQuantity = Math.max(...serialNos.map(item => item.quantity));
+
+                numberQuantity.setAttribute("max", maxAvailableQuantity);
+                numberQuantity.setAttribute("min", 1);
+                availableQtyMsg.classList.remove('elementHide')
+                availableQtyMsg.innerText = `Available quantity: ${maxAvailableQuantity}`;
+
+                fillDataIntoSelect(selectSerialNo, "Select the Serial Number", serialNos, 'serialno')
+
+                // Remove any existing event listeners to avoid duplicates
+                numberQuantity.removeEventListener('input', quantityInputHandler);
+
+                // Add new event listener
+                numberQuantity.addEventListener('input', quantityInputHandler);
+
+                function quantityInputHandler() {
+                    let quantity = parseInt(numberQuantity.value || "0");
+                    if (quantity > maxAvailableQuantity) {
+                        numberQuantity.value = maxAvailableQuantity;
+                        quantity = maxAvailableQuantity;
+                    }
+                    if (quantity < 1) {
+                        numberQuantity.value = 1;
+                        quantity = 1;
+                    }
+                    invoiceItem.quantity = quantity;
+                    invoiceItem.lineprice = quantity * invoiceItem.itemprice;
+                    decimalLinePrice.value = invoiceItem.lineprice.toFixed(2);
+                }
+            } else {
+                // No stock available
+                numberQuantity.setAttribute("max", 0);
+                numberQuantity.setAttribute("min", 0);
+                numberQuantity.value = 0;
+                availableQtyMsg.innerText = `Available quantity: 0 (Out of Stock)`;
+                fillDataIntoSelect(selectSerialNo, "Out of Stock", [], 'serialno')
+            }
         } else {
             numberQuantity.disabled = true;
             selectSerialNo.disabled = false;
+            availableQtyMsg.classList.add('elementHide')
             numberQuantity.value = 1;
             invoiceItem.quantity = 1;
             invoiceItem.lineprice = 1 * parseFloat(invoiceItem.itemprice)
@@ -221,8 +301,11 @@ const refillOrdersForm = (ob, rowIndex) => {
     invoice = JSON.parse(JSON.stringify(ob));
     oldInvoice = ob;
 
+    btnUpdate.classList.remove('elementHide')
+    btnSubmit.classList.add('elementHide')
+
     $('#orderAddModal').modal('show');
-    staticBackdropLabel.textContent = invoice.invoiceno;
+    staticBackdropLabel.textContent = invoice.requestcode;
 
     selectCustomer.disabled = true;
 
@@ -238,7 +321,6 @@ const refillOrdersForm = (ob, rowIndex) => {
     selectInvoiceStatus.disabled = true;
     const invoicestatus = getServiceAjaxRequest("/invoicestatus/alldata")
     fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoice.invoicestatus_id.name)
-    invoice.invoicestatus_id = invoice.invoicestatus_id.name;
 
     //seasonal discount selection
     selectSeasonalDiscount.disabled = true;
@@ -270,7 +352,12 @@ const refillOrdersForm = (ob, rowIndex) => {
     }
 
 
+    console.log("SELECTED INVOICE STATUS", invoice.invoicestatus_id)
 
+    if (invoice.invoicestatus_id.name == "Deleted") {
+        buttonDelete.disabled = true;
+        buttonDelete.classList.remove('modal-btn-delete');
+    }
 
 
     refreshInnerOrderTableAndForm()
@@ -319,6 +406,43 @@ const filterAvailableInvoiceItems = (inventories, invoiceItem, invoiceTableItems
     console.log("Available Inventory Items after filtering:", availableInventoryItems);
     return availableInventoryItems;
 };
+
+const filterAvailableAssessoriesInvoiceItems = (inventories, selectedItem, invoiceTableItems) => {
+    // Step 1: Count how many times each serialno is used in invoiceTableItems for this specific item
+    const usedSerialCounts = {};
+    for (const item of invoiceTableItems) {
+        if (item.itemcode === selectedItem.itemcode) {
+            usedSerialCounts[item.serial_no] = (usedSerialCounts[item.serial_no] || 0) + parseInt(item.quantity);
+        }
+    }
+
+    // Step 2: Count available quantity in inventory for each serial number
+    const inventoryCounts = {};
+    for (const inv of inventories) {
+        if (inv.itemcode === selectedItem.itemcode && inv.status !== false) {
+            inventoryCounts[inv.serialno] = (inventoryCounts[inv.serialno] || 0) + parseInt(inv.quantity);
+        }
+    }
+
+    // Step 3: Calculate available quantity for each serial number
+    const availableSerials = [];
+    for (const serialno in inventoryCounts) {
+        const availableQty = inventoryCounts[serialno] - (usedSerialCounts[serialno] || 0);
+        if (availableQty > 0) {
+            availableSerials.push({
+                serialno: serialno,
+                quantity: availableQty
+            });
+        }
+    }
+
+    console.log("Used serial counts:", usedSerialCounts);
+    console.log("Inventory counts:", inventoryCounts);
+    console.log("Available serials with quantities:", availableSerials);
+
+    return availableSerials;
+};
+
 
 const calculateTotalAmount = () => {
     let totalAmount = 0;
@@ -440,7 +564,6 @@ const checkInnerInputErrors = () => {
 }
 
 const innerOrderAdd = () => {
-    //error checking
     let errors = checkInnerInputErrors();
 
     if (errors === "") {
@@ -456,16 +579,35 @@ const innerOrderAdd = () => {
             allowEscapeKey: false
         }).then((result) => {
             if (result.isConfirmed) {
-
                 console.log("Invoice Inner Items", invoiceItem)
-                const { serialno, itemname_id, ...rest } = invoiceItem;
-                updatedInvoiceItem = {...rest, serial_no: serialno.serialno }
-                console.log("UPDATED INVOICE ITEM", updatedInvoiceItem)
 
-                invoice.invoice_item.push(updatedInvoiceItem);
+                const selectedCategory = selectValueHandler(selectCategory);
+
+                if (selectedCategory.name === "Accessories") {
+                    // For accessories, check if same item with same serial number already exists
+                    const existingItemIndex = invoice.invoice_item.findIndex(item =>
+                        item.itemcode === invoiceItem.itemcode &&
+                        item.serial_no === invoiceItem.serialno.serialno
+                    );
+
+                    if (existingItemIndex !== -1) {
+                        // Update existing item quantity
+                        invoice.invoice_item[existingItemIndex].quantity = parseInt(invoice.invoice_item[existingItemIndex].quantity || "0") + parseInt(invoiceItem.quantity || "0");
+                        invoice.invoice_item[existingItemIndex].lineprice = invoice.invoice_item[existingItemIndex].quantity * invoice.invoice_item[existingItemIndex].itemprice;
+                    } else {
+                        // Add new item
+                        const { serialno, itemname_id, ...rest } = invoiceItem;
+                        const updatedInvoiceItem = {...rest, serial_no: serialno.serialno };
+                        invoice.invoice_item.push(updatedInvoiceItem);
+                    }
+                } else {
+                    // For non-accessories, keep the original logic
+                    const { serialno, itemname_id, ...rest } = invoiceItem;
+                    const updatedInvoiceItem = {...rest, serial_no: serialno.serialno };
+                    invoice.invoice_item.push(updatedInvoiceItem);
+                }
+
                 console.log("INVOICE BACKEND CODE:::::", invoice.invoice_item);
-
-
 
                 Swal.fire({
                     title: "Success!",
@@ -480,7 +622,6 @@ const innerOrderAdd = () => {
                     document.querySelectorAll('.inner-delete-btn').forEach((btn) => {
                         btn.classList.remove('custom-disabled');
                     });
-
                     document.querySelectorAll('.inner-edit-button').forEach((btn) => {
                         btn.classList.remove('custom-disabled');
                     });
@@ -616,9 +757,19 @@ const invoiceUserInputErrors = () => {
 }
 
 const submitOrder = () => {
-    const { finalamount, ...rest } = invoice;
     console.log("INVOICE:::", invoice)
-    updatedInvoice = { finalamount: parseFloat(finalamount), paidamount: parseFloat(finalamount), balance: 0, ...rest };
+
+    // Get paid amount from input field
+    const paidAmount = parseFloat(decimalPaidAmount.value) || 0;
+
+    // Create updated invoice with paid amount
+    const updatedInvoice = {
+        ...invoice,
+        finalamount: parseFloat(invoice.finalamount),
+        paidamount: paidAmount, //get user added paid amount
+        balance: parseFloat(invoice.finalamount) - paidAmount // Calculate balance for backend
+    };
+
     console.log("UPDATED INVOICE:::", updatedInvoice)
 
     const errors = invoiceUserInputErrors();
@@ -720,7 +871,7 @@ const updateOrder = () => {
 
     let errors = invoiceUserInputErrors();
 
-    if (errors = "") {
+    if (errors == "") {
         let updates = checkUserUpdates();
 
         if (updates == "") {

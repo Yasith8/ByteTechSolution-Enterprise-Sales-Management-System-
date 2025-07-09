@@ -1,10 +1,10 @@
 package lk.bytetechsolution.Entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,13 +30,14 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "supplier_payment") // map the modularity table
-@Data//genarate getters and setters and toString to class
-@AllArgsConstructor//AllArgsConstructor annotation generates a constructor initializing all object fields.
-@NoArgsConstructor//NoArgsConstructor generates a no-argument constructor for a class
+@Data // genarate getters and setters and toString to class
+@AllArgsConstructor // AllArgsConstructor annotation generates a constructor initializing all object
+                    // fields.
+@NoArgsConstructor // NoArgsConstructor generates a no-argument constructor for a class
 public class SupplierPaymentEntity {
-     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //set Auto Increment
-    @Column(name = "id",unique = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // set Auto Increment
+    @Column(name = "id", unique = true)
     private int id;
 
     @NotNull
@@ -59,27 +60,30 @@ public class SupplierPaymentEntity {
     private BigDecimal chequeno;
 
     @Column(name = "checkdate")
-    private LocalDateTime checkdate;
+    private LocalDate checkdate;
 
     @Column(name = "transferno")
     private String transferno;
 
     @Column(name = "transferdatetime")
-    private LocalDateTime transferdatetime;
+    private LocalDate transferdatetime;
+
+    @NotNull
+    @Column(name = "addeduser")
+    private Integer addeduser;
+
+    @NotNull
+    @Column(name = "addeddate")
+    private LocalDateTime addeddate;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_id",referencedColumnName = "id")
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     private SupplierEntity supplier_id;
 
     @ManyToOne
-    @JoinColumn(name = "paymenttype_id",referencedColumnName = "id")
+    @JoinColumn(name = "paymenttype_id", referencedColumnName = "id")
     private PaymentTypeEntity paymenttype_id;
 
-    @ManyToOne
-    @JoinColumn(name = "supplierpaymentstatus_id",referencedColumnName = "id")
-    private SupplierPaymentStatusEntity supplierpaymentstatus_id;
-
-
-    @OneToMany(mappedBy = "supplier_payment_id",cascade = CascadeType.ALL,orphanRemoval=true)
+    @OneToMany(mappedBy = "supplier_payment_id", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SupplierPaymentHasGRNEntity> supplier_payment_has_grn;
 }
