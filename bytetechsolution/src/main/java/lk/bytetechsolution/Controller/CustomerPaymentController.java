@@ -1,5 +1,6 @@
 package lk.bytetechsolution.Controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,9 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.CustomerPaymentDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
-import lk.bytetechsolution.Dao.InvoiceStatusDao;
+import lk.bytetechsolution.Dao.InvoiceDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.CustomerPaymentEntity;
+import lk.bytetechsolution.Entity.InvoiceEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 @RestController
@@ -36,7 +38,8 @@ public class CustomerPaymentController {
     private EmployeeDao daoEmployee;
 
     @Autowired
-    private InvoiceStatusDao daoInvoiceStatus;
+    private InvoiceDao daoInvoice;
+
 
     @Autowired
     private PrivilageController privilageController;
@@ -111,6 +114,16 @@ public class CustomerPaymentController {
 
             daoCustomerPayment.save(customerpayment);
 
+            //update the invoice
+            InvoiceEntity currentInvoice=daoInvoice.getReferenceById(customerpayment.getInvoice_id().getId());
+            BigDecimal newPaidAmount= currentInvoice.getPaidamount().add(customerpayment.getPaidamount());
+            currentInvoice.setPaidamount(newPaidAmount);
+
+            BigDecimal newBalance=currentInvoice.getFinalamount().subtract(newPaidAmount);
+            currentInvoice.setBalance(newBalance);
+
+            daoInvoice.save(currentInvoice);
+
             return "OK";
 
         } catch (Exception e) {
@@ -140,8 +153,6 @@ public class CustomerPaymentController {
             customerpayment.setDeleteuser(deleteUser.getId());
 
             customerpayment.setDeletedate(LocalDateTime.now());
-
-            customerpayment.setInvoicestatus_id(daoInvoiceStatus.getReferenceById(3));
 
             daoCustomerPayment.save(customerpayment);
 

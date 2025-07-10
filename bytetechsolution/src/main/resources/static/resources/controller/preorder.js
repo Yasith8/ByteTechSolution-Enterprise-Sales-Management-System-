@@ -9,8 +9,9 @@ const refreshOrderTable = () => {
     const displayColumnList = [
         { dataType: 'text', propertyName: 'invoiceno' },
         { dataType: 'function', propertyName: getCustomerName },
-        { dataType: 'text', propertyName: 'totalamount' },
         { dataType: 'text', propertyName: 'finalamount' },
+        { dataType: 'text', propertyName: 'paidamount' },
+        { dataType: 'text', propertyName: 'balance' },
         { dataType: 'function', propertyName: getInvoiceStatus },
     ]
 
@@ -40,7 +41,7 @@ const refreshOrderForm = () => {
     decimalBalance.disabled = true;
 
     //load customer data
-    const customers = getServiceAjaxRequest('/customer/getallactivecustomers')
+    const customers = getServiceAjaxRequest('/customer/alldata')
     $('#selectCustomer').select2({
         theme: 'bootstrap-5',
         dropdownParent: $('#selectCustomer').parent(),
@@ -52,6 +53,7 @@ const refreshOrderForm = () => {
     selectInvoiceStatus.disabled = true;
     const invoicestatus = getServiceAjaxRequest("/invoicestatus/alldata")
     fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoicestatus[1].name)
+    invoice.invoicestatus_id = invoicestatus[1];
 
     //seasonal discount selection
     selectSeasonalDiscount.disabled = true;
@@ -94,10 +96,12 @@ const refreshOrderForm = () => {
             decimalPaidAmount.value = finalAmount.toFixed(2);
             invoice.paidamount = finalAmount;
             fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoicestatus[0].name)
+            invoice.invoicestatus_id = invoicestatus[0];
         } else {
             // Update invoice object with valid amount
             invoice.paidamount = paidAmount;
             fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoicestatus[1].name)
+            invoice.invoicestatus_id = invoicestatus[1];
         }
 
         // Calculate balance
@@ -309,7 +313,7 @@ const refillOrdersForm = (ob, rowIndex) => {
 
     selectCustomer.disabled = true;
 
-    const customers = getServiceAjaxRequest('/customer/getallactivecustomers')
+    const customers = getServiceAjaxRequest('/customer/alldata')
     $('#selectCustomer').select2({
         theme: 'bootstrap-5',
         dropdownParent: $('#selectCustomer').parent(),

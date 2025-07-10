@@ -1,0 +1,28 @@
+ .setup-container {
+     min-height: 100vh;
+     display: flex;
+     align-items: center;
+     padding: 20px 0;
+ }
+ 
+ .setup-card {
+     background: rgba(255, 255, 255, 0.95);
+     backdrop-filter: blur(10px);
+     border-radius: 20px;
+     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+     border: 1px solid rgba(255, 255, 255, 0.2);
+     overflow: hidden;
+ }
+ 
+ .card-header {
+     background: linear-gradient(135deg, #0d3239 0%, #008080 100%);
+     color: white;
+     padding: 20px;
+     text-align: center;
+     border: none;
+ }
+ 
+ .buttonSubmission {
+     display: flex;
+     justify-content: end;
+ }

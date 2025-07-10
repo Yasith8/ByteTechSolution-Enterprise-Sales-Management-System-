@@ -162,8 +162,6 @@ public class SupplierPaymentController {
 
         try {
 
-            // invoice.setInvoicestatus_id(daoInvoiceStatus.getReferenceById(3));
-
             dao.save(supplierpayment);
 
             return "OK";

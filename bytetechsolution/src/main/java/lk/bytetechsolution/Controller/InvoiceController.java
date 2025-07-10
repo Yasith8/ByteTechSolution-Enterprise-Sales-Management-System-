@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -99,7 +101,7 @@ public class InvoiceController {
             return new ArrayList<InvoiceEntity>();
         }
 
-        return daoInvoice.findAll();
+        return daoInvoice.findAll(Sort.by(Direction.DESC, "id"));
     }
 
      @GetMapping(value = "/invoice/invoicebycustomer/{customerId}", produces = "application/json")
@@ -179,7 +181,6 @@ public class InvoiceController {
 
             customerPayment.setInvoice_id(daoInvoice.getReferenceById(invoice.getId()));
             customerPayment.setCustomer_id(invoice.getCustomer_id());
-            customerPayment.setInvoicestatus_id(invoice.getInvoicestatus_id());
 
             customerPayment.setAddeddate(invoice.getAddeddate());
             customerPayment.setAddeduser(invoice.getAddeduser());

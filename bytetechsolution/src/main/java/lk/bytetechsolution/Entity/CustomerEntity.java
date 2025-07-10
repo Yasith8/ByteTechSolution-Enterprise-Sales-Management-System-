@@ -79,8 +79,4 @@ public class CustomerEntity {
     
     @Column(name = "deleteuser")
     private int deleteuser;
-
-    @ManyToOne
-    @JoinColumn(name = "customerstatus_id",referencedColumnName ="id" )
-    private CustomerStatusEntity customerstatus_id;
 }

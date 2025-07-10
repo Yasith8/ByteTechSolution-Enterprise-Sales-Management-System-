@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.RoleDao;
 import lk.bytetechsolution.Dao.UserDao;
+import lk.bytetechsolution.Entity.LoggedUserEntity;
 import lk.bytetechsolution.Entity.RoleEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -40,6 +41,48 @@ public class LoginController {
         logView.addObject("title", "LogIn || Bytetech Solution");
         logView.setViewName("login.html");
         return logView;
+    }
+
+
+    @RequestMapping(value = "/setupmyacc")
+    public ModelAndView userSeyupView(){
+         ModelAndView setupUserView=new ModelAndView();
+        // get logged user authentication object using security
+        // this help to retrieve the current authentication object which holds the user
+        // detail
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // get current log user
+        UserEntity loggedUser = daoUser.getByUsername(authentication.getName());
+
+        // current loggedemployee
+        String loggedEmployee = daoEmployee.getFullnameById(loggedUser.getId());
+
+        // pass the ui
+        setupUserView.setViewName("setupuseraccount.html");
+        // attributes set to show titles in web page using theamleaf
+        setupUserView.addObject("title", "Setup My Profile || Bytetech Solution");
+        setupUserView.addObject("user", authentication.getName());// passing logged user name
+        setupUserView.addObject("EmpName", loggedEmployee);
+        setupUserView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());// get the first role
+        setupUserView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
+        return setupUserView;
+    }
+
+    @RequestMapping(value = "/loggeduserdetails")
+    public LoggedUserEntity gerLoggedUserData(){
+        // detail
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // get current log user
+        UserEntity loggedUser = daoUser.getByUsername(authentication.getName());
+
+        LoggedUserEntity loggedUserDetails=new LoggedUserEntity();
+        loggedUserDetails.setUsername(loggedUser.getUsername());
+        loggedUserDetails.setOldusername(loggedUser.getUsername());
+        loggedUserDetails.setPhoto(loggedUser.getPhoto());
+        loggedUserDetails.setEmail(loggedUser.getEmail()); 
+
+        return loggedUserDetails;
     }
     
     @RequestMapping(value = "/dashboard")

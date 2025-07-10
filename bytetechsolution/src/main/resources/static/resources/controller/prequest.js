@@ -705,11 +705,11 @@ const submitPrequest = () => {
                     }).then(() => {
                         $('#prequestAddModal').modal('hide');
                         //refreash Item form
+                        formPrequest.reset();
                         refreshPurchaseRequestForm();
                         //refreash Item table
                         refreshPurchaseRequestTable();
                         //reset the Item form
-                        formPrequest.reset();
                     })
                 } else {
                     Swal.fire({
@@ -827,12 +827,11 @@ const updatePrequest = () => {
                             allowEscapeKey: false
                         }).then(() => {
                             $('#prequestAddModal').modal('hide');
+                            formPrequest.reset();
                             //refreash Item form
                             refreshPurchaseRequestForm();
                             //refreash Item table
                             refreshPurchaseRequestTable();
-                            //reset the Item form
-                            formPrequest.reset();
                         })
                     } else {
                         Swal.fire({
@@ -903,6 +902,8 @@ const deletePrequest = (ob, rowIndex) => {
                     allowEscapeKey: false
                 }).then(() => {
                     $('#prequestAddModal').modal('hide');
+                    formPrequest.reset();
+                    refreshPurchaseRequestForm();
                     refreshPurchaseRequestTable()
                 })
             } else {

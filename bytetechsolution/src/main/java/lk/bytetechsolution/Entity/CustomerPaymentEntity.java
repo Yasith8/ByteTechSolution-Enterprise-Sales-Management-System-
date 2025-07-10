@@ -74,9 +74,5 @@ public class CustomerPaymentEntity {
     @ManyToOne  
     @JoinColumn(name="paymenttype_id",referencedColumnName = "id")
     private PaymentTypeEntity paymenttype_id;
-
-    @ManyToOne  
-    @JoinColumn(name="invoicestatus_id",referencedColumnName = "id")
-    private InvoiceStatusEntity invoicestatus_id;
    
 }

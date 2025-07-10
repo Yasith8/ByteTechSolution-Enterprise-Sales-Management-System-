@@ -12,7 +12,4 @@ public interface CustomerDao extends JpaRepository<CustomerEntity, Integer> {
     @Query(value = "select concat('CUS',lpad(substring(max(cus.customerid),4)+1,4,'0')) as customerid from bytetechsolution.customer as cus", nativeQuery = true)
     public String getNextCustomerID();
 
-    @Query(value="select * from bytetechsolution.customer c where c.customerstatus_id=1", nativeQuery = true)
-    public List<CustomerEntity> getAllActiveCustomers();
-
 }

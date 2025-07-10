@@ -38,7 +38,7 @@ const refreshOrderForm = () => {
     staticBackdropLabel.textContent = "Add New Order";
 
     //load customer data
-    const customers = getServiceAjaxRequest('/customer/getallactivecustomers')
+    const customers = getServiceAjaxRequest('/customer/alldata')
     $('#selectCustomer').select2({
         theme: 'bootstrap-5',
         dropdownParent: $('#selectCustomer').parent(),
@@ -50,6 +50,7 @@ const refreshOrderForm = () => {
     selectInvoiceStatus.disabled = true;
     const invoicestatus = getServiceAjaxRequest("/invoicestatus/alldata")
     fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoicestatus[0].name)
+    invoice.invoicestatus_id = invoicestatus[0];
 
     //seasonal discount selection
     selectSeasonalDiscount.disabled = true;
@@ -273,7 +274,7 @@ const refillOrdersForm = (ob, rowIndex) => {
 
     selectCustomer.disabled = true;
 
-    const customers = getServiceAjaxRequest('/customer/getallactivecustomers')
+    const customers = getServiceAjaxRequest('/customer/alldata')
     $('#selectCustomer').select2({
         theme: 'bootstrap-5',
         dropdownParent: $('#selectCustomer').parent(),
@@ -285,6 +286,7 @@ const refillOrdersForm = (ob, rowIndex) => {
     selectInvoiceStatus.disabled = true;
     const invoicestatus = getServiceAjaxRequest("/invoicestatus/alldata")
     fillDataIntoSelect(selectInvoiceStatus, "Select the Order Status", invoicestatus, 'name', invoice.invoicestatus_id.name)
+    invoice.invoicestatus_id = invoicestatus[0];
 
     //seasonal discount selection
     selectSeasonalDiscount.disabled = true;

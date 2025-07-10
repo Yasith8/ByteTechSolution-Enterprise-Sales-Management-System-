@@ -53,6 +53,7 @@ const refreshSupplierQuotationForm = () => {
     fillDataIntoSelect(selectSupplier, "Select Quotation Request First", [], "name");
 
     selectQuotationRequest.addEventListener('change', () => {
+        editableTableHandler([])
         suppliers = getServiceAjaxRequest("/supplier/activesupplier")
         fillDataIntoSelect(selectSupplier, "Select Supplier", suppliers, "name");
 

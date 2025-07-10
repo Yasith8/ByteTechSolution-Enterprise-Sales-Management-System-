@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.CustomerDao;
-import lk.bytetechsolution.Dao.CustomerStatusDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.CustomerEntity;
@@ -34,9 +33,6 @@ public class CustomerController {
 
     @Autowired
     private UserDao daoUser;
-
-    @Autowired
-    private CustomerStatusDao daoCustomerStatus;
     
     @Autowired
     private PrivilageController privilageController;
@@ -84,17 +80,7 @@ public class CustomerController {
         return dao.findAll();
     }
 
-     @GetMapping(value = "/customer/getallactivecustomers", produces = "application/json")
-    public List<CustomerEntity> GetActiveCustomerDetails() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),"CUSTOMER");
 
-        if (!userPrivilage.get("select")) {
-            return new ArrayList<CustomerEntity>();
-        }
-
-        return dao.getAllActiveCustomers();
-    }
 
     @PostMapping(value = "/customer")
     public String AddCustomer(@RequestBody CustomerEntity customer) {
@@ -155,9 +141,8 @@ public class CustomerController {
 
        customer.setDeletedate(LocalDateTime.now());
 
-       customer.setCustomerstatus_id(daoCustomerStatus.getReferenceById(3));
-
-       dao.save(customer);
+       //risky
+       dao.delete(customer);
 
        return "OK";
       } catch (Exception e) {

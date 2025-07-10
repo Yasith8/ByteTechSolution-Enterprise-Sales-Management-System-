@@ -12,8 +12,7 @@ const refreshCustomerPaymentTable = () => {
         { dataType: 'function', propertyName: getCustomer },
         { dataType: 'text', propertyName: 'totalamount' },
         { dataType: 'text', propertyName: 'paidamount' },
-        { dataType: 'text', propertyName: 'balance' },
-        { dataType: 'function', propertyName: getInvoiceStatus },
+        { dataType: 'text', propertyName: 'balance' }
     ]
 
     fillDataIntoTable(tableCustomerPayment, customerpayments, displayColumnList, refillCustomerPaymentForm, divModifyButton)
@@ -30,20 +29,23 @@ const refreshCustomerPaymentForm = () => {
     buttonSubmit.disabled = false;
     buttonUpdate.disabled = true;
     buttonSubmit.classList.remove('elementHide')
+    buttonClear.classList.remove('elementHide')
     buttonUpdate.classList.add('elementHide')
 
     staticBackdropLabel.textContent = "Add New Customer Payment";
     transactionDitails.classList.add('elementHide')
-    inputFieldsHandler([selectPaymentType, selectInvoiceStatus, decimalPaidAmount, selectCustomer, selectInvoice], false)
+    removeValidationColor([selectPaymentType, decimalPaidAmount, selectCustomer, selectInvoice])
+    inputFieldsHandler([selectPaymentType, decimalPaidAmount, selectCustomer, selectInvoice], false)
 
     invoiceTotalAmountRow.classList.add('elementHide');
     //load customer data
-    const customers = getServiceAjaxRequest('/customer/getallactivecustomers')
-    $('#selectCustomer').select2({
-        theme: 'bootstrap-5',
-        dropdownParent: $('#selectCustomer').parent(),
-        width: '100%'
-    })
+    const customers = getServiceAjaxRequest('/customer/alldata')
+        /*  console.log("CUSTOMERS", customers)
+         $('#selectCustomer').select2({
+             theme: 'bootstrap-5',
+             dropdownParent: $('#selectCustomer').parent(),
+             width: '100%'
+         }) */
     fillMultipleItemOfDataIntoSingleSelect(selectCustomer, "Select Customer Details", customers, 'name', 'mobile')
 
     fillMultipleItemOfDataIntoSingleSelect(selectInvoice, "Select Customer First", [], "invoiceno", "finalamount")
@@ -52,6 +54,7 @@ const refreshCustomerPaymentForm = () => {
         customerpayment.invoice_id = null;
         removeValidationColor([selectInvoice])
         const selectedCustomer = selectValueHandler(selectCustomer)
+        console.log("sssCUSTOMERS", selectedCustomer)
 
         customerInvoices = getServiceAjaxRequest(`/invoice/invoicebycustomer/${selectedCustomer.id}`);
         fillMultipleItemOfDataIntoSingleSelect(selectInvoice, "Select Customer First", customerInvoices, "invoiceno", "finalamount")
@@ -65,6 +68,7 @@ const refreshCustomerPaymentForm = () => {
         invoiceTotalAmountText.textContent = selectedInvoice.finalamount;
 
         decimalDueAmount.value = selectedInvoice.balance;
+        customerpayment.totalamount = parseFloat(decimalDueAmount.value);
     })
 
     decimalBalance.disabled = true;
@@ -73,38 +77,40 @@ const refreshCustomerPaymentForm = () => {
         const paidAmount = parseFloat(decimalPaidAmount.value);
         const dueAmount = parseFloat(decimalDueAmount.value);
 
+        //if paid amount is max than due amount equal the due amount to the paidamount
+        if (paidAmount > dueAmount) {
+            decimalPaidAmount.value = dueAmount.toFixed(2);
+            customerpayment.paidamount = dueAmount;
+        } else {
+            customerpayment.paidamount = paidAmount;
+        }
+
+        //balance set to the obj
         const newBalance = dueAmount - paidAmount;
         decimalBalance.value = newBalance;
+        customerpayment.balance = newBalance;
     })
 
     const paymenttypes = getServiceAjaxRequest('/paymenttype/alldata')
     fillDataIntoSelect(selectPaymentType, "Select Payment Type", paymenttypes, "name")
 
-    fillDataIntoSelect(selectInvoiceStatus, "Status will change due to the balance", [], 'name')
-    invoicestatuses = getServiceAjaxRequest('/invoice/alldata')
-    suitableInvoice = new Array();
-    if (decimalBalance.value == 0) {
-        suitableInvoice = invoicestatuses.filter(item => item.name = "Completed");
-        fillDataIntoSelect(selectInvoiceStatus, "Status will change due to the balance", invoicestatuses, 'name', suitableInvoice[0].name)
-    } else {
-        suitableInvoice = invoicestatuses.filter(item => item.name = "Processing");
-        fillDataIntoSelect(selectInvoiceStatus, "Status will change due to the balance", invoicestatuses, 'name', suitableInvoice[0].name)
-    }
+
 }
 
 const refillCustomerPaymentForm = (ob) => {
     customerpayment = JSON.parse(JSON.stringify(ob));
     oldcustomerpayment = ob;
 
-    inputFieldsHandler([selectPaymentType, selectInvoiceStatus, decimalPaidAmount], true)
+    inputFieldsHandler([selectPaymentType, decimalPaidAmount], true)
     transactionDitails.classList.remove('elementHide')
+    removeValidationColor([selectPaymentType, decimalPaidAmount, selectCustomer, selectInvoice])
 
     buttonSubmit.classList.add('elementHide')
     buttonUpdate.classList.add('elementHide')
     buttonClear.classList.add('elementHide')
 
     $('#customerpaymentAddModal').modal('show');
-    staticBackdropLabel.textContent = customerpayment.paymentno;
+    staticBackdropLabel.textContent = `Customer Payment No: ${customerpayment.paymentno}`;
 
     fixedDate = getCurrentDate(customerpayment.addeddate)
     employeeUser = getServiceAjaxRequest(`/user/userbyid/${customerpayment.addeduser}`)
@@ -130,16 +136,6 @@ const refillCustomerPaymentForm = (ob) => {
     const paymenttypes = getServiceAjaxRequest('/paymenttype/alldata')
     fillDataIntoSelect(selectPaymentType, "Select Payment Type", paymenttypes, 'name', customerpayment.paymenttype_id.name);
 
-    const invoicestatus = getServiceAjaxRequest('/invoicestatus/alldata')
-    fillDataIntoSelect(selectInvoiceStatus, "Select Invoice Status", invoicestatus, 'name', customerpayment.invoicestatus_id.name);
-
-    if (customerpayment.invoicestatus_id.name == "Completed") {
-        selectInvoiceStatus.disabled = true;
-    } else {
-        selectInvoiceStatus.disabled = false;
-    }
-
-
 }
 
 const getInvoice = (ob) => {
@@ -150,30 +146,31 @@ const getCustomer = (ob) => {
     return ob.customer_id.name
 }
 
-const getInvoiceStatus = (ob) => {
-    if (ob.invoicestatus_id.name == 'Completed') {
-        return '<p class="common-status-available">' + ob.invoicestatus_id.name + '</p>';
-    }
 
-    if (ob.invoicestatus_id.name == 'Processing') {
-        return '<p class="common-status-resign">' + ob.invoicestatus_id.name + '</p>'
-    }
-    if (ob.invoicestatus_id.name == 'Deleted') {
-        return '<p class="common-status-delete">' + ob.invoicestatus_id.name + '</p>'
-    } else {
-        return '<p class="common-status-other">' + ob.invoicestatus_id.name + '</p>'
-    }
-}
 
 
 const UserInputErrors = () => {
     let errors = "";
 
+    if (customerpayment.customer_id == null) {
+        errors += "Supplier Selection must be required."
+    }
+    if (customerpayment.invoice_id == null) {
+        errors += "Invoice Selection must be required."
+    }
+    if (customerpayment.paidamount == null) {
+        errors += "Paid amount addion must be required."
+    }
+    if (customerpayment.paymenttype_id == null) {
+        errors += "Payment type selection must be required."
+    }
+
     return errors;
 }
 
 const submitCustomerPayment = () => {
-    //check errors in user inputs
+    console.log("Customer Payment", customerpayment)
+        //check errors in user inputs
     let errors = UserInputErrors();
 
     //if there is no errors open sweet alert to get a confomation

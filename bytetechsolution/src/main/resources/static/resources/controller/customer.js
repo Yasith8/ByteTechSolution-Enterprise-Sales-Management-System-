@@ -12,7 +12,6 @@ const refreshCustomerTable = () => {
         { dataType: 'text', propertyName: 'mobile' },
         { dataType: 'text', propertyName: 'email' },
         { dataType: 'text', propertyName: 'totalpurchase' },
-        { dataType: 'function', propertyName: getCustomerStatus },
     ]
 
     fillDataIntoTable(tableCustomer, customers, displayPropertyList, refillCustomerForm, divModifyButton)
@@ -35,11 +34,8 @@ const refreshCustomerForm = () => {
 
     decimalTotalPurchase.disabled = true;
 
-    customerstatuses = getServiceAjaxRequest("/customerstatus/alldata");
-    console.log("cs", customerstatuses)
-    fillDataIntoSelect(selectCustomerStatus, "Please Select Customer Status", customerstatuses, "name");
 
-    removeValidationColor([textName, textMobile, decimalTotalPurchase, textEmail, textAddress, selectCustomerStatus])
+    removeValidationColor([textName, textMobile, decimalTotalPurchase, textEmail, textAddress])
 
     let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/CUSTOMER");
 
@@ -47,24 +43,18 @@ const refreshCustomerForm = () => {
         buttonSubmit.disabled = true;
         buttonSubmit.classList.remove('modal-btn-submit');
 
-        inputFieldsHandler([textName, textMobile, decimalTotalPurchase, textEmail, textAddress, selectCustomerStatus], true);
+        inputFieldsHandler([textName, textMobile, decimalTotalPurchase, textEmail, textAddress], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
 }
 
-const getCustomerStatus = (ob) => {
-    if (ob.customerstatus_id.name == "Active") {
-        return '<p class="common-status-available">Available</p>';
-    } else {
-        return '<p class="common-status-delete">Not Available</p>'
-    }
-}
+
 
 const refillCustomerForm = (ob, rowIndex) => {
     $('#customerAddModal').modal('show');
 
     decimalTotalPurchase.disabled = true;
-    removeValidationColor([textName, textMobile, decimalTotalPurchase, textEmail, textAddress, selectCustomerStatus])
+    removeValidationColor([textName, textMobile, decimalTotalPurchase, textEmail, textAddress])
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
@@ -83,8 +73,6 @@ const refillCustomerForm = (ob, rowIndex) => {
     textEmail.value = customer.email;
     textAddress.value = customer.address;
 
-    customerstatuses = getServiceAjaxRequest("/customerstatus/alldata");
-    fillDataIntoSelect(selectCustomerStatus, "Please Select Customer Status", customerstatuses, "name", ob.customerstatus_id.name);
 
 
     let userPrivilage = getServiceAjaxRequest("/privilage/byloggeduser/CUSTOMER");
@@ -95,7 +83,7 @@ const refillCustomerForm = (ob, rowIndex) => {
         buttonUpdate.disabled = true;
         buttonUpdate.classList.remove('modal-btn-update');
 
-        inputFieldsHandler([textName, textMobile, decimalTotalPurchase, textEmail, textAddress, selectCustomerStatus], true);
+        inputFieldsHandler([textName, textMobile, decimalTotalPurchase, textEmail, textAddress], true);
         buttonClear.classList.remove('modal-btn-clear');
     }
     if (!userPrivilage.delete) {
@@ -124,10 +112,6 @@ const checkCustomerInputErrors = () => {
     if (customer.address == null) {
         errors = errors + "Address can't be Null...!\n";
         textAddress.classList.add("is-invalid");
-    }
-    if (customer.customerstatus_id == null) {
-        errors = errors + "Item Status can't be Null...!\n";
-        selectCustomerStatus.classList.add("is-invalid");
     }
     if (customer.totalpurchase == null) {
         errors = errors + "Total Purchase can't be Null...!\n";
@@ -228,9 +212,6 @@ const checkCustomerFormUpdates = () => {
     }
     if (customer.totalpurchase != oldCustomer.totalpurchase) {
         updates = updates + "Total Purchase is Changed \n";
-    }
-    if (customer.customerstatus_id.name != customer.customerstatus_id.name) {
-        updates = updates + "Customer Status is Changed \n";
     }
 
     return updates;
