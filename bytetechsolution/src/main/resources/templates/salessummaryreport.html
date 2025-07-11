@@ -37,17 +37,17 @@
             </div>
             <div class="col-3">
                 <div class="form-floating mb-3">
-                    <select name="itemStatus" id="selectItemStatus" class="form-select">
+                    <select name="itemStatus" id="selectType" class="form-select">
                         <option value=""  selected disabled>Select Type</option>
-                        <option value="" >Monthly</option>
-                        <option value="" >Daily</option>
+                        <option value="Monthly" >Monthly</option>
+                        <option value="Weekly" >Weekly</option>
                     </select>
                 </div>
             </div>
             <div class="col-3">
                 <div class="row">
-                    <div class="col-6"><button class="modal-button modal-btn-submit sale-summary-button">Generate Report</button></div>
-                    <div class="col-6"><button class="modal-button modal-btn-print sale-summary-button">Print Report</button></div>
+                    <div class="col-6"><button class="modal-button modal-btn-submit sale-summary-button" onclick="generateReport()">Generate Report</button></div>
+                    <div class="col-6"><button class="modal-button modal-btn-print sale-summary-button" onclick="printReport()">Print Report</button></div>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
                         <thead class="table-header">
                             <tr>
                                 <th> # </th>
-                                <th> Day </th>
+                                <th> Month/Week </th>
                                 <th> Count </th>
                                 <th> Total Amount </th>
                             </tr>
@@ -71,7 +71,7 @@
             </div>
             <div class="col-6">
                 <div class="card chart-card">
-                    <canvas id="myChart" height="350"></canvas>
+                    <canvas id="myChart" height="300"></canvas>
                 </div>
             </div>
         </div>

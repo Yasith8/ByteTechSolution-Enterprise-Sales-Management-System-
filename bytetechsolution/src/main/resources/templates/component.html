@@ -81,6 +81,22 @@
             sidebarUL.appendChild(href) 
         });
         */
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const moduleList = getServiceAjaxRequest("/denymodulebyloggeduser");
+
+            for (const module of moduleList) {
+                const className = module.name; // e.g., "EMPLOYEE", "USER"
+                console.log("ClassName", className);
+
+                const elements = document.querySelectorAll(`.${className}`);
+                console.log(`Found ${elements.length} elements with class: ${className}`);
+
+                elements.forEach(element => {
+                    element.style.display = 'none'; // OR element.classList.add('elementHide');
+                });
+            }
+        });
     </script>
 
 </head>
@@ -254,19 +270,19 @@
                                 </svg>
                             <span class="menu-text">Supplier Quotations</span>
                         </a>
-                        <a href="/purchaserequest" class="menu-item" id="PREQUEST">
+                        <a href="/purchaserequest" class="menu-item PREQUEST">
                             <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             <span class="menu-text">Purchase Request</span>
                         </a>
-                        <a href="/grn" class="menu-item" id="GRN">
+                        <a href="/grn" class="menu-item GRN">
                             <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             <span class="menu-text">Good Recived</span>
                         </a>
-                        <a href="/supplierpayment" class="menu-item" id="SUPPLIERPAYMENT">
+                        <a href="/supplierpayment" class="menu-item SUPPLIERPAYMENT">
                             <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
@@ -369,14 +385,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        moduleList = getServiceAjaxRequest('/module/listbyloggeduser')
-        console.log(moduleList);
-        for (const module of moduleList) {
-            document.getElementById(module).style.display = 'none'
-        }
-    </script>
 
 
 </body>

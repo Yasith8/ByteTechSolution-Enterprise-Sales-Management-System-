@@ -30,13 +30,12 @@
                                 <div class="row mb-4">
                                     <div class="col-12 d-flex justify-content-center">
                                         <div class="item-img-container">
-                                            <img src="/resources/image/noitem.jpg" alt="no item" id="imgProcessorPhoto" class="item-img" />
+                                            <img src="/resources/image/noitem.jpg" alt="no item" id="imgUserSetupPhoto" class="item-img" />
                                             <div class="item-img-overlay">
-                                                <button id="btnSelectImage" type="button" class="btn btn-primary btn-item-select-image" onclick="FileProcessorPhoto.click()">Select Image</button>
-                                                <button id="btnClearImage" type="button" class="btn btn-danger btn-item-remove-image" onclick="processorPictureRemove()">Clear Image</button>
+                                                <button id="btnSelectImage" type="button" class="btn btn-primary btn-item-select-image" onclick="FileUserSetupPhoto.click()">Select Image</button>
+                                                <button id="btnClearImage" type="button" class="btn btn-danger btn-item-remove-image" onclick="userSetupPictureRemove()">Clear Image</button>
                                             </div>
-                                            <p id="textProcessorPhoto" class="image-item-status">No Image Selected</p>
-                                            <input type="file" class="d-none" id="FileUserSetupPhoto" onchange="validateFileField(this, 'processor', 'photo', 'photoname', 'oldProcessor', imgProcessorPhoto, textProcessorPhoto)">
+                                            <input type="file" class="d-none" id="FileUserSetupPhoto" onchange="profileSetupValidateFileField(this, 'lguser', 'photo', imgUserSetupPhoto)">
                                         </div>
                                     </div>
                                 </div>
@@ -45,13 +44,13 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-floating mb-4">
-                                    <input type="text" class="form-control" id="textUsername" placeholder="" required>
+                                    <input type="text" class="form-control" id="textUsername" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9]{5,10}$','lguser','username')">
                                     <label for="textUsername">Username<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-floating mb-4">
-                                    <input type="text" class="form-control" id="textEmail" placeholder="" required>
+                                    <input type="text" class="form-control" id="textEmail" placeholder="" required onkeyup="textValidator(textEmail,'^[A-Za-z0-9_-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$','lguser','email')">
                                     <label for="textEmail">Email<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
@@ -59,20 +58,20 @@
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-floating mb-2">
-                                    <input type="text" class="form-control" id="passwordCurrentPassword" placeholder="" required>
+                                    <input type="text" class="form-control" id="passwordCurrentPassword" placeholder="" required onkeyup="textValidator(passwordCurrentPassword,'^[A-Za-z0-9]{8,20}$','lguser','oldpassword')">
                                     <label for="passwordCurrentPassword">Current Password<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-floating mb-2">
-                                    <input type="text" class="form-control" id="passwordNewPassword" placeholder="" required>
+                                    <input type="text" class="form-control" id="passwordNewPassword" placeholder="" required onkeyup="textValidator(passwordNewPassword,'^[A-Za-z0-9]{8,20}$','lguser','newpassword')">
                                     <label for="passwordNewPassword">New Password<span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="passwordNewRePassword" placeholder="" required>
-                                    <label for="passwordReNewPassword">Re-new Password <span class="requiredIcon">*</span></label>
+                                    <input type="text" class="form-control" id="passwordNewRePassword" placeholder="" required onkeyup="passwordRetypeValidator()">
+                                    <label for="passwordNewRePassword">Re-new Password <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                         </div>
@@ -80,10 +79,10 @@
                         <div class="row">
                             <div class="row">
                                 <div class="col-6">
-                                    <button id="buttonReset" class="modal-button modal-btn-clear" style="width: 120px;">reset</button>
+                                    <button id="buttonReset" class="modal-button modal-btn-clear" type="reset" style="width: 120px;">reset</button>
                                 </div>
                                 <div class="col-6 buttonSubmission">
-                                    <button id="buttonSave" class="Btn modal-button modal-btn-submit" style="width: 160px;">Save Changes</button>
+                                    <button id="buttonSave" class="Btn modal-button modal-btn-submit" style="width: 160px;" onclick="saveChangers()">Save Changes</button>
                                     <button id="buttonEdit" class="Btn modal-button modal-btn-submit" style="width: 160px;">Edit Profile</button>
                                 </div>
                             </div>

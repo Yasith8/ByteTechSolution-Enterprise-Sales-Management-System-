@@ -6,6 +6,8 @@ import lk.bytetechsolution.Dao.RoleDao;
 import lk.bytetechsolution.Entity.RoleEntity;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import java.util.List;
 
 @RestController
@@ -19,5 +21,9 @@ public class RoleController {
         return dao.getListWithoutAdmin();
     }
 
+     @GetMapping(value = "/role/rolebyusername/{username}",produces = "application/json")
+    public List<RoleEntity> getRoleWithoutAdmin(@PathVariable String username) {
+        return dao.getRolesByUserName(username);
+    }
 
 }

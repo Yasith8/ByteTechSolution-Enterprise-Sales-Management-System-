@@ -19,7 +19,7 @@
         <h2 id="dashboardGreetingMsg">Hi Yasith, Good Morning 👋 </h2>
     </div>
 
-    <div class="row mt-3 stat-card-container">
+    <div class="row mt-3 stat-card-container" id="ManagerDashboardSection1">
         <div class="col-3">
             <div class="card">
                 <div class="card-body">
@@ -33,14 +33,7 @@
                     </div>
                     <h1 class="main-card-title" id="statCardOneMainContent">42</h1>
                     <div class="card-main-footer">
-                        <div class="updown-scaler-container">
-                            <div class="upscale-svg" id="statCardOneFooterBadgeSvg">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                                </svg>
-                            </div>
-                            <h6 class="upscale-text" id="statCardOneFooterBadgeText">+25%</h6>
-                        </div>
+
                         <div class="card-main-footer-text" id="statCardOneFooterTimeState">For Last 30 days</div>
                     </div>
                 </div>
@@ -59,14 +52,7 @@
                     </div>
                     <h1 class="main-card-title" id="statCardTwoMainContent">13</h1>
                     <div class="card-main-footer">
-                        <div class="updown-scaler-container">
-                            <div class="upscale-svg" id="statCardTwoFooterBadgeSvg">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                                </svg>
-                            </div>
-                            <h6 class="upscale-text" id="statCardTwoFooterBadgeText">+25%</h6>
-                        </div>
+
                         <div class="card-main-footer-text" id="statCardTwoFooterTimeState">For Last 30 days</div>
                     </div>
                 </div>
@@ -85,14 +71,7 @@
                     </div>
                     <h1 class="main-card-title" id="statCardThreeMainContent">27</h1>
                     <div class="card-main-footer">
-                        <div class="updown-scaler-container">
-                            <div class="upscale-svg" id="statCardThreeFooterBadgeSvg">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                                </svg>
-                            </div>
-                            <h6 class="upscale-text" id="statCardThreeFooterBadgeText">+25%</h6>
-                        </div>
+
                         <div class="card-main-footer-text" id="statCardThreeFooterTimeState">For Last 30 days</div>
                     </div>
                 </div>
@@ -111,14 +90,7 @@
                     </div>
                     <h1 class="main-card-title" id="statCardFourMainContent">Rs.4575500</h1>
                     <div class="card-main-footer">
-                        <div class="updown-scaler-container">
-                            <div class="upscale-svg" id="statCardFourFooterBadgeSvg">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                                </svg>
-                            </div>
-                            <h6 class="upscale-text" id="statCardFourFooterBadgeText">+25%</h6>
-                        </div>
+
                         <div class="card-main-footer-text" id="statCardFourFooterTimeState">For Last 30 days</div>
                     </div>
                 </div>
@@ -126,7 +98,7 @@
         </div>
     </div>
 
-    <div class="row mt-3 chart-table-container">
+    <div class="row mt-3 chart-table-container" id="ManagerDashboardSection2">
         <div class="col-5">
             <div class="card chart-card">
                 <div class="chart-title" id="mainChartTtile">Sales Trends (Last 7 Days)</div>
@@ -177,6 +149,86 @@
             </div>
         </div>
     </div>
+
+    <div class="row mt-3 chart-table-container" id="otherusers">
+        <div class="col-3 mb-3" id="btnQuotationRequest">
+            <a href="/quotationrequest" class="card text-center shadow-sm h-100 border-0" style="cursor: pointer">
+                <div class="card-body py-3">
+                    <h6 class="mt-2 mb-0 text-secondary">QUOTATION REQUEST</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-3 mb-3" id="btnSupplierQuotation">
+            <a href="/supplierquotation" class="card text-center shadow-sm h-100 border-0" style="cursor: pointer">
+                <div class="card-body py-3">
+                    <h6 class="mt-2 mb-0 text-secondary">SUPPLIER QUOTATION</h6>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-3 mb-3" id="btnSupplier">
+            <a href="/supplier" class="card text-center shadow-sm h-100 border-0" style="cursor: pointer">
+                <div class="card-body py-3">
+                    <h6 class="mt-2 mb-0 text-secondary">SUPPLIER</h6>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-3 mb-3" id="btnSupplierPayment">
+            <a href="/supplier-payment" class="card text-center shadow-sm h-100 border-0" style="cursor: pointer">
+                <div class="card-body py-3">
+                    <h6 class="mt-2 mb-0 text-secondary">SUPPLIER PAYMENT</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-3 mb-3" id="btnPurchaseRequest">
+            <a href="/purchaserequest" class="card text-center shadow-sm h-100 border-0" style="cursor: pointer">
+                <div class="card-body py-3">
+                    <h6 class="mt-2 mb-0 text-secondary">PURCHASE REQUEST</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-3 mb-3" id="btnGoodsReceivedNote">
+            <a href="/grn" class="card text-center shadow-sm h-100 border-0" style="cursor: pointer">
+                <div class="card-body py-3">
+                    <h6 class="mt-2 mb-0 text-secondary">GOOD RECEIVED NOTE</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-3 mb-3" id="btnOrder">
+            <a href="/order" class="card text-center shadow-sm h-100 border-0" style="cursor: pointer">
+                <div class="card-body py-3">
+                    <h6 class="mt-2 mb-0 text-secondary">ORDER</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-3 mb-3" id="btnPreOrder">
+            <a href="/preorder" class="card text-center shadow-sm h-100 border-0" style="cursor: pointer">
+                <div class="card-body py-3">
+                    <h6 class="mt-2 mb-0 text-secondary">PRE-ORDER</h6>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-3 mb-3" id="btnCustomerPayment">
+            <a href="/customer-payment" class="card text-center shadow-sm h-100 border-0" style="cursor: pointer">
+                <div class="card-body py-3">
+                    <h6 class="mt-2 mb-0 text-secondary">CUSTOMER PAYMENT</h6>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-3 mb-3" id="btnCustomer">
+            <a href="/customer" class="card text-center shadow-sm h-100 border-0" style="cursor: pointer">
+                <div class="card-body py-3">
+                    <h6 class="mt-2 mb-0 text-secondary">CUSTOMER</h6>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+
     <script src="resources/controller/dashboard.js"></script>
 </body>
 

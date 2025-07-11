@@ -3,15 +3,14 @@ package lk.bytetechsolution.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import lk.bytetechsolution.Dao.CategoryDao;
 import lk.bytetechsolution.Dao.EmployeeDao;
-import lk.bytetechsolution.Dao.GRNDao;
-import lk.bytetechsolution.Dao.GRNStatusDao;
-import lk.bytetechsolution.Dao.SerialNoListDao;
+import lk.bytetechsolution.Dao.SalesSummaryDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -29,6 +28,9 @@ public class SalesSummaryReportController {
 
     @Autowired
     private EmployeeDao daoEmployee;
+
+    @Autowired
+    private SalesSummaryDao daoSalesSummary;
 
 
     @RequestMapping(value = "/salessummaryreport")
@@ -58,4 +60,20 @@ public class SalesSummaryReportController {
         return salesSummaryReportView;
     }
 
+     @GetMapping(value = "/report/salesdatabygivenrange",params = {"startdate","enddate","type"},produces = "application/json")
+    public String[][] GetSalesdataByGivenRange(@RequestParam("startdate") String startdate,@RequestParam("enddate") String enddate,@RequestParam("type") String type){
+            if(type.equals("Weekly")){
+                return daoSalesSummary.getPaymentByWeeklyRange(startdate, enddate);
+            }
+            if(type.equals("Monthly")){
+                return daoSalesSummary.getPaymentByGivenDateMonthlyRange(startdate, enddate);
+            }
+            //not null go when if not
+            return null;
+    }
+
+     @GetMapping(value = "/report/salesbysixmonth",produces = "application/json")
+    public String[][] GetSalesdataBySixMonth(){
+            return daoSalesSummary.getPaymentByPrevSixMonth();
+    }
 }

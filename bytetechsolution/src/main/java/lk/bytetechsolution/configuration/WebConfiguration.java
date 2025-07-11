@@ -58,6 +58,7 @@ public class WebConfiguration {
         .requestMatchers("/accessories/**").hasAnyAuthority("Admin","Manager","Assistant Manager")
 
         .requestMatchers("/inventory/**").hasAnyAuthority("Admin","Manager","Store Manager")
+        .requestMatchers("/report/**").hasAnyAuthority("Admin","Manager")
         
         //allow for supplier portal
         .requestMatchers("/supplier/**").hasAnyAuthority("Admin","Manager","Assistant Manager") 

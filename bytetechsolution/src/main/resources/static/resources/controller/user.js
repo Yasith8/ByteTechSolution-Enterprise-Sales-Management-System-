@@ -423,7 +423,6 @@ const buttonUserFormSubmit = () => {
                         allowOutsideClick: false,
                         allowEscapeKey: false
                     }).then(() => {
-                        alert("User Saved Successfully!");
                         //hide the model
                         $('#userAddModal').modal('hide');
                         //reset the employee form

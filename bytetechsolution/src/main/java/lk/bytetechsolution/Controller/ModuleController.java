@@ -49,7 +49,6 @@ public class ModuleController {
         return dao.getModuleByLoggedUser(authentication.getName());
     }
     
-     
 
 }
 

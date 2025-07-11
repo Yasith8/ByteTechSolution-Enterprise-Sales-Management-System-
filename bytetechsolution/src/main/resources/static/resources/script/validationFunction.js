@@ -120,6 +120,26 @@ const validateFileField = (fieldId, object, photo, photoname, oldObject, display
     }
 }
 
+
+const profileSetupValidateFileField = (fieldId, object, photo, displayPhoto) => {
+    if (fieldId.value != "") {
+        let file = fieldId.files[0];
+        //displayPhotoName.value = file['name'];
+        //console.log(file['name']);
+
+        let fileReader = new FileReader();
+
+        fileReader.onload = function(e) {
+            displayPhoto.src = e.target.result;
+            window[object][photo] = btoa(e.target.result); //encrypt 
+            //console.log(e.target.result);
+
+        }
+        fileReader.readAsDataURL(file);
+        return;
+    }
+}
+
 const generateRangeRegex = (max) => {
     //0 or ota wada adu unoth
     //^(?!.*)$ - negetive lockhead

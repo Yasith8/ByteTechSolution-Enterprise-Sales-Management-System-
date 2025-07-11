@@ -5,14 +5,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import lk.bytetechsolution.Dao.EmployeeDao;
+import lk.bytetechsolution.Dao.ModuleDao;
 import lk.bytetechsolution.Dao.RoleDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.LoggedUserEntity;
+import lk.bytetechsolution.Entity.ModuleEntity;
 import lk.bytetechsolution.Entity.RoleEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
@@ -30,6 +35,9 @@ public class LoginController {
 
     @Autowired
     private RoleDao daoRole;
+
+    @Autowired
+    private ModuleDao daoModule;
 
     @Autowired
     private BCryptPasswordEncoder BCryptPasswordEncoder;
@@ -85,6 +93,65 @@ public class LoginController {
         return loggedUserDetails;
     }
     
+    @PostMapping(value="/loggeduserdetails/insert")
+    public String insertUserData(@RequestBody LoggedUserEntity loggeduser){
+        //user existance
+        UserEntity extUser=daoUser.getByUsername(loggeduser.getOldusername());
+        
+        //if user not exist
+        if(extUser==null){
+            return "User is not Exist";
+        }
+        UserEntity extUserByUsername=daoUser.getByUsername(loggeduser.getUsername());
+        if(extUserByUsername !=null && extUser.getId() != extUserByUsername.getId()){
+            return "Added Username is already exist in the system.";
+        }
+        
+        UserEntity extUserEmail=daoUser.getByEmail(loggeduser.getEmail());
+        if(extUserEmail !=null && extUser.getId() != extUserEmail.getId()){
+            return "Added Email is already exist in the system.";
+        }
+
+        extUser.setUsername(loggeduser.getUsername());
+        extUser.setPhoto(loggeduser.getPhoto());
+        extUser.setEmail(loggeduser.getEmail());
+        extUser.setAdded_datetime(LocalDateTime.now());
+        
+        //check existance
+       if(loggeduser.getOldpassword() != null && loggeduser.getNewpassword() != null){
+    // First, verify the old password is correct
+    if(!BCryptPasswordEncoder.matches(loggeduser.getOldpassword(), extUser.getPassword())){
+        return "Change not Completed: Old password is not matched.";
+    }
+    
+    // Check if new password is different from old password
+    if(BCryptPasswordEncoder.matches(loggeduser.getNewpassword(), extUser.getPassword())){
+        return "Change not Completed: New password cannot be the same as old password.";
+    }
+    
+    // If all validations pass, update the password
+    extUser.setPassword(BCryptPasswordEncoder.encode(loggeduser.getNewpassword()));
+}
+
+        try {
+            daoUser.save(extUser);
+            return "OK";
+        } catch (Exception e) {
+            return "Update not completed. System has following errors:"+e.getMessage();
+        }
+
+        
+
+    }
+
+    @RequestMapping(value="/denymodulebyloggeduser")
+        public List<ModuleEntity> getDeniedModulesByUser(){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserEntity loggedUser = daoUser.getByUsername(authentication.getName());
+            return daoModule.getModuleByLoggedUsername(loggedUser.getUsername());
+        }
+    
+
     @RequestMapping(value = "/dashboard")
     public ModelAndView dashboardUI(){
         ModelAndView dashView=new ModelAndView();
