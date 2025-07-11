@@ -21,10 +21,13 @@ import org.springframework.web.servlet.ModelAndView;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.GRNDao;
 import lk.bytetechsolution.Dao.GRNStatusDao;
+import lk.bytetechsolution.Dao.SerialNoListDao;
 import lk.bytetechsolution.Dao.SupplierPaymentDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.GRNEntity;
+import lk.bytetechsolution.Entity.GRNItemEntity;
 import lk.bytetechsolution.Entity.PurchaseRequestEntity;
+import lk.bytetechsolution.Entity.SerialNoListEntity;
 import lk.bytetechsolution.Entity.SupplierPaymentEntity;
 import lk.bytetechsolution.Entity.SupplierPaymentHasGRNEntity;
 import lk.bytetechsolution.Entity.UserEntity;
@@ -41,6 +44,9 @@ public class SupplierPaymentController {
 
     @Autowired
     private EmployeeDao daoEmployee;
+
+    @Autowired 
+    private SerialNoListDao daoSerial;
 
     @Autowired
     private GRNStatusDao daoGrnStatus;
@@ -125,6 +131,26 @@ public class SupplierPaymentController {
                 if(grn.getFinalamount()==grn.getPaidamount()){
                     grn.setGrnstatus_id(daoGrnStatus.getReferenceById(7));
                 }
+
+                for(GRNItemEntity grnitem:grn.getGrn_item()){
+                grnitem.setGrn_id((grn));
+            }
+
+            for(SerialNoListEntity serialNoList:grn.getSerial_no_list()){
+                serialNoList.setGrn_id((grn));
+                
+                String nextAcsSerialNo=daoSerial.getNextASCSeriealNo();
+
+                if(serialNoList.getCategory_id().getId()==11){
+
+                    if(nextAcsSerialNo==null){
+                        serialNoList.setSerialno("SNL0001");
+                    }else{
+                        serialNoList.setSerialno(nextAcsSerialNo);
+                    }
+                }
+            }
+                
             }
 
             UserEntity addedUserData = daoUser.getByUsername(authentication.getName());

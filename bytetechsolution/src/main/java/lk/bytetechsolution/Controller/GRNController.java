@@ -33,8 +33,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
 /* 
  * @RestController is a specialized version of @Controller, combining @Controller and @ResponseBody to simplify RESTful API development.
  * It allows Spring Boot to automatically detect implementation classes through classpath scanning
@@ -44,9 +42,10 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 @RestController
 public class GRNController {
-    /* 
+    /*
      * AutoWired used for automatic dependency injection
-     * Autowired automatically injects an instance of a class where it’s needed, without you having to create it manually
+     * Autowired automatically injects an instance of a class where it’s needed,
+     * without you having to create it manually
      * inject this Instance into dao variable
      * the method can use dao for save,retrive,maipulate motherboardformfactor data
      */
@@ -56,7 +55,7 @@ public class GRNController {
     @Autowired
     private SerialNoListDao daoSerial;
 
-     @Autowired
+    @Autowired
     private UserDao daoUser;
 
     @Autowired
@@ -74,209 +73,214 @@ public class GRNController {
     @Autowired
     private PrivilageController privilageController;
 
-   @RequestMapping(value = "/grn")
-   public ModelAndView GetGRNUI(){
-    //get logged user authentication object using security
-        // this help to retrieve the current authentication object which holds the user detail
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+    @RequestMapping(value = "/grn")
+    public ModelAndView GetGRNUI() {
+        // get logged user authentication object using security
+        // this help to retrieve the current authentication object which holds the user
+        // detail
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        //get current log user
-        UserEntity loggedUser=daoUser.getByUsername(authentication.getName());
+        // get current log user
+        UserEntity loggedUser = daoUser.getByUsername(authentication.getName());
 
-        //current loggedemployee
-        String loggedEmployee=daoEmployee.getFullnameById(loggedUser.getId());
+        // current loggedemployee
+        String loggedEmployee = daoEmployee.getFullnameById(loggedUser.getId());
 
         // Create a new ModelAndView object to hold the model data and view information
-        ModelAndView grnView=new ModelAndView();
-        //pass the ui
+        ModelAndView grnView = new ModelAndView();
+        // pass the ui
         grnView.setViewName("grn.html");
-        //attributes set to show titles in web page using theamleaf
+        // attributes set to show titles in web page using theamleaf
         grnView.addObject("title", "GRN Management || Bytetech Solution");
         grnView.addObject("user", authentication.getName());// passing logged user name
         grnView.addObject("EmpName", loggedEmployee);
-        grnView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());//get the first role
+        grnView.addObject("UserRole", loggedUser.getRoles().iterator().next().getName());// get the first role
         grnView.addObject("LoggedUserPhoto", loggedUser.getPhoto());
 
         return grnView;
-   }
+    }
 
-   @GetMapping(value = "/grn/alldata",produces = "application/json")
-   public List<GRNEntity> GetGRNDetails() {
-       Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GRN");
+    @GetMapping(value = "/grn/alldata", produces = "application/json")
+    public List<GRNEntity> GetGRNDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "GRN");
 
-        if(!userPrivilage.get("select")){
+        if (!userPrivilage.get("select")) {
             return new ArrayList<GRNEntity>();
         }
 
         return daoGRN.findAll();
 
-   }
-   
-   @GetMapping(value = "/grn/unpaidgrn/{supplierId}",produces = "application/json")
-   public List<GRNEntity> GetUnpaidGRNDetails(@PathVariable Integer supplierId) {
-       Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GRN");
+    }
 
-        if(!userPrivilage.get("select")){
+    @GetMapping(value = "/grn/unpaidgrn/{supplierId}", produces = "application/json")
+    public List<GRNEntity> GetUnpaidGRNDetails(@PathVariable Integer supplierId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "GRN");
+
+        if (!userPrivilage.get("select")) {
             return new ArrayList<GRNEntity>();
         }
 
         return daoGRN.getUnpaidGRN(supplierId);
 
-   }
+    }
 
-    @GetMapping(value = "/grn/allgrnbysupplier/{supplierId}",produces = "application/json")
-   public List<GRNEntity> GetAllGRNBySypplier(@PathVariable Integer supplierId) {
-       Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GRN");
+    @GetMapping(value = "/grn/allgrnbysupplier/{supplierId}", produces = "application/json")
+    public List<GRNEntity> GetAllGRNBySypplier(@PathVariable Integer supplierId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "GRN");
 
-        if(!userPrivilage.get("select")){
+        if (!userPrivilage.get("select")) {
             return new ArrayList<GRNEntity>();
         }
 
         return daoGRN.getAllGrnBySupplier(supplierId);
 
-   }
+    }
 
-   @PostMapping(value = "/grn")
-   public String AddGRN(@RequestBody GRNEntity grn){
-    //authentiction and autherzation
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GRN");
+    @PostMapping(value = "/grn")
+    public String AddGRN(@RequestBody GRNEntity grn) {
+        // authentiction and autherzation
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "GRN");
 
-        if(!userPrivilage.get("insert")){
+        if (!userPrivilage.get("insert")) {
             return "Permission Denied! Save not Completed";
         }
 
         try {
-             //set AutoGenarated Value
-             String nextNumber=daoGRN.getNextGRNCode();
+            // set AutoGenarated Value
+            String nextNumber = daoGRN.getNextGRNCode();
 
-             //if next employee number is not come then set manualy last number+1
-             if(nextNumber==null){
-                 grn.setGrncode("GRN0001");
-             }else{
-                 grn.setGrncode(nextNumber);
-             }
+            // if next employee number is not come then set manualy last number+1
+            if (nextNumber == null) {
+                grn.setGrncode("GRN0001");
+            } else {
+                grn.setGrncode(nextNumber);
+            }
 
-            UserEntity addedUserData=daoUser.getByUsername(authentication.getName());
+            // set userdata
+            UserEntity addedUserData = daoUser.getByUsername(authentication.getName());
             grn.setAddeduser(addedUserData.getId());
 
             grn.setAddeddate(LocalDateTime.now());
 
-            for(GRNItemEntity grnitem:grn.getGrn_item()){
+            // inner loop ekak recursion off karanna
+            for (GRNItemEntity grnitem : grn.getGrn_item()) {
                 grnitem.setGrn_id((grn));
             }
 
-            for(SerialNoListEntity serialNoList:grn.getSerial_no_list()){
-                serialNoList.setGrn_id((grn));
-                
-                String nextAcsSerialNo=daoSerial.getNextASCSeriealNo();
+            // Fetch current max serial number ONCE
+            String lastSerial = daoSerial.getNextASCSeriealNo(); // This returns the NEXT one already
 
-                if(serialNoList.getCategory_id().getId()==11){
+            int serialCounter = 1;
+            if (lastSerial != null && lastSerial.matches("SNL\\d{4}")) {
+                serialCounter = Integer.parseInt(lastSerial.substring(3)); // extract 0057
+            } else {
+                serialCounter = 0;
+            }
 
-                    if(nextAcsSerialNo==null){
-                        serialNoList.setSerialno("SNL0001");
-                    }else{
-                        serialNoList.setSerialno(nextAcsSerialNo);
-                    }
+            for (SerialNoListEntity serialNoList : grn.getSerial_no_list()) {
+                serialNoList.setGrn_id(grn);
+
+                if (serialNoList.getCategory_id().getId() == 11) {
+                    serialCounter++; // increment manually
+                    String nextSerial = String.format("SNL%04d", serialCounter);
+                    serialNoList.setSerialno(nextSerial);
                 }
             }
-
             daoGRN.save(grn);
 
-            //purchase order dependency management
-            PurchaseRequestEntity thisGrnPR=daoPR.getReferenceById(grn.getPurchase_request_id().getId());
+            // purchase order dependency management
+            PurchaseRequestEntity thisGrnPR = daoPR.getReferenceById(grn.getPurchase_request_id().getId());
             thisGrnPR.setPurchasestatus_id(daoPRStatus.getReferenceById(1));
 
-            for(PurchaseRequestItemEntity purchaseequestitem:thisGrnPR.getPurchase_request_item()){
+            for (PurchaseRequestItemEntity purchaseequestitem : thisGrnPR.getPurchase_request_item()) {
                 purchaseequestitem.setPurchase_request_id(thisGrnPR);
             }
-            
+
             daoPR.save(thisGrnPR);
 
-
-
-
             return "OK";
 
         } catch (Exception e) {
-            return "Save not Completed: "+e.getMessage();
+            return "Save not Completed: " + e.getMessage();
         }
 
-   }
+    }
 
+    @DeleteMapping(value = "/grn")
+    public String DeleteGRN(@RequestBody GRNEntity grn) {
+        // Autherntication and autherization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "GRN");
 
-   @DeleteMapping(value = "/grn")
-   public String DeleteGRN(@RequestBody GRNEntity grn){
-       //Autherntication and autherization
-       Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
-       HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(), "GRN");
-   
-       
-       if(!userPrivilage.get("delete")){
-           return "Permission Denied! Delete not Completed";
-       }
-
-       GRNEntity extGRN=daoGRN.getReferenceById(grn.getId());
-      if(extGRN==null){
-       return "Delete not Completed.GRN not exists";
-      }
-
-      try {
-       UserEntity deleteUser=daoUser.getByUsername(authentication.getName());
-       grn.setDeleteuser(deleteUser.getId());
-
-       grn.setDeletedate(LocalDateTime.now());
-
-       grn.setGrnstatus_id(daoGRNStatus.getReferenceById(4));
-
-       daoGRN.save(grn);
-
-       return "OK";
-      } catch (Exception e) {
-       return "Delete not completed. "+e.getMessage();
-      }
-   }
-
-   @PutMapping(value = "/grn")
-    public String updatePurchaseRequest(@RequestBody GRNEntity grn) {
-       
-        //Authentication and Autherization
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GRN");
-
-        if(!userPrivilage.get("update")){
-            return "Permission Denied! Update not Completed";
+        if (!userPrivilage.get("delete")) {
+            return "Permission Denied! Delete not Completed";
         }
 
-        GRNEntity extGRN=daoGRN.getReferenceById(grn.getId());
-        if(extGRN==null){
-         return "Update not Completed.GRN not exists";
+        GRNEntity extGRN = daoGRN.getReferenceById(grn.getId());
+        if (extGRN == null) {
+            return "Delete not Completed.GRN not exists";
         }
-      
-
 
         try {
-            //asign update user
-            UserEntity modifyUser=daoUser.getByUsername(authentication.getName());
-            grn.setModifyuser(modifyUser.getId());
+            UserEntity deleteUser = daoUser.getByUsername(authentication.getName());
+            grn.setDeleteuser(deleteUser.getId());
 
-            //assign update date
-            grn.setModifydate(LocalDateTime.now());
+            grn.setDeletedate(LocalDateTime.now());
 
-            for(GRNItemEntity grnitem:grn.getGrn_item()){
-                grnitem.setGrn_id((grn));
-            }
+            grn.setGrnstatus_id(daoGRNStatus.getReferenceById(4));
 
-            //save the data
             daoGRN.save(grn);
+
             return "OK";
         } catch (Exception e) {
-            return "Update not Completed."+e.getMessage();
+            return "Delete not completed. " + e.getMessage();
         }
     }
 
+    @PutMapping(value = "/grn")
+    public String updatePurchaseRequest(@RequestBody GRNEntity grn) {
+
+        // Authentication and Autherization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String, Boolean> userPrivilage = privilageController.getPrivilageByUserModule(authentication.getName(),
+                "GRN");
+
+        if (!userPrivilage.get("update")) {
+            return "Permission Denied! Update not Completed";
+        }
+
+        GRNEntity extGRN = daoGRN.getReferenceById(grn.getId());
+        if (extGRN == null) {
+            return "Update not Completed.GRN not exists";
+        }
+
+        try {
+            // asign update user
+            UserEntity modifyUser = daoUser.getByUsername(authentication.getName());
+            grn.setModifyuser(modifyUser.getId());
+
+            // assign update date
+            grn.setModifydate(LocalDateTime.now());
+
+            for (GRNItemEntity grnitem : grn.getGrn_item()) {
+                grnitem.setGrn_id((grn));
+            }
+
+            // save the data
+            daoGRN.save(grn);
+            return "OK";
+        } catch (Exception e) {
+            return "Update not Completed." + e.getMessage();
+        }
+    }
 
 }

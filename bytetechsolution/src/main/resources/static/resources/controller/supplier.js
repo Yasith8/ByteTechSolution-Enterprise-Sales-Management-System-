@@ -27,6 +27,8 @@ const refreshSupplierForm = () => {
     supplier = new Object();
     oldSupplier = null;
 
+    buttonUpdate.classList.add('elmentHide')
+    buttonSubmit.classList.remove('elmentHide')
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
 
@@ -116,6 +118,9 @@ const refillSupplierForm = (ob, rowIndex) => {
 
     buttonUpdate.disabled = false;
     buttonUpdate.classList.add('modal-btn-update');
+
+    buttonUpdate.classList.remove('elmentHide')
+    buttonSubmit.classList.add('elmentHide')
 
     supplier = JSON.parse(JSON.stringify(ob));
     oldSupplier = ob;

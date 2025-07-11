@@ -15,7 +15,7 @@ import lk.bytetechsolution.Entity.SerialNoListEntity;
  * can use for custom query methods
  */
 public interface SerialNoListDao extends JpaRepository<SerialNoListEntity,Integer>{
-    @Query(value = "select concat('SNL',lpad(substring(max(sno.serialno),4)+1,4,'0')) as serialno from bytetechsolution.serial_no_list as sno",nativeQuery = true)
+    @Query(value = "select concat('SNL',lpad(substring(max(sno.serialno),4)+1,4,'0')) as serialno from bytetechsolution.serial_no_list as sno where sno.serialno like 'SNL%'",nativeQuery = true)
     String getNextASCSeriealNo();
 
     @Query(value="select * from bytetechsolution.serial_no_list as sno where sno.serialno=?1",nativeQuery = true)

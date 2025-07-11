@@ -176,6 +176,16 @@ const refreshQuotationRequestForm = () => {
 
 
 
+            //made security privilages
+            let userPrivilages = getServiceAjaxRequest("/privilage/byloggeduser/QUOTATION");
+
+            if (!userPrivilages.insert) {
+                buttonSubmit.disabled = true;
+                buttonSubmit.classList.remove('modal-btn-submit');
+
+                inputFieldsHandler([selectInnerCategory, selectInnerBrand, textSupplierName, numberSupplierPhone, textSupplierEmail, textAddress, textAgentName, numberAgentPhone, textAgentEmail, selectBankName, textBranch, textAccountName, numberAccountNo, selectSupplierStatus], true);
+                buttonClear.classList.remove('modal-btn-clear');
+            }
 
 
 

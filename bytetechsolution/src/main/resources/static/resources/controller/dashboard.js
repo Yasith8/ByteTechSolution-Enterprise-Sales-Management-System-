@@ -1,33 +1,3 @@
-const salesTrendCtx = document.getElementById('mainChart').getContext('2d');
-const salesTrendChart = new Chart(salesTrendCtx, {
-    type: 'line',
-    data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [{
-            label: 'Sales ($)',
-            data: [120, 200, 150, 300, 250, 400, 350],
-            backgroundColor: 'hsla(157, 81.90%, 56.70%, 0.20)',
-            borderColor: '#103D45',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true,
-            pointRadius: 5,
-            pointBackgroundColor: '#103D45'
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    stepSize: 50
-                }
-            }
-        }
-    }
-});
-
 window.addEventListener('load', () => {
     const loggeduser = getServiceAjaxRequest('/loggeduserdetails');
     console.log(loggeduser);
@@ -38,6 +8,23 @@ window.addEventListener('load', () => {
 
     const loggeduserrole = getServiceAjaxRequest(`/role/rolebyusername/${loggeduser.username}`);
     console.log("loggeduser", loggeduserrole)
+
+    const last30CompletedOrders = getServiceAjaxRequest('/report/getlast30daycompletedorders')
+    const last30PendingOrders = getServiceAjaxRequest('/report/getlast30daypendingorders')
+    const TotalSales = getServiceAjaxRequest('/report/salesbythirtydays')
+    const last30totalCustomers = getServiceAjaxRequest('/report/totalcustomer')
+
+    console.log("1", last30CompletedOrders)
+    console.log("2", last30PendingOrders)
+    console.log("3", last30totalCustomers)
+    console.log("4", TotalSales)
+
+    statCardOneMainContent.textContent = last30CompletedOrders.length
+    statCardTwoMainContent.textContent = last30PendingOrders.length;
+    statCardThreeMainContent.textContent = last30totalCustomers;
+    statCardFourMainContent.textContent = `Rs. ${TotalSales[0]}`
+
+    last30CompletedOrders.length
 
     if (loggeduserrole[0].name == "Manager") {
         ManagerDashboardSection1.classList.remove('elementHide')
@@ -123,7 +110,65 @@ window.addEventListener('load', () => {
         btnCustomer.classList.add('elementHide')
     }
 
+    let prs = getServiceAjaxRequest('/purchaserequest/alldata');
+    prs = prs.slice(0, 5);
+    const displayList = [
+        { dataType: 'text', propertyName: 'requestcode' },
+        { dataType: 'function', propertyName: getSupplier },
+        { dataType: 'text', propertyName: 'totalamount' },
+        { dataType: 'function', propertyName: getPRStatus },
+    ]
+    showOnlyTable(dashboardTable, prs, displayList)
 
+    let lastSevenDaysSales = getServiceAjaxRequest('/report/lastsevendayssales');
+    console.groupEnd("lassss", lastSevenDaysSales)
+    let ReportDataList = new Array();
+    let label = new Array();
+    let data = new Array();
+
+    for (const index in lastSevenDaysSales) {
+        let object = new Object();
+        object.date = lastSevenDaysSales[index][0];
+        object.count = lastSevenDaysSales[index][1];
+        ReportDataList.push(object)
+
+        label.push(lastSevenDaysSales[index][0])
+        data.push(lastSevenDaysSales[index][1])
+    }
+
+
+
+    const salesTrendCtx = document.getElementById('mainChart').getContext('2d');
+    if (Chart.getChart("mainChart") != undefined)
+        Chart.getChart("mainChart").destroy();
+    new Chart(salesTrendCtx, {
+        type: 'line',
+        data: {
+            labels: label,
+            datasets: [{
+                label: 'Sales (Rs)',
+                data: data,
+                backgroundColor: 'hsla(157, 81.90%, 56.70%, 0.20)',
+                borderColor: '#103D45',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true,
+                pointRadius: 5,
+                pointBackgroundColor: '#103D45'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 50
+                    }
+                }
+            }
+        }
+    });
 
 
 
@@ -145,5 +190,28 @@ function getGreetingByTime() {
         return "Good Evening";
     } else {
         return "Good Night";
+    }
+}
+
+
+const getSupplier = (ob) => {
+    return ob.supplier_id.name;
+}
+const getPRStatus = (ob) => {
+    if (ob.purchasestatus_id.name == 'Recived') {
+        return '<p class="common-status-available">' + ob.purchasestatus_id.name + '</p>';
+    }
+
+    if (ob.purchasestatus_id.name == 'Requested') {
+        return '<p class="common-status-resign">' + ob.purchasestatus_id.name + '</p>'
+    }
+
+    if (ob.purchasestatus_id.name == 'Rejected') {
+        return '<p class="common-status-reject">' + ob.purchasestatus_id.name + '</p>'
+    }
+    if (ob.purchasestatus_id.name == 'Deleted') {
+        return '<p class="common-status-delete">' + ob.purchasestatus_id.name + '</p>'
+    } else {
+        return '<p class="common-status-other">' + ob.purchasestatus_id.name + '</p>'
     }
 }

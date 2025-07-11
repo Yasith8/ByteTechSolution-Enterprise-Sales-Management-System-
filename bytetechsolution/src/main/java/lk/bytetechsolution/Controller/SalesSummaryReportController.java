@@ -1,6 +1,8 @@
 package lk.bytetechsolution.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,5 +77,30 @@ public class SalesSummaryReportController {
      @GetMapping(value = "/report/salesbysixmonth",produces = "application/json")
     public String[][] GetSalesdataBySixMonth(){
             return daoSalesSummary.getPaymentByPrevSixMonth();
+    }
+
+     @GetMapping(value = "/report/getlast30daycompletedorders",produces = "application/json")
+    public String[][] GetLastthirtydaysCompletedOrders(){
+            return daoSalesSummary.getLast30daysCompletedOrders();
+    }
+
+    @GetMapping(value = "/report/getlast30daypendingorders",produces = "application/json")
+    public String[][] GetLastthirtydayPendingOrders(){
+            return daoSalesSummary.getLast30daysPendingOrders();
+    }
+
+     @GetMapping(value = "/report/salesbythirtydays",produces = "application/json")
+    public String[][] GetSalesdataBythirtydays(){
+            return daoSalesSummary.getPaymentByThirtyDays();
+    }
+
+    @GetMapping(value = "/report/totalcustomer",produces = "application/json")
+    public String GetTotalCustomerBythirtydays(){
+            return daoSalesSummary.getLast30daysTotalCustomers();
+    }
+
+    @GetMapping(value = "/report/lastsevendayssales",produces = "application/json")
+    public String[][] GetTotalCustomerBySevendays(){
+            return daoSalesSummary.getLast7DaysSales();
     }
 }

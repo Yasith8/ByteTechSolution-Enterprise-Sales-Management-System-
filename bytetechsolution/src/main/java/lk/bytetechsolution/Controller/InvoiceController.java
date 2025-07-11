@@ -144,6 +144,7 @@ public class InvoiceController {
 
             invoice.setAddeddate(LocalDateTime.now());
 
+            //INNER INVOICE ITEM
             for (InvoiceItemEntity invoiceitem : invoice.getInvoice_item()) {
                 invoiceitem.setInvoice_id((invoice));
 
@@ -151,13 +152,14 @@ public class InvoiceController {
                 String serialNumberString = invoiceitem.getSerial_no();
                 System.err.println("Checking Serial No: " + serialNumberString);
                 SerialNoListEntity serialNo = daoSerialNoList.findBySerialNo(serialNumberString);
-
+                
                 if (serialNo != null) {
                     Integer quantity = invoiceitem.getQuantity();
-                    Integer updatedQuantity = quantity - 1;
-                    serialNo.setQuantity(updatedQuantity);
+                    System.err.println("Checking Quantity: " + quantity);
+                    serialNo.setQuantity(serialNo.getQuantity() - invoiceitem.getQuantity());
+                    System.err.println("Checking updatedQuantity: " +serialNo.getQuantity()  );
 
-                    if (updatedQuantity == 0) {
+                    if (serialNo.getQuantity() == 0) {
                         serialNo.setStatus(false);
                     }
                     daoSerialNoList.save(serialNo);

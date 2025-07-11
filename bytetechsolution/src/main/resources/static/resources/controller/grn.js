@@ -72,8 +72,10 @@ const refreshGrnForm = () => {
     fillMultipleItemOfDataOnSignleSelectRecursion(selectPurchaseRequest, "Select Purchase Request", availablePurchaseRequest, "requestcode", "supplier_id.name");
 
     //grn eka
+    selectGRNStatus.disabled = true;
     grnstatus = getServiceAjaxRequest("/grnstatus/alldata")
-    fillDataIntoSelect(selectGRNStatus, "Select GRN Status", grnstatus, "name")
+    fillDataIntoSelect(selectGRNStatus, "Select GRN Status", grnstatus, "name", grnstatus[0].name)
+    grn.grnstatus_id = grnstatus[0];
 
     decimalTotalAmount.disabled = true;
     decimalFinalAmount.disabled = true;

@@ -4,6 +4,8 @@ package lk.bytetechsolution.Controller;
 import java.util.*;
 import java.time.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.PurchaseRequestDao;
 import lk.bytetechsolution.Dao.PurchaseStatusDao;
-import lk.bytetechsolution.Dao.SupplierQuotationDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.PurchaseRequestEntity;
 import lk.bytetechsolution.Entity.PurchaseRequestItemEntity;
@@ -90,7 +91,7 @@ public class PurchaseRequestController {
             return new ArrayList<PurchaseRequestEntity>();
         }
 
-        return daoPurchaseRequest.findAll();
+        return daoPurchaseRequest.findAll(Sort.by(Direction.DESC, "id"));
     }
 
        @GetMapping(value="/purchaserequest/bysuppplier/{supplierId}",produces = "application/json")
