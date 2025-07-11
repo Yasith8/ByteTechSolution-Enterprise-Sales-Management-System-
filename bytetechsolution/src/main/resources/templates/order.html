@@ -96,88 +96,8 @@
 
                     <div class="row">
                         <div class="col-6">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">Genaral Order Details</div>
-                                        <div class="card-body">
-                                            <!-- supplier Basic Details -->
-                                            <form id="formOrder">
 
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="form-floating mb-3">
-                                                            <select name="customer" id="selectCustomer" class="form-select" onchange="selectDynamicValidator(this,'','invoice','customer_id')">
-                                                                <option value=""  selected disabled>Select Customer</option>
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <!-- PURCHASE REQUEST Input Start -->
-
-                                                    <div class="col-6">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="decimalTotalAmount" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'invoice', 'totalamount')">
-                                                            <label for="decimalTotalAmount">Total Amount<span class="requiredIcon">*</span></label>
-                                                        </div>
-                                                    </div>
-                                                    <!-- PURCHASE REQUEST Input end -->
-                                                    <div class="col-6">
-                                                        <div class="form-floating mb-3">
-                                                            <select name="brand" id="selectSeasonalDiscount" class="form-select" onchange="selectDynamicValidator(this,'','invoice','seasonaldiscount_id')">
-                                                                <option value=""  selected disabled>Seasonal Discount</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <!-- total amount  Start -->
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="decimalFinalAmount" placeholder="" required onkeyup="textValidator(this ,'^(100|[1-9][0-9]?)$', 'invoice','finalamount')">
-                                                            <label for="decimalFinalAmount">Final Amount<span class="requiredIcon">*</span></label>
-                                                        </div>
-                                                    </div>
-                                                    <!-- total amount end -->
-                                                    <!--   
-                                                    <div class="col-4">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="decimalPaidAmount" placeholder="" onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$','invoice','paidamount')">
-                                                            <label for="decimalPaidAmount">Paid Amount</label>
-                                                        </div>
-                                                    </div>
-                                                   
-                                                    <div class="col-4">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" id="decimalBalance" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'invoice','balance')">
-                                                            <label for="decimalBalance">Balance<span class="requiredIcon">*</span></label>
-                                                        </div>
-                                                    </div>
-                                                      -->
-                                                    <!-- </div> -->
-
-                                                    <!-- <div class="row"> -->
-                                                    <div class="col-4">
-                                                        <div class="form-floating mb-3">
-                                                            <select name="brand" id="selectInvoiceStatus" class="form-select" onchange="selectDynamicValidator(this,'','invoice','invoicestatus_id')">
-                                                                <option value=""  selected disabled>Select Invoice Status</option>
-                                                            </select>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
+                            <div class="row ">
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-header">Order Item Selection</div>
@@ -250,6 +170,132 @@
                                                 <div class="col-2"><button id="buttonInnerSubmit" class="btn inner-add-btn modal-button" onclick="innerOrderAdd()">Add</button></div>
 
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">Genaral Order Details</div>
+                                        <div class="card-body">
+                                            <!-- supplier Basic Details -->
+                                            <form id="formOrder">
+
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        <div class="form-floating mb-3">
+                                                            <select name="customer" id="selectCustomer" class="form-select" onchange="selectDynamicValidator(this,'','invoice','customer_id')">
+                                                                <option value=""  selected disabled>Select Customer</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <button class="btn inner-update-btn modal-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" id="buttonAddNewCustomer">Add New</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="collapse" id="collapseExample">
+                                                        <div class="card card-body">
+                                                            <form id="formCustomer">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <div class="form-floating mb-3">
+                                                                            <input type="text" class="form-control" id="textCustomer" placeholder="" required onkeyup="textValidator(this,'^[A-Z][A-Za-z0-9 ]+$','customer','name')">
+                                                                            <label for="textCustomer">Customer Name<span class="requiredIcon">*</span></label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-4">
+                                                                        <div class="form-floating mb-3">
+                                                                            <input type="text" class="form-control" id="textMobile" placeholder="" required onkeyup="textValidator(this,'^[0][7][01245678][0-9]{7}$', 'customer', 'mobile')">
+                                                                            <label for="textMobile">Mobile No<span class="requiredIcon">*</span></label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        <div class="form-floating mb-3">
+                                                                            <input type="text" class="form-control" id="textEmail" placeholder="" required onkeyup="textValidator(this,'^[A-Za-z0-9\\_\\-]{8,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'customer','email')">
+                                                                            <label for="textEmail">Email<span class="requiredIcon">*</span></label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        <div class="form-floating mb-3">
+                                                                            <input type="text" class="form-control" id="textAddress" placeholder="" required onkeyup="textValidator(this,'^(([0-9\\/\\-\\sA-Za-z]{1,20}[\\,][\\s])+([A-Z][a-z0-9\\-]{1,20}[.]))$','customer','address')">
+                                                                            <label for="textAddress">Address<span class="requiredIcon">*</span></label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-8"></div>
+                                                                    <div class="col-4" style="display: flex;justify-content: end;">
+                                                                        <button type="button" class="btn inner-update-btn " onclick="addCustomer()">Add Customer</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <!-- PURCHASE REQUEST Input Start -->
+
+                                                    <div class="col-6">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="number" class="form-control" id="decimalTotalAmount" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'invoice', 'totalamount')">
+                                                            <label for="decimalTotalAmount">Total Amount<span class="requiredIcon">*</span></label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- PURCHASE REQUEST Input end -->
+                                                    <div class="col-6">
+                                                        <div class="form-floating mb-3">
+                                                            <select name="brand" id="selectSeasonalDiscount" class="form-select" onchange="selectDynamicValidator(this,'','invoice','seasonaldiscount_id')">
+                                                                <option value=""  selected disabled>Seasonal Discount</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- total amount  Start -->
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="number" class="form-control" id="decimalFinalAmount" placeholder="" required onkeyup="textValidator(this ,'^(100|[1-9][0-9]?)$', 'invoice','finalamount')">
+                                                            <label for="decimalFinalAmount">Final Amount<span class="requiredIcon">*</span></label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- total amount end -->
+                                                    <!--   
+                                                    <div class="col-4">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="number" class="form-control" id="decimalPaidAmount" placeholder="" onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$','invoice','paidamount')">
+                                                            <label for="decimalPaidAmount">Paid Amount</label>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    <div class="col-4">
+                                                        <div class="form-floating mb-3">
+                                                            <input type="number" class="form-control" id="decimalBalance" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9][0-9]?)$', 'invoice','balance')">
+                                                            <label for="decimalBalance">Balance<span class="requiredIcon">*</span></label>
+                                                        </div>
+                                                    </div>
+                                                      -->
+                                                    <!-- </div> -->
+
+                                                    <!-- <div class="row"> -->
+                                                    <div class="col-4">
+                                                        <div class="form-floating mb-3">
+                                                            <select name="brand" id="selectInvoiceStatus" class="form-select" onchange="selectDynamicValidator(this,'','invoice','invoicestatus_id')">
+                                                                <option value=""  selected disabled>Select Invoice Status</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

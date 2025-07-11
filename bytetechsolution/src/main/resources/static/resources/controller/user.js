@@ -54,13 +54,13 @@ const refreshUserForm = () => {
     textPassword.disabled = false;
     textRePassword.disabled = false;
 
-    buttonSubmit.disabled = false;
-    buttonSubmit.classList.add('modal-btn-submit')
+    buttonUpdate.classList.add('elementHide')
+    buttonSubmit.classList.remove('elementHide')
+    buttonClear.classList.remove('elementHide')
+    passwordRow.classList.remove('elementHide')
 
-    buttonUpdate.disabled = true;
-    buttonUpdate.classList.remove('modal-btn-update');
-
-    //to get employee without user accounts
+    userPictureRemove()
+        //to get employee without user accounts
     employeeWithoutUserAccount = getServiceAjaxRequest("/employee/listwithoutuseraccount");
     //fill that employee data without user account to the dropdown menu
     fillDataIntoSelect(selectFullname, "Select Employee", employeeWithoutUserAccount, "fullname");
@@ -187,9 +187,13 @@ const refillUserForm = (rowOb, rowIndex) => {
 
     //when click the row
     $('#userAddModal').modal('show');
-    //same object cant add in same where
-    //rowob is object, value eja save wenne heap,ram eke neme
-    //olduser=rowOb-->user and olduser variable has same refference
+
+    buttonUpdate.classList.remove('elementHide')
+    buttonSubmit.classList.add('elementHide')
+    buttonClear.classList.add('elementHide')
+        //same object cant add in same where
+        //rowob is object, value eja save wenne heap,ram eke neme
+        //olduser=rowOb-->user and olduser variable has same refference
     user = JSON.parse(JSON.stringify(rowOb));
     olduser = rowOb;
 
@@ -202,6 +206,8 @@ const refillUserForm = (rowOb, rowIndex) => {
     //asign username
     textUsername.value = user.username;
 
+    passwordRow.classList.add('elementHide')
+
 
     //assign profile picture and name
     imgUserPhoto.src = "/resources/image/initialprofile.jpg";
@@ -211,6 +217,7 @@ const refillUserForm = (rowOb, rowIndex) => {
         imgUserPhoto.src = atob(user.photo);
         textUserPhoto.textContent = user.photoname;
     }
+
 
 
 
@@ -297,15 +304,9 @@ const refillUserForm = (rowOb, rowIndex) => {
     textPassword.disabled = true;
     textRePassword.disabled = true;
 
-    buttonUpdate.disabled = false;
-    buttonUpdate.classList.add('modal-btn-update');
 
 
-    buttonSubmit.disabled = true;
-    buttonSubmit.classList.remove('modal-btn-submit')
-
-
-    inputFieldsHandler([selectFullname, textUsername, textPassword, textRePassword, textEmail, checkStatus, checkboxRole, buttonClear], false);
+    inputFieldsHandler([selectFullname, textUsername, textPassword, textRePassword, textEmail, checkStatus, buttonClear], false);
     btnClearImage.classList.add('btn-user-removeImage');
     btnSelectImage.classList.add('btn-user-selectImage');
     buttonClear.classList.add('modal-btn-clear');
@@ -381,50 +382,81 @@ const buttonUserFormSubmit = () => {
     if (errors == "") {
 
         //get user conformation
-        const userSubmitResponse = confirm("Are you sure to submit?");
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to send the purchase request?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, send it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let postResponse;
 
-        if (userSubmitResponse) {
-            //call post service
-            //let postResponse = getHTTPBodyAxajRequst("/user", "POST", user);
+                $.ajax("/user", {
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(user),
+                    async: false,
 
-            let postResponse;
+                    success: function(data) {
+                        console.log("success", data);
+                        postResponse = data;
+                    },
 
-            $.ajax("/user", {
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(user),
-                async: false,
+                    error: function(resData) {
+                        console.log("Fail", resData);
+                        postResponse = resData;
+                    }
 
-                success: function(data) {
-                    console.log("success", data);
-                    postResponse = data;
-                },
+                });
 
-                error: function(resData) {
-                    console.log("Fail", resData);
-                    postResponse = resData;
+                if (postResponse == "OK") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "purchase request submit successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        alert("User Saved Successfully!");
+                        //hide the model
+                        $('#userAddModal').modal('hide');
+                        //reset the employee form
+                        formUser.reset();
+                        //refreash employee form
+                        refreshUserForm();
+                        //refreash employee table
+                        refreshUserTable();
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        html: "Save is not Completed! Following Errors Occured..:<br>" + postResponse,
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: "#F25454"
+                    });
                 }
 
-            });
-
-
-            //if post request done correctly
-            if (postResponse == "OK") {
-                alert("User Saved Successfully!");
-                //hide the model
-                $('#userAddModal').modal('hide');
-                //reset the employee form
-                formUser.reset();
-                //refreash employee form
-                refreshUserForm();
-                //refreash employee table
-                refreshUserTable();
             } else {
-                alert("Save is not Completed! \n Following Errors Occured...\n" + postResponse)
+                Swal.fire({
+                    title: "Error!",
+                    html: "User Addition failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+                    icon: "error",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: "#F25454"
+                });
             }
-        }
-    } else {
-        alert("Form has following errors \n" + errors)
+        })
+
+
     }
 }
 
@@ -477,44 +509,62 @@ const buttonModalClose = () => {
 }
 
 const deleteUser = (ob, rowIndex) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to delete following User? "  ${ob.username}`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let deleteResponse;
+            //delete request
+            $.ajax("/user", {
+                type: "DELETE",
+                contentType: "application/json",
+                data: JSON.stringify(user),
+                async: false,
 
-    //user conformation
-    const userConfirm = confirm("Are you sure to delete User " + ob.username + " who Employee Name " + ob.employee_id.name + "?");
+                success: function(data) {
+                    console.log("success", data);
+                    deleteResponse = data;
+                },
 
-    //if ok
-    if (userConfirm) {
+                error: function(resData) {
+                    console.log("Fail", resData);
+                    deleteResponse = resData;
+                }
 
-        let deleteResponse;
-        //delete request
-        $.ajax("/user", {
-            type: "DELETE",
-            contentType: "application/json",
-            data: JSON.stringify(user),
-            async: false,
+            });
 
-            success: function(data) {
-                console.log("success", data);
-                deleteResponse = data;
-            },
-
-            error: function(resData) {
-                console.log("Fail", resData);
-                deleteResponse = resData;
+            if (deleteResponse == "OK") {
+                Swal.fire({
+                    title: "Success!",
+                    text: "User Deleted Successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    $('#userAddModal').modal('hide');
+                    refreshUserTable()
+                })
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    html: "User Deletion failed due to the following errors:<br>" + deleteResponse,
+                    icon: "error",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: "#F25454"
+                });
             }
-
-        });
-
-        //response is ok
-        if (deleteResponse == "OK") {
-            //updation of form,table
-            alert("Delete User Successfullly");
-            $('#userAddModal').modal('hide');
-            refreshUserTable()
-        } else {
-            console.log("system has following errors:\n" + deleteResponse);
         }
-
-    }
+    })
 
 
 
@@ -628,4 +678,31 @@ const userPictureRemove = () => {
     imgUserPhoto.src = "/resources/image/initialprofile.jpg";
     textUserPhoto.textContent = "No Image Selected";
     FileUserPhoto.value = null;
+}
+
+const buttonRefresh = () => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to refresh the User Form? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Refresh",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            refreshUserForm();
+
+            Swal.fire({
+                title: "Success!",
+                text: "User Form Refreshed Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+        }
+    })
 }

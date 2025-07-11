@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,6 +90,18 @@ public class SupplierController {
         }
 
         return daoSupplier.getActiveSuppliers();
+    }
+
+      @GetMapping(value = "/supplier/supplierbyqrequest/{requestId}",produces = "application/json")
+    public List<SupplierEntity> GetAllqrequestSupplierData(@PathVariable Integer requestId){
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"SUPPLIER");
+
+        if(!userPrivilage.get("select")){
+            return new ArrayList<SupplierEntity>();
+        }
+
+        return daoSupplier.getQRequestSupplier(requestId);
     }
 
     @GetMapping(value = "/supplier/supplierbyid",params = {"id"},produces = "application/json")

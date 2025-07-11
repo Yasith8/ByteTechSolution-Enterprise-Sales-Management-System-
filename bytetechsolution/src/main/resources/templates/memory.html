@@ -57,11 +57,10 @@
                                     <th> Item Name </th>
                                     <th> Brand </th>
                                     <th> Profit Rate (%) </th>
-                                    <th> Series </th>
-                                    <th> Type </th>
-                                    <th> Form Factor </th>
+                                    <th> Speed </th>
                                     <th> Memory Type </th>
-                                    <th> CPU Socket </th>
+                                    <th> Form Factor </th>
+                                    <th> Capacity </th>
                                     <th> Item Status </th>
                                 </tr>
                             </thead>
@@ -113,7 +112,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Memory</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
+                    <button type="button" class="btn-close" onclick="buttonModalClose()"></button>
                 </div>
                 <div class="modal-body">
                     <form id="formMemory">
@@ -131,15 +130,10 @@
                         <!-- purchase Price Start -->
                         <div class="row">
                             <div class="col-4">
-                                <div class="form-floating mb-3">
-                                    <!-- 
-                                    regex---
-                                       100|[1-9]?[0-9]---
-                                       eather maximum can add 100 or can add 
-                                         [1-9]?(requler expression)[0-9] mean 
-                                    -->
-                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','memory','profitrate');salePriceCalculator('gpu')">
-                                    <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
+                                <div class="mb-3 form-floating">
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','memory','brand_id')">
+                                        <option value=""  selected disabled>Select Brand</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- purchase Price end -->
@@ -194,7 +188,7 @@
                             <!-- roq start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="numberSpeed" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','memory','speed')">
+                                    <input type="number" class="form-control" id="numberSpeed" placeholder="" onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','memory','speed');generateItemName()">
                                     <label for="numberSpeed">Speed</label>
                                 </div>
                             </div>
@@ -214,18 +208,22 @@
 
                             <!--interface start-->
                             <div class="col-4">
-                                <div class="mb-3 form-floating">
-                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','memory','brand_id')">
-                                        <option value=""  selected disabled>Select Brand</option>
-                                    </select>
-
+                                <div class="form-floating mb-3">
+                                    <!-- 
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
+                                    -->
+                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','memory','profitrate');salePriceCalculator('memory')">
+                                    <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <!--interface  end-->
                             <!-- Description start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <select name="capacity" id="selectCapacity" class="form-select" onchange="selectDynamicValidator(this,'','gpu','capacity_id')">
+                                    <select name="capacity" id="selectCapacity" class="form-select" onchange="selectDynamicValidator(this,'','memory','capacity_id');generateItemName()">
                                         <option value=""  selected disabled>Select Capacity</option>
                                     </select>
                                 </div>
@@ -236,7 +234,7 @@
                             <!-- selectBrand start -->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="memoryformfactor" id="selectMemoryFormFactor" class="form-select" onchange="selectDynamicValidator(this,'','memory','memoryformfactor_id')">
+                                    <select name="memoryformfactor" id="selectMemoryFormFactor" class="form-select" onchange="selectDynamicValidator(this,'','memory','memoryformfactor_id');generateItemName()">
                                         <option value=""  selected disabled>Select Memory Form Factor</option>
                                     </select>
                                 </div>
@@ -246,7 +244,7 @@
                             <!--selectCpuSocket start-->
                             <div class="col-4">
                                 <div class="mb-3 form-floating">
-                                    <select name="gputype" id="selectMemoryType" class="form-select" onchange="selectDynamicValidator(this,'','memory','memorytype_id')">
+                                    <select name="memorytype" id="selectMemoryType" class="form-select" onchange="selectDynamicValidator(this,'','memory','memorytype_id');generateItemName()">
                                         <option value=""  selected disabled>Select Memory Type</option>
                                     </select>
                                 </div>
@@ -267,18 +265,18 @@
                         <div id="divModifyButton">
                             <div class="row" id="">
                                 <div class="col-1"></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printGpuDetails(window['editOb'], window['editRow'])">Print</button></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteGpu(window['editOb'], window['editRow'])">Delete</button></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-print" onclick="printMemoryDetails(window['editOb'], window['editRow'])">Print</button></div>
+                                <div class="col-2"><button type="button" class="modal-button modal-btn-delete" onclick="deleteMemory(window['editOb'], window['editRow'])">Delete</button></div>
                                 <div class="col-7"></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="row">
-                            <div class="col-5"></div>
-                            <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonGpuUpdate()">Update</button></div>
-                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonGpuSubmit()">Submit</button></div>
+                            <div class="col-7"></div>
+                            <div class="col-4" style="display: flex; justify-content: end; gap: 15px;"><button type="button" id="buttonClear" class="modal-button modal-btn-clear">Clear</button>
+                                <button type="button" id="buttonUpdate" class="modal-button modal-btn-update" onclick="buttonMemoryUpdate()">Update</button>
+                                <button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonMemorySubmit()">Submit</button></div>
                             <div class="col-1"></div>
                         </div>
                     </div>

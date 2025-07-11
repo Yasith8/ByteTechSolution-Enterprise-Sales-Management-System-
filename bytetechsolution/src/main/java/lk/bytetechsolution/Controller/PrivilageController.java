@@ -91,7 +91,7 @@ public class PrivilageController {
         }
 
         //duplicate check
-        PrivilageEntity extPrivilage=dao.getPrivilagebyRoleAndModule(privilage.getModule_id().getId(),privilage.getRole_id().getId());
+        PrivilageEntity extPrivilage=dao.getPrivilagebyRoleAndModule(privilage.getRole_id().getId(),privilage.getModule_id().getId());
 
         if(extPrivilage!=null){
             return "Save not Completed. Privilage Already Exist by given role and module";
@@ -119,7 +119,7 @@ public class PrivilageController {
         }
 
         //check existed
-        PrivilageEntity extPrivilage=dao.getPrivilagebyRoleAndModule(privilage.getModule_id().getId(),privilage.getRole_id().getId());
+        PrivilageEntity extPrivilage=dao.getPrivilagebyRoleAndModule(privilage.getRole_id().getId(),privilage.getModule_id().getId());
 
         //if null
         if(extPrivilage==null){
@@ -152,7 +152,7 @@ public class PrivilageController {
         }
         
         //existance check
-        PrivilageEntity extPrivilage=dao.getPrivilagebyRoleAndModule(privilage.getModule_id().getId(),privilage.getRole_id().getId());
+        PrivilageEntity extPrivilage=dao.getPrivilagebyRoleAndModule(privilage.getRole_id().getId(),privilage.getModule_id().getId());
         
         if(extPrivilage==null){
             return "Update not Completed. Privilage Not Exist by given role and module";  

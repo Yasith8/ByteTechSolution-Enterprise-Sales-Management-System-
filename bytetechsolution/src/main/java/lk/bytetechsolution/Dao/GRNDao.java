@@ -21,5 +21,9 @@ public interface GRNDao extends JpaRepository<GRNEntity,Integer>{
     @Query(value = "SELECT * FROM bytetechsolution.grn as g where g.paidamount!=g.totalamount and g.purchase_request_id in (select pr.id from bytetechsolution.purchase_request as pr where pr.supplier_id=?1)",nativeQuery = true)
     List<GRNEntity> getUnpaidGRN(Integer supplierId);
     
+    
+    @Query(value = "SELECT * FROM bytetechsolution.grn as g where g.purchase_request_id in (select pr.id from bytetechsolution.purchase_request as pr where pr.supplier_id=?1);",nativeQuery = true)
+    List<GRNEntity> getAllGrnBySupplier(Integer supplierId);
+    
    
 }

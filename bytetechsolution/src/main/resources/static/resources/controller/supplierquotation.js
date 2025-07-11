@@ -54,7 +54,8 @@ const refreshSupplierQuotationForm = () => {
 
     selectQuotationRequest.addEventListener('change', () => {
         editableTableHandler([])
-        suppliers = getServiceAjaxRequest("/supplier/activesupplier")
+        seletedQuotationRequest = selectValueHandler(selectQuotationRequest)
+        suppliers = getServiceAjaxRequest(`/supplier/supplierbyqrequest/${seletedQuotationRequest.id}`)
         fillDataIntoSelect(selectSupplier, "Select Supplier", suppliers, "name");
 
         let selectedRequest = JSON.parse(selectQuotationRequest.value)
@@ -221,54 +222,77 @@ const submitSupplierQuotation = () => {
 
 
     let errors = supplierQuotationSubmitError();
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to send the purchase request?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, send it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let postServiceResponce;
 
-    if (errors == "") {
-        const supplierResponse = confirm("Do you want to submit the Quotation?");
+                $.ajax("/supplierquotation", {
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(supplierQuotation),
+                    async: false,
 
-        if (supplierResponse) {
-            let postServiceResponce;
+                    success: function(data) {
+                        console.log("success", data);
+                        postServiceResponce = data;
+                    },
 
-            $.ajax("/supplierquotation", {
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(supplierQuotation),
-                async: false,
+                    error: function(resData) {
+                        console.log("Fail", resData);
+                        postServiceResponce = resData;
+                    }
 
-                success: function(data) {
-                    console.log("success", data);
-                    postServiceResponce = data;
-                },
+                });
 
-                error: function(resData) {
-                    console.log("Fail", resData);
-                    postServiceResponce = resData;
+                if (postServiceResponce == "OK") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Your quotation submission has been successfully completed!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        $('#supplierQuotationAddModal').modal('hide');
+                        //reset the Item form
+                        refreshSupplierQuotationForm()
+                        formSupplierQuotation.reset();
+                        //refreash Item form
+                        refreshSupplierQuotationTable()
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        html: "Your quotation submission has been failed due to following errors:<br>" + postServiceResponce,
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: "#F25454"
+                    });
                 }
-
-            });
-
-            if (postServiceResponce == "OK") {
-                alert("Your quotation submission has been successfully completed...!");
-                $('#supplierQuotationAddModal').modal('hide');
-                //reset the Item form
-                formSupplierQuotation.reset();
-                //refreash Item form
-                refreshSupplierQuotationForm()
-                refreshSupplierQuotationTable()
-
-            } else {
-                alert("Your quotation submission has been failed...!");
             }
-
-        }
-
-
+        });
     } else {
-        alert("Your quotation submisson has following errors...!\n" + errors);
+        Swal.fire({
+            title: "Error!",
+            html: "Quotation Submisson failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
     }
-
-
-
-
 
 }
 
@@ -285,10 +309,10 @@ const buttonModalClose = () => {
         if (result.isConfirmed) {
             $('#supplierQuotationAddModal').modal('hide');
 
+            formSupplierQuotation.reset();
             refreshSupplierQuotationForm();
 
             // Reset the form
-            formSupplierQuotation.reset();
             editableTableHandler([]);
             divModifyButton.className = 'd-none';
         }

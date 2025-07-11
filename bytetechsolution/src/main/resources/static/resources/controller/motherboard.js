@@ -30,6 +30,10 @@ const refreshMotherboardTable = () => {
 const refreshMotherboardForm = () => {
     motherboard = new Object();
 
+    buttonUpdate.classList.add('elementHide')
+    buttonSubmit.classList.remove('elementHide')
+    buttonClear.classList.remove('elementHide')
+
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
 
@@ -152,6 +156,12 @@ const getItemStatus = (ob) => {
 const refillMotherboardForm = (ob, rowIndex) => {
     $('#motherboardAddModal').modal('show');
     removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, selectMotherboardSeries, selectMotherboardFormFactor, selectCpuSocket, selectBrand, selectItemStatus, selectMemoryType, selectInterface, selectMotherboardType, numberMaxCapacity])
+
+
+
+    buttonUpdate.classList.remove('elementHide')
+    buttonSubmit.classList.add('elementHide')
+    buttonClear.classList.add('elementHide')
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');

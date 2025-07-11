@@ -15,4 +15,7 @@ public interface PurchaseRequestDao extends JpaRepository<PurchaseRequestEntity,
     @Query(value = "select * from bytetechsolution.purchase_request pr where pr.requireddate>=current_time()",nativeQuery = true)
     public List<PurchaseRequestEntity> findPrequestByRequiredDate();
     
+    @Query(value = "select * from bytetechsolution.purchase_request as pr where pr.supplier_id=?1",nativeQuery = true)
+    List<PurchaseRequestEntity> findPRBySupplier(Integer supplierId);
+    
 }

@@ -84,6 +84,7 @@ const refreshOrderForm = () => {
     }
 
     refreshInnerOrderTableAndForm()
+    refreshCustomerInnerForm()
 }
 
 const refreshInnerOrderTableAndForm = () => {
@@ -1546,3 +1547,150 @@ const printOrder = (ob, rowIndex) => {
         newTab.print();
     };
 };
+
+const refreshCustomerInnerForm=()=>{
+    customer=new Object();
+    removeValidationColor([textCustomer,textMobile,textEmail,textAddress])
+
+    collapseExample.addEventListener('shown.bs.collapse',()=>{
+        selectCustomer.disabled = true;
+    })
+
+     // Re-enable select when collapse closes
+    collapseExample.addEventListener('hidden.bs.collapse', () => {
+        selectCustomer.disabled = false;
+    });
+
+    //ensure it's enabled initially if not collapsed
+    if (!$('#collapseExample').hasClass('show')) {
+        selectCustomer.disabled = false;
+    }
+
+}
+
+const checkCustomerInputErrors = () => {
+    let errors = "";
+
+    if (customer.name == null) {
+        errors = errors + "Customer Name can't be Null...!\n";
+        textCustomer.classList.add("is-invalid");
+    }
+    if (customer.mobile == null) {
+        errors = errors + "Mobile No can't be Null...!\n";
+        textMobile.classList.add("is-invalid");
+    }
+
+    if (customer.email == null) {
+        errors = errors + "Email can't be Null...!\n";
+        textEmail.classList.add("is-invalid");
+    }
+
+    if (customer.address == null) {
+        errors = errors + "Address can't be Null...!\n";
+        textAddress.classList.add("is-invalid");
+    }
+    return errors;
+}
+
+const addCustomer=()=>{
+    console.log("CUSTOMER", customer)
+    const updatedCustomer={...customer,totalpurchase:0}
+      let errors = checkCustomerInputErrors();
+
+    if (errors === "") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to Add this details to customer?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, Add it!",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let postServiceResponce;
+
+                $.ajax("/customer", {
+                    type: "POST",
+                    data: JSON.stringify(updatedCustomer),
+                    contentType: "application/json",
+                    async: false,
+
+                    success: function(data) {
+                        console.log("success", data);
+                        postServiceResponce = data;
+                    },
+
+                    error: function(resData) {
+                        console.log("Fail", resData);
+                        postServiceResponce = resData;
+                    }
+                })
+
+                if (postServiceResponce == "OK") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Customer Added Successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                         const bsCollapse = bootstrap.Collapse.getInstance(collapseExample) || new bootstrap.Collapse(collapseExample);
+                         bsCollapse.hide();
+                        refreshCustomerInnerForm();
+
+                        const customers = getServiceAjaxRequest('/customer/alldata');
+                        //find new customer
+                         const newlyAddedCustomer = customers.find(c => 
+                            c.name === updatedCustomer.name && 
+                            c.mobile === updatedCustomer.mobile && 
+                            c.email === updatedCustomer.email
+                        );
+
+                        console.log("UpdatedCustomer",updatedCustomer)
+
+                         $('#selectCustomer').empty();
+                        fillMultipleItemOfDataIntoSingleSelect(
+                            selectCustomer, 
+                            "Select Customer Details", 
+                            customers, 
+                            'name', 
+                            'mobile',
+                            newlyAddedCustomer.name,
+                            newlyAddedCustomer.mobile,
+                           
+                        );
+
+                        if (newlyAddedCustomer) {
+                            invoice.customer_id = newlyAddedCustomer;
+                        }
+                        
+                        // Trigger change event to update validation
+                        $(selectCustomer).trigger('change');
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        html: "Adding Customer failed due to the following errors:<br>" + postServiceResponce,
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: "#F25454"
+                    });
+                }
+            }
+        });
+    } else {
+        Swal.fire({
+            title: "Error!",
+            html: "Adding Customer failed due to the following errors:<br>" + errors.replace(/\n/g, "<br>"),
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
+    }
+}

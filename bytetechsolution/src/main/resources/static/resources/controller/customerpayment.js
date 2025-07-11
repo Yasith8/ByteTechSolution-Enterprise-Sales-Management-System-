@@ -40,26 +40,26 @@ const refreshCustomerPaymentForm = () => {
     invoiceTotalAmountRow.classList.add('elementHide');
     //load customer data
     const customers = getServiceAjaxRequest('/customer/alldata')
-        /*  console.log("CUSTOMERS", customers)
-         $('#selectCustomer').select2({
-             theme: 'bootstrap-5',
-             dropdownParent: $('#selectCustomer').parent(),
-             width: '100%'
-         }) */
+    console.log("CUSTOMERS", customers)
+    $('#selectCustomer').select2({
+        theme: 'bootstrap-5',
+        dropdownParent: $('#selectCustomer').parent(),
+        width: '100%'
+    })
     fillMultipleItemOfDataIntoSingleSelect(selectCustomer, "Select Customer Details", customers, 'name', 'mobile')
 
     fillMultipleItemOfDataIntoSingleSelect(selectInvoice, "Select Customer First", [], "invoiceno", "finalamount")
 
-    selectCustomer.addEventListener('change', () => {
-        customerpayment.invoice_id = null;
-        removeValidationColor([selectInvoice])
-        const selectedCustomer = selectValueHandler(selectCustomer)
-        console.log("sssCUSTOMERS", selectedCustomer)
+    /*     selectCustomer.addEventListener('change', () => {
+            customerpayment.invoice_id = null;
+            removeValidationColor([selectInvoice])
+            const selectedCustomer = selectValueHandler(selectCustomer)
+            console.log("sssCUSTOMERS", selectedCustomer)
 
-        customerInvoices = getServiceAjaxRequest(`/invoice/invoicebycustomer/${selectedCustomer.id}`);
-        fillMultipleItemOfDataIntoSingleSelect(selectInvoice, "Select Customer First", customerInvoices, "invoiceno", "finalamount")
+            customerInvoices = getServiceAjaxRequest(`/invoice/invoicebycustomer/${selectedCustomer.id}`);
+            fillMultipleItemOfDataIntoSingleSelect(selectInvoice, "Select Customer First", customerInvoices, "invoiceno", "finalamount")
 
-    })
+        }) */
 
     decimalDueAmount.disabled = true;
     selectInvoice.addEventListener('change', () => {
@@ -95,6 +95,16 @@ const refreshCustomerPaymentForm = () => {
     fillDataIntoSelect(selectPaymentType, "Select Payment Type", paymenttypes, "name")
 
 
+}
+
+const testOne = () => {
+    customerpayment.invoice_id = null;
+    removeValidationColor([selectInvoice])
+    const selectedCustomer = selectValueHandler(selectCustomer)
+    console.log("sssCUSTOMERS", selectedCustomer)
+
+    customerInvoices = getServiceAjaxRequest(`/invoice/invoicebycustomer/${selectedCustomer.id}`);
+    fillMultipleItemOfDataIntoSingleSelect(selectInvoice, "Select Customer First", customerInvoices, "invoiceno", "finalamount")
 }
 
 const refillCustomerPaymentForm = (ob) => {

@@ -113,7 +113,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Motherboard</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="buttonModalClose()"></button>
+                    <button type="button" class="btn-close" onclick="buttonModalClose()"></button>
                 </div>
                 <div class="modal-body">
                     <form id="formMotherboard">
@@ -143,16 +143,12 @@
 
                         <!-- purchase Price Start -->
                         <div class="row">
+
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <!-- 
-                                    regex---
-                                       100|[1-9]?[0-9]---
-                                       eather maximum can add 100 or can add 
-                                         [1-9]?(requler expression)[0-9] mean 
-                                    -->
-                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','motherboard','profitrate');salePriceCalculator('motherboard')">
-                                    <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
+                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','brand_id');generateItemName()">
+                                        <option value=""  selected disabled>Select Brand</option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- purchase Price end -->
@@ -228,9 +224,14 @@
                             <!-- totalcore start -->
                             <div class="col-4">
                                 <div class="form-floating mb-3">
-                                    <select name="brand" id="selectBrand" class="form-select" onchange="selectDynamicValidator(this,'','motherboard','brand_id');generateItemName()">
-                                        <option value=""  selected disabled>Select Brand</option>
-                                    </select>
+                                    <!-- 
+                                    regex---
+                                       100|[1-9]?[0-9]---
+                                       eather maximum can add 100 or can add 
+                                         [1-9]?(requler expression)[0-9] mean 
+                                    -->
+                                    <input type="number" class="form-control" id="numberProfitRate" placeholder="" required onkeyup="textValidator(this,'^(100|[1-9]?[0-9])$','motherboard','profitrate');salePriceCalculator('motherboard')">
+                                    <label for="numberProfitRate">Profit Rate <span class="requiredIcon">*</span></label>
                                 </div>
                             </div>
                             <!-- totalcore end -->
@@ -307,8 +308,8 @@
                             <div id="divModifyButton">
                                 <div class="row" id="">
                                     <div class="col-1"></div>
-                                    <div class="col-2"><button type="button" class="modal-button modal-btn-print" data-bs-dismiss="modal" onclick="printMotherboardDetails(window['editOb'], window['editRow'])">Print</button></div>
-                                    <div class="col-2"><button type="button" class="modal-button modal-btn-delete" data-bs-dismiss="modal" onclick="deleteMotherboard(window['editOb'], window['editRow'])">Delete</button></div>
+                                    <div class="col-2"><button type="button" class="modal-button modal-btn-print" onclick="printMotherboardDetails(window['editOb'], window['editRow'])">Print</button></div>
+                                    <div class="col-2"><button type="button" class="modal-button modal-btn-delete" onclick="deleteMotherboard(window['editOb'], window['editRow'])">Delete</button></div>
                                     <div class="col-7"></div>
                                 </div>
                             </div>
@@ -316,9 +317,11 @@
                         <div class="col-6">
                             <div class="row">
                                 <div class="col-5"></div>
-                                <div class="col-2"><button type="button" id="buttonClear" class="modal-button modal-btn-clear" data-bs-dismiss="modal">Clear</button></div>
-                                <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" data-bs-dismiss="modal" onclick="buttonMotherboardUpdate()">Update</button></div>
-                                <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonMotherboardSubmit()">Submit</button></div>
+                                <div class="col-4" style="display: flex; justify-content: end; gap: 15px;">
+                                    <button type="button" id="buttonClear" class="modal-button modal-btn-clear">Clear</button>
+                                    <button type="button" id="buttonUpdate" class="modal-button modal-btn-update" onclick="buttonMotherboardUpdate()">Update</button>
+                                    <button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonMotherboardSubmit()">Submit</button>
+                                </div>
                                 <div class="col-1"></div>
                             </div>
                         </div>

@@ -53,6 +53,7 @@ const refreshQuotationRequestForm = () => {
 
     supplierCheckboxContainer.innerHTML = "";
     selectCategory.addEventListener('change', () => {
+        selectCategory.disabled = true;
         quotationrequest.brand_id = null;
         removeValidationColor([selectBrand])
         supplierCheckboxContainer.innerHTML = "";
@@ -67,6 +68,7 @@ const refreshQuotationRequestForm = () => {
 
 
         selectBrand.addEventListener('change', () => {
+            selectBrand.disabled = true;
             const itemBrand = selectValueHandler(selectBrand);
             //refreshInnerQuotationRequestItemFormAndTable();
 

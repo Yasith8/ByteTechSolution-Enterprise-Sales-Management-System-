@@ -24,6 +24,7 @@ import lk.bytetechsolution.Dao.GRNStatusDao;
 import lk.bytetechsolution.Dao.SupplierPaymentDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.GRNEntity;
+import lk.bytetechsolution.Entity.PurchaseRequestEntity;
 import lk.bytetechsolution.Entity.SupplierPaymentEntity;
 import lk.bytetechsolution.Entity.SupplierPaymentHasGRNEntity;
 import lk.bytetechsolution.Entity.UserEntity;
@@ -133,6 +134,8 @@ public class SupplierPaymentController {
 
             // save in db
             dao.save(supplierpayment);
+
+
 
             // pass success msg
             return "OK";

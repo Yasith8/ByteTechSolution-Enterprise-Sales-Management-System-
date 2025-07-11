@@ -141,7 +141,7 @@
                             <!-- email Input end -->
                         </div>
 
-                        <div class="row">
+                        <div class="row" id="passwordRow">
                             <!-- pasword start -->
                             <div class="col-6">
                                 <div class="form-floating mb-3">
@@ -229,8 +229,8 @@
                         <div id="divModifyButton">
                             <div class="row">
                                 <div class="col-1"></div>
-                                <div class="col-2"><button type="button" class="modal-button modal-btn-print">Print</button></div>
-                                <div class="col-2"><button type="button" id="buttonDelete" class="modal-button modal-btn-delete" onclick="deleteUser(window['editOb'], window['editRow'])">Delete</button></div>
+                                <!--  <div class="col-2"><button type="button" class="modal-button modal-btn-print">Print</button></div> -->
+                                <div class="col-4"><button type="button" id="buttonDelete" class="modal-button modal-btn-delete" onclick="deleteUser(window['editOb'], window['editRow'])">Delete</button></div>
                                 <div class="col-7"></div>
                             </div>
                         </div>
@@ -238,9 +238,9 @@
                     <div class="col-6">
                         <div class="row">
                             <div class="col-5"></div>
-                            <div class="col-2"><button type="reset" id="buttonClear" class="modal-button modal-btn-clear">Clear</button></div>
-                            <div class="col-2"><button type="button" id="buttonUpdate" class="modal-button modal-btn-update" onclick="buttonUserUpdate()">Update</button></div>
-                            <div class="col-2"><button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonUserFormSubmit()">Submit</button></div>
+                            <div class="col-6" style="display: flex; justify-content: end; gap: 15px;"><button type="reset" id="buttonClear" class="modal-button modal-btn-clear" onclick="buttonRefresh()">Clear</button>
+                                <button type="button" id="buttonUpdate" class="modal-button modal-btn-update" onclick="buttonUserUpdate()">Update</button>
+                                <button type="button" id="buttonSubmit" class="modal-button modal-btn-submit" onclick="buttonUserFormSubmit()">Submit</button></div>
                             <div class="col-1"></div>
                         </div>
                     </div>

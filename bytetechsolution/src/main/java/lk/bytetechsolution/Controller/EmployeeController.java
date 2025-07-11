@@ -12,6 +12,8 @@ import lk.bytetechsolution.Entity.PrivilageEntity;
 import lk.bytetechsolution.Entity.UserEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -109,7 +111,7 @@ public class EmployeeController {
         }
 
 
-        return dao.findAll();
+        return dao.findAll(Sort.by(Direction.DESC, "id"));
     }
 
 

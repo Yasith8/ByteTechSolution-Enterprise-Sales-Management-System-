@@ -52,9 +52,14 @@ const refreshPrivilageForm = () => {
     modules = getServiceAjaxRequest("/module/alldata")
     fillDataIntoSelect(selectModule, "Please Select Module", modules, 'name')
 
+    removeValidationColor([selectRole, selectModule])
+
     selectRole.disabled = false;
     selectModule.disabled = false;
 
+    buttonUpdate.classList.add('elementHide')
+    buttonSubmit.classList.remove('elementHide')
+    buttonClear.classList.remove('elementHide')
 
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit')
@@ -103,6 +108,10 @@ const refillPrivilageForm = (rowOb, rowIndex) => {
 
     selectRole.disabled = true;
     selectModule.disabled = true;
+
+    buttonUpdate.classList.remove('elementHide')
+    buttonSubmit.classList.add('elementHide')
+    buttonClear.classList.add('elementHide')
 
 
     buttonSubmit.disabled = true;
@@ -279,38 +288,62 @@ const checkPrivilageFormUpdates = () => {
 
 
 const deletePrivilage = (rowOb, rowIdx) => {
-    //user conformation
-    let userConform = confirm("Are you sure  to delete following Privilage belong to " + rowOb.role_id.name + " Role and " + rowOb.module_id.name) + " Module?";
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to delete the privilege for ${rowOb.role_id.name} Role and ${rowOb.module_id.name} Module?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Delete",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let deleteServiceResponse;
 
-    //ok
-    if (userConform) {
-        let deleteServiceResponse;
+            //ajax delete request
+            $.ajax("/privilage", {
+                type: "DELETE",
+                async: false,
+                contentType: "application/json",
+                data: JSON.stringify(rowOb),
 
-        //ajax delete request
-        $.ajax("/privilage", {
-            type: "DELETE",
-            async: false,
-            contentType: "application/json",
-            data: JSON.stringify(rowOb),
+                success: function(data) {
+                    deleteServiceResponse = data
+                },
 
-            success: function(data) {
-                deleteServiceResponse = data
-            },
+                error: function(errData) {
+                    deleteServiceResponse = errData;
+                }
+            })
 
-            error: function(errData) {
-                deleteServiceResponse = errData;
+            if (deleteServiceResponse == "OK") {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Privilege Deleted Successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#B3C41C",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then(() => {
+                    $('#privilageAddModal').modal('hide');
+                    refreshPrivilageTable()
+                })
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    html: "Privilege deletion failed due to the following errors:<br>" + deleteServiceResponse,
+                    icon: "error",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    confirmButtonColor: "#F25454"
+                });
             }
-        })
-
-        if (deleteServiceResponse == "OK") {
-            alert("Delete Successfullly");
-            $('#privilageAddModal').modal('hide');
-            refreshPrivilageTable()
-        } else {
-            console.log("system has following errors:\n" + deleteServiceResponse);
         }
-    }
+    })
 }
+
 
 
 const submitPrivilage = () => {
@@ -321,50 +354,81 @@ const submitPrivilage = () => {
     let errors = checkPrivilageInputErrors();
 
     if (errors == "") {
-        let conformSubmit = confirm("Are your sure to submit this privilage?");
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to submit this privilege?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#103D45",
+            cancelButtonColor: "#F25454",
+            confirmButtonText: "Yes, Submit",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let postServiceResponse;
 
-        if (conformSubmit) {
+                $.ajax("/privilage", {
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(privilage),
+                    async: false,
 
-            let postServiceResponse;
+                    success: function(data) {
+                        console.log("success", data);
+                        postServiceResponse = data;
+                    },
 
-            $.ajax("/privilage", {
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(privilage),
-                async: false,
+                    error: function(resData) {
+                        console.log("Fail", resData);
+                        postServiceResponse = resData;
+                    }
 
-                success: function(data) {
-                    console.log("success", data);
-                    postServiceResponse = data;
-                },
+                });
 
-                error: function(resData) {
-                    console.log("Fail", resData);
-                    postServiceResponse = resData;
+                //if ok
+                if (postServiceResponse == "OK") {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "New Privilege Saved Successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#B3C41C",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(() => {
+                        //hide the model
+                        $('#privilageAddModal').modal('hide');
+                        //reset the employee form
+                        formPrivilage.reset();
+                        //refreash employee form
+                        refreshPrivilageForm();
+                        //refreash employee table
+                        refreshPrivilageTable();
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        html: "Privilege submission failed due to the following errors:<br>" + postServiceResponse,
+                        icon: "error",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        confirmButtonColor: "#F25454"
+                    });
                 }
-
-            });
-
-            //if ok
-            if (postServiceResponse == "OK") {
-                alert("Save new Privilage Successfully...!");
-                //hide the model
-                $('#privilageAddModal').modal('hide');
-                //reset the employee form
-                formPrivilage.reset();
-                //refreash employee form
-                refreshPrivilageForm();
-                //refreash employee table
-                refreshPrivilageTable();
-            } else {
-                alert("Fail to submit Privilage Form \n" + postServiceResponse);
             }
-
-        }
+        })
     } else {
-        alert("Privilage form has folowing errors\n" + errors)
+        Swal.fire({
+            title: "Error!",
+            html: "Privilege form has the following errors:<br>" + errors,
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
     }
 }
+
 const updatePrivilage = () => {
     //check form error
     let errors = checkPrivilageInputErrors();
@@ -373,80 +437,117 @@ const updatePrivilage = () => {
     if (errors == "") {
 
         //check form update
-
         let updates = checkPrivilageFormUpdates();
 
         //check there is no updates or any updations
         if (updates == "") {
-            alert("Nothing Updates")
+            Swal.fire({
+                title: "Nothing Updated",
+                text: "There are no updates in the privilege form",
+                icon: "info",
+                confirmButtonColor: "#103D45",
+                confirmButtonText: "OK",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
         } else {
-
             //get conformation from user to made updation
-            let userConfirm = confirm("Are You Sure to Update this Changes? \n" + updates);
+            Swal.fire({
+                title: "Are you sure?",
+                html: "Do you want to update these changes?<br>" + updates,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#103D45",
+                cancelButtonColor: "#F25454",
+                confirmButtonText: "Yes, Update",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //call put service requestd  -this use for updations
+                    let putServiceResponse;
 
-            //if user conform
-            if (userConfirm) {
-                //call put service requestd  -this use for updations
-                let putServiceResponse;
+                    $.ajax("/privilage", {
+                        type: "PUT",
+                        async: false,
+                        contentType: "application/json",
+                        data: JSON.stringify(privilage),
 
-                $.ajax("/privilage", {
-                    type: "PUT",
-                    async: false,
-                    contentType: "application/json",
-                    data: JSON.stringify(privilage),
+                        success: function(successResponseOb) {
+                            putServiceResponse = successResponseOb;
+                        },
 
+                        error: function(failedResponseOb) {
+                            putServiceResponse = failedResponseOb;
+                        }
+                    });
 
-                    success: function(successResponseOb) {
-                        putServiceResponse = successResponseOb;
-                    },
-
-                    error: function(failedResponseOb) {
-                        putServiceResponse = failedResponseOb;
+                    //check put service response
+                    if (putServiceResponse == "OK") {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Privilege Updated Successfully!",
+                            icon: "success",
+                            confirmButtonColor: "#B3C41C",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        }).then(() => {
+                            //hide the modal
+                            $('#privilageAddModal').modal('hide');
+                            //refreash employee table for realtime updation
+                            formPrivilage.reset();
+                            //reset the employee form
+                            refreshPrivilageTable();
+                            //employee form refresh
+                            refreshPrivilageForm();
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            html: "Privilege update failed due to the following errors:<br>" + putServiceResponse,
+                            icon: "error",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            confirmButtonColor: "#F25454"
+                        });
                     }
-
-                });
-                //check put service response
-                if (putServiceResponse == "OK") {
-                    alert("Updated Privilage Successfully");
-
-                    //hide the moadel
-                    $('#privilageAddModal').modal('hide');
-                    //refreash employee table for realtime updation
-                    refreshPrivilageTable();
-                    //reset the employee form
-                    formPrivilage.reset();
-                    //employee form refresh
-                    refreshPrivilageForm();
-                } else {
-                    //handling errors
-                    alert("Update not Completed :\n" + putServiceResponse);
-                    //refreash the employee form
-                    refreshPrivilageForm();
                 }
-            }
+            })
         }
     } else {
-        //show user to what errors happen
-        alert("Privilage Form  has Following Errors..\n" + errors)
+        Swal.fire({
+            title: "Error!",
+            html: "Privilege form has the following errors:<br>" + errors,
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonColor: "#F25454"
+        });
     }
-
-
 }
-
 const btnCloseHandler = () => {
     //user conformation
-    const closeResponse = confirm('Are you sure to close the modal?')
+    Swal.fire({
+        title: "Are you sure to close the form?",
+        text: "If you close this form, filled data will be removed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Close",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $('#privilageAddModal').modal('hide');
 
-    //check closeResponse is true or false
-    if (closeResponse) {
-        $('#privilageAddModal').modal('hide');
+            //formPrivilage is id of form
+            //this will reset all data(refreash)
+            formPrivilage.reset();
+            divModifyButton.className = 'd-none';
 
-
-        //formPrivilage is id of form
-        //this will reset all data(refreash)
-        formPrivilage.reset();
-        divModifyButton.className = 'd-none';
-
-        refreshPrivilageForm();
-    }
+            refreshPrivilageForm();
+        }
+    })
 }

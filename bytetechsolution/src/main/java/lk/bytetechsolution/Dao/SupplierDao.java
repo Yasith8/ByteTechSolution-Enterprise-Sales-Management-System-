@@ -27,6 +27,10 @@ public interface SupplierDao extends JpaRepository<SupplierEntity,Integer>{
     
     @Query(value="select * from bytetechsolution.supplier s where s.supplierstatus_id=1", nativeQuery = true)
     public List<SupplierEntity> getActiveSuppliers();
+    
+    
+    @Query(value="select * from bytetechsolution.supplier as s where s.id in (select qrs.supplier_id from bytetechsolution.quotation_request_has_supplier as qrs where qrs.quotation_request_id in (select qr.id FROM bytetechsolution.quotation_request as qr where qr.id=?1 and qr.requireddate > date(now())));", nativeQuery = true)
+    public List<SupplierEntity> getQRequestSupplier(Integer requestId);
 } 
 
 

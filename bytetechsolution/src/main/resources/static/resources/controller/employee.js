@@ -110,17 +110,19 @@ const refreshEmployeeForm = () => {
     //define new object
     employee = new Object();
 
-    buttonSubmit.disabled = false;
-    buttonSubmit.classList.add('modal-btn-submit');
+    buttonUpdate.classList.add('elementHide')
+    buttonSubmit.classList.remove('elementHide')
+    buttonClear.classList.remove('elementHide')
 
-    buttonUpdate.disabled = true;
-    buttonUpdate.classList.remove('modal-btn-update');
 
+
+    textNoteCol.classList.add('elementHide')
+    selectStatusCol.classList.add('elementHide')
+        //call filldataintoselect function on commonfunction js for  filling select option
     employeeStatus = getServiceAjaxRequest("/employeestatus/alldata")
+    fillDataIntoSelect(selectEmployeeStatus, "Please Select Employee Status", employeeStatus, 'name')
+    employee.employeestatus_id = employeeStatus[0]
 
-
-    //call filldataintoselect function on commonfunction js for  filling select option
-    fillDataIntoSelect(selectEmployeeStatus, "Please Select", employeeStatus, 'name')
 
     //dynamicly get data
     designations = getServiceAjaxRequest("/designation/alldata");
@@ -133,7 +135,7 @@ const refreshEmployeeForm = () => {
     // let currentdateForMin = new Date();
     //currentdateForMin.setFullYear(currentdateForMin.getFullYear() - 60);
 
-    //dateDOB.min = currentdateForMin.getFullYear() + getDateAndMonth(currentdateForMin, "monthdate");
+    //dateDateOfBirth.min = currentdateForMin.getFullYear() + getDateAndMonth(currentdateForMin, "monthdate");
 
 
     // createdate object for generate max dob
@@ -146,8 +148,8 @@ const refreshEmployeeForm = () => {
 
     let date = currentDateForMax.getDate();
     if(date < 10 ) date = "0" + date; */
-    ////dateDOB.max = "2004-01-01";
-    //dateDOB.max = currentDateForMax.getFullYear() + getDateAndMonth(currentDateForMax, "monthdate");
+    ////dateDateOfBirth.max = "2004-01-01";
+    //dateDateOfBirth.max = currentDateForMax.getFullYear() + getDateAndMonth(currentDateForMax, "monthdate");
 
 
     let currentDateMin = new Date();
@@ -161,6 +163,95 @@ const refreshEmployeeForm = () => {
 
 
 
+    //test part start
+    textNIC.addEventListener("keyup", () => {
+        const nicValue = textNIC.value;
+        /* 
+        ([6][4-9]): Matches years 64–69 (1964–1969)
+
+|([7-9][0-9]): Matches years 70–99 (1970–1999)
+
+[0-9]{7}: Any 7 digits (date + serial)
+
+[VvXx]: Ends with V/v or X/x
+
+--------------------------------------------
+
+([1][9][6-9][0-9]): Matches 1960–1999
+
+|([2][0][0][1-6]): Matches 2001–2006
+
+[0-9]{8}: 8 digits following year (date + serial)
+        */
+        const regPattern = new RegExp("^(((([6][4-9])|([7-9][0-9]))[0-9]{7}[VvXx])|((([1][9][6-9][0-9])|([2][0][0][1-6]))[0-9]{8}))$");
+
+        if (regPattern.test(nicValue)) {
+            //valid nic
+            employee.nic = nicValue;
+            textNIC.classList.add('is-valid');
+            textNIC.classList.remove('is-invalid');
+
+            //generate gender and DOB
+            let birthyear, birthdate;
+
+            //646299500V
+            if (nicValue.length == 10) {
+                birthyear = "19" + nicValue.substring(0, 2); // index (0 & 1) ==> 6 & 4
+                //2 ha 5 athara value tika gnnewa (2, 3, 4)
+                birthdate = nicValue.substring(2, 5);
+                //200152103499
+            } else {
+                birthyear = nicValue.substring(0, 4)
+                    //4 ha 7 athara value tika (4, 5, 6)
+                birthdate = nicValue.substring(4, 7);
+            }
+            console.log("Birthday" + birthyear, birthdate);
+
+            //nic string value ekak substring ekak kalama return kranneth stringmai, greater than check kranna substring walin bari nisa int value welata maru kregnnawa ParseInt use krela
+            if (parseInt(birthdate) > 500) {
+                radioFemale.checked = true;
+                employee.gender = "Female";
+                // get birthdate
+                birthdate = parseInt(birthdate) - 500;
+
+            } else {
+                radioMale.checked = true;
+                employee.gender = "Male";
+            }
+
+            let birthdateOb = new Date(birthyear + "-01-01"); //jan 1 wenidain ptn gnne new date ekk hdagnnewa
+            birthdateOb.setDate(parseInt(birthdate));
+            // adika auruddakda kyl check krenewa
+            /* adika auruddaknm year/4 != 0 saha (Jan+Feb) days == 61 nisa */
+            if (parseFloat(birthyear) % 4 != 0 && parseInt(birthdate) > 60) {
+                birthdateOb.setDate(birthdateOb.getDate() - 1);
+            }
+
+            // month enne array ekakin month[0-11] nisa 1k ekathu krenewa
+            let month = birthdateOb.getMonth() + 1;
+            let date = birthdateOb.getDate();
+            /* 1-9 */
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (date < 10) {
+                date = "0" + date;
+            }
+
+            dateDateOfBirth.value = birthyear + "-" + month + "-" + date;
+            employee.dob = dateDateOfBirth.value;
+            dateDateOfBirth.classList.add('is-valid');
+            dateDateOfBirth.classList.remove('is-invalid');
+        } else {
+            //invalid value
+            employee.nic = null;
+            employee.dob = null;
+            employee.gender = null;
+            textNIC.classList.remove('is-valid');
+            textNIC.classList.add('is-invalid');
+        }
+    });
+    //test part end
 
 
     //profile image set to default
@@ -267,21 +358,112 @@ const printEmployee = (ob, rowIndex) => {
 }
 
 //print whole
-const printEmployeeDataTable = (ob) => {
-    const newTab = window.open();
-    newTab.document.write(
-        '<link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">' +
-        '<link rel="stylesheet" href="resources/style/employee.css">' +
-        '<style>#tableEmployee{background-color:white;}.table-hover{display:none}</style>' +
-        '<script>document.getElementById("tableEmployee").classList.remove("table-hover")</script>' +
-        tableEmployee.outerHTML
-    );
 
-    setTimeout(
-        function() {
-            newTab.print();
-        }, 1000
-    )
+const printEmployeeDataTable = (tableId) => {
+    // Get the table element
+    const table = document.getElementById(tableId);
+
+    if (!table) {
+        console.error(`Table with ID "${tableId}" not found`);
+        return;
+    }
+
+    // Create the print content
+    const printContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Employee Data Table</title>
+            <link rel="stylesheet" href="resources/bootstrap-5.2.3/css/bootstrap.min.css">
+            <link rel="stylesheet" href="resources/style/employee.css">
+            <style>
+                body { 
+                    font-family: Arial, sans-serif; 
+                    margin: 20px; 
+                }
+                table { 
+                    width: 100%; 
+                    border-collapse: collapse; 
+                    background-color: white !important;
+                }
+                th, td { 
+                    border: 1px solid #ddd; 
+                    padding: 8px; 
+                    text-align: left; 
+                }
+                th { 
+                    background-color: #f2f2f2; 
+                    font-weight: bold; 
+                }
+                .table-hover tbody tr:hover {
+                    background-color: transparent !important;
+                }
+                @media print {
+                    body { margin: 0; }
+                    table { page-break-inside: avoid; }
+                    .no-print { display: none !important; }
+                }
+            </style>
+        </head>
+        <body>
+            <h2>Employee Management</h2>
+            ${table.outerHTML}
+            <script>
+                // Wait for content to load, then print
+                window.onload = function() {
+                    setTimeout(function() {
+                        window.print();
+                        window.close();
+                    }, 500);
+                };
+            </script>
+        </body>
+        </html>
+    `;
+
+    // Open new window and write content
+    const newTab = window.open('', '_blank', 'width=800,height=600');
+
+    if (newTab) {
+        newTab.document.write(printContent);
+        newTab.document.close(); // Important: close the document stream
+    } else {
+        // Fallback if popup is blocked
+        alert('Please allow popups for this site to enable printing');
+    }
+}
+
+// Alternative approach using a dedicated print function
+const printEmployeeDataTableAlternative = (tableId) => {
+    const table = document.getElementById(tableId);
+
+    if (!table) {
+        console.error(`Table with ID "${tableId}" not found`);
+        return;
+    }
+
+    // Create a temporary div for printing
+    const printDiv = document.createElement('div');
+    printDiv.innerHTML = `
+        <style>
+            @media print {
+                body * { visibility: hidden; }
+                .print-section, .print-section * { visibility: visible; }
+                .print-section { position: absolute; left: 0; top: 0; width: 100%; }
+            }
+        </style>
+        <div class="print-section">
+            <h2>Employee Management - Data Table</h2>
+            ${table.outerHTML}
+        </div>
+    `;
+
+    // Temporarily add to body
+    document.body.appendChild(printDiv);
+
+    // Print and clean up
+    window.print();
+    document.body.removeChild(printDiv);
 }
 
 
@@ -303,15 +485,22 @@ const employeeFormRefill = (ob, rowIndex) => {
     console.log("EMPLOYEE::::", employee)
     console.log("OLDY OLDY EMPLOYEE::::", oldemployee)
 
+    buttonUpdate.classList.remove('elementHide')
+    buttonSubmit.classList.add('elementHide')
+    buttonClear.classList.add('elementHide')
+
+    textNoteCol.classList.remove('elementHide')
+    selectStatusCol.classList.remove('elementHide')
+
 
     //bind input fields with ob.properties
     textFullName.value = ob.fullname;
     textCallingName.value = ob.callingname
     textNIC.value = ob.nic;
 
-    if (ob.gender == "male") {
+    if (ob.gender == "Male") {
         radioMale.checked = true;
-    } else if (ob.gender == "female") {
+    } else if (ob.gender == "Female") {
         radioFemale.checked = true;
     }
 
@@ -342,13 +531,6 @@ const employeeFormRefill = (ob, rowIndex) => {
 
     //pass designation data to common function to create dynamic dropdown
     fillDataIntoSelect(selectDesignation, "Select Designation", designations, "name", ob.designation_id.name)
-
-
-    buttonSubmit.disabled = true;
-    buttonSubmit.classList.remove('modal-btn-submit')
-
-    buttonUpdate.disabled = false;
-    buttonUpdate.classList.add('modal-btn-update');
 
 
     inputFieldsHandler([textFullName, textNIC, textCallingName, textEmail, textMobileNo, textAddress, textNote, dateDateOfBirth, selectDesignation, selectEmployeeStatus, btnSelectImage, btnClearImage, radioMale, radioFemale, buttonClear, textLandNo], false);
@@ -456,7 +638,7 @@ const textFullNameValidator = (feildId) => {
     //+ mean it will match one or more pattern of inside 1st ()
     //* mean it can happen multiple time
     // 2nd() is last part
-    const regPettern = new RegExp('^([A-Z][a-z]{2,20}[\\s])+([A-Z][a-z]{2,20}[\\s]*)$');
+    const regPettern = new RegExp('^([A-Z][a-z]{2,30}[\\s])+([A-Z][a-z]{2,20}[\\s]*)$');
 
     //check full name is not empty
     if (fullNameValue != '') {
@@ -862,4 +1044,31 @@ const employeePictureRemove = () => {
     imgEmployeePhoto.src = "/resources/image/initialprofile.jpg";
     textEmployeePhoto.textContent = "No Image Selected";
     FileEmployeePhoto.value = null;
+}
+
+const buttonRefresh = () => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to refresh the Employee Form? ",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#103D45",
+        cancelButtonColor: "#F25454",
+        confirmButtonText: "Yes, Refresh",
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            refreshEmployeeForm();
+
+            Swal.fire({
+                title: "Success!",
+                text: "Employee Form Refreshed Successfully!",
+                icon: "success",
+                confirmButtonColor: "#B3C41C",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
+        }
+    })
 }

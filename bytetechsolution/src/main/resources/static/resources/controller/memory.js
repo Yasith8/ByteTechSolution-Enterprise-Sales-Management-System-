@@ -27,6 +27,12 @@ const refreshMemoryTable = () => {
 const refreshMemoryForm = () => {
     memory = new Object();
 
+    buttonUpdate.classList.add('elementHide')
+    buttonSubmit.classList.remove('elementHide')
+    buttonClear.classList.remove('elementHide')
+
+    textItemName.disabled = true;
+
     buttonSubmit.disabled = false;
     buttonSubmit.classList.add('modal-btn-submit');
 
@@ -98,6 +104,11 @@ const getItemStatus = (ob) => {
 const refillMemoryForm = (ob, rowIndex) => {
     $('#memoryAddModal').modal('show');
     removeValidationColor([textItemName, numberProfitRate, numberROP, numberROQ, numberWarranty, textDescription, , numberSpeed, selectMemoryFormFactor, selectBrand, selectItemStatus, selectCapacity, selectMemoryType])
+
+    textItemName.disabled = true;
+    buttonUpdate.classList.remove('elementHide')
+    buttonSubmit.classList.add('elementHide')
+    buttonClear.classList.add('elementHide')
 
     buttonSubmit.disabled = true;
     buttonSubmit.classList.remove('modal-btn-submit');
@@ -315,7 +326,7 @@ const checkMemoryFormUpdates = () => {
     return updates;
 }
 
-const buttonGpuUpdate = () => {
+const buttonMemoryUpdate = () => {
     //check form error
     let errors = checkMemoryInputErrors();
 
@@ -435,4 +446,18 @@ const buttonModalClose = () => {
 
         refreshMemoryForm();
     }
+}
+
+const generateItemName = () => {
+    if (selectBrand.value != "" && numberSpeed.value != "" && selectMemoryFormFactor.value != "" && selectMemoryType.value != "" && selectCapacity.value != "") {
+        textItemName.value = `${JSON.parse(selectBrand.value).name} ${JSON.parse(selectMemoryFormFactor.value).name} ${JSON.parse(selectMemoryType.value).name} (${JSON.parse(selectCapacity.value).name}) ${JSON.parse(selectMemoryType.value).name} ${numberSpeed.value}GHz`;
+        memory.itemname = textItemName.value;
+        console.log(memory.itemname)
+        textItemName.classList.add("is-valid");
+    } else {
+        textItemName.classList.add("is-invavlid");
+        memory.itemname = "Need to Select All the Fields";
+
+    }
+
 }

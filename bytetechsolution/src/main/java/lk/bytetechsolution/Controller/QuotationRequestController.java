@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -77,7 +79,7 @@ public class QuotationRequestController {
         if(!userPrivilage.get("select")){
             return new ArrayList<QuotationRequestEntity>();
         }
-        return daoQuotationRequest.findAll();
+        return daoQuotationRequest.findAll(Sort.by(Direction.DESC,"id"));
     }
     
     @GetMapping(value = "/quotationrequest/withoutexpiredrequest",produces = "application/json")
@@ -91,6 +93,7 @@ public class QuotationRequestController {
 
         return daoQuotationRequest.findByAfterRequireddate();
     }
+
 
     @PostMapping(value = "/quotationrequest")
     public String addQuotationRequestData(@RequestBody QuotationRequestEntity quotationrequest){

@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -90,6 +91,21 @@ public class PurchaseRequestController {
         }
 
         return daoPurchaseRequest.findAll();
+    }
+
+       @GetMapping(value="/purchaserequest/bysuppplier/{supplierId}",produces = "application/json")
+    public List<PurchaseRequestEntity> GetPurchaseRequestDataBySupplier(@PathVariable Integer supplierId){
+        //Authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"PREQUEST");
+
+
+        //if current logged user doesnt have privilages show empty list
+        if(!userPrivilage.get("select")){
+            return new ArrayList<PurchaseRequestEntity>();
+        }
+
+        return daoPurchaseRequest.findPRBySupplier(supplierId);
     }
 
     @PostMapping(value = "/purchaserequest")

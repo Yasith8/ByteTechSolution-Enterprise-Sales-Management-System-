@@ -15,11 +15,13 @@ import lk.bytetechsolution.Dao.EmployeeDao;
 import lk.bytetechsolution.Dao.GRNDao;
 import lk.bytetechsolution.Dao.GRNStatusDao;
 import lk.bytetechsolution.Dao.PurchaseRequestDao;
+import lk.bytetechsolution.Dao.PurchaseStatusDao;
 import lk.bytetechsolution.Dao.SerialNoListDao;
 import lk.bytetechsolution.Dao.UserDao;
 import lk.bytetechsolution.Entity.GRNEntity;
 import lk.bytetechsolution.Entity.GRNItemEntity;
 import lk.bytetechsolution.Entity.PurchaseRequestEntity;
+import lk.bytetechsolution.Entity.PurchaseRequestItemEntity;
 import lk.bytetechsolution.Entity.PurchaseStatusEntity;
 import lk.bytetechsolution.Entity.SerialNoListEntity;
 import lk.bytetechsolution.Entity.UserEntity;
@@ -59,6 +61,12 @@ public class GRNController {
 
     @Autowired
     private EmployeeDao daoEmployee;
+
+    @Autowired
+    private PurchaseRequestDao daoPR;
+
+    @Autowired
+    private PurchaseStatusDao daoPRStatus;
 
     @Autowired
     private GRNStatusDao daoGRNStatus;
@@ -118,6 +126,19 @@ public class GRNController {
 
    }
 
+    @GetMapping(value = "/grn/allgrnbysupplier/{supplierId}",produces = "application/json")
+   public List<GRNEntity> GetAllGRNBySypplier(@PathVariable Integer supplierId) {
+       Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"GRN");
+
+        if(!userPrivilage.get("select")){
+            return new ArrayList<GRNEntity>();
+        }
+
+        return daoGRN.getAllGrnBySupplier(supplierId);
+
+   }
+
    @PostMapping(value = "/grn")
    public String AddGRN(@RequestBody GRNEntity grn){
     //authentiction and autherzation
@@ -166,10 +187,15 @@ public class GRNController {
             daoGRN.save(grn);
 
             //purchase order dependency management
-           PurchaseRequestEntity assignedPR = grn.getPurchase_request_id();
-           PurchaseStatusEntity status = new PurchaseStatusEntity();
-           status.setId(1); 
-           assignedPR.setPurchasestatus_id(status);
+            PurchaseRequestEntity thisGrnPR=daoPR.getReferenceById(grn.getPurchase_request_id().getId());
+            thisGrnPR.setPurchasestatus_id(daoPRStatus.getReferenceById(1));
+
+            for(PurchaseRequestItemEntity purchaseequestitem:thisGrnPR.getPurchase_request_item()){
+                purchaseequestitem.setPurchase_request_id(thisGrnPR);
+            }
+            
+            daoPR.save(thisGrnPR);
+
 
 
 

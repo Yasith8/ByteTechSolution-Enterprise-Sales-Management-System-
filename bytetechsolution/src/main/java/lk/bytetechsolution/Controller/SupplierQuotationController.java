@@ -7,10 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -81,7 +84,23 @@ public class SupplierQuotationController {
         }
 
 
-        return daoSupplierQuotation.findAll();
+        return daoSupplierQuotation.findAll(Sort.by(Direction.DESC,"id"));
+    }
+
+      @GetMapping(value = "/supplierquotation/findBySupplier/{supplierId}",produces = "application/json")
+    public List<SupplierQuotationEntity> getSupplierQuotationData(@PathVariable Integer supplierId){
+        //authentication and autherization
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        HashMap<String,Boolean> userPrivilage=privilageController.getPrivilageByUserModule(authentication.getName(),"QUOTATION");
+
+
+        //if current logged user doesnt have privilages show empty list
+        if(!userPrivilage.get("select")){
+            return new ArrayList<SupplierQuotationEntity>();
+        }
+
+
+        return daoSupplierQuotation.getSQsBySypplier(supplierId);
     }
 
         @GetMapping(value="/supplierquotation/quotationbyvaliddate",produces = "application/json")

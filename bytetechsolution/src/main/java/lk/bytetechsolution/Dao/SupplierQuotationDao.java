@@ -22,4 +22,7 @@ public interface SupplierQuotationDao extends JpaRepository<SupplierQuotationEnt
 
    @Query(value = "SELECT * FROM bytetechsolution.supplier_quotation sq WHERE sq.validdate >= ?2 AND sq.supplier_id = ?1", nativeQuery = true)
    public List<SupplierQuotationEntity> findByAfterValiddate(Integer supplierId, String validdate);
+   
+   @Query(value = "SELECT * FROM bytetechsolution.supplier_quotation as sq where sq.supplier_id=?1 order by id desc", nativeQuery = true)
+   public List<SupplierQuotationEntity> getSQsBySypplier(Integer supplierId);
    }
