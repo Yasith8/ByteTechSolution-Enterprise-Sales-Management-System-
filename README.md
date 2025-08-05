@@ -3,5 +3,6 @@
 <h3 align="center">Developed by Yasith Nawodya De Silva</h3>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/2aeee517-cf68-4713-8a42-37ff6908d089" width="500px" />
+<img src="https://github.com/user-attachments/assets/c841c24a-ea6b-4bda-9827-9e0d14138bea" width="500px" />
 </p>
+
